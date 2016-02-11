@@ -470,15 +470,12 @@ String *String_Format(const String *format, va_list args)
 {
     assert(format != null);
 
-    StringBuilder *sb = StringBuilder_New();
+    StringBuilder sb;
+    StringBuilder_Constructor(&sb);
 
-    StringBuilder_AppendFormat(sb, format, args);
+    StringBuilder_AppendFormat(&sb, format, args);
 
-    String *result = StringBuilder_ToString(sb);
-
-    Object_Delete(sb);
-
-    return result;
+    return StringBuilder_DeleteAndToString(&sb);
 }
 
 String *String_WrapCString(const char *value, String *buffer)
