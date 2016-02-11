@@ -124,11 +124,14 @@ String *String_FormatCString(const char *format, ...)
 {
     Validate_NotNull(format);
 
-    const String str = String_WrapCString(format);
+    String strBuffer;
+    String *str = String_WrapCString(format, &strBuffer);
 
     va_list args;
     va_start(args, format);
-    String *result = String_Format(&str, args);
+
+    String *result = String_Format(str, args);
+
     va_end(args);
 
     return result;
@@ -140,7 +143,9 @@ String *String_FormatString(const String *format, ...)
 
     va_list args;
     va_start(args, format);
+
     String *result = String_Format(format, args);
+
     va_end(args);
 
     return result;
@@ -170,22 +175,23 @@ String *String_Format(const String *format, va_list args)
     return result;
 }
 
-String String_WrapCString(const char *value)
+String *String_WrapCString(const char *value, String *buffer)
 {
-    String str;
+    assert(buffer != null);
 
-    // Do not set the destructor to prevent the value from being deallocated.
-    Object_Constructor(&str, null);
-
-    // Initialize the string.
     if (value == null) {
-        str.Length = 0;
-        str.Value = "";
+        // If the string is null, return a null pointer.
+        return null;
     }
     else {
-        str.Length = CString_Length(value);
-        str.Value = value;
-    }
+        // Otherwise, initialize the buffer.
 
-    return str;
+        // Do not set the destructor to prevent the value from being deallocated.
+        Object_Constructor(buffer, null);
+
+        buffer->Length = CString_Length(value);
+        buffer->Value = value;
+
+        return buffer;
+    }
 }

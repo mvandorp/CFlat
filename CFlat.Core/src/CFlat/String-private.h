@@ -67,10 +67,16 @@ typedef struct String {
 String *String_Format(const String *format, va_list args);
 
 /// <summary>
-/// Returns a <see cref="String"/> wrapper for the given null-terminated string.
+/// Returns a pointer to a <see cref="String"/> wrapper for given null-terminated string.
 /// </summary>
 /// <param name="value">Pointer to a null-terminated string.</param>
-/// <returns>A <see cref="String"/> wrapper for the given null-terminated string.</returns>
-String String_WrapCString(const char *value);
+/// <param name="bufer">
+/// Pointer to a buffer capable of storing a <see cref="String"/>, this value cannot be <see cref="null"/>.
+/// </param>
+/// <returns>
+/// A pointer to a <see cref="String"/> wrapper for the given null-terminated string, or <see cref="null"/> if
+/// <paramref name="value"/> is <see cref="null"/>.
+/// </returns>
+String *String_WrapCString(const char *value, String *buffer);
 
 #endif
