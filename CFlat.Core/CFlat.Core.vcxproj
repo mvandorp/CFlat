@@ -15,6 +15,10 @@
     <ClInclude Include="include\CFlat\Language\Boolean.h" />
     <ClInclude Include="include\CFlat\Language\Integer.h" />
     <ClInclude Include="include\CFlat\Language\Null.h" />
+    <ClInclude Include="include\CFlat\Memory.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Memory.c" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Language\Boolean.c" />

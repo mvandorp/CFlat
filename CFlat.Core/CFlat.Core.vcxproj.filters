@@ -27,6 +27,14 @@
     <ClInclude Include="include\CFlat.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\CFlat\Memory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Memory.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Language\Integer.c">
