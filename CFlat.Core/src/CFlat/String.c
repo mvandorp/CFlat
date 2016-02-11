@@ -26,16 +26,12 @@
 #include "CFlat/Object.h"
 #include "CFlat/StringBuilder.h"
 #include "CFlat/StringBuilder-private.h"
-#include "CFlat/StringHelper.h"
 #include "CFlat/Validate.h"
 
 #include <stdarg.h>
 
 /* Static variables */
 static const String Empty = CFLAT_STRING_LITERAL("");
-
-/* Static functions */
-static String *String_Format(const String *format, va_list args);
 
 /**************************************/
 /* Extern function definitions        */
@@ -61,12 +57,12 @@ void String_Constructor(String *str, const char *value)
 
     // Initialize the string.
     if (value == null) {
-        str->length = 0;
-        str->value = "";
+        str->Length = 0;
+        str->Value = "";
     }
     else {
-        str->length = CString_Length(value);
-        str->value = CString_Copy(value);
+        str->Length = CString_Length(value);
+        str->Value = CString_Copy(value);
     }
 }
 
@@ -74,28 +70,28 @@ void String_Destructor(void *str)
 {
     Validate_NotNull(str);
 
-    Memory_Deallocate((char*)((String*)str)->value);
+    Memory_Deallocate((char*)((String*)str)->Value);
 }
 
 uintsize String_GetLength(const String *str)
 {
     Validate_NotNull(str);
 
-    return str->length;
+    return str->Length;
 }
 
 const char *String_GetCString(const String *str)
 {
     Validate_NotNull(str);
 
-    return str->value;
+    return str->Value;
 }
 
 char *String_ToCString(const String *str)
 {
     Validate_NotNull(str);
 
-    return CString_Copy(str->value);
+    return CString_Copy(str->Value);
 }
 
 String *String_FormatCString(const char *format, ...)
@@ -130,10 +126,10 @@ const String *String_Empty(void)
 }
 
 /**************************************/
-/* Static function definitions        */
+/* Private function definitions       */
 /**************************************/
 
-static String *String_Format(const String *format, va_list args)
+String *String_Format(const String *format, va_list args)
 {
     assert(format != null);
 
@@ -146,4 +142,24 @@ static String *String_Format(const String *format, va_list args)
     Object_Delete(sb);
 
     return result;
+}
+
+String String_WrapCString(const char *value)
+{
+    String str;
+
+    // Do not set the destructor to prevent the value from being deallocated.
+    Object_Constructor(&str, null);
+
+    // Initialize the string.
+    if (value == null) {
+        str.Length = 0;
+        str.Value = "";
+    }
+    else {
+        str.Length = CString_Length(value);
+        str.Value = value;
+    }
+
+    return str;
 }

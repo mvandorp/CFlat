@@ -25,17 +25,17 @@
 #include "CFlat/Memory.h"
 #include "CFlat/Object.h"
 #include "CFlat/String.h"
-#include "CFlat/StringHelper.h"
+#include "CFlat/String-private.h"
 #include "CFlat/Validate.h"
 
 #include <stdarg.h>
 #include <string.h>
 
 struct StringBuilder {
-    Object object;
-    char *value;
-    uintsize length;
-    uintsize capacity;
+    Object Base;
+    char *Value;
+    uintsize Length;
+    uintsize Capacity;
 };
 
 /* Static variables */
@@ -142,11 +142,11 @@ void StringBuilder_Constructor_WithInitialStringValueAndCapacity(
         capacity = length;
     }
 
-    sb->length = length;
-    sb->capacity = capacity;
-    sb->value = Memory_Allocate(capacity + 1);
+    sb->Length = length;
+    sb->Capacity = capacity;
+    sb->Value = Memory_Allocate(capacity + 1);
 
-    Memory_Copy(String_GetCString(value), sb->value, length);
+    Memory_Copy(String_GetCString(value), sb->Value, length);
 }
 
 /* Destructor */
@@ -156,7 +156,7 @@ void StringBuilder_Destructor(void *sb)
 
     StringBuilder *stringBuilder = (StringBuilder*)sb;
 
-    Memory_Deallocate(stringBuilder->value);
+    Memory_Deallocate(stringBuilder->Value);
 }
 
 /* Methods */
@@ -164,24 +164,24 @@ uintsize StringBuilder_GetLength(const StringBuilder *sb)
 {
     Validate_NotNull(sb);
 
-    return sb->length;
+    return sb->Length;
 }
 
 uintsize StringBuilder_GetCapacity(const StringBuilder *sb)
 {
     Validate_NotNull(sb);
 
-    return sb->capacity;
+    return sb->Capacity;
 }
 
 void StringBuilder_SetCapacity(StringBuilder *sb, uintsize capacity)
 {
     Validate_NotNull(sb);
-    Validate_IsTrue(capacity >= sb->length, ArgumentOutOfRangeException,
+    Validate_IsTrue(capacity >= sb->Length, ArgumentOutOfRangeException,
         "Capacity cannot be smaller than the current length");
 
-    sb->capacity = capacity;
-    sb->value = Memory_Reallocate(sb->value, capacity + 1);
+    sb->Capacity = capacity;
+    sb->Value = Memory_Reallocate(sb->Value, capacity + 1);
 }
 
 String *StringBuilder_ToString(const StringBuilder *sb)
@@ -189,9 +189,9 @@ String *StringBuilder_ToString(const StringBuilder *sb)
     Validate_NotNull(sb);
 
     // Ensure that the buffer has a terminating null character.
-    sb->value[sb->length] = '\0';
+    sb->Value[sb->Length] = '\0';
 
-    return String_New(sb->value);
+    return String_New(sb->Value);
 }
 
 char *StringBuilder_ToCString(const StringBuilder *sb)
@@ -199,20 +199,20 @@ char *StringBuilder_ToCString(const StringBuilder *sb)
     Validate_NotNull(sb);
 
     // Ensure that the buffer has a terminating null character.
-    sb->value[sb->length] = '\0';
+    sb->Value[sb->Length] = '\0';
 
-    return CString_Copy(sb->value);
+    return CString_Copy(sb->Value);
 }
 
 void StringBuilder_Append(StringBuilder *sb, char value)
 {
     Validate_NotNull(sb);
 
-    if (sb->length == sb->capacity) {
-        StringBuilder_SetCapacity(sb, sb->capacity * 2);
+    if (sb->Length == sb->Capacity) {
+        StringBuilder_SetCapacity(sb, sb->Capacity * 2);
     }
 
-    sb->value[sb->length++] = value;
+    sb->Value[sb->Length++] = value;
 }
 
 void StringBuilder_AppendCString(StringBuilder *sb, const char *value)
@@ -232,20 +232,20 @@ void StringBuilder_AppendString(StringBuilder *sb, const String *value)
 
     uintsize length = String_GetLength(value);
 
-    if (sb->length + length > sb->capacity) {
+    if (sb->Length + length > sb->Capacity) {
         // TODO: Use Math_Max when Math.h is implemented.
-        // StringBuilder_SetCapacity(sb, Math_Max(sb->capacity * 2, sb->capacity + length));
+        // StringBuilder_SetCapacity(sb, Math_Max(sb->Capacity * 2, sb->Capacity + length));
 
-        if (sb->capacity * 2 > sb->capacity + length) {
-            StringBuilder_SetCapacity(sb, sb->capacity * 2);
+        if (sb->Capacity * 2 > sb->Capacity + length) {
+            StringBuilder_SetCapacity(sb, sb->Capacity * 2);
         }
         else {
-            StringBuilder_SetCapacity(sb, sb->capacity + length);
+            StringBuilder_SetCapacity(sb, sb->Capacity + length);
         }
     }
 
-    Memory_CopyOffset(String_GetCString(value), 0, sb->value, sb->length, length);
-    sb->length += length;
+    Memory_CopyOffset(String_GetCString(value), 0, sb->Value, sb->Length, length);
+    sb->Length += length;
 }
 
 void StringBuilder_AppendFormatCString(StringBuilder *sb, const char *format, ...)

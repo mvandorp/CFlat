@@ -29,9 +29,9 @@ void Object_Constructor(void *obj, Destructor dtor)
 
     Object *object = (Object*)obj;
 
-    object->refCount = 1;
-    object->destructor = dtor;
-    object->deallocator = null;
+    object->RefCount = 1;
+    object->Destructor = dtor;
+    object->Deallocator = null;
 }
 
 void Object_SetDeallocator(void *obj, Deallocator dealloc)
@@ -40,7 +40,7 @@ void Object_SetDeallocator(void *obj, Deallocator dealloc)
 
     Object *object = (Object*)obj;
 
-    object->deallocator = dealloc;
+    object->Deallocator = dealloc;
 }
 
 void Object_Delete(void *obj)
@@ -51,12 +51,12 @@ void Object_Delete(void *obj)
 
     Object *object = (Object*)obj;
 
-    if (object->destructor != null) {
-        object->destructor(object);
+    if (object->Destructor != null) {
+        object->Destructor(object);
     }
 
-    if (object->deallocator != null) {
-        object->deallocator(object);
+    if (object->Deallocator != null) {
+        object->Deallocator(object);
     }
 }
 
@@ -68,7 +68,7 @@ void *Object_Aquire(void *obj)
 
     Object *object = (Object*)obj;
 
-    object->refCount++;
+    object->RefCount++;
 
     return obj;
 }
@@ -81,9 +81,9 @@ bool Object_Release(void *obj)
 
     Object *object = (Object*)obj;
 
-    object->refCount--;
+    object->RefCount--;
 
-    if (object->refCount == 0) {
+    if (object->RefCount == 0) {
         Object_Delete(object);
 
         return true;

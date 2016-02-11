@@ -5,7 +5,6 @@
 #include "CFlat/Object.h"
 #include "CFlat/String.h"
 #include "CFlat/String-private.h"
-#include "CFlat/StringHelper.h"
 #include "CFlat/Validate.h"
 
 #include <stdio.h>

@@ -49,9 +49,21 @@ typedef void(*Deallocator)(void *obj);
 /// Object_Aquire(), Object_Release() and Object_Delete() should have a member of type Object as its first member.
 /// </summary>
 typedef struct Object {
-    uintsize refCount;
-    Destructor destructor;
-    Deallocator deallocator;
+    /// <summary>
+    /// The reference count of the object.
+    /// </summary>
+    /// <remarks>This member is intended for internal use only and should not be modified directly.</remarks>
+    uintsize RefCount;
+    /// <summary>
+    /// The <see cref="Destructor"/> of the object.
+    /// </summary>
+    /// <remarks>This member is intended for internal use only and should not be modified directly.</remarks>
+    Destructor Destructor;
+    /// <summary>
+    /// The <see cref="Deallocator"/> of the object.
+    /// </summary>
+    /// <remarks>This member is intended for internal use only and should not be modified directly.</remarks>
+    Deallocator Deallocator;
 } Object;
 
 /// <summary>
@@ -59,7 +71,7 @@ typedef struct Object {
 /// </summary>
 /// <param name="obj">Pointer to an uninitialized <see cref="Object"/>.</param>
 /// <param name="destructor">
-/// Pointer to a <see cref="Destructor"/> to call when the object needs to be destroyed, or null if
+/// Pointer to a <see cref="Destructor"/> to call when the object needs to be destroyed, or <see cref="null"/> if
 /// <paramref name="obj"/> should not automatically be destroyed.
 /// </param>
 void Object_Constructor(void *obj, Destructor destructor);
@@ -69,7 +81,7 @@ void Object_Constructor(void *obj, Destructor destructor);
 /// </summary>
 /// <param name="obj">Pointer to an <see cref="Object"/>.</param>
 /// <param name="deallocator">
-/// Pointer to a <see cref="Deallocator"/> to call when the object needs to be deallocated, or null if
+/// Pointer to a <see cref="Deallocator"/> to call when the object needs to be deallocated, or <see cref="null"/> if
 /// <paramref name="obj"/> should not automatically be deallocated.
 /// </param>
 void Object_SetDeallocator(void *obj, Deallocator deallocator);

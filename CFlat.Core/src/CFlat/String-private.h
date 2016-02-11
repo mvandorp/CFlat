@@ -22,10 +22,16 @@
 
 #include "CFlat/Object.h"
 
+#include <stdarg.h>
+
 /// <summary>
 /// Evaluates to the size of the given string literal.
 /// </summary>
 /// <param name="value">A string literal.</param>
+/// <remarks>
+/// <paramref name="value"/> must be an actual string literal. Passing <see cref="null"/> will yield an incorrect
+/// result.
+/// </remarks>
 #define CFLAT_STRING_LITERAL_LENGTH(value) (sizeof(value) - 1)
 
 /// <summary>
@@ -35,9 +41,36 @@
 #define CFLAT_STRING_LITERAL(value) { CFLAT_OBJECT_INITIALIZER(null), CFLAT_STRING_LITERAL_LENGTH(value), value }
 
 typedef struct String {
-    Object object;
-    uintsize length;
-    const char* value;
+    /// <summary>
+    /// The base class of the string.
+    /// </summary>
+    Object Base;
+    /// <summary>
+    /// The length of the string.
+    /// </summary>
+    uintsize Length;
+    /// <summary>
+    /// Pointer to the null-terminated string that represents the value of the string.
+    /// </summary>
+    const char* Value;
 } String;
+
+/// <summary>
+/// Returns a pointer to a new <see cref="String"/> that is formatted according to the given format string, with each
+/// format specifier replaced with a string representation of the corresponding argument.
+/// </summary>
+/// <param name="format">Pointer to a format string.</param>
+/// <param name="args">
+/// A variable argument list containing the objects to format according to the format specifiers in the format string.
+/// </param>
+/// <returns>A pointer to a new <see cref="String"/> that is formatted according to the given format string.</returns>
+String *String_Format(const String *format, va_list args);
+
+/// <summary>
+/// Returns a <see cref="String"/> wrapper for the given null-terminated string.
+/// </summary>
+/// <param name="value">Pointer to a null-terminated string.</param>
+/// <returns>A <see cref="String"/> wrapper for the given null-terminated string.</returns>
+String String_WrapCString(const char *value);
 
 #endif
