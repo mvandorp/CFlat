@@ -22,6 +22,7 @@
     <ClInclude Include="include\CFlat\Object.h" />
     <ClInclude Include="include\CFlat\String.h" />
     <ClInclude Include="include\CFlat\StringBuilder.h" />
+    <ClInclude Include="include\CFlat\StringReader.h" />
     <ClInclude Include="include\CFlat\Validate.h" />
     <ClInclude Include="src\CFlat\String-private.h" />
     <ClInclude Include="src\CFlat\StringBuilder-private.h" />
@@ -34,6 +35,7 @@
     <ClCompile Include="src\CFlat\Memory.c" />
     <ClCompile Include="src\CFlat\Object.c" />
     <ClCompile Include="src\CFlat\String.c" />
+    <ClCompile Include="src\CFlat\StringReader.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9C532CDA-BB89-4A6A-934C-CBC5CD94BC02}</ProjectGuid>
