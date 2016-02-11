@@ -45,6 +45,9 @@
     <ClInclude Include="src\CFlat\StringHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\CFlat\StringBuilder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CFlat\StringHelper.c">
@@ -66,6 +69,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CFlat\String.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\StringBuilder.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
