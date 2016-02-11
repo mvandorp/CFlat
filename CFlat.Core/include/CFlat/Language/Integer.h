@@ -173,6 +173,62 @@ typedef unsigned long ulong;
 /// </summary>
 #define ULong_MaxValue ((ulong)ULONG_MAX)
 
+/* Max-width integer types */
+/**
+ * @}
+ * @{
+ * @name Max-width integer types
+ */
+
+#if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) || (_MSC_VER >= 1700)
+    #include <stdint.h.>
+
+    #define CFLAT_INTMAX        intmax_t
+    #define CFLAT_UINTMAX       uintmax_t
+
+    #define CFLAT_INTMAX_MIN    INTMAX_MIN
+    #define CFLAT_INTMAX_MAX    INTMAX_MAX
+    #define CFLAT_UINTMAX_MAX   UINTMAX_MAX
+#else
+    #define CFLAT_INTMAX        long
+    #define CFLAT_UINTMAX       unsigned long
+
+    #define CFLAT_INTMAX_MIN    LONG_MIN
+    #define CFLAT_INTMAX_MAX    LONG_MAX
+    #define CFLAT_UINTMAX_MAX   ULONG_MAX
+#endif
+
+/// <summary>
+/// Represents a signed integer with the largest possible width.
+/// </summary>
+typedef CFLAT_INTMAX intmax;
+
+/// <summary>
+/// Represents an unsigned integer with the largest possible width.
+/// </summary>
+typedef CFLAT_UINTMAX uintmax;
+
+/// <summary>
+/// Represents the smallest possible value of <see cref="intmax"/>.
+/// </summary>
+#define IntMax_MinValue CFLAT_INTMAX_MIN
+
+/// <summary>
+/// Represents the largest possible value of <see cref="intmax"/>.
+/// </summary>
+#define IntMax_MaxValue CFLAT_INTMAX_MAX
+
+/// <summary>
+/// Represents the smallest possible value of <see cref="uintmax"/>.
+/// </summary>
+/// <remarks>The value of this constant is 0.</remarks>
+#define UIntMax_MinValue 0
+
+/// <summary>
+/// Represents the largest possible value of <see cref="uintmax"/>.
+/// </summary>
+#define UIntMax_MaxValue CFLAT_UINTMAX_MAX
+
 /* Exact-width integer types */
 /**
  * @}
