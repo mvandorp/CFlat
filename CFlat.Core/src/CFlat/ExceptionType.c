@@ -57,16 +57,12 @@ String *ExceptionType_GetName(ExceptionType type)
     #undef EXCEPTION
 }
 
-String *ExceptionType_GetExceptionMessage(ExceptionType type, const char *userMessage)
+String *ExceptionType_GetDefaultMessage(ExceptionType type)
 {
-    // If userMessage is null, return the address of the string containing the exception name.
-    // Otherwise, create a new message based on the user message.
+    // Return the address of the string containing the exception message.
     switch (type) {
-    #define EXCEPTION(name, message)                \
-        case name:                                  \
-            return (userMessage == null)            \
-                ? &name##Message                    \
-                : String_New(userMessage);
+    #define EXCEPTION(name, message) \
+        case name: return &name##Message;
         EXCEPTIONS
         default:
             throw_new(ArgumentException, "Invalid exception type.");

@@ -141,11 +141,8 @@ String *ExceptionType_GetName(ExceptionType type);
 /// <summary>
 /// Gets a pointer to a <see cref="String"/> describing an exception of the given type.
 /// </summary>
-/// <param name="type">The type of which to get the message.</param>
-/// <param name="userMessage">
-/// Pointer to a string that describes the exception, or <see cref="null"/> to use the default exception message.
-/// </param>
+/// <param name="type">The type for which to get the default message.</param>
 /// <returns>A pointer to a <see cref="String"/> describing an exception of the given type.</returns>
-String *ExceptionType_GetExceptionMessage(ExceptionType type, const char *userMessage);
+String *ExceptionType_GetDefaultMessage(ExceptionType type);
 
 #endif

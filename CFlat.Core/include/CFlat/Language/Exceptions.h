@@ -182,12 +182,6 @@ String *Exception_GetMessage(const ExceptionHandle ex);
 /// <param name="ex">The <see cref="ExceptionHandle"/> of the exception.</param>
 ExceptionType Exception_GetType(const ExceptionHandle ex);
 
-/// <summary>
-/// Gets the user message describing the exception pointed to by the given <see cref="ExceptionHandle"/>.
-/// </summary>
-/// <param name="ex">The <see cref="ExceptionHandle"/> of the exception.</param>
-const char *Exception_GetUserMessage(const ExceptionHandle ex);
-
 /* 'Hidden / obfuscated' functions */
 /// <summary>
 /// Prepares the given <see cref="__CFLAT_EXCEPTION_STATE"/>.

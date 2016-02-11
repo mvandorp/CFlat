@@ -37,6 +37,7 @@ static int stackSize = 0;
 static void PushJumpBuffer(jmp_buf stack);
 static void PopJumpBuffer(jmp_buf stack);
 static void RestoreJumpBuffer(ExceptionState *state);
+static String *GenerateExceptionText(const ExceptionHandle ex);
 static void UnhandledException(const ExceptionHandle ex);
 static bool IsInsideTryBlock(void);
 
@@ -141,32 +142,12 @@ String *Exception_GetMessage(const ExceptionHandle ex)
 {
     Validate_NotNull(ex);
 
-    String *name = ExceptionType_GetName(ex->Type);
-    String *message = ExceptionType_GetExceptionMessage(ex->Type, ex->UserMessage);
-    String *result;
-
-    if (message == null || String_GetLength(message) == 0) {
-        // TODO: Print line where exception occured
-        result = String_FormatCString(
-            "An unhandled exception of type '%#s' occurred\n   at %s:line\n",
-            name,
-            ex->File/*,
-            ex->Line*/);
+    if (ex->UserMessage == null) {
+        return ExceptionType_GetDefaultMessage(ex->Type);
     }
     else {
-        // TODO: Print line where exception occured
-        result = String_FormatCString(
-            "An unhandled exception of type '%#s' occurred\n   at %s:line\n\nAdditional information: %#s\n",
-            name,
-            ex->File,
-            /*ex->Line,*/
-            message);
+        return String_New(ex->UserMessage);
     }
-
-    Object_Release(name);
-    Object_Release(message);
-
-    return result;
 }
 
 ExceptionType Exception_GetType(const ExceptionHandle ex)
@@ -174,13 +155,6 @@ ExceptionType Exception_GetType(const ExceptionHandle ex)
     Validate_NotNull(ex);
 
     return ex->Type;
-}
-
-const char *Exception_GetUserMessage(const ExceptionHandle ex)
-{
-    Validate_NotNull(ex);
-
-    return ex->UserMessage;
 }
 
 /**************************************/
@@ -227,6 +201,41 @@ static void RestoreJumpBuffer(ExceptionState *state)
 }
 
 /// <summary>
+/// Generates the error text for a given exception.
+/// </summary>
+static String *GenerateExceptionText(const ExceptionHandle ex)
+{
+    assert(ex != null);
+
+    String *name = ExceptionType_GetName(ex->Type);
+    String *message = Exception_GetMessage(ex);
+    String *result;
+
+    if (message == null || String_GetLength(message) == 0) {
+        // TODO: Print line where exception occured
+        result = String_FormatCString(
+            "An unhandled exception of type '%#s' occurred\n   at %s:line\n",
+            name,
+            ex->File/*,
+            ex->Line*/);
+    }
+    else {
+        // TODO: Print line where exception occured
+        result = String_FormatCString(
+            "An unhandled exception of type '%#s' occurred\n   at %s:line\n\nAdditional information: %#s\n",
+            name,
+            ex->File,
+            /*ex->Line,*/
+            message);
+    }
+
+    Object_Release(name);
+    Object_Release(message);
+
+    return result;
+}
+
+/// <summary>
 /// Prints an exception message based on the given exception type and message, and then aborts the program.
 /// </summary>
 /// <param name="ex">The type of exception thrown.</param>
@@ -237,7 +246,7 @@ static void UnhandledException(const ExceptionHandle ex)
 {
     assert(ex != null);
 
-    String *message = Exception_GetMessage(ex);
+    String *message = GenerateExceptionText(ex);
 
     fprintf(stderr, "%s", String_GetCString(message));
 
