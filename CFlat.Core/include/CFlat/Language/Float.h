@@ -28,6 +28,8 @@
 
 #include <float.h>
 
+typedef struct String String;
+
 /* Macros */
  /// <summary>
  /// The radix used for the <see cref="float"/> type.
@@ -124,5 +126,32 @@ float float_Max(float x, float y);
 /// <param name="x">The second number.</param>
 /// <returns>The smaller of two numbers.</returns>
 float float_Min(float x, float y);
+
+/// <summary>
+/// Converts the given number to a string representation.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <returns>The string representation of the given number.</returns>
+String *float_ToString(float value);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *float_ToStringFormat(float value, const String *format);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *float_ToStringFormatC(float value, const char *format);
+
+#ifdef CFLAT_CORE_INTERNAL
+ #include "CFlat/Language/Float.internal.h"
+#endif
 
 #endif

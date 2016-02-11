@@ -27,11 +27,15 @@
 #include <stddef.h>
 #include <limits.h>
 
+/* Forward declarations */
+typedef struct String String;
+
 /* Special integer types */
 /**
  * @name Special integer types
  * @{
  */
+
 /// <summary>
 /// Represents an unsigned integer with a width of at least 16 bits
 /// that is large enough to store the size of any array or object.
@@ -977,6 +981,29 @@ sbyte sbyte_Max(sbyte x, sbyte y);
 sbyte sbyte_Min(sbyte x, sbyte y);
 
 /// <summary>
+/// Converts the given number to a string representation.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <returns>The string representation of the given number.</returns>
+String *sbyte_ToString(sbyte value);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *sbyte_ToStringFormat(sbyte value, const String *format);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *sbyte_ToStringFormatC(sbyte value, const char *format);
+
+/// <summary>
 /// Returns the larger of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
@@ -991,6 +1018,29 @@ byte byte_Max(byte x, byte y);
 /// <param name="x">The second number.</param>
 /// <returns>The smaller of two numbers.</returns>
 byte byte_Min(byte x, byte y);
+
+/// <summary>
+/// Converts the given number to a string representation.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <returns>The string representation of the given number.</returns>
+String *byte_ToString(byte value);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *byte_ToStringFormat(byte value, const String *format);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *byte_ToStringFormatC(byte value, const char *format);
 
 /// <summary>
 /// Returns the larger of two numbers.
@@ -1009,6 +1059,29 @@ short short_Max(short x, short y);
 short short_Min(short x, short y);
 
 /// <summary>
+/// Converts the given number to a string representation.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <returns>The string representation of the given number.</returns>
+String *short_ToString(short value);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *short_ToStringFormat(short value, const String *format);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *short_ToStringFormatC(short value, const char *format);
+
+/// <summary>
 /// Returns the larger of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
@@ -1023,6 +1096,29 @@ ushort ushort_Max(ushort x, ushort y);
 /// <param name="x">The second number.</param>
 /// <returns>The smaller of two numbers.</returns>
 ushort ushort_Min(ushort x, ushort y);
+
+/// <summary>
+/// Converts the given number to a string representation.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <returns>The string representation of the given number.</returns>
+String *ushort_ToString(ushort value);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *ushort_ToStringFormat(ushort value, const String *format);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *ushort_ToStringFormatC(ushort value, const char *format);
 
 /// <summary>
 /// Returns the larger of two numbers.
@@ -1041,6 +1137,29 @@ int int_Max(int x, int y);
 int int_Min(int x, int y);
 
 /// <summary>
+/// Converts the given number to a string representation.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <returns>The string representation of the given number.</returns>
+String *int_ToString(int value);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *int_ToStringFormat(int value, const String *format);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *int_ToStringFormatC(int value, const char *format);
+
+/// <summary>
 /// Returns the larger of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
@@ -1055,6 +1174,29 @@ uint uint_Max(uint x, uint y);
 /// <param name="x">The second number.</param>
 /// <returns>The smaller of two numbers.</returns>
 uint uint_Min(uint x, uint y);
+
+/// <summary>
+/// Converts the given number to a string representation.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <returns>The string representation of the given number.</returns>
+String *uint_ToString(uint value);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *uint_ToStringFormat(uint value, const String *format);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *uint_ToStringFormatC(uint value, const char *format);
 
 /// <summary>
 /// Returns the larger of two numbers.
@@ -1073,6 +1215,29 @@ long long_Max(long x, long y);
 long long_Min(long x, long y);
 
 /// <summary>
+/// Converts the given number to a string representation.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <returns>The string representation of the given number.</returns>
+String *long_ToString(long value);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *long_ToStringFormat(long value, const String *format);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *long_ToStringFormatC(long value, const char *format);
+
+/// <summary>
 /// Returns the larger of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
@@ -1087,6 +1252,29 @@ ulong ulong_Max(ulong x, ulong y);
 /// <param name="x">The second number.</param>
 /// <returns>The smaller of two numbers.</returns>
 ulong ulong_Min(ulong x, ulong y);
+
+/// <summary>
+/// Converts the given number to a string representation.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <returns>The string representation of the given number.</returns>
+String *ulong_ToString(ulong value);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *ulong_ToStringFormat(ulong value, const String *format);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *ulong_ToStringFormatC(ulong value, const char *format);
 
 /// <summary>
 /// Returns the larger of two numbers.
@@ -1105,6 +1293,29 @@ intmax intmax_Max(intmax x, intmax y);
 intmax intmax_Min(intmax x, intmax y);
 
 /// <summary>
+/// Converts the given number to a string representation.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <returns>The string representation of the given number.</returns>
+String *intmax_ToString(intmax value);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *intmax_ToStringFormat(intmax value, const String *format);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *intmax_ToStringFormatC(intmax value, const char *format);
+
+/// <summary>
 /// Returns the larger of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
@@ -1120,8 +1331,35 @@ uintmax uintmax_Max(uintmax x, uintmax y);
 /// <returns>The smaller of two numbers.</returns>
 uintmax uintmax_Min(uintmax x, uintmax y);
 
+/// <summary>
+/// Converts the given number to a string representation.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <returns>The string representation of the given number.</returns>
+String *uintmax_ToString(uintmax value);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *uintmax_ToStringFormat(uintmax value, const String *format);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *uintmax_ToStringFormatC(uintmax value, const char *format);
+
 /**
  * @}
  */
+
+#ifdef CFLAT_CORE_INTERNAL
+ #include "CFlat/Language/Integer.internal.h"
+#endif
 
 #endif

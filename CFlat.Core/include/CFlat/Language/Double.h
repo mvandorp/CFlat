@@ -28,6 +28,8 @@
 
 #include <float.h>
 
+typedef struct String String;
+
 /* Macros */
  /// <summary>
  /// The radix used for the <see cref="double"/> type.
@@ -124,5 +126,32 @@ double double_Max(double x, double y);
 /// <param name="x">The second number.</param>
 /// <returns>The smaller of two numbers.</returns>
 double double_Min(double x, double y);
+
+/// <summary>
+/// Converts the given number to a string representation.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <returns>The string representation of the given number.</returns>
+String *double_ToString(double value);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *double_ToStringFormat(double value, const String *format);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *double_ToStringFormatC(double value, const char *format);
+
+#ifdef CFLAT_CORE_INTERNAL
+ #include "CFlat/Language/Double.internal.h"
+#endif
 
 #endif
