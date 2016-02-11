@@ -146,5 +146,8 @@
     <ClCompile Include="src\CFlat\NumberBuffer.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\CFlat\StringBuilder.AppendFormat.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -210,20 +210,19 @@ private String *GenerateExceptionText(const ExceptionHandle ex)
     String *result;
 
     if (message == null || String_GetLength(message) == 0) {
-        // TODO: Print line where exception occured
         result = String_FormatCString(
-            "An unhandled exception of type '%#s' occurred\n   at %s:line\n",
-            name,
-            ex->File/*,
-            ex->Line*/);
-    }
-    else {
-        // TODO: Print line where exception occured
-        result = String_FormatCString(
-            "An unhandled exception of type '%#s' occurred\n   at %s:line\n\nAdditional information: %#s\n",
+            "An unhandled exception of type '{string}' occurred\n   at {cstring}:{int}\n",
             name,
             ex->File,
-            /*ex->Line,*/
+            ex->Line);
+    }
+    else {
+        result = String_FormatCString(
+            "An unhandled exception of type '{string}' occurred\n   at {cstring}:{int}\n\n"
+            "Additional information: {string}\n",
+            name,
+            ex->File,
+            ex->Line,
             message);
     }
 
