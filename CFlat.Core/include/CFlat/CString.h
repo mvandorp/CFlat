@@ -17,14 +17,14 @@
 uintsize CString_Length(const char *str);
 
 /// <summary>
-/// Allocates a new null-terminated string that is a duplicated of the given string, and returns a pointer to the new
-/// copy.
+/// Returns a pointer to a new null-terminated string that is a copy of the given string.
 /// </summary>
 /// <param name="str">A null-terminated string.</param>
 /// <returns>
 /// On success, returns the pointer to the copy of the string.
 ///
 /// On failure, returns <see cref="null"/>.
-char *CString_Duplicate(const char *str);
+/// </returns>
+char *CString_Copy(const char *str);
 
 #endif

@@ -18,7 +18,7 @@ uintsize CString_Length(const char *str)
     return str - start;
 }
 
-char *CString_Duplicate(const char *str)
+char *CString_Copy(const char *str)
 {
     // TODO: If str is null, throw an ArgumentNullException.
     assert(str != null);
