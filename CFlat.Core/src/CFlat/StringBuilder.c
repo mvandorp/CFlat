@@ -93,12 +93,12 @@ StringBuilder *StringBuilder_New_WithInitialStringValueAndCapacity(const String 
 /* Constructors */
 void StringBuilder_Constructor(StringBuilder *sb)
 {
-    StringBuilder_Constructor_WithInitialStringValueAndCapacity(sb, String_Empty(), DEFAULT_CAPACITY);
+    StringBuilder_Constructor_WithInitialStringValueAndCapacity(sb, String_Empty, DEFAULT_CAPACITY);
 }
 
 void StringBuilder_Constructor_WithCapacity(StringBuilder *sb, uintsize capacity)
 {
-    StringBuilder_Constructor_WithInitialStringValueAndCapacity(sb, String_Empty(), capacity);
+    StringBuilder_Constructor_WithInitialStringValueAndCapacity(sb, String_Empty, capacity);
 }
 
 void StringBuilder_Constructor_WithInitialCStringValue(StringBuilder *sb, const char *value)
@@ -133,7 +133,7 @@ void StringBuilder_Constructor_WithInitialStringValueAndCapacity(
     Object_Constructor(sb, StringBuilder_Destructor);
 
     if (value == null) {
-        value = String_Empty();
+        value = String_Empty;
     }
 
     uintsize length = String_GetLength(value);

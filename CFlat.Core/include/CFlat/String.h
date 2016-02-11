@@ -33,6 +33,11 @@
 typedef struct String String;
 
 /// <summary>
+/// Represents an empty string.
+/// </summary>
+extern const String * const String_Empty;
+
+/// <summary>
 /// Allocates and initializes a new <see cref="String"/> to the value represented by the given null-terminated string.
 ///
 /// The lifetime of the <see cref="String"/> should be managed with Object_Aquire(), Object_Release() and
@@ -56,11 +61,12 @@ void String_Constructor(String *str, const char *value);
 void String_Destructor(void *str);
 
 /// <summary>
-/// Gets the length of the given <see cref="String"/>.
+/// Gets the character at the given index of the given <see cref="String"/>.
 /// </summary>
 /// <param name="str">Pointer to a <see cref="String"/>.</param>
-/// <returns>The length of the string.</returns>
-uintsize String_GetLength(const String *str);
+/// <param name="index">A position within the string.</param>
+/// <returns>The character at the given index of the given <see cref="String"/>.</returns>
+char String_GetCharAt(const String *str, uintsize index);
 
 /// <summary>
 /// Gets the pointer to the null-terminated string representing the value of the given <see cref="String"/>.
@@ -70,12 +76,11 @@ uintsize String_GetLength(const String *str);
 const char *String_GetCString(const String *str);
 
 /// <summary>
-/// Gets the character at the given index of the given <see cref="String"/>.
+/// Gets the length of the given <see cref="String"/>.
 /// </summary>
 /// <param name="str">Pointer to a <see cref="String"/>.</param>
-/// <param name="index">A position within the string.</param>
-/// <returns>The character at the given index of the given <see cref="String"/>.</returns>
-char String_GetCharAt(const String *str, uintsize index);
+/// <returns>The length of the string.</returns>
+uintsize String_GetLength(const String *str);
 
 /// <summary>
 /// Determines whether the two given strings have the same value.
@@ -102,15 +107,6 @@ bool String_Equals(const String *str1, const String *str2);
 bool String_EqualsCString(const String *str1, const char *str2);
 
 /// <summary>
-/// Converts the value of the given <see cref="String"/> to a null-terminated string.
-/// </summary>
-/// <param name="str">Pointer to a <see cref="String"/>.</param>
-/// <returns>
-/// A pointer to a null-terminated string with the same value as the given <see cref="String"/>.
-/// </returns>
-char *String_ToCString(const String *str);
-
-/// <summary>
 /// Returns a pointer to a new <see cref="String"/> that is formatted according to the given format string, with each
 /// format specifier replaced with a string representation of the corresponding argument.
 /// </summary>
@@ -129,9 +125,304 @@ String *String_FormatCString(const char *format, ...);
 String *String_FormatString(const String *format, ...);
 
 /// <summary>
-/// Returns a pointer to the empty string.
+/// Returns the index of the first occurance of the specified character in the given <see cref="String"/>.
 /// </summary>
-/// <returns>A pointer to the empty string.</returns>
-const String *String_Empty(void);
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="value">The character to seek.</param>
+/// <returns>
+/// The index of <paramref name="value"/> if that character is found, otherwise <see cref="InvalidIndex"/>.
+/// </returns>
+uintsize String_IndexOf(const String *str, char value);
+
+/// <summary>
+/// Returns the index of the first occurance of the specified character in the given <see cref="String"/>.
+/// The search starts at a given character position.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="value">The character to seek.</param>
+/// <param name="startIndex">The search starting position.</param>
+/// <returns>
+/// The index of <paramref name="value"/> if that character is found, otherwise <see cref="InvalidIndex"/>.
+/// </returns>
+uintsize String_IndexOf_Offset(const String *str, char value, uintsize startIndex);
+
+/// <summary>
+/// Returns the index of the first occurance of the specified character in the given <see cref="String"/>.
+/// The search starts at a given character position and examims a given number of character positions.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="value">The character to seek.</param>
+/// <param name="startIndex">The search starting position.</param>
+/// <param name="count">The number of character positions to examine.</param>
+/// <returns>
+/// The index of <paramref name="value"/> if that character is found, otherwise <see cref="InvalidIndex"/>.
+/// </returns>
+uintsize String_IndexOf_Substring(const String *str, char value, uintsize startIndex, uintsize count);
+
+/// <summary>
+/// Returns the index of the first occurance of any of the specified character in the given <see cref="String"/>.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="value">A null-terminated array of characters containing one or more characters to seek.</param>
+/// <returns>
+/// The index of <paramref name="value"/> if that character is found, otherwise <see cref="InvalidIndex"/>.
+/// </returns>
+uintsize String_IndexOfAny(const String *str, const char *anyOf);
+
+/// <summary>
+/// Returns the index of the first occurance of any of the specified character in the given <see cref="String"/>.
+/// The search starts at a given character position.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="value">A null-terminated array of characters containing one or more characters to seek.</param>
+/// <param name="startIndex">The search starting position.</param>
+/// <returns>
+/// The index of <paramref name="value"/> if that character is found, otherwise <see cref="InvalidIndex"/>.
+/// </returns>
+uintsize String_IndexOfAny_Offset(const String *str, const char *anyOf, uintsize startIndex);
+
+/// <summary>
+/// Returns the index of the first occurance of any of the specified character in the given <see cref="String"/>.
+/// The search starts at a given character position and examims a given number of character positions.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="value">A null-terminated array of characters containing one or more characters to seek.</param>
+/// <param name="startIndex">The search starting position.</param>
+/// <param name="count">The number of character positions to examine.</param>
+/// <returns>
+/// The index of <paramref name="value"/> if that character is found, otherwise <see cref="InvalidIndex"/>.
+/// </returns>
+uintsize String_IndexOfAny_Substring(const String *str, const char *anyOf, uintsize startIndex, uintsize count);
+
+/// <summary>
+/// Returns the index of the first occurance of the specified string in the given <see cref="String"/>.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="value">The string to seek.</param>
+/// <returns>
+/// The index of <paramref name="value"/> if that character is found, otherwise <see cref="InvalidIndex"/>.
+/// </returns>
+uintsize String_IndexOfCString(const String *str, const char *value);
+
+/// <summary>
+/// Returns the index of the first occurance of the specified string in the given <see cref="String"/>.
+/// The search starts at a given character position.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="value">The string to seek.</param>
+/// <param name="startIndex">The search starting position.</param>
+/// <returns>
+/// The index of <paramref name="value"/> if that character is found, otherwise <see cref="InvalidIndex"/>.
+/// </returns>
+uintsize String_IndexOfCString_Offset(const String *str, const char *value, uintsize startIndex);
+
+/// <summary>
+/// Returns the index of the first occurance of the specified string in the given <see cref="String"/>.
+/// The search starts at a given character position and examims a given number of character positions.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="value">The string to seek.</param>
+/// <param name="startIndex">The search starting position.</param>
+/// <param name="count">The number of character positions to examine.</param>
+/// <returns>
+/// The index of <paramref name="value"/> if that character is found, otherwise <see cref="InvalidIndex"/>.
+/// </returns>
+uintsize String_IndexOfCString_Substring(const String *str, const char *value, uintsize startIndex, uintsize count);
+
+/// <summary>
+/// Returns the index of the first occurance of the specified string in the given <see cref="String"/>.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="value">The string to seek.</param>
+/// <returns>
+/// The index of <paramref name="value"/> if that character is found, otherwise <see cref="InvalidIndex"/>.
+/// </returns>
+uintsize String_IndexOfString(const String *str, const String *value);
+
+/// <summary>
+/// Returns the index of the first occurance of the specified string in the given <see cref="String"/>.
+/// The search starts at a given character position.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="value">The string to seek.</param>
+/// <param name="startIndex">The search starting position.</param>
+/// <returns>
+/// The index of <paramref name="value"/> if that character is found, otherwise <see cref="InvalidIndex"/>.
+/// </returns>
+uintsize String_IndexOfString_Offset(const String *str, const String *value, uintsize startIndex);
+
+/// <summary>
+/// Returns the index of the first occurance of the specified string in the given <see cref="String"/>.
+/// The search starts at a given character position and examims a given number of character positions.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="value">The string to seek.</param>
+/// <param name="startIndex">The search starting position.</param>
+/// <param name="count">The number of character positions to examine.</param>
+/// <returns>
+/// The index of <paramref name="value"/> if that character is found, otherwise <see cref="InvalidIndex"/>.
+/// </returns>
+uintsize String_IndexOfString_Substring(const String *str, const String *value, uintsize startIndex, uintsize count);
+
+/// <summary>
+/// Returns the index of the last occurance of the specified character in the given <see cref="String"/>.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="value">The character to seek.</param>
+/// <returns>
+/// The index of <paramref name="value"/> if that character is found, otherwise <see cref="InvalidIndex"/>.
+/// </returns>
+uintsize String_LastIndexOf(const String *str, char value);
+
+/// <summary>
+/// Returns the index of the last occurance of the specified character in the given <see cref="String"/>.
+/// The search starts at a given character position and proceeds backward toward the beginning of the string.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="value">The character to seek.</param>
+/// <param name="startIndex">The search starting position.</param>
+/// <returns>
+/// The index of <paramref name="value"/> if that character is found, otherwise <see cref="InvalidIndex"/>.
+/// </returns>
+uintsize String_LastIndexOf_Offset(const String *str, char value, uintsize startIndex);
+
+/// <summary>
+/// Returns the index of the last occurance of the specified character in the given <see cref="String"/>.
+/// The search starts at a given character position and proceeds backward toward the beginning of the string for a
+/// given number of character positions.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="value">The character to seek.</param>
+/// <param name="startIndex">The search starting position.</param>
+/// <param name="count">The number of character positions to examine.</param>
+/// <returns>
+/// The index of <paramref name="value"/> if that character is found, otherwise <see cref="InvalidIndex"/>.
+/// </returns>
+uintsize String_LastIndexOf_Substring(const String *str, char value, uintsize startIndex, uintsize count);
+
+/// <summary>
+/// Returns the index of the last occurance of any of the specified character in the given <see cref="String"/>.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="value">A null-terminated array of characters containing one or more characters to seek.</param>
+/// <returns>
+/// The index of <paramref name="value"/> if that character is found, otherwise <see cref="InvalidIndex"/>.
+/// </returns>
+uintsize String_LastIndexOfAny(const String *str, const char *anyOf);
+
+/// <summary>
+/// Returns the index of the last occurance of any of the specified character in the given <see cref="String"/>.
+/// The search starts at a given character position and proceeds backward toward the beginning of the string.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="value">A null-terminated array of characters containing one or more characters to seek.</param>
+/// <param name="startIndex">The search starting position.</param>
+/// <returns>
+/// The index of <paramref name="value"/> if that character is found, otherwise <see cref="InvalidIndex"/>.
+/// </returns>
+uintsize String_LastIndexOfAny_Offset(const String *str, const char *anyOf, uintsize startIndex);
+
+/// <summary>
+/// Returns the index of the last occurance of any of the specified character in the given <see cref="String"/>.
+/// The search starts at a given character position and proceeds backward toward the beginning of the string for a
+/// given number of character positions.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="value">A null-terminated array of characters containing one or more characters to seek.</param>
+/// <param name="startIndex">The search starting position.</param>
+/// <param name="count">The number of character positions to examine.</param>
+/// <returns>
+/// The index of <paramref name="value"/> if that character is found, otherwise <see cref="InvalidIndex"/>.
+/// </returns>
+uintsize String_LastIndexOfAny_Substring(const String *str, const char *anyOf, uintsize startIndex, uintsize count);
+
+/// <summary>
+/// Returns the index of the last occurance of the specified string in the given <see cref="String"/>.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="value">The string to seek.</param>
+/// <returns>
+/// The index of <paramref name="value"/> if that character is found, otherwise <see cref="InvalidIndex"/>.
+/// </returns>
+uintsize String_LastIndexOfCString(const String *str, const char *value);
+
+/// <summary>
+/// Returns the index of the last occurance of the specified string in the given <see cref="String"/>.
+/// The search starts at a given character position and proceeds backward toward the beginning of the string.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="value">The string to seek.</param>
+/// <param name="startIndex">The search starting position.</param>
+/// <returns>
+/// The index of <paramref name="value"/> if that character is found, otherwise <see cref="InvalidIndex"/>.
+/// </returns>
+uintsize String_LastIndexOfCString_Offset(const String *str, const char *value, uintsize startIndex);
+
+/// <summary>
+/// Returns the index of the last occurance of the specified string in the given <see cref="String"/>.
+/// The search starts at a given character position and proceeds backward toward the beginning of the string for a
+/// given number of character positions.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="value">The string to seek.</param>
+/// <param name="startIndex">The search starting position.</param>
+/// <param name="count">The number of character positions to examine.</param>
+/// <returns>
+/// The index of <paramref name="value"/> if that character is found, otherwise <see cref="InvalidIndex"/>.
+/// </returns>
+uintsize String_LastIndexOfCString_Substring(
+    const String *str,
+    const char *value,
+    uintsize startIndex,
+    uintsize count);
+
+/// <summary>
+/// Returns the index of the last occurance of the specified string in the given <see cref="String"/>.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="value">The string to seek.</param>
+/// <returns>
+/// The index of <paramref name="value"/> if that character is found, otherwise <see cref="InvalidIndex"/>.
+/// </returns>
+uintsize String_LastIndexOfString(const String *str, const String *value);
+
+/// <summary>
+/// Returns the index of the last occurance of the specified string in the given <see cref="String"/>.
+/// The search starts at a given character position and proceeds backward toward the beginning of the string.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="value">The string to seek.</param>
+/// <param name="startIndex">The search starting position.</param>
+/// <returns>
+/// The index of <paramref name="value"/> if that character is found, otherwise <see cref="InvalidIndex"/>.
+/// </returns>
+uintsize String_LastIndexOfString_Offset(const String *str, const String *value, uintsize startIndex);
+
+/// <summary>
+/// Returns the index of the last occurance of the specified string in the given <see cref="String"/>.
+/// The search starts at a given character position and proceeds backward toward the beginning of the string for a
+/// given number of character positions.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="value">The string to seek.</param>
+/// <param name="startIndex">The search starting position.</param>
+/// <param name="count">The number of character positions to examine.</param>
+/// <returns>
+/// The index of <paramref name="value"/> if that character is found, otherwise <see cref="InvalidIndex"/>.
+/// </returns>
+uintsize String_LastIndexOfString_Substring(
+    const String *str,
+    const String *value,
+    uintsize startIndex,
+    uintsize count);
+
+/// <summary>
+/// Converts the value of the given <see cref="String"/> to a null-terminated string.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <returns>
+/// A pointer to a null-terminated string with the same value as the given <see cref="String"/>.
+/// </returns>
+char *String_ToCString(const String *str);
 
 #endif

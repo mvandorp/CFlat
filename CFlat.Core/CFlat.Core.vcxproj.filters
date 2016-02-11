@@ -72,6 +72,9 @@
     <ClInclude Include="include\CFlat\Language\Bool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\CFlat\Language\Constants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CFlat\CString.c">

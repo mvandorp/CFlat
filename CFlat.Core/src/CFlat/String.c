@@ -30,8 +30,11 @@
 
 #include <stdarg.h>
 
-/* Static variables */
+/* Static constants */
 static const String Empty = CFLAT_STRING_LITERAL("");
+
+/* Extern constants */
+extern const String * const String_Empty = &Empty;
 
 /**************************************/
 /* Extern function definitions        */
@@ -73,20 +76,6 @@ void String_Destructor(void *str)
     Memory_Deallocate((char*)((String*)str)->Value);
 }
 
-uintsize String_GetLength(const String *str)
-{
-    Validate_NotNull(str);
-
-    return str->Length;
-}
-
-const char *String_GetCString(const String *str)
-{
-    Validate_NotNull(str);
-
-    return str->Value;
-}
-
 char String_GetCharAt(const String *str, uintsize index)
 {
     Validate_NotNull(str);
@@ -96,11 +85,18 @@ char String_GetCharAt(const String *str, uintsize index)
     return str->Value[index];
 }
 
-char *String_ToCString(const String *str)
+const char *String_GetCString(const String *str)
 {
     Validate_NotNull(str);
 
-    return CString_Copy(str->Value);
+    return str->Value;
+}
+
+uintsize String_GetLength(const String *str)
+{
+    Validate_NotNull(str);
+
+    return str->Length;
 }
 
 bool String_Equals(const String *str1, const String *str2)
@@ -151,9 +147,321 @@ String *String_FormatString(const String *format, ...)
     return result;
 }
 
-const String *String_Empty(void)
+uintsize String_IndexOf(const String *str, char value)
 {
-    return &Empty;
+    return String_IndexOf_Substring(str, value, 0, String_GetLength(str));
+}
+
+uintsize String_IndexOf_Offset(const String *str, char value, uintsize startIndex)
+{
+    return String_IndexOf_Substring(str, value, startIndex, String_GetLength(str) - startIndex);
+}
+
+uintsize String_IndexOf_Substring(const String *str, char value, uintsize startIndex, uintsize count)
+{
+    Validate_NotNull(str);
+    Validate_IsTrue(startIndex <= str->Length, ArgumentOutOfRangeException,
+        "Index was out of range. Must be less than the length of the string.");
+    Validate_IsTrue(startIndex + count <= str->Length, ArgumentOutOfRangeException,
+        "Count must be positive and count must refer to a location within the string.");
+
+    uintsize end = startIndex + count;
+
+    // Iterate through all of the string's specified characters.
+    for (uintsize i = startIndex; i < end; i++) {
+        if (str->Value[i] == value) {
+            return i;
+        }
+    }
+
+    return InvalidIndex;
+}
+
+uintsize String_IndexOfAny(const String *str, const char *anyOf)
+{
+    return String_IndexOfAny_Substring(str, anyOf, 0, String_GetLength(str));
+}
+
+uintsize String_IndexOfAny_Offset(const String *str, const char *anyOf, uintsize startIndex)
+{
+    return String_IndexOfAny_Substring(str, anyOf, startIndex, String_GetLength(str) - startIndex);
+}
+
+uintsize String_IndexOfAny_Substring(const String *str, const char *anyOf, uintsize startIndex, uintsize count)
+{
+    Validate_NotNull(str);
+    Validate_NotNull(anyOf);
+    Validate_IsTrue(startIndex <= str->Length, ArgumentOutOfRangeException,
+        "Index was out of range. Must be less than the length of the string.");
+    Validate_IsTrue(startIndex + count <= str->Length, ArgumentOutOfRangeException,
+        "Count must be positive and count must refer to a location within the string.");
+
+    uintsize end = startIndex + count;
+
+    // Iterate through all of the string's specified characters.
+    for (uintsize i = startIndex; i < end; i++) {
+        if (CString_IndexOf(anyOf, str->Value[i]) != InvalidIndex) {
+            return i;
+        }
+    }
+
+    return InvalidIndex;
+}
+
+uintsize String_IndexOfCString(const String *str, const char *value)
+{
+    String valueBuffer;
+    String *valueWrapper = String_WrapCString(value, &valueBuffer);
+
+    return String_IndexOfString(str, valueWrapper);
+}
+
+uintsize String_IndexOfCString_Offset(const String *str, const char *value, uintsize startIndex)
+{
+    String valueBuffer;
+    String *valueWrapper = String_WrapCString(value, &valueBuffer);
+
+    return String_IndexOfString_Offset(str, valueWrapper, startIndex);
+}
+
+uintsize String_IndexOfCString_Substring(const String *str, const char *value, uintsize startIndex, uintsize count)
+{
+    String valueBuffer;
+    String *valueWrapper = String_WrapCString(value, &valueBuffer);
+
+    return String_IndexOfString_Substring(str, valueWrapper, startIndex, count);
+}
+
+uintsize String_IndexOfString(const String *str, const String *value)
+{
+    return String_IndexOfString_Substring(str, value, 0, String_GetLength(str));
+}
+
+uintsize String_IndexOfString_Offset(const String *str, const String *value, uintsize startIndex)
+{
+    return String_IndexOfString_Substring(str, value, startIndex, String_GetLength(str) - startIndex);
+}
+
+uintsize String_IndexOfString_Substring(const String *str, const String *value, uintsize startIndex, uintsize count)
+{
+    Validate_NotNull(str);
+    Validate_NotNull(value);
+    Validate_IsTrue(startIndex <= str->Length, ArgumentOutOfRangeException,
+        "Index was out of range. Must be less than the length of the string.");
+    Validate_IsTrue(startIndex + count <= str->Length, ArgumentOutOfRangeException,
+        "Count must be positive and count must refer to a location within the string.");
+
+    uintsize length = value->Length;
+    uintsize end = startIndex + count;
+
+    // If we are searching for an empty string, report it at the starting index.
+    if (length == 0) {
+        return startIndex;
+    }
+
+    // Iterate through all of the string's specified characters.
+    for (uintsize i = startIndex; i + length <= end; i++) {
+        const char *str1 = &str->Value[i];
+        const char *str2 = value->Value;
+
+        bool found = true;
+
+        // Iterate through all of the search string's characters.
+        for (uintsize j = 0; j < length; j++) {
+            if (str1[j] != str2[j]) {
+                found = false;
+
+                break;
+            }
+        }
+
+        if (found) {
+            return i;
+        }
+    }
+
+    return InvalidIndex;
+}
+
+uintsize String_LastIndexOf(const String *str, char value)
+{
+    return String_LastIndexOf_Substring(str, value, String_GetLength(str) - 1, String_GetLength(str));
+}
+
+uintsize String_LastIndexOf_Offset(const String *str, char value, uintsize startIndex)
+{
+    return String_LastIndexOf_Substring(str, value, startIndex, startIndex + 1);
+}
+
+uintsize String_LastIndexOf_Substring(const String *str, char value, uintsize startIndex, uintsize count)
+{
+    Validate_NotNull(str);
+    Validate_IsTrue(startIndex < str->Length || str->Length == 0, ArgumentOutOfRangeException,
+        "Index was out of range. Must be less than the length of the string.");
+    Validate_IsTrue(startIndex + 1 >= count || str->Length == 0, ArgumentOutOfRangeException,
+        "Count must be positive and count must refer to a location within the string.");
+
+    // If the string is empty, return InvalidIndex.
+    if (str->Length == 0) {
+        return InvalidIndex;
+    }
+
+    uintsize end = startIndex + 1 - count;
+
+    // Iterate through all of the string's specified characters.
+    for (uintsize i = startIndex + 2; i-- > end; ) {
+        if (str->Value[i] == value) {
+            return i;
+        }
+    }
+
+    return InvalidIndex;
+}
+
+uintsize String_LastIndexOfAny(const String *str, const char *anyOf)
+{
+    Validate_NotNull(str);
+
+    if (str->Length == 0) {
+        return InvalidIndex;
+    }
+    else {
+        return String_LastIndexOfAny_Substring(str, anyOf, str->Length - 1, str->Length);
+    }
+}
+
+uintsize String_LastIndexOfAny_Offset(const String *str, const char *anyOf, uintsize startIndex)
+{
+    return String_LastIndexOfAny_Substring(str, anyOf, startIndex, startIndex + 1);
+}
+
+uintsize String_LastIndexOfAny_Substring(const String *str, const char *anyOf, uintsize startIndex, uintsize count)
+{
+    Validate_NotNull(str);
+    Validate_IsTrue(startIndex < str->Length || str->Length == 0, ArgumentOutOfRangeException,
+        "Index was out of range. Must be less than the length of the string.");
+    Validate_IsTrue(startIndex + 1 >= count || str->Length == 0, ArgumentOutOfRangeException,
+        "Count must be positive and count must refer to a location within the string.");
+
+    // If the string is empty, return InvalidIndex.
+    if (str->Length == 0) {
+        return InvalidIndex;
+    }
+
+    uintsize end = startIndex + 1 - count;
+
+    // Iterate through all of the string's specified characters.
+    for (uintsize i = startIndex + 2; i-- > end; ) {
+        if (CString_IndexOf(anyOf, str->Value[i]) != InvalidIndex) {
+            return i;
+        }
+    }
+
+    return InvalidIndex;
+}
+
+uintsize String_LastIndexOfCString(const String *str, const char *value)
+{
+    String valueBuffer;
+    String *valueWrapper = String_WrapCString(value, &valueBuffer);
+
+    return String_LastIndexOfString(str, valueWrapper);
+}
+
+uintsize String_LastIndexOfCString_Offset(const String *str, const char *value, uintsize startIndex)
+{
+    String valueBuffer;
+    String *valueWrapper = String_WrapCString(value, &valueBuffer);
+
+    return String_LastIndexOfString_Offset(str, valueWrapper, startIndex);
+}
+
+uintsize String_LastIndexOfCString_Substring(const String *str, const char *value, uintsize startIndex, uintsize count)
+{
+    String valueBuffer;
+    String *valueWrapper = String_WrapCString(value, &valueBuffer);
+
+    return String_LastIndexOfString_Substring(str, valueWrapper, startIndex, count);
+}
+
+uintsize String_LastIndexOfString(const String *str, const String *value)
+{
+    Validate_NotNull(str);
+    Validate_NotNull(value);
+
+    if (str->Length == 0) {
+        if (value->Length == 0) {
+            return 0;
+        }
+        else {
+            return InvalidIndex;
+        }
+    }
+    else {
+        return String_LastIndexOfString_Substring(str, value, str->Length - 1, str->Length);
+    }
+}
+
+uintsize String_LastIndexOfString_Offset(const String *str, const String *value, uintsize startIndex)
+{
+    return String_LastIndexOfString_Substring(str, value, startIndex, startIndex + 1);
+}
+
+uintsize String_LastIndexOfString_Substring(
+    const String *str,
+    const String *value,
+    uintsize startIndex,
+    uintsize count)
+{
+    Validate_NotNull(str);
+    Validate_NotNull(value);
+    Validate_IsTrue(startIndex <= str->Length, ArgumentOutOfRangeException,
+        "Index was out of range. Must be less than the length of the string.");
+    Validate_IsTrue(startIndex + 1 >= count || str->Length == 0, ArgumentOutOfRangeException,
+        "Count must be positive and count must refer to a location within the string.");
+
+    uintsize length = value->Length;
+    uintsize end = startIndex + 1 - count;
+
+    // If we are searching for an empty string, report it at the starting index.
+    if (length == 0) {
+        return startIndex;
+    }
+
+    // If there aren't enough characters in front of start index, return InvalidIndex.
+    if (startIndex + 1 < length) {
+        return InvalidIndex;
+    }
+
+    // Iterate through all of the string's specified characters.
+    for (uintsize i = startIndex + 2 - length; i-- > end; ) {
+        const char *str1 = &str->Value[i];
+        const char *str2 = value->Value;
+
+        bool found = true;
+
+        // Iterate through all of the search string's characters.
+        for (uintsize j = 0; j < length; j++) {
+            if (str1[j] != str2[j]) {
+                found = false;
+
+                break;
+            }
+        }
+
+        if (found) {
+            return i;
+        }
+    }
+
+    return InvalidIndex;
+}
+
+char *String_ToCString(const String *str)
+{
+    Validate_NotNull(str);
+
+    return CString_Copy(str->Value);
 }
 
 /**************************************/

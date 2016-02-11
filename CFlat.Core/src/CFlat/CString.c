@@ -21,6 +21,8 @@
 
 #include "CFlat.h"
 #include "CFlat/Memory.h"
+#include "CFlat/String.h"
+#include "CFlat/String-private.h"
 #include "CFlat/Validate.h"
 
 uintsize CString_Length(const char *str)
@@ -64,8 +66,12 @@ char *CString_Copy(const char *str)
 
 bool CString_Equals(const char *str1, const char *str2)
 {
-    assert(str1 != null);
-    assert(str2 != null);
+    if (str1 == str2) {
+        return true;
+    }
+    else if (str1 == null || str2 == null) {
+        return false;
+    }
 
     // Walk to the end of the string, indicated by a terminating null character.
     while (*str1) {
@@ -82,4 +88,237 @@ bool CString_Equals(const char *str1, const char *str2)
 
     // We reached the end of the string. If we also reached the end of the second string, the strings compare equal.
     return *str1 == *str2;
+}
+
+uintsize CString_IndexOf(const char *str, char value)
+{
+    Validate_NotNull(str);
+
+    uintsize index = 0;
+
+    // Iterate through all characters.
+    while (*str) {
+        // If we find the search value, return the index.
+        if (*str == value) {
+            return index;
+        }
+
+        // Move to the next character.
+        str++;
+        index++;
+    }
+
+    return InvalidIndex;
+}
+
+uintsize CString_IndexOf_Offset(const char *str, char value, uintsize startIndex)
+{
+    String strBuffer;
+    String *strWrapper = String_WrapCString(str, &strBuffer);
+
+    return String_IndexOf_Offset(strWrapper, value, startIndex);
+}
+
+uintsize CString_IndexOf_Substring(const char *str, char value, uintsize startIndex, uintsize count)
+{
+    String strBuffer;
+    String *strWrapper = String_WrapCString(str, &strBuffer);
+
+    return String_IndexOf_Substring(strWrapper, value, startIndex, count);
+}
+
+uintsize CString_IndexOfAny(const char *str, const char *anyOf)
+{
+    Validate_NotNull(str);
+    Validate_NotNull(anyOf);
+
+    uintsize index = 0;
+
+    // Iterate through all characters.
+    while (*str) {
+        // If we find the search value, return the index.
+        if (CString_IndexOf(anyOf, *str) != InvalidIndex) {
+            return index;
+        }
+
+        // Move to the next character.
+        str++;
+        index++;
+    }
+
+    return InvalidIndex;
+}
+
+uintsize CString_IndexOfAny_Offset(const char *str, const char *anyOf, uintsize startIndex)
+{
+    String strBuffer;
+    String *strWrapper = String_WrapCString(str, &strBuffer);
+
+    return String_IndexOfAny_Offset(strWrapper, anyOf, startIndex);
+}
+
+uintsize CString_IndexOfAny_Substring(const char *str, const char *anyOf, uintsize startIndex, uintsize count)
+{
+    String strBuffer;
+    String *strWrapper = String_WrapCString(str, &strBuffer);
+
+    return String_IndexOfAny_Substring(strWrapper, anyOf, startIndex, count);
+}
+
+uintsize CString_IndexOfCString(const char *str, const char *value)
+{
+    String strBuffer;
+    String *strWrapper = String_WrapCString(str, &strBuffer);
+
+    return String_IndexOfCString(strWrapper, value);
+}
+
+uintsize CString_IndexOfCString_Offset(const char *str, const char *value, uintsize startIndex)
+{
+    String strBuffer;
+    String *strWrapper = String_WrapCString(str, &strBuffer);
+
+    return String_IndexOfCString_Offset(strWrapper, value, startIndex);
+}
+
+uintsize CString_IndexOfCString_Substring(const char *str, const char *value, uintsize startIndex, uintsize count)
+{
+    String strBuffer;
+    String *strWrapper = String_WrapCString(str, &strBuffer);
+
+    return String_IndexOfCString_Substring(strWrapper, value, startIndex, count);
+}
+
+uintsize CString_IndexOfString(const char *str, const String *value)
+{
+    String strBuffer;
+    String *strWrapper = String_WrapCString(str, &strBuffer);
+
+    return String_IndexOfString(strWrapper, value);
+}
+
+uintsize CString_IndexOfString_Offset(const char *str, const String *value, uintsize startIndex)
+{
+    String strBuffer;
+    String *strWrapper = String_WrapCString(str, &strBuffer);
+
+    return String_IndexOfString_Offset(strWrapper, value, startIndex);
+}
+
+uintsize CString_IndexOfString_Substring(const char *str, const String *value, uintsize startIndex, uintsize count)
+{
+    String strBuffer;
+    String *strWrapper = String_WrapCString(str, &strBuffer);
+
+    return String_IndexOfString_Substring(strWrapper, value, startIndex, count);
+}
+
+uintsize CString_LastIndexOf(const char *str, char value)
+{
+    Validate_NotNull(str);
+
+    uintsize index = 0;
+    uintsize lastIndex = InvalidIndex;
+
+    // Iterate through all characters.
+    while (*str) {
+        // If we find the search value, remember the index.
+        if (*str == value) {
+            lastIndex = index;
+        }
+
+        // Move to the next character.
+        str++;
+        index++;
+    }
+
+    return lastIndex;
+}
+
+uintsize CString_LastIndexOf_Offset(const char *str, char value, uintsize startIndex)
+{
+    String strBuffer;
+    String *strWrapper = String_WrapCString(str, &strBuffer);
+
+    return String_LastIndexOf_Offset(strWrapper, value, startIndex);
+}
+
+uintsize CString_LastIndexOf_Substring(const char *str, char value, uintsize startIndex, uintsize count)
+{
+    String strBuffer;
+    String *strWrapper = String_WrapCString(str, &strBuffer);
+
+    return String_LastIndexOf_Substring(strWrapper, value, startIndex, count);
+}
+
+uintsize CString_LastIndexOfAny(const char *str, const char *anyOf)
+{
+    String strBuffer;
+    String *strWrapper = String_WrapCString(str, &strBuffer);
+
+    return String_LastIndexOfAny(strWrapper, anyOf);
+}
+
+uintsize CString_LastIndexOfAny_Offset(const char *str, const char *anyOf, uintsize startIndex)
+{
+    String strBuffer;
+    String *strWrapper = String_WrapCString(str, &strBuffer);
+
+    return String_LastIndexOfAny_Offset(strWrapper, anyOf, startIndex);
+}
+
+uintsize CString_LastIndexOfAny_Substring(const char *str, const char *anyOf, uintsize startIndex, uintsize count)
+{
+    String strBuffer;
+    String *strWrapper = String_WrapCString(str, &strBuffer);
+
+    return String_LastIndexOfAny_Substring(strWrapper, anyOf, startIndex, count);
+}
+
+uintsize CString_LastIndexOfCString(const char *str, const char *value)
+{
+    String strBuffer;
+    String *strWrapper = String_WrapCString(str, &strBuffer);
+
+    return String_LastIndexOfCString(strWrapper, value);
+}
+
+uintsize CString_LastIndexOfCString_Offset(const char *str, const char *value, uintsize startIndex)
+{
+    String strBuffer;
+    String *strWrapper = String_WrapCString(str, &strBuffer);
+
+    return String_LastIndexOfCString_Offset(strWrapper, value, startIndex);
+}
+
+uintsize CString_LastIndexOfCString_Substring(const char *str, const char *value, uintsize startIndex, uintsize count)
+{
+    String strBuffer;
+    String *strWrapper = String_WrapCString(str, &strBuffer);
+
+    return String_LastIndexOfCString_Substring(strWrapper, value, startIndex, count);
+}
+
+uintsize CString_LastIndexOfString(const char *str, const String *value)
+{
+    String strBuffer;
+    String *strWrapper = String_WrapCString(str, &strBuffer);
+
+    return String_LastIndexOfString(strWrapper, value);
+}
+
+uintsize CString_LastIndexOfString_Offset(const char *str, const String *value, uintsize startIndex)
+{
+    String strBuffer;
+    String *strWrapper = String_WrapCString(str, &strBuffer);
+
+    return String_LastIndexOfString_Offset(strWrapper, value, startIndex);
+}
+
+uintsize CString_LastIndexOfString_Substring(const char *str, const String *value, uintsize startIndex, uintsize count)
+{
+    String strBuffer;
+    String *strWrapper = String_WrapCString(str, &strBuffer);
+
+    return String_LastIndexOfString_Substring(strWrapper, value, startIndex, count);
 }

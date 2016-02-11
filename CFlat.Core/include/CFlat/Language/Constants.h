@@ -18,21 +18,17 @@
  */
 
 /**
- * @file CFlat.h
+ * @file Constants.h
  */
 
-#ifndef CFLAT_CORE_CFLAT_H
-#define CFLAT_CORE_CFLAT_H
+#ifndef CFLAT_CORE_LANGUAGE_CONSTANTS_H
+#define CFLAT_CORE_LANGUAGE_CONSTANTS_H
 
-#include <assert.h>
-
-#include "CFlat/Language/Bool.h"
-#include "CFlat/Language/Char.h"
-#include "CFlat/Language/Constants.h"
-#include "CFlat/Language/Double.h"
-#include "CFlat/Language/Exceptions.h"
-#include "CFlat/Language/Float.h"
 #include "CFlat/Language/Integer.h"
-#include "CFlat/Language/Null.h"
+
+/// <summary>
+/// An <see cref="uintsize"/> value that represents an invalid index.
+/// </summary>
+#define InvalidIndex uintsize_MaxValue
 
 #endif
