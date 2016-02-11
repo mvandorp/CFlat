@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\CFlat\Language\Boolean.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\CFlat\Language\Integer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -70,6 +67,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\CFlat\Language\Float.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CFlat\Language\Bool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

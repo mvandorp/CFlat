@@ -24,7 +24,7 @@
 #ifndef CFLAT_CORE_LANGUAGE_CHAR_H
 #define CFLAT_CORE_LANGUAGE_CHAR_H
 
-#include "CFlat/Language/Boolean.h"
+#include "CFlat/Language/Bool.h"
 
 /// <summary>
 /// Returns whether the given character is catagorized as a binary digit.

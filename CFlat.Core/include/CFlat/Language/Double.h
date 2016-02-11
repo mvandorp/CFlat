@@ -24,7 +24,7 @@
 #ifndef CFLAT_CORE_LANGUAGE_DOUBLE_H
 #define CFLAT_CORE_LANGUAGE_DOUBLE_H
 
-#include "CFlat/Language/Boolean.h"
+#include "CFlat/Language/Bool.h"
 
 #include <float.h>
 

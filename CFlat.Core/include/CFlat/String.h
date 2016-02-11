@@ -24,7 +24,7 @@
 #ifndef CFLAT_CORE_STRING_H
 #define CFLAT_CORE_STRING_H
 
-#include "CFlat/Language/Boolean.h"
+#include "CFlat/Language/Bool.h"
 #include "CFlat/Language/Integer.h"
 
 /// <summary>

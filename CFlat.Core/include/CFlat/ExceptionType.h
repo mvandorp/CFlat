@@ -24,7 +24,7 @@
 #ifndef CFLAT_CORE_EXCEPTIONTYPE_H
 #define CFLAT_CORE_EXCEPTIONTYPE_H
 
-#include "CFlat/Language/Boolean.h"
+#include "CFlat/Language/Bool.h"
 
 typedef struct String String;
 

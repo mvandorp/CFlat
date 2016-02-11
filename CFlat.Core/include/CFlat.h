@@ -26,7 +26,7 @@
 
 #include <assert.h>
 
-#include "CFlat/Language/Boolean.h"
+#include "CFlat/Language/Bool.h"
 #include "CFlat/Language/Char.h"
 #include "CFlat/Language/Double.h"
 #include "CFlat/Language/Exceptions.h"

@@ -25,7 +25,7 @@
 #define CFLAT_CORE_LANGUAGE_EXCEPTIONS_H
 
 #include "CFlat/ExceptionType.h"
-#include "CFlat/Language/Boolean.h"
+#include "CFlat/Language/Bool.h"
 
 #include <setjmp.h>
 
