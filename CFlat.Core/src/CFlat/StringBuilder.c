@@ -220,15 +220,7 @@ void StringBuilder_AppendString(StringBuilder *sb, const String *value)
 
     // Increase the capacity if needed.
     if (sb->Length + length > sb->Capacity) {
-        // TODO: Use Math_Max when Math.h is implemented.
-        // StringBuilder_SetCapacity(sb, Math_Max(sb->Capacity * 2, sb->Capacity + length));
-
-        if (sb->Capacity * 2 > sb->Capacity + length) {
-            StringBuilder_SetCapacity(sb, sb->Capacity * 2);
-        }
-        else {
-            StringBuilder_SetCapacity(sb, sb->Capacity + length);
-        }
+        StringBuilder_SetCapacity(sb, int_Max(sb->Capacity * 2, sb->Capacity + length));
     }
 
     // Copy the string to the end of the buffer.
@@ -359,15 +351,7 @@ void StringBuilder_InsertString(StringBuilder *sb, uintsize index, const String 
 
     // Increase the capacity if needed.
     if (sb->Length + length > sb->Capacity) {
-        // TODO: Use Math_Max when Math.h is implemented.
-        // StringBuilder_SetCapacity(sb, Math_Max(sb->Capacity * 2, sb->Capacity + length));
-
-        if (sb->Capacity * 2 > sb->Capacity + length) {
-            StringBuilder_SetCapacity(sb, sb->Capacity * 2);
-        }
-        else {
-            StringBuilder_SetCapacity(sb, sb->Capacity + length);
-        }
+        StringBuilder_SetCapacity(sb, int_Max(sb->Capacity * 2, sb->Capacity + length));
     }
 
     // Copy the contents of the buffer after index forward by length bytes.

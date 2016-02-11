@@ -78,6 +78,9 @@
     <ClInclude Include="src\CFlat\StringReader.internal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\CFlat\Macros.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CFlat\CString.c">
@@ -114,6 +117,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CFlat\Language\Double.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\Language\Integer.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

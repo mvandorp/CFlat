@@ -1,5 +1,7 @@
 #include "CFlat/Language/Double.h"
 
+#include "CFlat/Macros.h"
+
 /**************************************/
 /* Extern function definitions        */
 /**************************************/
@@ -23,4 +25,12 @@ bool double_IsNegativeInfinity(double value)
 bool double_IsPositiveInfinity(double value)
 {
     return value > 0.0 && double_IsInfinity(value);
+}
+
+double double_Max(double x, double y) {
+    return MAX(x, y);
+}
+
+double double_Min(double x, double y) {
+    return MIN(x, y);
 }

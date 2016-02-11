@@ -1,5 +1,7 @@
 #include "CFlat/Language/Float.h"
 
+#include "CFlat/Macros.h"
+
 /**************************************/
 /* Extern function definitions        */
 /**************************************/
@@ -23,4 +25,12 @@ bool float_IsNegativeInfinity(float value)
 bool float_IsPositiveInfinity(float value)
 {
     return value > 0.0f && float_IsInfinity(value);
+}
+
+float float_Max(float x, float y) {
+    return MAX(x, y);
+}
+
+float float_Min(float x, float y) {
+    return MIN(x, y);
 }

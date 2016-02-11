@@ -109,4 +109,20 @@ bool double_IsNegativeInfinity(double value);
 /// </returns>
 bool double_IsPositiveInfinity(double value);
 
+/// <summary>
+/// Returns the larger of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="x">The second number.</param>
+/// <returns>The larger of two numbers.</returns>
+double double_Max(double x, double y);
+
+/// <summary>
+/// Returns the smaller of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="x">The second number.</param>
+/// <returns>The smaller of two numbers.</returns>
+double double_Min(double x, double y);
+
 #endif

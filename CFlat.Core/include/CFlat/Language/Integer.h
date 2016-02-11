@@ -953,6 +953,173 @@ typedef CFLAT_UINT32_FAST uint32_fast;
     #define uint64_fast_MaxValue ((uint64_fast)CFLAT_UINT64_FAST_MAX)
 #endif
 
+/* Functions */
+/**
+ * @}
+ * @{
+ * @name Functions
+ */
+
+/// <summary>
+/// Returns the larger of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="x">The second number.</param>
+/// <returns>The larger of two numbers.</returns>
+sbyte sbyte_Max(sbyte x, sbyte y);
+
+/// <summary>
+/// Returns the smaller of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="x">The second number.</param>
+/// <returns>The smaller of two numbers.</returns>
+sbyte sbyte_Min(sbyte x, sbyte y);
+
+/// <summary>
+/// Returns the larger of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="x">The second number.</param>
+/// <returns>The larger of two numbers.</returns>
+byte byte_Max(byte x, byte y);
+
+/// <summary>
+/// Returns the smaller of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="x">The second number.</param>
+/// <returns>The smaller of two numbers.</returns>
+byte byte_Min(byte x, byte y);
+
+/// <summary>
+/// Returns the larger of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="x">The second number.</param>
+/// <returns>The larger of two numbers.</returns>
+short short_Max(short x, short y);
+
+/// <summary>
+/// Returns the smaller of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="x">The second number.</param>
+/// <returns>The smaller of two numbers.</returns>
+short short_Min(short x, short y);
+
+/// <summary>
+/// Returns the larger of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="x">The second number.</param>
+/// <returns>The larger of two numbers.</returns>
+ushort ushort_Max(ushort x, ushort y);
+
+/// <summary>
+/// Returns the smaller of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="x">The second number.</param>
+/// <returns>The smaller of two numbers.</returns>
+ushort ushort_Min(ushort x, ushort y);
+
+/// <summary>
+/// Returns the larger of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="x">The second number.</param>
+/// <returns>The larger of two numbers.</returns>
+int int_Max(int x, int y);
+
+/// <summary>
+/// Returns the smaller of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="x">The second number.</param>
+/// <returns>The smaller of two numbers.</returns>
+int int_Min(int x, int y);
+
+/// <summary>
+/// Returns the larger of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="x">The second number.</param>
+/// <returns>The larger of two numbers.</returns>
+uint uint_Max(uint x, uint y);
+
+/// <summary>
+/// Returns the smaller of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="x">The second number.</param>
+/// <returns>The smaller of two numbers.</returns>
+uint uint_Min(uint x, uint y);
+
+/// <summary>
+/// Returns the larger of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="x">The second number.</param>
+/// <returns>The larger of two numbers.</returns>
+long long_Max(long x, long y);
+
+/// <summary>
+/// Returns the smaller of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="x">The second number.</param>
+/// <returns>The smaller of two numbers.</returns>
+long long_Min(long x, long y);
+
+/// <summary>
+/// Returns the larger of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="x">The second number.</param>
+/// <returns>The larger of two numbers.</returns>
+ulong ulong_Max(ulong x, ulong y);
+
+/// <summary>
+/// Returns the smaller of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="x">The second number.</param>
+/// <returns>The smaller of two numbers.</returns>
+ulong ulong_Min(ulong x, ulong y);
+
+/// <summary>
+/// Returns the larger of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="x">The second number.</param>
+/// <returns>The larger of two numbers.</returns>
+intmax intmax_Max(intmax x, intmax y);
+
+/// <summary>
+/// Returns the smaller of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="x">The second number.</param>
+/// <returns>The smaller of two numbers.</returns>
+intmax intmax_Min(intmax x, intmax y);
+
+/// <summary>
+/// Returns the larger of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="x">The second number.</param>
+/// <returns>The larger of two numbers.</returns>
+uintmax uintmax_Max(uintmax x, uintmax y);
+
+/// <summary>
+/// Returns the smaller of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="x">The second number.</param>
+/// <returns>The smaller of two numbers.</returns>
+uintmax uintmax_Min(uintmax x, uintmax y);
+
 /**
  * @}
  */

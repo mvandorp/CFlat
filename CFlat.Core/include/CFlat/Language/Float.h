@@ -109,4 +109,20 @@ bool float_IsNegativeInfinity(float value);
 /// </returns>
 bool float_IsPositiveInfinity(float value);
 
+/// <summary>
+/// Returns the larger of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="x">The second number.</param>
+/// <returns>The larger of two numbers.</returns>
+float float_Max(float x, float y);
+
+/// <summary>
+/// Returns the smaller of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="x">The second number.</param>
+/// <returns>The smaller of two numbers.</returns>
+float float_Min(float x, float y);
+
 #endif

@@ -29,6 +29,7 @@
     <ClInclude Include="include\CFlat\StringBuilder.h" />
     <ClInclude Include="include\CFlat\StringReader.h" />
     <ClInclude Include="include\CFlat\Validate.h" />
+    <ClInclude Include="src\CFlat\Macros.h" />
     <ClInclude Include="src\CFlat\String.internal.h" />
     <ClInclude Include="src\CFlat\StringBuilder.internal.h" />
     <ClInclude Include="src\CFlat\StringReader.internal.h" />
@@ -39,6 +40,7 @@
     <ClCompile Include="src\CFlat\Language\Double.c" />
     <ClCompile Include="src\CFlat\Language\Exceptions.c" />
     <ClCompile Include="src\CFlat\Language\Float.c" />
+    <ClCompile Include="src\CFlat\Language\Integer.c" />
     <ClCompile Include="src\CFlat\Math.c" />
     <ClCompile Include="src\CFlat\StringBuilder.c" />
     <ClCompile Include="src\CFlat\CString.c" />
