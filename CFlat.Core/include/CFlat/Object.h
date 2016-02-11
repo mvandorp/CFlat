@@ -100,7 +100,7 @@ void Object_SetDeallocator(void *obj, Deallocator deallocator);
 /// <param name="obj">Pointer to an <see cref="Object"/>.</param>
 /// <seealso cref="Object_Aquire()"/>
 /// <seealso cref="Object_Release()"/>
-void Object_Delete(void *obj);
+void Object_Delete(const void *obj);
 
 /// <summary>
 /// Increments the reference count of an <see cref="Object"/>.
@@ -114,7 +114,7 @@ void Object_Delete(void *obj);
 /// <returns><paramref name="obj"/>.</returns>
 /// <seealso cref="Object_Delete()"/>
 /// <seealso cref="Object_Release()"/>
-void *Object_Aquire(void *obj);
+const void *Object_Aquire(const void *obj);
 
 /// <summary>
 /// Decrements the reference count of an <see cref="Object"/>.
@@ -134,6 +134,6 @@ void *Object_Aquire(void *obj);
 /// </returns>
 /// <seealso cref="Object_Delete()"/>
 /// <seealso cref="Object_Aquire()"/>
-bool Object_Release(void *obj);
+bool Object_Release(const void *obj);
 
 #endif

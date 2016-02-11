@@ -43,7 +43,7 @@ void Object_SetDeallocator(void *obj, Deallocator dealloc)
     object->Deallocator = dealloc;
 }
 
-void Object_Delete(void *obj)
+void Object_Delete(const void *obj)
 {
     if (obj == null) {
         return;
@@ -60,7 +60,7 @@ void Object_Delete(void *obj)
     }
 }
 
-void *Object_Aquire(void *obj)
+const void *Object_Aquire(const void *obj)
 {
     if (obj == null) {
         return null;
@@ -73,7 +73,7 @@ void *Object_Aquire(void *obj)
     return obj;
 }
 
-bool Object_Release(void *obj)
+bool Object_Release(const void *obj)
 {
     if (obj == null) {
         return false;
