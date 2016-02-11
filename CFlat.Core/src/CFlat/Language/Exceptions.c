@@ -6,6 +6,7 @@
 #include "CFlat/String.h"
 #include "CFlat/String-private.h"
 #include "CFlat/StringHelper.h"
+#include "CFlat/Validate.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -93,14 +94,16 @@ void EndTry(ExceptionState *state)
 
 void ThrowAgain(const ExceptionHandle ex)
 {
-    // TODO: If ex is null, throw an ArgumentNullException.
-    assert(ex != null);
+    Validate_NotNull(ex);
 
     ThrowNew(ex->Type, ex->UserMessage, ex->File, ex->Line);
 }
 
 void ThrowNew(ExceptionType type, const char *message, const char *file, int line)
 {
+    assert(file != null);
+    assert(line > 0);
+
     // Set exception information.
     exception.Type = type;
     exception.UserMessage = message;
@@ -129,14 +132,14 @@ void Throw(void)
 
 bool Exception_IsInstanceOf(const ExceptionHandle ex, ExceptionType type)
 {
-    assert(ex != null);
+    Validate_NotNull(ex);
 
     return ExceptionType_IsAssignableFrom(type, ex->Type);
 }
 
 String *Exception_GetMessage(const ExceptionHandle ex)
 {
-    assert(ex != null);
+    Validate_NotNull(ex);
 
     String *name = ExceptionType_GetName(ex->Type);
     String *message = ExceptionType_GetExceptionMessage(ex->Type, ex->UserMessage);
@@ -168,14 +171,14 @@ String *Exception_GetMessage(const ExceptionHandle ex)
 
 ExceptionType Exception_GetType(const ExceptionHandle ex)
 {
-    assert(ex != null);
+    Validate_NotNull(ex);
 
     return ex->Type;
 }
 
 const char *Exception_GetUserMessage(const ExceptionHandle ex)
 {
-    assert(ex != null);
+    Validate_NotNull(ex);
 
     return ex->UserMessage;
 }

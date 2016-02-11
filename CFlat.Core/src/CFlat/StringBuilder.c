@@ -26,6 +26,7 @@
 #include "CFlat/Object.h"
 #include "CFlat/String.h"
 #include "CFlat/StringHelper.h"
+#include "CFlat/Validate.h"
 
 #include <stdarg.h>
 #include <string.h>
@@ -151,8 +152,7 @@ void StringBuilder_Constructor_WithInitialStringValueAndCapacity(
 /* Destructor */
 void StringBuilder_Destructor(void *sb)
 {
-    // TODO: If sb is null, throw an ArgumentNullException.
-    assert(sb != null);
+    Validate_NotNull(sb);
 
     StringBuilder *stringBuilder = (StringBuilder*)sb;
 
@@ -162,27 +162,23 @@ void StringBuilder_Destructor(void *sb)
 /* Methods */
 uintsize StringBuilder_GetLength(const StringBuilder *sb)
 {
-    // TODO: If sb is null, throw an ArgumentNullException.
-    assert(sb != null);
+    Validate_NotNull(sb);
 
     return sb->length;
 }
 
 uintsize StringBuilder_GetCapacity(const StringBuilder *sb)
 {
-    // TODO: If sb is null, throw an ArgumentNullException.
-    assert(sb != null);
+    Validate_NotNull(sb);
 
     return sb->capacity;
 }
 
 void StringBuilder_SetCapacity(StringBuilder *sb, uintsize capacity)
 {
-    // TODO: If sb is null, throw an ArgumentNullException.
-    assert(sb != null);
-
-    // TODO: If capacity is less than length, throw an ArgumentOutOfRangeException.
-    assert(capacity >= sb->length);
+    Validate_NotNull(sb);
+    Validate_IsTrue(capacity >= sb->length, ArgumentOutOfRangeException,
+        "Capacity cannot be smaller than the current length");
 
     sb->capacity = capacity;
     sb->value = Memory_Reallocate(sb->value, capacity + 1);
@@ -190,8 +186,7 @@ void StringBuilder_SetCapacity(StringBuilder *sb, uintsize capacity)
 
 String *StringBuilder_ToString(const StringBuilder *sb)
 {
-    // TODO: If sb is null, throw an ArgumentNullException.
-    assert(sb != null);
+    Validate_NotNull(sb);
 
     // Ensure that the buffer has a terminating null character.
     sb->value[sb->length] = '\0';
@@ -201,8 +196,7 @@ String *StringBuilder_ToString(const StringBuilder *sb)
 
 char *StringBuilder_ToCString(const StringBuilder *sb)
 {
-    // TODO: If sb is null, throw an ArgumentNullException.
-    assert(sb != null);
+    Validate_NotNull(sb);
 
     // Ensure that the buffer has a terminating null character.
     sb->value[sb->length] = '\0';
@@ -212,8 +206,7 @@ char *StringBuilder_ToCString(const StringBuilder *sb)
 
 void StringBuilder_Append(StringBuilder *sb, char value)
 {
-    // TODO: If sb is null, throw an ArgumentNullException.
-    assert(sb != null);
+    Validate_NotNull(sb);
 
     if (sb->length == sb->capacity) {
         StringBuilder_SetCapacity(sb, sb->capacity * 2);
@@ -231,8 +224,7 @@ void StringBuilder_AppendCString(StringBuilder *sb, const char *value)
 
 void StringBuilder_AppendString(StringBuilder *sb, const String *value)
 {
-    // TODO: If sb is null, throw an ArgumentNullException.
-    assert(sb != null);
+    Validate_NotNull(sb);
 
     if (value == null) {
         return;
@@ -258,11 +250,8 @@ void StringBuilder_AppendString(StringBuilder *sb, const String *value)
 
 void StringBuilder_AppendFormatCString(StringBuilder *sb, const char *format, ...)
 {
-    // TODO: If sb is null, throw an ArgumentNullException.
-    assert(sb != null);
-
-    // TODO: If format is null, throw an ArgumentNullException.
-    assert(format != null);
+    Validate_NotNull(sb);
+    Validate_NotNull(format);
 
     const String str = String_WrapCString(format);
 
@@ -274,11 +263,8 @@ void StringBuilder_AppendFormatCString(StringBuilder *sb, const char *format, ..
 
 void StringBuilder_AppendFormatString(StringBuilder *sb, const String *format, ...)
 {
-    // TODO: If sb is null, throw an ArgumentNullException.
-    assert(sb != null);
-
-    // TODO: If format is null, throw an ArgumentNullException.
-    assert(format != null);
+    Validate_NotNull(sb);
+    Validate_NotNull(format);
 
     va_list args;
     va_start(args, format);
@@ -300,8 +286,7 @@ void StringBuilder_AppendLineCString(StringBuilder *sb, const char *value)
 
 void StringBuilder_AppendLineString(StringBuilder *sb, const String *value)
 {
-    // TODO: If sb is null, throw an ArgumentNullException.
-    assert(sb != null);
+    Validate_NotNull(sb);
 
     StringBuilder_AppendString(sb, value);
     StringBuilder_Append(sb, '\n');
@@ -314,11 +299,8 @@ void StringBuilder_AppendLineString(StringBuilder *sb, const String *value)
 // TODO: Refactor this method!!
 void StringBuilder_AppendFormat(StringBuilder *sb, const String *format, va_list args)
 {
-    // TODO: If sb is null, throw an ArgumentNullException.
-    assert(sb != null);
-
-    // TODO: If format is null, throw an ArgumentNullException.
-    assert(format != null);
+    Validate_NotNull(sb);
+    Validate_NotNull(format);
 
     const char *value = String_GetCString(format);
     uintsize length = String_GetLength(format);
@@ -329,9 +311,7 @@ void StringBuilder_AppendFormat(StringBuilder *sb, const String *format, va_list
         }
         else {
             if (i + 1 == length) {
-                // Incomplete format specifier, the format string is invalid
-                // TODO: throw an ArgumentException.
-                assert(false);
+                throw_new(FormatException, "Invalid format string.");
             }
 
             switch (value[i + 1]) {
@@ -343,9 +323,7 @@ void StringBuilder_AppendFormat(StringBuilder *sb, const String *format, va_list
                     break;
                 case '#':
                     if (i + 2 == length) {
-                        // Incomplete format specifier, the format string is invalid
-                        // TODO: throw an ArgumentException.
-                        assert(false);
+                        throw_new(FormatException, "Invalid format string.");
                     }
 
                     switch (value[i + 2]) {
@@ -353,9 +331,7 @@ void StringBuilder_AppendFormat(StringBuilder *sb, const String *format, va_list
                             StringBuilder_AppendString(sb, va_arg(args, String*));
                             break;
                         default:
-                            // Unknown format specifier, the format string is invalid
-                            // TODO: throw an ArgumentException.
-                            assert(false);
+                            throw_new(FormatException, "Invalid format string.");
                             break;
                     }
 
@@ -365,9 +341,7 @@ void StringBuilder_AppendFormat(StringBuilder *sb, const String *format, va_list
                     StringBuilder_Append(sb, va_arg(args, char));
                     break;
                 default:
-                    // Unknown format specifier, the format string is invalid
-                    // TODO: throw an ArgumentException.
-                    assert(false);
+                    throw_new(FormatException, "Invalid format string.");
                     break;
             }
 

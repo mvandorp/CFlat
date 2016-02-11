@@ -27,6 +27,7 @@
 #include "CFlat/StringBuilder.h"
 #include "CFlat/StringBuilder-private.h"
 #include "CFlat/StringHelper.h"
+#include "CFlat/Validate.h"
 
 #include <stdarg.h>
 
@@ -71,40 +72,35 @@ void String_Constructor(String *str, const char *value)
 
 void String_Destructor(void *str)
 {
-    // TODO: If str is null, throw an ArgumentNullException.
-    assert(str != null);
+    Validate_NotNull(str);
 
     Memory_Deallocate((char*)((String*)str)->value);
 }
 
 uintsize String_GetLength(const String *str)
 {
-    // TODO: If str is null, throw an ArgumentNullException.
-    assert(str != null);
+    Validate_NotNull(str);
 
     return str->length;
 }
 
 const char *String_GetCString(const String *str)
 {
-    // TODO: If str is null, throw an ArgumentNullException.
-    assert(str != null);
+    Validate_NotNull(str);
 
     return str->value;
 }
 
 char *String_ToCString(const String *str)
 {
-    // TODO: If str is null, throw an ArgumentNullException.
-    assert(str != null);
+    Validate_NotNull(str);
 
     return CString_Copy(str->value);
 }
 
 String *String_FormatCString(const char *format, ...)
 {
-    // TODO: If format is null, throw an ArgumentNullException.
-    assert(format != null);
+    Validate_NotNull(format);
 
     const String str = String_WrapCString(format);
 
@@ -118,8 +114,7 @@ String *String_FormatCString(const char *format, ...)
 
 String *String_FormatString(const String *format, ...)
 {
-    // TODO: If format is null, throw an ArgumentNullException.
-    assert(format != null);
+    Validate_NotNull(format);
 
     va_list args;
     va_start(args, format);

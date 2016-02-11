@@ -20,6 +20,7 @@
 #include "CFlat/Memory.h"
 
 #include "CFlat.h"
+#include "CFlat/Validate.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -32,8 +33,8 @@ void *Memory_Allocate(uintsize size)
 
     void *memory = malloc(size);
 
-    // TODO: If the allocation failed, throw an OutOfMemoryException.
-    assert(memory != null);
+    // If the allocation failed, throw an OutOfMemoryException.
+    Validate_IsTrue(memory != null, OutOfMemoryException, null);
 
     return memory;
 }
@@ -46,8 +47,8 @@ void *Memory_AllocateZeroed(uintsize size)
 
     void *memory = calloc(1, size);
 
-    // TODO: If the allocation failed, throw an OutOfMemoryException.
-    assert(memory != null);
+    // If the allocation failed, throw an OutOfMemoryException.
+    Validate_IsTrue(memory != null, OutOfMemoryException, null);
 
     return memory;
 }
@@ -67,17 +68,16 @@ void *Memory_Reallocate(void *memory, uintsize newSize)
 
     memory = realloc(memory, newSize);
 
-    // TODO: If the allocation failed, throw an OutOfMemoryException.
-    assert(memory != null);
+    // If the allocation failed, throw an OutOfMemoryException.
+    Validate_IsTrue(memory != null, OutOfMemoryException, null);
 
     return memory;
 }
 
 void Memory_Copy(const void *source, void *destination, uintsize length)
 {
-    // TODO: If source or destination is null, throw an ArgumentNullException.
-    assert(source != null);
-    assert(destination != null);
+    Validate_NotNull(source);
+    Validate_NotNull(destination);
 
     memmove(destination, source, length);
 }
@@ -89,9 +89,8 @@ void Memory_CopyOffset(
     uintsize destinationOffset,
     uintsize length)
 {
-    // TODO: If source or destination is null, throw an ArgumentNullException.
-    assert(source != null);
-    assert(destination != null);
+    Validate_NotNull(source);
+    Validate_NotNull(destination);
 
     const byte *src = (const byte*)source + sourceOffset;
     byte *dest = (byte*)destination + destinationOffset;

@@ -21,11 +21,11 @@
 
 #include "CFlat.h"
 #include "CFlat/Memory.h"
+#include "CFlat/Validate.h"
 
 void Object_Constructor(void *obj, Destructor dtor)
 {
-    // TODO: If obj is null, throw an ArgumentNullException.
-    assert(obj != null);
+    Validate_NotNull(obj);
 
     Object *object = (Object*)obj;
 
@@ -36,8 +36,7 @@ void Object_Constructor(void *obj, Destructor dtor)
 
 void Object_SetDeallocator(void *obj, Deallocator dealloc)
 {
-    // TODO: If obj is null, throw an ArgumentNullException.
-    assert(obj != null);
+    Validate_NotNull(obj);
 
     Object *object = (Object*)obj;
 
