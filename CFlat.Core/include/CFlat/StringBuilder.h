@@ -98,7 +98,6 @@ StringBuilder *StringBuilder_New_WithInitialStringValueAndCapacity(const String 
 /// Initializes the given <see cref="StringBuilder"/>.
 /// </summary>
 /// <param name="sb">Pointer to an uninitialized <see cref="StringBuilder"/>.</param>
-/// <returns>Pointer to the newly allocated <see cref="StringBuilder"/>.</returns>
 void StringBuilder_Constructor(StringBuilder *sb);
 
 /// <summary>
@@ -106,7 +105,6 @@ void StringBuilder_Constructor(StringBuilder *sb);
 /// </summary>
 /// <param name="sb">Pointer to an uninitialized <see cref="StringBuilder"/>.</param>
 /// <param name="capacity">The initial capacity of the <see cref="StringBuilder"/>.</param>
-/// <returns>Pointer to the newly allocated <see cref="StringBuilder"/>.</returns>
 void StringBuilder_Constructor_WithCapacity(StringBuilder *sb, uintsize capacity);
 
 /// <summary>
@@ -114,7 +112,6 @@ void StringBuilder_Constructor_WithCapacity(StringBuilder *sb, uintsize capacity
 /// </summary>
 /// <param name="sb">Pointer to an uninitialized <see cref="StringBuilder"/>.</param>
 /// <param name="value">Pointer to a null-terminated string used as the initial value.</param>
-/// <returns>Pointer to the newly allocated <see cref="StringBuilder"/>.</returns>
 void StringBuilder_Constructor_WithInitialCStringValue(StringBuilder *sb, const char *value);
 
 /// <summary>
@@ -123,7 +120,6 @@ void StringBuilder_Constructor_WithInitialCStringValue(StringBuilder *sb, const 
 /// <param name="sb">Pointer to an uninitialized <see cref="StringBuilder"/>.</param>
 /// <param name="value">Pointer to a null-terminated string used as the initial value.</param>
 /// <param name="capacity">The initial capacity of the <see cref="StringBuilder"/>.</param>
-/// <returns>Pointer to the newly allocated <see cref="StringBuilder"/>.</returns>
 void StringBuilder_Constructor_WithInitialCStringValueAndCapacity(
     StringBuilder *sb,
     const char *value,
@@ -134,7 +130,6 @@ void StringBuilder_Constructor_WithInitialCStringValueAndCapacity(
 /// </summary>
 /// <param name="sb">Pointer to an uninitialized <see cref="StringBuilder"/>.</param>
 /// <param name="value">Pointer to a <see cref="String"/> used as the initial value.</param>
-/// <returns>Pointer to the newly allocated <see cref="StringBuilder"/>.</returns>
 void StringBuilder_Constructor_WithInitialStringValue(StringBuilder *sb, const String *value);
 
 /// <summary>
@@ -143,7 +138,6 @@ void StringBuilder_Constructor_WithInitialStringValue(StringBuilder *sb, const S
 /// <param name="sb">Pointer to an uninitialized <see cref="StringBuilder"/>.</param>
 /// <param name="value">Pointer to a <see cref="String"/> used as the initial value.</param>
 /// <param name="capacity">The initial capacity of the <see cref="StringBuilder"/>.</param>
-/// <returns>Pointer to the newly allocated <see cref="StringBuilder"/>.</returns>
 void StringBuilder_Constructor_WithInitialStringValueAndCapacity(
     StringBuilder *sb,
     const String *value,
@@ -175,24 +169,6 @@ uintsize StringBuilder_GetCapacity(const StringBuilder *sb);
 /// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
 /// <param name="capacity">The new capacity of the <see cref="StringBuilder"/>.</param>
 void StringBuilder_SetCapacity(StringBuilder *sb, uintsize capacity);
-
-/// <summary>
-/// Converts the value of the given <see cref="StringBuilder"/> to a <see cref="String"/>.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <returns>
-/// A pointer to a <see cref="String"/> with the same value as the given <see cref="StringBuilder"/>.
-/// </returns>
-String *StringBuilder_ToString(const StringBuilder *sb);
-
-/// <summary>
-/// Converts the value of the given <see cref="StringBuilder"/> to a null-terminated string.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <returns>
-/// A pointer to a null-terminated string with the same value as the given <see cref="StringBuilder"/>.
-/// </returns>
-char *StringBuilder_ToCString(const StringBuilder *sb);
 
 /// <summary>
 /// Appends the given character to the given <see cref="StringBuilder"/>.
@@ -252,5 +228,79 @@ void StringBuilder_AppendLineCString(StringBuilder *sb, const char *value);
 /// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
 /// <param name="value">Pointer to the string to append.</param>
 void StringBuilder_AppendLineString(StringBuilder *sb, const String *value);
+
+/// <summary>
+/// Removes all characters from the specified <see cref="StringBuilder"/>.
+/// </summary>
+/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
+void StringBuilder_Clear(StringBuilder *sb);
+
+/// <summary>
+/// Deletes the given <see cref="StringBuilder"/> and returns its value as a <see cref="String"/>.
+/// </summary>
+/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
+/// <returns>
+/// A pointer to a <see cref="String"/> with the same value as the given <see cref="StringBuilder"/>.
+/// </returns>
+String *StringBuilder_DeleteAndToString(StringBuilder *sb);
+
+/// <summary>
+/// Deletes the given <see cref="StringBuilder"/> and returns its value as a null-terminated string.
+/// </summary>
+/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
+/// <returns>
+/// A pointer to a null-terminated string with the same value as the given <see cref="StringBuilder"/>.
+/// </returns>
+char *StringBuilder_DeleteAndToCString(StringBuilder *sb);
+
+/// <summary>
+/// Inserts the given character into the given <see cref="StringBuilder"/> at the given index.
+/// </summary>
+/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
+/// <param name="index">The position where to insert <paramref name="value"/></param>
+/// <param name="value">The character to insert.</param>
+void StringBuilder_Insert(StringBuilder *sb, uintsize index, char value);
+
+/// <summary>
+/// Inserts the given string into the given <see cref="StringBuilder"/> at the given index.
+/// </summary>
+/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
+/// <param name="index">The position where to insert <paramref name="value"/>.</param>
+/// <param name="value">Pointer to the string to insert.</param>
+void StringBuilder_InsertCString(StringBuilder *sb, uintsize index, const char *value);
+
+/// <summary>
+/// Inserts the given string into the given <see cref="StringBuilder"/> at the given index.
+/// </summary>
+/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
+/// <param name="index">The position where to insert <paramref name="value"/>.</param>
+/// <param name="value">Pointer to the string to insert.</param>
+void StringBuilder_InsertString(StringBuilder *sb, uintsize index, const String *value);
+
+/// <summary>
+/// Removes the given range of characters from the given <see cref="StringBuilder"/>.
+/// </summary>
+/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
+/// <param name="startIndex">The position where to start removing characters.</param>
+/// <param name="count">The number of characters to remove.</param>
+void StringBuilder_Remove(StringBuilder *sb, uintsize startIndex, uintsize count);
+
+/// <summary>
+/// Converts the value of the given <see cref="StringBuilder"/> to a <see cref="String"/>.
+/// </summary>
+/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
+/// <returns>
+/// A pointer to a <see cref="String"/> with the same value as the given <see cref="StringBuilder"/>.
+/// </returns>
+String *StringBuilder_ToString(const StringBuilder *sb);
+
+/// <summary>
+/// Converts the value of the given <see cref="StringBuilder"/> to a null-terminated string.
+/// </summary>
+/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
+/// <returns>
+/// A pointer to a null-terminated string with the same value as the given <see cref="StringBuilder"/>.
+/// </returns>
+char *StringBuilder_ToCString(const StringBuilder *sb);
 
 #endif

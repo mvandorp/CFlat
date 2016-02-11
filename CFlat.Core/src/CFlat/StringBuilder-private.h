@@ -36,4 +36,14 @@ typedef struct StringBuilder StringBuilder;
 /// </param>
 void StringBuilder_AppendFormat(StringBuilder *sb, const String *format, va_list args);
 
+/// <summary>
+/// Gets the internal string buffer of the given <see cref="StringBuilder"/>, which contains a null-terminated string.
+/// The buffer becomes invalid when the <see cref="StringBuilder"/> is modified.
+/// </summary>
+/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
+/// <returns>
+/// A pointer to a null-terminated string with the same value as the given <see cref="StringBuilder"/>.
+/// </returns>
+const char *StringBuilder_GetBuffer(const StringBuilder *sb);
+
 #endif
