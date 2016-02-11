@@ -20,12 +20,12 @@ typedef size_t uintsize;
 /// <summary>
 /// Represents the smallest possible value of <see cref="uintsize"/>.
 /// </summary>
-const uintsize UIntSize_Min = 0;
+extern const uintsize UIntSize_Min;
 
 /// <summary>
 /// Represents the largest possible value of <see cref="uintsize"/>.
 /// </summary>
-const uintsize UIntSize_Max = (uintsize)-1;
+extern const uintsize UIntSize_Max;
 
 /* Standard integer types */
 /// @}
@@ -74,96 +74,96 @@ typedef unsigned long ulong;
 /// <summary>
 /// Represents the smallest possible value of <see cref="char"/>.
 /// </summary>
-const sbyte Char_MinValue = CHAR_MIN;
+extern const sbyte Char_MinValue;
 
 /// <summary>
 /// Represents the largest possible value of <see cref="char"/>.
 /// </summary>
-const sbyte Char_MaxValue = CHAR_MAX;
+extern const sbyte Char_MaxValue;
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="sbyte"/>.
 /// </summary>
-const sbyte SByte_MinValue = SCHAR_MIN;
+extern const sbyte SByte_MinValue;
 
 /// <summary>
 /// Represents the largest possible value of <see cref="sbyte"/>.
 /// </summary>
-const sbyte SByte_MaxValue = SCHAR_MAX;
+extern const sbyte SByte_MaxValue;
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="byte"/>.
 /// </summary>
-/// <remarks>The value of this constant is 0.</remarks>
-const byte Byte_MinValue = 0;
+/// <remarks>The value of this extern constant is 0.</remarks>
+extern const byte Byte_MinValue;
 
 /// <summary>
 /// Represents the largest possible value of <see cref="byte"/>.
 /// </summary>
-const byte Byte_MaxValue = UCHAR_MAX;
+extern const byte Byte_MaxValue;
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="short"/>.
 /// </summary>
-const short Short_MinValue = SHRT_MIN;
+extern const short Short_MinValue;
 
 /// <summary>
 /// Represents the largest possible value of <see cref="short"/>.
 /// </summary>
-const short Short_MaxValue = SHRT_MAX;
+extern const short Short_MaxValue;
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="ushort"/>.
 /// </summary>
-/// <remarks>The value of this constant is 0.</remarks>
-const ushort UShort_MinValue = 0;
+/// <remarks>The value of this extern constant is 0.</remarks>
+extern const ushort UShort_MinValue;
 
 /// <summary>
 /// Represents the largest possible value of <see cref="ushort"/>.
 /// </summary>
-const ushort UShort_MaxValue = USHRT_MAX;
+extern const ushort UShort_MaxValue;
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="int"/>.
 /// </summary>
-const int Int_MinValue = INT_MIN;
+extern const int Int_MinValue;
 
 /// <summary>
 /// Represents the largest possible value of <see cref="int"/>.
 /// </summary>
-const int Int_MaxValue = INT_MAX;
+extern const int Int_MaxValue;
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="uint"/>.
 /// </summary>
-/// <remarks>The value of this constant is 0.</remarks>
-const uint UInt_MinValue = 0;
+/// <remarks>The value of this extern constant is 0.</remarks>
+extern const uint UInt_MinValue;
 
 /// <summary>
 /// Represents the largest possible value of <see cref="uint"/>.
 /// </summary>
-const uint UInt_MaxValue = UINT_MAX;
+extern const uint UInt_MaxValue;
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="long"/>.
 /// </summary>
-const long Long_MinValue = LONG_MIN;
+extern const long Long_MinValue;
 
 /// <summary>
 /// Represents the largest possible value of <see cref="long"/>.
 /// </summary>
-const long Long_MaxValue = LONG_MAX;
+extern const long Long_MaxValue;
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="ulong"/>.
 /// </summary>
-/// <remarks>The value of this constant is 0.</remarks>
-const ulong ULong_MinValue = 0;
+/// <remarks>The value of this extern constant is 0.</remarks>
+extern const ulong ULong_MinValue;
 
 /// <summary>
 /// Represents the largest possible value of <see cref="ulong"/>.
 /// </summary>
-const ulong ULong_MaxValue = ULONG_MAX;
+extern const ulong ULong_MaxValue;
 
 /* Exact-width integer types */
 /// @}
@@ -292,104 +292,104 @@ const ulong ULong_MaxValue = ULONG_MAX;
     /// <summary>
     /// Represents the smallest possible value of <see cref="int8"/>.
     /// </summary>
-    /// <remarks>The value of this constant is -128 (hexadecimal 0x80).</remarks>
-    const int8 Int8_MinValue = 0x80;
+    /// <remarks>The value of this extern constant is -128 (hexadecimal 0x80).</remarks>
+    extern const int8 Int8_MinValue;
 
     /// <summary>
     /// Represents the largest possible value of <see cref="int8"/>.
     /// </summary>
-    /// <remarks>The value of this constant is 127 (hexadecimal 0x7F).</remarks>
-    const int8 Int8_MaxValue = 0x7F;
+    /// <remarks>The value of this extern constant is 127 (hexadecimal 0x7F).</remarks>
+    extern const int8 Int8_MaxValue;
 
     /// <summary>
     /// Represents the smallest possible value of <see cref="uint8"/>.
     /// </summary>
-    /// <remarks>The value of this constant is 0.</remarks>
-    const uint8 UInt8_MinValue = 0x00;
+    /// <remarks>The value of this extern constant is 0.</remarks>
+    extern const uint8 UInt8_MinValue;
 
     /// <summary>
     /// Represents the largest possible value of <see cref="uint8"/>.
     /// </summary>
-    /// <remarks>The value of this constant is 255 (hexadecimal 0xFF).</remarks>
-    const uint8 UInt8_MaxValue = 0xFF;
+    /// <remarks>The value of this extern constant is 255 (hexadecimal 0xFF).</remarks>
+    extern const uint8 UInt8_MaxValue;
 #endif
 
 #ifdef CFLAT_INT16
     /// <summary>
     /// Represents the smallest possible value of <see cref="int16"/>.
     /// </summary>
-    /// <remarks>The value of this constant is -32768 (hexadecimal 0x8000).</remarks>
-    const int16 Int16_MinValue = 0x8000;
+    /// <remarks>The value of this extern constant is -32768 (hexadecimal 0x8000).</remarks>
+    extern const int16 Int16_MinValue;
 
     /// <summary>
     /// Represents the largest possible value of <see cref="int16"/>.
     /// </summary>
-    /// <remarks>The value of this constant is 32767 (hexadecimal 0x7FFF).</remarks>
-    const int16 Int16_MaxValue = 0x7FFF;
+    /// <remarks>The value of this extern constant is 32767 (hexadecimal 0x7FFF).</remarks>
+    extern const int16 Int16_MaxValue;
 
     /// <summary>
     /// Represents the smallest possible value of <see cref="uint16"/>.
     /// </summary>
-    /// <remarks>The value of this constant is 0.</remarks>
-    const uint16 UInt16_MinValue = 0;
+    /// <remarks>The value of this extern constant is 0.</remarks>
+    extern const uint16 UInt16_MinValue;
 
     /// <summary>
     /// Represents the largest possible value of <see cref="uint16"/>.
     /// </summary>
-    /// <remarks>The value of this constant is 65535 (hexadecimal 0xFFFF).</remarks>
-    const uint16 UInt16_MaxValue = 0xFFFF;
+    /// <remarks>The value of this extern constant is 65535 (hexadecimal 0xFFFF).</remarks>
+    extern const uint16 UInt16_MaxValue;
 #endif
 
 #ifdef CFLAT_INT32
     /// <summary>
     /// Represents the smallest possible value of <see cref="int32"/>.
     /// </summary>
-    /// <remarks>The value of this constant is -2147483648 (hexadecimal 0x80000000).</remarks>
-    const int32 Int32_MinValue = 0x80000000;
+    /// <remarks>The value of this extern constant is -2147483648 (hexadecimal 0x80000000).</remarks>
+    extern const int32 Int32_MinValue;
 
     /// <summary>
     /// Represents the largest possible value of <see cref="int32"/>.
     /// </summary>
-    /// <remarks>The value of this constant is 2147483647 (hexadecimal 0x7FFFFFFF).</remarks>
-    const int32 Int32_MaxValue = 0x7FFFFFFF;
+    /// <remarks>The value of this extern constant is 2147483647 (hexadecimal 0x7FFFFFFF).</remarks>
+    extern const int32 Int32_MaxValue;
 
     /// <summary>
     /// Represents the smallest possible value of <see cref="uint32"/>.
     /// </summary>
-    /// <remarks>The value of this constant is 0.</remarks>
-    const uint32 UInt32_MinValue = 0;
+    /// <remarks>The value of this extern constant is 0.</remarks>
+    extern const uint32 UInt32_MinValue;
 
     /// <summary>
     /// Represents the largest possible value of <see cref="uint32"/>.
     /// </summary>
-    /// <remarks>The value of this constant is 4294967295 (hexadecimal 0xFFFFFFFF).</remarks>
-    const uint32 UInt32_MaxValue = 0xFFFFFFFF;
+    /// <remarks>The value of this extern constant is 4294967295 (hexadecimal 0xFFFFFFFF).</remarks>
+    extern const uint32 UInt32_MaxValue;
 #endif
 
 #ifdef CFLAT_INT64
     /// <summary>
     /// Represents the smallest possible value of <see cref="int64"/>.
     /// </summary>
-    /// <remarks>The value of this constant is -9223372036854775808 (hexadecimal 0x8000000000000000).</remarks>
-    const int64 Int64_MinValue = 0x8000000000000000;
+    /// <remarks>The value of this extern constant is -9223372036854775808 (hexadecimal 0x8000000000000000).</remarks>
+    extern const int64 Int64_MinValue;
 
     /// <summary>
     /// Represents the largest possible value of <see cref="int64"/>.
     /// </summary>
-    /// <remarks>The value of this constant is 9223372036854775807 (hexadecimal 0x7FFFFFFFFFFFFFFF).</remarks>
-    const int64 Int64_MaxValue = 0x7FFFFFFFFFFFFFFF;
+    /// <remarks>The value of this extern constant is 9223372036854775807 (hexadecimal 0x7FFFFFFFFFFFFFFF).</remarks>
+    extern const int64 Int64_MaxValue;
 
     /// <summary>
     /// Represents the smallest possible value of <see cref="uint64"/>.
     /// </summary>
-    /// <remarks>The value of this constant is 0.</remarks>
-    const uint64 UInt64_MinValue = 0;
+    /// <remarks>The value of this extern constant is 0.</remarks>
+    extern const uint64 UInt64_MinValue;
 
     /// <summary>
     /// Represents the largest possible value of <see cref="uint64"/>.
     /// </summary>
-    /// <remarks>The value of this constant is 18446744073709551613 (hexadecimal 0xFFFFFFFFFFFFFFFF).</remarks>
-    const uint64 UInt64_MaxValue = 0xFFFFFFFFFFFFFFFF;
+    /// <remarks>The value of this extern constant is 18446744073709551613 (hexadecimal 0xFFFFFFFFFFFFFFFF).</remarks>
+    extern const uint64 UInt64_MaxValue;
 #endif
 
 /* Least-width integer types */
@@ -589,89 +589,89 @@ typedef CFLAT_UINT32_LEAST uint32_least;
 /// <summary>
 /// Represents the smallest possible value of <see cref="int8_least"/>.
 /// </summary>
-const int8_least Int8Least_MinValue = CFLAT_INT8_LEAST_MIN;
+extern const int8_least Int8Least_MinValue;
 
 /// <summary>
 /// Represents the largest possible value of <see cref="int8_least"/>.
 /// </summary>
-const int8_least Int8Least_MaxValue = CFLAT_INT8_LEAST_MAX;
+extern const int8_least Int8Least_MaxValue;
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="uint8_least"/>.
 /// </summary>
-/// <remarks>The value of this constant is 0.</remarks>
-const uint8_least UInt8Least_MinValue = 0;
+/// <remarks>The value of this extern constant is 0.</remarks>
+extern const uint8_least UInt8Least_MinValue;
 
 /// <summary>
 /// Represents the largest possible value of <see cref="uint8_least"/>.
 /// </summary>
-const uint8_least UInt8Least_MaxValue = CFLAT_UINT8_LEAST_MAX;
+extern const uint8_least UInt8Least_MaxValue;
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="int16_least"/>.
 /// </summary>
-const int16_least Int16Least_MinValue = CFLAT_INT16_LEAST_MIN;
+extern const int16_least Int16Least_MinValue;
 
 /// <summary>
 /// Represents the largest possible value of <see cref="int16_least"/>.
 /// </summary>
-const int16_least Int16Least_MaxValue = CFLAT_INT16_LEAST_MAX;
+extern const int16_least Int16Least_MaxValue;
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="uint16_least"/>.
 /// </summary>
-/// <remarks>The value of this constant is 0.</remarks>
-const uint16_least UInt16Least_MinValue = 0;
+/// <remarks>The value of this extern constant is 0.</remarks>
+extern const uint16_least UInt16Least_MinValue;
 
 /// <summary>
 /// Represents the largest possible value of <see cref="uint16_least"/>.
 /// </summary>
-const uint16_least UInt16Least_MaxValue = CFLAT_UINT16_LEAST_MAX;
+extern const uint16_least UInt16Least_MaxValue;
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="int32_least"/>.
 /// </summary>
-const int32_least Int32Least_MinValue = CFLAT_INT32_LEAST_MIN;
+extern const int32_least Int32Least_MinValue;
 
 /// <summary>
 /// Represents the largest possible value of <see cref="int32_least"/>.
 /// </summary>
-const int32_least Int32Least_MaxValue = CFLAT_INT32_LEAST_MAX;
+extern const int32_least Int32Least_MaxValue;
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="uint32_least"/>.
 /// </summary>
-/// <remarks>The value of this constant is 0.</remarks>
-const uint32_least UInt32Least_MinValue = 0;
+/// <remarks>The value of this extern constant is 0.</remarks>
+extern const uint32_least UInt32Least_MinValue;
 
 /// <summary>
 /// Represents the largest possible value of <see cref="uint32_least"/>.
 /// </summary>
-const uint32_least UInt32Least_MaxValue = CFLAT_UINT32_LEAST_MAX;
+extern const uint32_least UInt32Least_MaxValue;
 
 #ifdef CFLAT_INT64_LEAST
     /// <summary>
     /// Represents the smallest possible value of <see cref="int64_least"/>.
     /// </summary>
-    const int64_least Int64Least_MinValue = CFLAT_INT64_LEAST_MIN;
+    extern const int64_least Int64Least_MinValue;
 
     /// <summary>
     /// Represents the largest possible value of <see cref="int64_least"/>.
     /// </summary>
-    const int64_least Int64Least_MaxValue = CFLAT_INT64_LEAST_MAX;
+    extern const int64_least Int64Least_MaxValue;
 #endif
 
 #ifdef CFLAT_UINT64_LEAST
     /// <summary>
     /// Represents the smallest possible value of <see cref="uint64_least"/>.
     /// </summary>
-    /// <remarks>The value of this constant is 0.</remarks>
-    const uint64_least UInt64Least_MinValue = 0;
+    /// <remarks>The value of this extern constant is 0.</remarks>
+    extern const uint64_least UInt64Least_MinValue;
 
     /// <summary>
     /// Represents the largest possible value of <see cref="uint64_least"/>.
     /// </summary>
-    const uint64_least UInt64Least_MaxValue = CFLAT_UINT64_LEAST_MAX;
+    extern const uint64_least UInt64Least_MaxValue;
 #endif
 
 /* Fast integer types */
@@ -808,89 +808,89 @@ typedef CFLAT_UINT32_FAST uint32_fast;
 /// <summary>
 /// Represents the smallest possible value of <see cref="int8_fast"/>.
 /// </summary>
-const int8_fast Int8Fast_MinValue = CFLAT_INT8_FAST_MIN;
+extern const int8_fast Int8Fast_MinValue;
 
 /// <summary>
 /// Represents the largest possible value of <see cref="int8_fast"/>.
 /// </summary>
-const int8_fast Int8Fast_MaxValue = CFLAT_INT8_FAST_MAX;
+extern const int8_fast Int8Fast_MaxValue;
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="uint8_fast"/>.
 /// </summary>
-/// <remarks>The value of this constant is 0.</remarks>
-const uint8_fast UInt8Fast_MinValue = 0;
+/// <remarks>The value of this extern constant is 0.</remarks>
+extern const uint8_fast UInt8Fast_MinValue;
 
 /// <summary>
 /// Represents the largest possible value of <see cref="uint8_fast"/>.
 /// </summary>
-const uint8_fast UInt8Fast_MaxValue = CFLAT_UINT8_FAST_MAX;
+extern const uint8_fast UInt8Fast_MaxValue;
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="int16_fast"/>.
 /// </summary>
-const int16_fast Int16Fast_MinValue = CFLAT_INT16_FAST_MIN;
+extern const int16_fast Int16Fast_MinValue;
 
 /// <summary>
 /// Represents the largest possible value of <see cref="int16_fast"/>.
 /// </summary>
-const int16_fast Int16Fast_MaxValue = CFLAT_INT16_FAST_MAX;
+extern const int16_fast Int16Fast_MaxValue;
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="uint16_fast"/>.
 /// </summary>
-/// <remarks>The value of this constant is 0.</remarks>
-const uint16_fast UInt16Fast_MinValue = 0;
+/// <remarks>The value of this extern constant is 0.</remarks>
+extern const uint16_fast UInt16Fast_MinValue;
 
 /// <summary>
 /// Represents the largest possible value of <see cref="uint16_fast"/>.
 /// </summary>
-const uint16_fast UInt16Fast_MaxValue = CFLAT_UINT16_FAST_MAX;
+extern const uint16_fast UInt16Fast_MaxValue;
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="int32_fast"/>.
 /// </summary>
-const int32_fast Int32Fast_MinValue = CFLAT_INT32_FAST_MIN;
+extern const int32_fast Int32Fast_MinValue;
 
 /// <summary>
 /// Represents the largest possible value of <see cref="int32_fast"/>.
 /// </summary>
-const int32_fast Int32Fast_MaxValue = CFLAT_INT32_FAST_MAX;
+extern const int32_fast Int32Fast_MaxValue;
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="uint32_fast"/>.
 /// </summary>
-/// <remarks>The value of this constant is 0.</remarks>
-const uint32_fast UInt32Fast_MinValue = 0;
+/// <remarks>The value of this extern constant is 0.</remarks>
+extern const uint32_fast UInt32Fast_MinValue;
 
 /// <summary>
 /// Represents the largest possible value of <see cref="uint32_fast"/>.
 /// </summary>
-const uint32_fast UInt32Fast_MaxValue = CFLAT_UINT32_FAST_MAX;
+extern const uint32_fast UInt32Fast_MaxValue;
 
 #ifdef CFLAT_INT64_FAST
     /// <summary>
     /// Represents the smallest possible value of <see cref="int64_fast"/>.
     /// </summary>
-    const int64_fast Int64Fast_MinValue = CFLAT_INT64_FAST_MIN;
+    extern const int64_fast Int64Fast_MinValue;
 
     /// <summary>
     /// Represents the largest possible value of <see cref="int64_fast"/>.
     /// </summary>
-    const int64_fast Int64Fast_MaxValue = CFLAT_INT64_FAST_MAX;
+    extern const int64_fast Int64Fast_MaxValue;
 #endif
 
 #ifdef CFLAT_UINT64_FAST
     /// <summary>
     /// Represents the smallest possible value of <see cref="uint64_fast"/>.
     /// </summary>
-    /// <remarks>The value of this constant is 0.</remarks>
-    const uint64_fast UInt64Fast_MinValue = 0;
+    /// <remarks>The value of this extern constant is 0.</remarks>
+    extern const uint64_fast UInt64Fast_MinValue;
 
     /// <summary>
     /// Represents the largest possible value of <see cref="uint64_fast"/>.
     /// </summary>
-    const uint64_fast UInt64Fast_MaxValue = CFLAT_UINT64_FAST_MAX;
+    extern const uint64_fast UInt64Fast_MaxValue;
 #endif
 
 /// @}
