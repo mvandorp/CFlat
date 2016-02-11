@@ -4,57 +4,78 @@
 #include "CFlat/Memory.h"
 #include "CFlat/Object.h"
 
-typedef struct String {
+#include <stdarg.h>
+
+struct String {
+    Object object;
     uintsize length;
-    char *value;
-} String;
+    const char* value;
+};
+
+static const String Empty = { CFLAT_OBJECT_INITIALIZER(null), 0, "" };
 
 String *String_New(const char *value)
 {
-    // Allocate a new string and set the destructor callback.
-    String *str = Object_New(sizeof(String), (Destructor)String_Destructor);
+    String *str = Memory_Allocate(sizeof(String));
 
-    // TODO: If the allocation failed, throw an OutOfMemoryException.
-    assert(str != null);
-
-    // Initialize the string to the value represented by cString.
+    // Initialize the string to the value represented by value.
     String_Constructor(str, value);
+
+    // Set the proper deallocator that corresponds with the allocator.
+    Object_SetDeallocator(str, Memory_Deallocate);
 
     return str;
 }
 
 void String_Constructor(String *str, const char *value)
 {
-    // TODO: If str is null, throw an ArgumentNullException.
-    assert(str != null);
+    // Initialize the object and set the destructor.
+    Object_Constructor(str, String_Destructor);
 
+    // Initialize the string.
     if (value == null) {
         str->length = 0;
-        str->value = null;
+        str->value = "";
     }
     else {
         str->length = CString_Length(value);
-        str->value = CString_Duplicate(value);
-
-        // TODO: If the duplication failed, throw an OutOfMemoryException.
-        assert(str->value != null);
+        str->value = CString_Copy(value);
     }
 }
 
-void String_Destructor(String *str)
+void String_Destructor(void *str)
 {
     // TODO: If str is null, throw an ArgumentNullException.
     assert(str != null);
 
-    Memory_Deallocate(str->value);
+    Memory_Deallocate((char*)((String*)str)->value);
 }
 
-uintsize String_Length(const String *str)
+uintsize String_GetLength(const String *str)
 {
+    // TODO: If str is null, throw an ArgumentNullException.
+    assert(str != null);
+
     return str->length;
 }
 
 const char *String_GetCString(const String *str)
 {
+    // TODO: If str is null, throw an ArgumentNullException.
+    assert(str != null);
+
     return str->value;
+}
+
+char *String_ToCString(const String *str)
+{
+    // TODO: If str is null, throw an ArgumentNullException.
+    assert(str != null);
+
+    return CString_Copy(str->value);
+}
+
+const String *String_Empty(void)
+{
+    return &Empty;
 }

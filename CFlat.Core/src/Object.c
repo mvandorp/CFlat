@@ -2,29 +2,26 @@
 
 #include "CFlat/Memory.h"
 
-typedef struct Object {
-    uintsize referenceCount;
-    Destructor destructor;
-} Object;
-
-static Object *Object_DataToObject(const void *data);
-static void *Object_ObjectToData(const Object *obj);
-
-/**************************************/
-/* Extern functions                   */
-/**************************************/
-
-void *Object_New(uintsize size, Destructor dtor)
+void Object_Constructor(void *obj, Destructor dtor)
 {
-    Object *object = Memory_Allocate(size + sizeof(Object));
+    // TODO: If obj is null, throw an ArgumentNullException.
+    assert(obj != null);
 
-    // TODO: If the allocation failed, throw an OutOfMemoryException.
-    assert(object != null);
+    Object *object = (Object*)obj;
 
-    object->referenceCount = 1;
+    object->refCount = 1;
     object->destructor = dtor;
+    object->deallocator = null;
+}
 
-    return Object_ObjectToData(object);
+void Object_SetDeallocator(void *obj, Deallocator dealloc)
+{
+    // TODO: If obj is null, throw an ArgumentNullException.
+    assert(obj != null);
+
+    Object *object = (Object*)obj;
+
+    object->deallocator = dealloc;
 }
 
 void Object_Delete(void *obj)
@@ -33,13 +30,15 @@ void Object_Delete(void *obj)
         return;
     }
 
-    Object *object = Object_DataToObject(obj);
+    Object *object = (Object*)obj;
 
     if (object->destructor != null) {
         object->destructor(object);
     }
 
-    Memory_Deallocate(object);
+    if (object->deallocator != null) {
+        object->deallocator(object);
+    }
 }
 
 void *Object_Aquire(void *obj)
@@ -48,9 +47,9 @@ void *Object_Aquire(void *obj)
         return null;
     }
 
-    Object *object = Object_DataToObject(obj);
+    Object *object = (Object*)obj;
 
-    object->referenceCount++;
+    object->refCount++;
 
     return obj;
 }
@@ -61,29 +60,15 @@ bool Object_Release(void *obj)
         return false;
     }
 
-    Object *object = Object_DataToObject(obj);
+    Object *object = (Object*)obj;
 
-    object->referenceCount--;
+    object->refCount--;
 
-    if (object->referenceCount == 0) {
-        Object_Delete(obj);
+    if (object->refCount == 0) {
+        Object_Delete(object);
 
         return true;
     }
 
     return false;
-}
-
-/**************************************/
-/* Static functions                   */
-/**************************************/
-
-static Object *Object_DataToObject(const void *data)
-{
-    return (Object*)((byte*)data - sizeof(Object));
-}
-
-static void *Object_ObjectToData(const Object *obj)
-{
-    return (byte*)obj + sizeof(Object);
 }
