@@ -9,7 +9,12 @@ void *Memory_Allocate(uintsize size)
         return null;
     }
 
-    return malloc(size);
+    void *memory = malloc(size);
+
+    // TODO: If the allocation failed, throw an OutOfMemoryException.
+    assert(memory != null);
+
+    return memory;
 }
 
 void *Memory_AllocateZeroed(uintsize size)
@@ -18,7 +23,12 @@ void *Memory_AllocateZeroed(uintsize size)
         return null;
     }
 
-    return calloc(1, size);
+    void *memory = calloc(1, size);
+
+    // TODO: If the allocation failed, throw an OutOfMemoryException.
+    assert(memory != null);
+
+    return memory;
 }
 
 void Memory_Deallocate(void *memory)
@@ -34,7 +44,12 @@ void *Memory_Reallocate(void *memory, uintsize newSize)
         return null;
     }
 
-    return realloc(memory, newSize);
+    memory = realloc(memory, newSize);
+
+    // TODO: If the allocation failed, throw an OutOfMemoryException.
+    assert(memory != null);
+
+    return memory;
 }
 
 void Memory_Copy(const void *source, void *destination, uintsize length)
@@ -57,8 +72,8 @@ void Memory_CopyOffset(
     assert(source != null);
     assert(destination != null);
 
-    byte *src = (byte*)source + sourceOffset;
+    const byte *src = (const byte*)source + sourceOffset;
     byte *dest = (byte*)destination + destinationOffset;
 
-    Memory_Copy(src, dest, length);
+    memmove(dest, src, length);
 }

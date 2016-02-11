@@ -14,10 +14,8 @@
 /// </summary>
 /// <param name="size">The number of bytes of memory to allocate.</param>
 /// <returns>
-/// On success, returns the pointer to the newly allocated memory. The returned pointer must be deallocated with
+/// Returns the pointer to the newly allocated memory. The returned pointer must be deallocated with
 /// Memory_Deallocate() or Memory_Reallocate().
-///
-/// On failure, returns <see cref="null"/>.
 /// </returns>
 /// <seealso cref="Memory_AllocateZeroed()"/>
 /// <seealso cref="Memory_Deallocate()"/>
@@ -31,10 +29,8 @@ void *Memory_Allocate(uintsize size);
 /// </summary>
 /// <param name="size">The number of bytes of memory to allocate.</param>
 /// <returns>
-/// On success, returns the pointer to the newly allocated memory. The returned pointer must be deallocated with
+/// Returns the pointer to the newly allocated memory. The returned pointer must be deallocated with
 /// Memory_Deallocate() or Memory_Reallocate().
-///
-/// On failure, returns <see cref="null"/>.
 /// </returns>
 /// <seealso cref="Memory_Allocate()"/>
 /// <seealso cref="Memory_Deallocate()"/>
@@ -80,7 +76,7 @@ void Memory_Deallocate(void *memory);
 /// If <paramref name="newSize"/> is greater than the old size, the newly allocated portion of the memory block remains
 /// uninitialized.
 ///
-/// If memory allocation fails, the old memory block is not freed and <see cref="null"/> is returned.
+/// If memory allocation fails, the old memory block is not freed and an <see cref="OutOfMemoryException"/> is thrown.
 ///
 /// If <paramref name="memory"/> is <see cref="null"/>, the behaviour is the same as calling
 /// <c>Memory_Allocate(newSize)</c>.
@@ -94,10 +90,8 @@ void Memory_Deallocate(void *memory);
 /// <param name="memory">Pointer to the memory to reallocate.</param>
 /// <param name="newSize">The new number of bytes of memory to allocate.</param>
 /// <returns>
-/// On success, returns the pointer to the reallocated memory, which may be the same are <paramref name="memory"/> or a
+/// Returns the pointer to the reallocated memory, which may be the same are <paramref name="memory"/> or a
 /// different value. The returned pointer must be deallocated with Memory_Deallocate() or Memory_Reallocate().
-///
-/// On failure, returns <see cref="null"/>.
 /// </returns>
 /// <seealso cref="Memory_Allocate()"/>
 /// <seealso cref="Memory_AllocateZeroed()"/>
