@@ -87,6 +87,15 @@ const char *String_GetCString(const String *str)
     return str->Value;
 }
 
+char String_GetCharAt(const String *str, uintsize index)
+{
+    Validate_NotNull(str);
+    Validate_IsTrue(index < str->Length, ArgumentOutOfRangeException,
+        "Index was out of range. Must be less than the length of the string.");
+
+    return str->Value[index];
+}
+
 char *String_ToCString(const String *str)
 {
     Validate_NotNull(str);

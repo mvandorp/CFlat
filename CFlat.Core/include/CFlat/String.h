@@ -69,6 +69,14 @@ uintsize String_GetLength(const String *str);
 const char *String_GetCString(const String *str);
 
 /// <summary>
+/// Gets the character at the given index of the given <see cref="String"/>.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="index">A position within the string.</param>
+/// <returns>The character at the given index of the given <see cref="String"/>.</returns>
+char String_GetCharAt(const String *str, uintsize index);
+
+/// <summary>
 /// Converts the value of the given <see cref="String"/> to a null-terminated string.
 /// </summary>
 /// <param name="str">Pointer to a <see cref="String"/>.</param>
