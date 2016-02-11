@@ -45,7 +45,7 @@ void Object_Delete(void *obj)
 void *Object_Aquire(void *obj)
 {
     if (obj == null) {
-        return;
+        return null;
     }
 
     Object *object = Object_DataToObject(obj);
@@ -80,7 +80,7 @@ bool Object_Release(void *obj)
 
 static Object *Object_DataToObject(const void *data)
 {
-    return (byte*)data - sizeof(Object);
+    return (Object*)((byte*)data - sizeof(Object));
 }
 
 static void *Object_ObjectToData(const Object *obj)
