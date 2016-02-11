@@ -1,4 +1,5 @@
 #include "CFlat/StringBuilder.h"
+#include "CFlat/StringBuilder-private.h"
 
 #include "CFlat/CString.h"
 #include "CFlat/Memory.h"
@@ -16,13 +17,11 @@ struct StringBuilder {
     uintsize capacity;
 };
 
+/* Static variables */
 static uintsize DEFAULT_CAPACITY = 16;
 
-/* Static function declarations */
-static void StringBuilder_AppendFormat(StringBuilder *sb, const String *format, va_list args);
-
 /**************************************/
-/* Extern functions                   */
+/* Extern function definitions        */
 /**************************************/
 
 /* Allocators */
@@ -289,13 +288,16 @@ void StringBuilder_AppendLineString(StringBuilder *sb, const String *value)
 }
 
 /**************************************/
-/* Static functions                   */
+/* Private function definitions       */
 /**************************************/
 
 // TODO: Refactor this method!!
-static void StringBuilder_AppendFormat(StringBuilder *sb, const String *format, va_list args)
+void StringBuilder_AppendFormat(StringBuilder *sb, const String *format, va_list args)
 {
+    // TODO: If sb is null, throw an ArgumentNullException.
     assert(sb != null);
+
+    // TODO: If format is null, throw an ArgumentNullException.
     assert(format != null);
 
     const char *value = String_GetCString(format);

@@ -21,6 +21,7 @@
     <ClInclude Include="include\CFlat\String.h" />
     <ClInclude Include="include\CFlat\StringBuilder.h" />
     <ClInclude Include="src\CFlat\String-private.h" />
+    <ClInclude Include="src\CFlat\StringBuilder-private.h" />
     <ClInclude Include="src\CFlat\StringHelper.h" />
   </ItemGroup>
   <ItemGroup>

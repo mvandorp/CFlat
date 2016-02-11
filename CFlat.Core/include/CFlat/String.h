@@ -59,6 +59,24 @@ const char *String_GetCString(const String *str);
 char *String_ToCString(const String *str);
 
 /// <summary>
+/// Returns a pointer to a new <see cref="String"/> that is formatted according to the given format string, with each
+/// format specifier replaced with a string representation of the corresponding argument.
+/// </summary>
+/// <param name="format">Pointer to a format string.</param>
+/// <param name="...">Objects to format according to the format specifiers in the format string.</param>
+/// <returns>A pointer to a new <see cref="String"/> that is formatted according to the given format string.</returns>
+String *String_FormatCString(const char *format, ...);
+
+/// <summary>
+/// Returns a pointer to a new <see cref="String"/> that is formatted according to the given format string, with each
+/// format specifier replaced with a string representation of the corresponding argument.
+/// </summary>
+/// <param name="format">Pointer to a format string.</param>
+/// <param name="...">Objects to format according to the format specifiers in the format string.</param>
+/// <returns>A pointer to a new <see cref="String"/> that is formatted according to the given format string.</returns>
+String *String_FormatString(const String *format, ...);
+
+/// <summary>
 /// Returns a pointer to the empty string.
 /// </summary>
 /// <returns>A pointer to the empty string.</returns>
