@@ -17,16 +17,16 @@ typedef struct String String;
 ///
 /// The lifetime of the string should be managed with Object_Aquire(), Object_Release() and Object_Delete().
 /// </summary>
-/// <param name="cString">Pointer to a null-terminated string.</param>
+/// <param name="value">Pointer to a null-terminated string.</param>
 /// <returns>Pointer to the newly allocated string.</returns>
-String *String_New(const char *cString);
+String *String_New(const char *value);
 
 /// <summary>
 /// Initializes a given <see cref="String"/> to the value represented by the given null-terminated string.
 /// </summary>
 /// <param name="str">Pointer to an uninitialized <see cref="String"/>.</param>
-/// <param name="cString">Pointer to a null-terminated string.</param>
-void String_Constructor(String *str, const char *cString);
+/// <param name="value">Pointer to a null-terminated string.</param>
+void String_Constructor(String *str, const char *value);
 
 /// <summary>
 /// Destroys a given <see cref="String"/>.

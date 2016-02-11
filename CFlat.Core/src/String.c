@@ -6,10 +6,10 @@
 
 typedef struct String {
     uintsize length;
-    char *cString;
+    char *value;
 } String;
 
-String *String_New(const char *cString)
+String *String_New(const char *value)
 {
     // Allocate a new string and set the destructor callback.
     String *str = Object_New(sizeof(String), (Destructor)String_Destructor);
@@ -18,26 +18,26 @@ String *String_New(const char *cString)
     assert(str != null);
 
     // Initialize the string to the value represented by cString.
-    String_Constructor(str, cString);
+    String_Constructor(str, value);
 
     return str;
 }
 
-void String_Constructor(String *str, const char *cString)
+void String_Constructor(String *str, const char *value)
 {
     // TODO: If str is null, throw an ArgumentNullException.
     assert(str != null);
 
-    if (cString == null) {
+    if (value == null) {
         str->length = 0;
-        str->cString = null;
+        str->value = null;
     }
     else {
-        str->length = CString_Length(cString);
-        str->cString = CString_Duplicate(cString);
+        str->length = CString_Length(value);
+        str->value = CString_Duplicate(value);
 
         // TODO: If the duplication failed, throw an OutOfMemoryException.
-        assert(str->cString != null);
+        assert(str->value != null);
     }
 }
 
@@ -46,7 +46,7 @@ void String_Destructor(String *str)
     // TODO: If str is null, throw an ArgumentNullException.
     assert(str != null);
 
-    Memory_Deallocate(str->cString);
+    Memory_Deallocate(str->value);
 }
 
 uintsize String_Length(const String *str)
@@ -56,5 +56,5 @@ uintsize String_Length(const String *str)
 
 const char *String_GetCString(const String *str)
 {
-    return str->cString;
+    return str->value;
 }
