@@ -12,15 +12,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\CFlat.h" />
+    <ClInclude Include="include\CFlat\CString.h" />
     <ClInclude Include="include\CFlat\Language\Boolean.h" />
     <ClInclude Include="include\CFlat\Language\Integer.h" />
     <ClInclude Include="include\CFlat\Language\Null.h" />
     <ClInclude Include="include\CFlat\Memory.h" />
     <ClInclude Include="include\CFlat\Object.h" />
+    <ClInclude Include="include\CFlat\String.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\CString.c" />
     <ClCompile Include="src\Memory.c" />
     <ClCompile Include="src\Object.c" />
+    <ClCompile Include="src\String.c" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Language\Boolean.c" />

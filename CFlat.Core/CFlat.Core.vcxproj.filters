@@ -33,12 +33,24 @@
     <ClInclude Include="include\CFlat\Object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\CFlat\String.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CFlat\CString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Memory.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Object.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\String.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CString.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
