@@ -24,6 +24,7 @@
 #ifndef CFLAT_CORE_STRING_H
 #define CFLAT_CORE_STRING_H
 
+#include "CFlat/Language/Boolean.h"
 #include "CFlat/Language/Integer.h"
 
 /// <summary>
@@ -75,6 +76,30 @@ const char *String_GetCString(const String *str);
 /// <param name="index">A position within the string.</param>
 /// <returns>The character at the given index of the given <see cref="String"/>.</returns>
 char String_GetCharAt(const String *str, uintsize index);
+
+/// <summary>
+/// Determines whether the two given strings have the same value.
+/// </summary>
+/// <param name="str">Pointer to the first string, or <see cref="null"/>.</param>
+/// <param name="value">Pointer to the second string, or <see cref="null"/>.</param>
+/// <returns>
+/// <see cref="true"/> if the value of <paramref name="str1"/> is the same as the value of <paramref name="str2"/>;
+/// otherwise <see cref="false"/>. If both <paramref name="str1"/> and <paramref name="str2"/> are <see cref="null"/>,
+/// the method returns <see cref="true"/>.
+/// </returns>
+bool String_Equals(const String *str1, const String *str2);
+
+/// <summary>
+/// Determines whether the two given strings have the same value.
+/// </summary>
+/// <param name="str">Pointer to the first string, or <see cref="null"/>.</param>
+/// <param name="value">Pointer to the second string, or <see cref="null"/>.</param>
+/// <returns>
+/// <see cref="true"/> if the value of <paramref name="str1"/> is the same as the value of <paramref name="str2"/>;
+/// otherwise <see cref="false"/>. If both <paramref name="str1"/> and <paramref name="str2"/> are <see cref="null"/>,
+/// the method returns <see cref="true"/>.
+/// </returns>
+bool String_EqualsCString(const String *str1, const char *str2);
 
 /// <summary>
 /// Converts the value of the given <see cref="String"/> to a null-terminated string.

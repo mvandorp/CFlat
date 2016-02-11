@@ -24,6 +24,7 @@
 #ifndef CFLAT_CORE_CSTRING_H
 #define CFLAT_CORE_CSTRING_H
 
+#include "CFlat/Language/Boolean.h"
 #include "CFlat/Language/Integer.h"
 
 /// <summary>
@@ -45,5 +46,17 @@ uintsize CString_Length(const char *str);
 /// On failure, returns <see cref="null"/>.
 /// </returns>
 char *CString_Copy(const char *str);
+
+/// <summary>
+/// Determines whether the two given strings have the same value.
+/// </summary>
+/// <param name="str">Pointer to the first string, or <see cref="null"/>.</param>
+/// <param name="value">Pointer to the second string, or <see cref="null"/>.</param>
+/// <returns>
+/// <see cref="true"/> if the value of <paramref name="str1"/> is the same as the value of <paramref name="str2"/>;
+/// otherwise <see cref="false"/>. If both <paramref name="str1"/> and <paramref name="str2"/> are <see cref="null"/>,
+/// the method returns <see cref="true"/>.
+/// </returns>
+bool CString_Equals(const char *str1, const char *str2);
 
 #endif

@@ -103,6 +103,23 @@ char *String_ToCString(const String *str)
     return CString_Copy(str->Value);
 }
 
+bool String_Equals(const String *str1, const String *str2)
+{
+    return str1 == str2 || (
+        str1 != null &&
+        str2 != null &&
+        String_GetLength(str1) == String_GetLength(str2) &&
+        CString_Equals(String_GetCString(str1), String_GetCString(str2)));
+}
+
+bool String_EqualsCString(const String *str1, const char *str2)
+{
+    return (str1 == null && str2 == null) || (
+        str1 != null &&
+        str2 != null &&
+        CString_Equals(String_GetCString(str1), str2));
+}
+
 String *String_FormatCString(const char *format, ...)
 {
     Validate_NotNull(format);

@@ -30,7 +30,7 @@ uintsize CString_Length(const char *str)
     const char *start = str;
 
     // Walk to the end of the string, indicated by a terminating null character.
-    while (*str != '\0') {
+    while (*str) {
         str++;
     }
 
@@ -60,4 +60,26 @@ char *CString_Copy(const char *str)
     }
 
     return start;
+}
+
+bool CString_Equals(const char *str1, const char *str2)
+{
+    assert(str1 != null);
+    assert(str2 != null);
+
+    // Walk to the end of the string, indicated by a terminating null character.
+    while (*str1) {
+        // If a character is not equal to the corresponding character of the second string, the strings are not equal.
+        // If the second string is shorter than the first, this check will fail when the terminating null-character of
+        // the second string is reached.
+        if (*str1 != *str2) {
+            return false;
+        }
+
+        str1++;
+        str2++;
+    }
+
+    // We reached the end of the string. If we also reached the end of the second string, the strings compare equal.
+    return *str1 == *str2;
 }
