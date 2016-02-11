@@ -38,7 +38,7 @@
 /// Initializer for a <see cref="String"/> that initializes the value to the given value string literal.
 /// </summary>
 /// <param name="value">A string literal.</param>
-#define CFLAT_STRING_LITERAL(value) { CFLAT_OBJECT_INITIALIZER(null), CFLAT_STRING_LITERAL_LENGTH(value), value }
+#define CFLAT_STRING_LITERAL(value) { CFLAT_CONST_OBJECT_INITIALIZER(), CFLAT_STRING_LITERAL_LENGTH(value), value }
 
 typedef struct String {
     /// <summary>
