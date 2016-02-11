@@ -75,6 +75,9 @@
     <ClInclude Include="src\CFlat\StringBuilder.internal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\CFlat\StringReader.internal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CFlat\CString.c">

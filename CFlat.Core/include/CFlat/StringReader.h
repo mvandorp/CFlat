@@ -87,4 +87,8 @@ int StringReader_Read(StringReader *reader);
 /// <param name="name">The number of characters to skip.</param>
 void StringReader_Skip(StringReader *reader, uintsize amount);
 
+#ifdef CFLAT_CORE_INTERNAL
+ #include "CFlat/StringReader.internal.h"
+#endif
+
 #endif

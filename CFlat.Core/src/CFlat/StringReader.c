@@ -26,12 +26,6 @@
 #include "CFlat/String.h"
 #include "CFlat/Validate.h"
 
-struct StringReader {
-    Object Base;
-    const String *Value;
-    uintsize Position;
-};
-
 /**************************************/
 /* Extern function definitions        */
 /**************************************/
