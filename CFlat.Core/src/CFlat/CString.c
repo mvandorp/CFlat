@@ -24,7 +24,7 @@
 #include "CFlat/String.h"
 #include "CFlat/Validate.h"
 
-uintsize CString_Length(const char *str)
+public uintsize CString_Length(const char *str)
 {
     Validate_NotNull(str);
 
@@ -39,7 +39,7 @@ uintsize CString_Length(const char *str)
     return str - start;
 }
 
-char *CString_Copy(const char *str)
+public char *CString_Copy(const char *str)
 {
     Validate_NotNull(str);
 
@@ -63,7 +63,7 @@ char *CString_Copy(const char *str)
     return start;
 }
 
-bool CString_Equals(const char *str1, const char *str2)
+public bool CString_Equals(const char *str1, const char *str2)
 {
     if (str1 == str2) {
         return true;
@@ -89,7 +89,7 @@ bool CString_Equals(const char *str1, const char *str2)
     return *str1 == *str2;
 }
 
-uintsize CString_IndexOf(const char *str, char value)
+public uintsize CString_IndexOf(const char *str, char value)
 {
     Validate_NotNull(str);
 
@@ -110,7 +110,7 @@ uintsize CString_IndexOf(const char *str, char value)
     return InvalidIndex;
 }
 
-uintsize CString_IndexOf_Offset(const char *str, char value, uintsize startIndex)
+public uintsize CString_IndexOf_Offset(const char *str, char value, uintsize startIndex)
 {
     String strBuffer;
     String *strWrapper = String_WrapCString(str, &strBuffer);
@@ -118,7 +118,7 @@ uintsize CString_IndexOf_Offset(const char *str, char value, uintsize startIndex
     return String_IndexOf_Offset(strWrapper, value, startIndex);
 }
 
-uintsize CString_IndexOf_Substring(const char *str, char value, uintsize startIndex, uintsize count)
+public uintsize CString_IndexOf_Substring(const char *str, char value, uintsize startIndex, uintsize count)
 {
     String strBuffer;
     String *strWrapper = String_WrapCString(str, &strBuffer);
@@ -126,7 +126,7 @@ uintsize CString_IndexOf_Substring(const char *str, char value, uintsize startIn
     return String_IndexOf_Substring(strWrapper, value, startIndex, count);
 }
 
-uintsize CString_IndexOfAny(const char *str, const char *anyOf)
+public uintsize CString_IndexOfAny(const char *str, const char *anyOf)
 {
     Validate_NotNull(str);
     Validate_NotNull(anyOf);
@@ -148,7 +148,7 @@ uintsize CString_IndexOfAny(const char *str, const char *anyOf)
     return InvalidIndex;
 }
 
-uintsize CString_IndexOfAny_Offset(const char *str, const char *anyOf, uintsize startIndex)
+public uintsize CString_IndexOfAny_Offset(const char *str, const char *anyOf, uintsize startIndex)
 {
     String strBuffer;
     String *strWrapper = String_WrapCString(str, &strBuffer);
@@ -156,7 +156,7 @@ uintsize CString_IndexOfAny_Offset(const char *str, const char *anyOf, uintsize 
     return String_IndexOfAny_Offset(strWrapper, anyOf, startIndex);
 }
 
-uintsize CString_IndexOfAny_Substring(const char *str, const char *anyOf, uintsize startIndex, uintsize count)
+public uintsize CString_IndexOfAny_Substring(const char *str, const char *anyOf, uintsize startIndex, uintsize count)
 {
     String strBuffer;
     String *strWrapper = String_WrapCString(str, &strBuffer);
@@ -164,7 +164,7 @@ uintsize CString_IndexOfAny_Substring(const char *str, const char *anyOf, uintsi
     return String_IndexOfAny_Substring(strWrapper, anyOf, startIndex, count);
 }
 
-uintsize CString_IndexOfCString(const char *str, const char *value)
+public uintsize CString_IndexOfCString(const char *str, const char *value)
 {
     String strBuffer;
     String *strWrapper = String_WrapCString(str, &strBuffer);
@@ -172,7 +172,7 @@ uintsize CString_IndexOfCString(const char *str, const char *value)
     return String_IndexOfCString(strWrapper, value);
 }
 
-uintsize CString_IndexOfCString_Offset(const char *str, const char *value, uintsize startIndex)
+public uintsize CString_IndexOfCString_Offset(const char *str, const char *value, uintsize startIndex)
 {
     String strBuffer;
     String *strWrapper = String_WrapCString(str, &strBuffer);
@@ -180,7 +180,11 @@ uintsize CString_IndexOfCString_Offset(const char *str, const char *value, uints
     return String_IndexOfCString_Offset(strWrapper, value, startIndex);
 }
 
-uintsize CString_IndexOfCString_Substring(const char *str, const char *value, uintsize startIndex, uintsize count)
+public uintsize CString_IndexOfCString_Substring(
+    const char *str,
+    const char *value,
+    uintsize startIndex,
+    uintsize count)
 {
     String strBuffer;
     String *strWrapper = String_WrapCString(str, &strBuffer);
@@ -188,7 +192,7 @@ uintsize CString_IndexOfCString_Substring(const char *str, const char *value, ui
     return String_IndexOfCString_Substring(strWrapper, value, startIndex, count);
 }
 
-uintsize CString_IndexOfString(const char *str, const String *value)
+public uintsize CString_IndexOfString(const char *str, const String *value)
 {
     String strBuffer;
     String *strWrapper = String_WrapCString(str, &strBuffer);
@@ -196,7 +200,7 @@ uintsize CString_IndexOfString(const char *str, const String *value)
     return String_IndexOfString(strWrapper, value);
 }
 
-uintsize CString_IndexOfString_Offset(const char *str, const String *value, uintsize startIndex)
+public uintsize CString_IndexOfString_Offset(const char *str, const String *value, uintsize startIndex)
 {
     String strBuffer;
     String *strWrapper = String_WrapCString(str, &strBuffer);
@@ -204,7 +208,11 @@ uintsize CString_IndexOfString_Offset(const char *str, const String *value, uint
     return String_IndexOfString_Offset(strWrapper, value, startIndex);
 }
 
-uintsize CString_IndexOfString_Substring(const char *str, const String *value, uintsize startIndex, uintsize count)
+public uintsize CString_IndexOfString_Substring(
+    const char *str,
+    const String *value,
+    uintsize startIndex,
+    uintsize count)
 {
     String strBuffer;
     String *strWrapper = String_WrapCString(str, &strBuffer);
@@ -212,7 +220,7 @@ uintsize CString_IndexOfString_Substring(const char *str, const String *value, u
     return String_IndexOfString_Substring(strWrapper, value, startIndex, count);
 }
 
-uintsize CString_LastIndexOf(const char *str, char value)
+public uintsize CString_LastIndexOf(const char *str, char value)
 {
     Validate_NotNull(str);
 
@@ -234,7 +242,7 @@ uintsize CString_LastIndexOf(const char *str, char value)
     return lastIndex;
 }
 
-uintsize CString_LastIndexOf_Offset(const char *str, char value, uintsize startIndex)
+public uintsize CString_LastIndexOf_Offset(const char *str, char value, uintsize startIndex)
 {
     String strBuffer;
     String *strWrapper = String_WrapCString(str, &strBuffer);
@@ -242,7 +250,7 @@ uintsize CString_LastIndexOf_Offset(const char *str, char value, uintsize startI
     return String_LastIndexOf_Offset(strWrapper, value, startIndex);
 }
 
-uintsize CString_LastIndexOf_Substring(const char *str, char value, uintsize startIndex, uintsize count)
+public uintsize CString_LastIndexOf_Substring(const char *str, char value, uintsize startIndex, uintsize count)
 {
     String strBuffer;
     String *strWrapper = String_WrapCString(str, &strBuffer);
@@ -250,7 +258,7 @@ uintsize CString_LastIndexOf_Substring(const char *str, char value, uintsize sta
     return String_LastIndexOf_Substring(strWrapper, value, startIndex, count);
 }
 
-uintsize CString_LastIndexOfAny(const char *str, const char *anyOf)
+public uintsize CString_LastIndexOfAny(const char *str, const char *anyOf)
 {
     String strBuffer;
     String *strWrapper = String_WrapCString(str, &strBuffer);
@@ -258,7 +266,7 @@ uintsize CString_LastIndexOfAny(const char *str, const char *anyOf)
     return String_LastIndexOfAny(strWrapper, anyOf);
 }
 
-uintsize CString_LastIndexOfAny_Offset(const char *str, const char *anyOf, uintsize startIndex)
+public uintsize CString_LastIndexOfAny_Offset(const char *str, const char *anyOf, uintsize startIndex)
 {
     String strBuffer;
     String *strWrapper = String_WrapCString(str, &strBuffer);
@@ -266,7 +274,11 @@ uintsize CString_LastIndexOfAny_Offset(const char *str, const char *anyOf, uints
     return String_LastIndexOfAny_Offset(strWrapper, anyOf, startIndex);
 }
 
-uintsize CString_LastIndexOfAny_Substring(const char *str, const char *anyOf, uintsize startIndex, uintsize count)
+public uintsize CString_LastIndexOfAny_Substring(
+    const char *str,
+    const char *anyOf,
+    uintsize startIndex,
+    uintsize count)
 {
     String strBuffer;
     String *strWrapper = String_WrapCString(str, &strBuffer);
@@ -274,7 +286,7 @@ uintsize CString_LastIndexOfAny_Substring(const char *str, const char *anyOf, ui
     return String_LastIndexOfAny_Substring(strWrapper, anyOf, startIndex, count);
 }
 
-uintsize CString_LastIndexOfCString(const char *str, const char *value)
+public uintsize CString_LastIndexOfCString(const char *str, const char *value)
 {
     String strBuffer;
     String *strWrapper = String_WrapCString(str, &strBuffer);
@@ -282,7 +294,7 @@ uintsize CString_LastIndexOfCString(const char *str, const char *value)
     return String_LastIndexOfCString(strWrapper, value);
 }
 
-uintsize CString_LastIndexOfCString_Offset(const char *str, const char *value, uintsize startIndex)
+public uintsize CString_LastIndexOfCString_Offset(const char *str, const char *value, uintsize startIndex)
 {
     String strBuffer;
     String *strWrapper = String_WrapCString(str, &strBuffer);
@@ -290,7 +302,11 @@ uintsize CString_LastIndexOfCString_Offset(const char *str, const char *value, u
     return String_LastIndexOfCString_Offset(strWrapper, value, startIndex);
 }
 
-uintsize CString_LastIndexOfCString_Substring(const char *str, const char *value, uintsize startIndex, uintsize count)
+public uintsize CString_LastIndexOfCString_Substring(
+    const char *str,
+    const char *value,
+    uintsize startIndex,
+    uintsize count)
 {
     String strBuffer;
     String *strWrapper = String_WrapCString(str, &strBuffer);
@@ -298,7 +314,7 @@ uintsize CString_LastIndexOfCString_Substring(const char *str, const char *value
     return String_LastIndexOfCString_Substring(strWrapper, value, startIndex, count);
 }
 
-uintsize CString_LastIndexOfString(const char *str, const String *value)
+public uintsize CString_LastIndexOfString(const char *str, const String *value)
 {
     String strBuffer;
     String *strWrapper = String_WrapCString(str, &strBuffer);
@@ -306,7 +322,7 @@ uintsize CString_LastIndexOfString(const char *str, const String *value)
     return String_LastIndexOfString(strWrapper, value);
 }
 
-uintsize CString_LastIndexOfString_Offset(const char *str, const String *value, uintsize startIndex)
+public uintsize CString_LastIndexOfString_Offset(const char *str, const String *value, uintsize startIndex)
 {
     String strBuffer;
     String *strWrapper = String_WrapCString(str, &strBuffer);
@@ -314,7 +330,11 @@ uintsize CString_LastIndexOfString_Offset(const char *str, const String *value, 
     return String_LastIndexOfString_Offset(strWrapper, value, startIndex);
 }
 
-uintsize CString_LastIndexOfString_Substring(const char *str, const String *value, uintsize startIndex, uintsize count)
+public uintsize CString_LastIndexOfString_Substring(
+    const char *str,
+    const String *value,
+    uintsize startIndex,
+    uintsize count)
 {
     String strBuffer;
     String *strWrapper = String_WrapCString(str, &strBuffer);

@@ -29,25 +29,25 @@
 
 #include <stdarg.h>
 
-/* Static constants */
-static const uintsize DefaultCapacity = 16;
+/* Private constants */
+private const uintsize DefaultCapacity = 16;
 
 /**************************************/
-/* Extern function definitions        */
+/* Public function definitions        */
 /**************************************/
 
 /* Allocators */
-StringBuilder *StringBuilder_New(void)
+public StringBuilder *StringBuilder_New(void)
 {
     return StringBuilder_New_WithInitialStringValueAndCapacity(null, DefaultCapacity);
 }
 
-StringBuilder *StringBuilder_New_WithCapacity(uintsize capacity)
+public StringBuilder *StringBuilder_New_WithCapacity(uintsize capacity)
 {
     return StringBuilder_New_WithInitialStringValueAndCapacity(null, capacity);
 }
 
-StringBuilder *StringBuilder_New_WithInitialCStringValue(const char *value)
+public StringBuilder *StringBuilder_New_WithInitialCStringValue(const char *value)
 {
     String strBuffer;
     String *str = String_WrapCString(value, &strBuffer);
@@ -55,7 +55,7 @@ StringBuilder *StringBuilder_New_WithInitialCStringValue(const char *value)
     return StringBuilder_New_WithInitialStringValueAndCapacity(str, DefaultCapacity);
 }
 
-StringBuilder *StringBuilder_New_WithInitialCStringValueAndCapacity(const char *value, uintsize capacity)
+public StringBuilder *StringBuilder_New_WithInitialCStringValueAndCapacity(const char *value, uintsize capacity)
 {
     String strBuffer;
     String *str = String_WrapCString(value, &strBuffer);
@@ -63,12 +63,12 @@ StringBuilder *StringBuilder_New_WithInitialCStringValueAndCapacity(const char *
     return StringBuilder_New_WithInitialStringValueAndCapacity(str, capacity);
 }
 
-StringBuilder *StringBuilder_New_WithInitialStringValue(const String *value)
+public StringBuilder *StringBuilder_New_WithInitialStringValue(const String *value)
 {
     return StringBuilder_New_WithInitialStringValueAndCapacity(value, DefaultCapacity);
 }
 
-StringBuilder *StringBuilder_New_WithInitialStringValueAndCapacity(const String *value, uintsize capacity)
+public StringBuilder *StringBuilder_New_WithInitialStringValueAndCapacity(const String *value, uintsize capacity)
 {
     // Allocate a new string builder and set the destructor callback.
     StringBuilder *sb = Memory_Allocate(sizeof(StringBuilder));
@@ -83,17 +83,17 @@ StringBuilder *StringBuilder_New_WithInitialStringValueAndCapacity(const String 
 }
 
 /* Constructors */
-void StringBuilder_Constructor(StringBuilder *sb)
+public void StringBuilder_Constructor(StringBuilder *sb)
 {
     StringBuilder_Constructor_WithInitialStringValueAndCapacity(sb, String_Empty, DefaultCapacity);
 }
 
-void StringBuilder_Constructor_WithCapacity(StringBuilder *sb, uintsize capacity)
+public void StringBuilder_Constructor_WithCapacity(StringBuilder *sb, uintsize capacity)
 {
     StringBuilder_Constructor_WithInitialStringValueAndCapacity(sb, String_Empty, capacity);
 }
 
-void StringBuilder_Constructor_WithInitialCStringValue(StringBuilder *sb, const char *value)
+public void StringBuilder_Constructor_WithInitialCStringValue(StringBuilder *sb, const char *value)
 {
     String strBuffer;
     String *str = String_WrapCString(value, &strBuffer);
@@ -101,7 +101,7 @@ void StringBuilder_Constructor_WithInitialCStringValue(StringBuilder *sb, const 
     StringBuilder_Constructor_WithInitialStringValueAndCapacity(sb, str, DefaultCapacity);
 }
 
-void StringBuilder_Constructor_WithInitialCStringValueAndCapacity(
+public void StringBuilder_Constructor_WithInitialCStringValueAndCapacity(
     StringBuilder *sb,
     const char *value,
     uintsize capacity)
@@ -112,12 +112,12 @@ void StringBuilder_Constructor_WithInitialCStringValueAndCapacity(
     StringBuilder_Constructor_WithInitialStringValueAndCapacity(sb, str, capacity);
 }
 
-void StringBuilder_Constructor_WithInitialStringValue(StringBuilder *sb, const String *value)
+public void StringBuilder_Constructor_WithInitialStringValue(StringBuilder *sb, const String *value)
 {
     StringBuilder_Constructor_WithInitialStringValueAndCapacity(sb, value, DefaultCapacity);
 }
 
-void StringBuilder_Constructor_WithInitialStringValueAndCapacity(
+public void StringBuilder_Constructor_WithInitialStringValueAndCapacity(
     StringBuilder *sb,
     const String *value,
     uintsize capacity)
@@ -154,7 +154,7 @@ void StringBuilder_Constructor_WithInitialStringValueAndCapacity(
 }
 
 /* Destructor */
-void StringBuilder_Destructor(void *sb)
+public void StringBuilder_Destructor(void *sb)
 {
     Validate_NotNull(sb);
 
@@ -164,21 +164,21 @@ void StringBuilder_Destructor(void *sb)
 }
 
 /* Methods */
-uintsize StringBuilder_GetLength(const StringBuilder *sb)
+public uintsize StringBuilder_GetLength(const StringBuilder *sb)
 {
     Validate_NotNull(sb);
 
     return sb->Length;
 }
 
-uintsize StringBuilder_GetCapacity(const StringBuilder *sb)
+public uintsize StringBuilder_GetCapacity(const StringBuilder *sb)
 {
     Validate_NotNull(sb);
 
     return sb->Capacity;
 }
 
-void StringBuilder_SetCapacity(StringBuilder *sb, uintsize capacity)
+public void StringBuilder_SetCapacity(StringBuilder *sb, uintsize capacity)
 {
     Validate_NotNull(sb);
     Validate_IsTrue(capacity >= sb->Length, ArgumentOutOfRangeException,
@@ -188,7 +188,7 @@ void StringBuilder_SetCapacity(StringBuilder *sb, uintsize capacity)
     sb->Value = Memory_Reallocate(sb->Value, capacity + 1);
 }
 
-void StringBuilder_Append(StringBuilder *sb, char value)
+public void StringBuilder_Append(StringBuilder *sb, char value)
 {
     Validate_NotNull(sb);
 
@@ -200,7 +200,7 @@ void StringBuilder_Append(StringBuilder *sb, char value)
     sb->Value[sb->Length++] = value;
 }
 
-void StringBuilder_AppendCString(StringBuilder *sb, const char *value)
+public void StringBuilder_AppendCString(StringBuilder *sb, const char *value)
 {
     String strBuffer;
     String *str = String_WrapCString(value, &strBuffer);
@@ -208,7 +208,7 @@ void StringBuilder_AppendCString(StringBuilder *sb, const char *value)
     StringBuilder_AppendString(sb, str);
 }
 
-void StringBuilder_AppendString(StringBuilder *sb, const String *value)
+public void StringBuilder_AppendString(StringBuilder *sb, const String *value)
 {
     Validate_NotNull(sb);
 
@@ -229,7 +229,7 @@ void StringBuilder_AppendString(StringBuilder *sb, const String *value)
     sb->Length += length;
 }
 
-void StringBuilder_AppendFormatCString(StringBuilder *sb, const char *format, ...)
+public void StringBuilder_AppendFormatCString(StringBuilder *sb, const char *format, ...)
 {
     Validate_NotNull(sb);
     Validate_NotNull(format);
@@ -245,7 +245,7 @@ void StringBuilder_AppendFormatCString(StringBuilder *sb, const char *format, ..
     va_end(args);
 }
 
-void StringBuilder_AppendFormatString(StringBuilder *sb, const String *format, ...)
+public void StringBuilder_AppendFormatString(StringBuilder *sb, const String *format, ...)
 {
     Validate_NotNull(sb);
     Validate_NotNull(format);
@@ -258,12 +258,12 @@ void StringBuilder_AppendFormatString(StringBuilder *sb, const String *format, .
     va_end(args);
 }
 
-void StringBuilder_AppendLine(StringBuilder *sb)
+public void StringBuilder_AppendLine(StringBuilder *sb)
 {
     StringBuilder_Append(sb, '\n');
 }
 
-void StringBuilder_AppendLineCString(StringBuilder *sb, const char *value)
+public void StringBuilder_AppendLineCString(StringBuilder *sb, const char *value)
 {
     String strBuffer;
     String *str = String_WrapCString(value, &strBuffer);
@@ -271,7 +271,7 @@ void StringBuilder_AppendLineCString(StringBuilder *sb, const char *value)
     StringBuilder_AppendLineString(sb, str);
 }
 
-void StringBuilder_AppendLineString(StringBuilder *sb, const String *value)
+public void StringBuilder_AppendLineString(StringBuilder *sb, const String *value)
 {
     Validate_NotNull(sb);
 
@@ -279,7 +279,7 @@ void StringBuilder_AppendLineString(StringBuilder *sb, const String *value)
     StringBuilder_Append(sb, '\n');
 }
 
-void StringBuilder_Clear(StringBuilder *sb)
+public void StringBuilder_Clear(StringBuilder *sb)
 {
     Validate_NotNull(sb);
 
@@ -287,7 +287,7 @@ void StringBuilder_Clear(StringBuilder *sb)
     sb->Length = 0;
 }
 
-String *StringBuilder_DeleteAndToString(StringBuilder *sb)
+public String *StringBuilder_DeleteAndToString(StringBuilder *sb)
 {
     // Manually allocate a String wrapper for the C-string.
     String *str = Memory_Allocate(sizeof(String));
@@ -302,7 +302,7 @@ String *StringBuilder_DeleteAndToString(StringBuilder *sb)
     return str;
 }
 
-char *StringBuilder_DeleteAndToCString(StringBuilder *sb)
+public char *StringBuilder_DeleteAndToCString(StringBuilder *sb)
 {
     char *buffer = (char*)StringBuilder_GetBuffer(sb);
 
@@ -313,7 +313,7 @@ char *StringBuilder_DeleteAndToCString(StringBuilder *sb)
     return buffer;
 }
 
-void StringBuilder_Insert(StringBuilder *sb, uintsize index, char value)
+public void StringBuilder_Insert(StringBuilder *sb, uintsize index, char value)
 {
     Validate_NotNull(sb);
 
@@ -331,7 +331,7 @@ void StringBuilder_Insert(StringBuilder *sb, uintsize index, char value)
     sb->Length++;
 }
 
-void StringBuilder_InsertCString(StringBuilder *sb, uintsize index, const char *value)
+public void StringBuilder_InsertCString(StringBuilder *sb, uintsize index, const char *value)
 {
     String strBuffer;
     String *str = String_WrapCString(value, &strBuffer);
@@ -339,7 +339,7 @@ void StringBuilder_InsertCString(StringBuilder *sb, uintsize index, const char *
     StringBuilder_InsertString(sb, index, str);
 }
 
-void StringBuilder_InsertString(StringBuilder *sb, uintsize index, const String *value)
+public void StringBuilder_InsertString(StringBuilder *sb, uintsize index, const String *value)
 {
     Validate_NotNull(sb);
 
@@ -363,7 +363,7 @@ void StringBuilder_InsertString(StringBuilder *sb, uintsize index, const String 
     sb->Length += length;
 }
 
-void StringBuilder_Remove(StringBuilder *sb, uintsize startIndex, uintsize count)
+public void StringBuilder_Remove(StringBuilder *sb, uintsize startIndex, uintsize count)
 {
     Validate_NotNull(sb);
     Validate_IsTrue(startIndex <= sb->Length, ArgumentOutOfRangeException,
@@ -377,21 +377,21 @@ void StringBuilder_Remove(StringBuilder *sb, uintsize startIndex, uintsize count
     sb->Length -= count;
 }
 
-String *StringBuilder_ToString(const StringBuilder *sb)
+public String *StringBuilder_ToString(const StringBuilder *sb)
 {
     return String_New(StringBuilder_GetBuffer(sb));
 }
 
-char *StringBuilder_ToCString(const StringBuilder *sb)
+public char *StringBuilder_ToCString(const StringBuilder *sb)
 {
     return CString_Copy(StringBuilder_GetBuffer(sb));
 }
 
 /**************************************/
-/* Private function definitions       */
+/* Internal function definitions      */
 /**************************************/
 
-const char *StringBuilder_GetBuffer(const StringBuilder *sb)
+internal const char *StringBuilder_GetBuffer(const StringBuilder *sb)
 {
     Validate_NotNull(sb);
 
@@ -402,7 +402,7 @@ const char *StringBuilder_GetBuffer(const StringBuilder *sb)
 }
 
 // TODO: Refactor this method!!
-void StringBuilder_AppendFormat(StringBuilder *sb, const String *format, va_list args)
+internal void StringBuilder_AppendFormat(StringBuilder *sb, const String *format, va_list args)
 {
     Validate_NotNull(sb);
     Validate_NotNull(format);

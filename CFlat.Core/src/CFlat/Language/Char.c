@@ -2,6 +2,7 @@
 
 #include "CFlat.h"
 
+/* Macros */
 #define CHAR_CONTROL            0x0001
 #define CHAR_LOWER              0x0002
 #define CHAR_UPPER              0x0004
@@ -20,8 +21,8 @@
 #define IS_ASCII(c)             !((c) & ~ASCII_MASK)
 #define CHAR_IS(c, group)       ((LookupTable[(c) & ASCII_MASK] & (group)) && IS_ASCII(c))
 
-// Maps characters to character groups.
-static const int LookupTable[128] =
+/* Private constants */
+private const int LookupTable[128] =
 {
     /* 0x00 .. 0x08 */
     CHAR_CONTROL,
@@ -180,72 +181,76 @@ static const int LookupTable[128] =
     CHAR_CONTROL,
 };
 
-bool char_IsBinaryDigit(int c)
+/**************************************/
+/* Public function definitions        */
+/**************************************/
+
+public bool char_IsBinaryDigit(int c)
 {
     return CHAR_IS(c, CHAR_BINARY);
 }
 
-bool char_IsControl(int c)
+public bool char_IsControl(int c)
 {
     return CHAR_IS(c, CHAR_CONTROL);
 }
 
-bool char_IsDigit(int c)
+public bool char_IsDigit(int c)
 {
     return CHAR_IS(c, CHAR_DIGIT);
 }
 
-bool char_IsGraphic(int c)
+public bool char_IsGraphic(int c)
 {
     return CHAR_IS(c, CHAR_GRAPHIC);
 }
 
-bool char_IsHexDigit(int c)
+public bool char_IsHexDigit(int c)
 {
     return CHAR_IS(c, CHAR_HEX);
 }
 
-bool char_IsLetter(int c)
+public bool char_IsLetter(int c)
 {
     return CHAR_IS(c, CHAR_LETTER);
 }
 
-bool char_IsLetterOrDigit(int c)
+public bool char_IsLetterOrDigit(int c)
 {
     return CHAR_IS(c, CHAR_LETTER_OR_DIGIT);
 }
 
-bool char_IsLower(int c)
+public bool char_IsLower(int c)
 {
     return CHAR_IS(c, CHAR_LOWER);
 }
 
-bool char_IsPrintable(int c)
+public bool char_IsPrintable(int c)
 {
     return CHAR_IS(c, CHAR_PRINTABLE);
 }
 
-bool char_IsPunctation(int c)
+public bool char_IsPunctation(int c)
 {
     return CHAR_IS(c, CHAR_PUNCTATION);
 }
 
-bool char_IsSeparator(int c)
+public bool char_IsSeparator(int c)
 {
     return CHAR_IS(c, CHAR_SEPARATOR);
 }
 
-bool char_IsUpper(int c)
+public bool char_IsUpper(int c)
 {
     return CHAR_IS(c, CHAR_UPPER);
 }
 
-bool char_IsWhiteSpace(int c)
+public bool char_IsWhiteSpace(int c)
 {
     return CHAR_IS(c, CHAR_WHITESPACE);
 }
 
-int char_ToLower(int c)
+public int char_ToLower(int c)
 {
     if (char_IsUpper(c)) {
         return 'a' + c - 'A';
@@ -255,7 +260,7 @@ int char_ToLower(int c)
     }
 }
 
-int char_ToUpper(int c)
+public int char_ToUpper(int c)
 {
     if (char_IsLower(c)) {
         return 'A' + c - 'a';

@@ -17,20 +17,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CFLAT_CORE_STRINGREADER_INTERNAL_H
-#define CFLAT_CORE_STRINGREADER_INTERNAL_H
+/**
+ * @file Keywords.h
+ */
 
-#include "CFlat/Language/Integer.h"
-#include "CFlat/Object.h"
+#ifndef CFLAT_CORE_LANGUAGE_KEYWORDS_H
+#define CFLAT_CORE_LANGUAGE_KEYWORDS_H
 
-/* Forward declarations */
-typedef struct String String;
-
-/* Types */
-struct StringReader {
-    Object Base;
-    const String *Value;
-    uintsize Position;
-};
+#define public
+#define internal
+#define private static
 
 #endif

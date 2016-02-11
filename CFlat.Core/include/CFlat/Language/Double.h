@@ -28,6 +28,7 @@
 
 #include <float.h>
 
+/* Macros */
  /// <summary>
  /// The radix used for the <see cref="double"/> type.
  /// </summary>
@@ -74,7 +75,6 @@
 #define double_Digits ((int)DBL_DIG)
 
 /* Functions */
-
 /// <summary>
 /// Returns whether the given number is not a number (<c>NaN</c>).
 /// </summary>

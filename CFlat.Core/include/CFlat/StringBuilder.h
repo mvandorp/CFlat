@@ -26,13 +26,16 @@
 
 #include "CFlat/Language/Integer.h"
 
+/* Forward declarations */
 typedef struct String String;
 
+/* Types */
 /// <summary>
 /// Represents a mutable string of characters.
 /// </summary>
 typedef struct StringBuilder StringBuilder;
 
+/* Functions */
 /// <summary>
 /// Allocates and initializes a new <see cref="StringBuilder"/>.
 ///

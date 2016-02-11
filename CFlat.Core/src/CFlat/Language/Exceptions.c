@@ -23,27 +23,27 @@
 typedef struct __CFLAT_EXCEPTION_STATE ExceptionState;
 typedef struct __CFLAT_EXCEPTION CFlatException;
 
-/* Extern Variables */
-jmp_buf jumpBuffer;
+/* Public variables */
+public jmp_buf jumpBuffer;
 
-/* Static Variables */
-static CFlatException exception;
-static bool exceptionHandled = true;
-static int stackSize = 0;
+/* Private variables */
+private CFlatException exception;
+private bool exceptionHandled = true;
+private int stackSize = 0;
 
-/* Static functions */
-static void PushJumpBuffer(jmp_buf stack);
-static void PopJumpBuffer(jmp_buf stack);
-static void RestoreJumpBuffer(ExceptionState *state);
-static String *GenerateExceptionText(const ExceptionHandle ex);
-static void UnhandledException(const ExceptionHandle ex);
-static bool IsInsideTryBlock(void);
+/* Private function declarations */
+private void PushJumpBuffer(jmp_buf stack);
+private void PopJumpBuffer(jmp_buf stack);
+private void RestoreJumpBuffer(ExceptionState *state);
+private String *GenerateExceptionText(const ExceptionHandle ex);
+private void UnhandledException(const ExceptionHandle ex);
+private bool IsInsideTryBlock(void);
 
 /**************************************/
-/* Extern function definitions        */
+/* Public function definitions        */
 /**************************************/
 
-void BeginTry(ExceptionState *state)
+public void BeginTry(ExceptionState *state)
 {
     assert(state != null);
 
@@ -56,7 +56,7 @@ void BeginTry(ExceptionState *state)
     exceptionHandled = true;
 }
 
-bool Catch(ExceptionState *state, ExceptionType ex)
+public bool Catch(ExceptionState *state, ExceptionType ex)
 {
     assert(state != null);
 
@@ -76,12 +76,12 @@ bool Catch(ExceptionState *state, ExceptionType ex)
     }
 }
 
-void Finally(ExceptionState *state)
+public void Finally(ExceptionState *state)
 {
     RestoreJumpBuffer(state);
 }
 
-void EndTry(ExceptionState *state)
+public void EndTry(ExceptionState *state)
 {
     RestoreJumpBuffer(state);
 
@@ -91,14 +91,14 @@ void EndTry(ExceptionState *state)
     }
 }
 
-void ThrowAgain(const ExceptionHandle ex)
+public void ThrowAgain(const ExceptionHandle ex)
 {
     Validate_NotNull(ex);
 
     ThrowNew(ex->Type, ex->UserMessage, ex->File, ex->Line);
 }
 
-void ThrowNew(ExceptionType type, const char *message, const char *file, int line)
+public void ThrowNew(ExceptionType type, const char *message, const char *file, int line)
 {
     assert(file != null);
     assert(line > 0);
@@ -113,7 +113,7 @@ void ThrowNew(ExceptionType type, const char *message, const char *file, int lin
     Throw();
 }
 
-void Throw(void)
+public void Throw(void)
 {
     // Set the exception flag.
     exceptionHandled = false;
@@ -129,14 +129,14 @@ void Throw(void)
     }
 }
 
-bool Exception_IsInstanceOf(const ExceptionHandle ex, ExceptionType type)
+public bool Exception_IsInstanceOf(const ExceptionHandle ex, ExceptionType type)
 {
     Validate_NotNull(ex);
 
     return ExceptionType_IsAssignableFrom(type, ex->Type);
 }
 
-const String *Exception_GetMessage(const ExceptionHandle ex)
+public const String *Exception_GetMessage(const ExceptionHandle ex)
 {
     Validate_NotNull(ex);
 
@@ -148,7 +148,7 @@ const String *Exception_GetMessage(const ExceptionHandle ex)
     }
 }
 
-ExceptionType Exception_GetType(const ExceptionHandle ex)
+public ExceptionType Exception_GetType(const ExceptionHandle ex)
 {
     Validate_NotNull(ex);
 
@@ -156,13 +156,13 @@ ExceptionType Exception_GetType(const ExceptionHandle ex)
 }
 
 /**************************************/
-/* Static function definitions        */
+/* Private function definitions       */
 /**************************************/
 
 /// <summary>
 /// Pushes the current jump buffer onto the stack to support nested try-catch statements.
 /// </summary>
-static void PushJumpBuffer(jmp_buf stack)
+private void PushJumpBuffer(jmp_buf stack)
 {
     Memory_Copy(jumpBuffer, stack, sizeof(jmp_buf));
 
@@ -172,7 +172,7 @@ static void PushJumpBuffer(jmp_buf stack)
 /// <summary>
 /// Sets the jump buffer to the buffer on top of the stack and pops it off the stack.
 /// </summary>
-static void PopJumpBuffer(jmp_buf stack)
+private void PopJumpBuffer(jmp_buf stack)
 {
     Memory_Copy(stack, jumpBuffer, sizeof(jmp_buf));
 
@@ -182,7 +182,7 @@ static void PopJumpBuffer(jmp_buf stack)
 /// <summary>
 /// Restores the jump buffer to that of the parent try scope, if any.
 /// </summary>
-static void RestoreJumpBuffer(ExceptionState *state)
+private void RestoreJumpBuffer(ExceptionState *state)
 {
     assert(state != null);
 
@@ -201,7 +201,7 @@ static void RestoreJumpBuffer(ExceptionState *state)
 /// <summary>
 /// Generates the error text for a given exception.
 /// </summary>
-static String *GenerateExceptionText(const ExceptionHandle ex)
+private String *GenerateExceptionText(const ExceptionHandle ex)
 {
     assert(ex != null);
 
@@ -240,7 +240,7 @@ static String *GenerateExceptionText(const ExceptionHandle ex)
 /// <param name="msg">Pointer to a string that describes the error, or <see cref="null"/>.</param>
 /// <param name="file">Pointer to a string that contains the filename where the exception occured.</param>
 /// <param name="line">The line number where the exception occured.</param>
-static void UnhandledException(const ExceptionHandle ex)
+private void UnhandledException(const ExceptionHandle ex)
 {
     assert(ex != null);
 
@@ -257,7 +257,7 @@ static void UnhandledException(const ExceptionHandle ex)
 /// Tests whether the program is currently inside a try block.
 /// </summary>
 /// <returns><see cref="true"/> if the program is inside a try block; otherwise <see cref="false"/>.</returns>
-static bool IsInsideTryBlock(void)
+private bool IsInsideTryBlock(void)
 {
     // If we are inside a try block, the stack size must be greater than zero.
     return stackSize > 0;

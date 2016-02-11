@@ -26,13 +26,16 @@
 
 #include "CFlat/Language/Integer.h"
 
+/* Forward declarations */
 typedef struct String String;
 
+/* Types */
 /// <summary>
 /// Implements a reader that reads from a string of characters.
 /// </summary>
 typedef struct StringReader StringReader;
 
+/* Functions */
 /// <summary>
 /// Allocates and initializes a new <see cref="StringReader"/> that reads from the given <see cref="String"/>.
 ///

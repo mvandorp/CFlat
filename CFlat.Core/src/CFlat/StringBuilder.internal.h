@@ -20,13 +20,16 @@
 #ifndef CFLAT_CORE_STRINGBUILDER_INTERNAL_H
 #define CFLAT_CORE_STRINGBUILDER_INTERNAL_H
 
-#include "CFlat/Object.h"
 #include "CFlat/Language/Integer.h"
+#include "CFlat/Language/Keywords.h"
+#include "CFlat/Object.h"
 
 #include <stdarg.h>
 
+/* Forward declarations */
 typedef struct String String;
 
+/* Types */
 typedef struct StringBuilder {
     Object Base;
     char *Value;
@@ -34,6 +37,7 @@ typedef struct StringBuilder {
     uintsize Capacity;
 } StringBuilder;
 
+/* Functions */
 /// <summary>
 /// Appends a string that is formatted according to the given format string, to the given <see cref="StringBuilder"/>.
 /// Each format specifier replaced with a string representation of the corresponding argument.
@@ -43,7 +47,7 @@ typedef struct StringBuilder {
 /// <param name="args">
 /// A variable argument list containing the objects to format according to the format specifiers in the format string.
 /// </param>
-void StringBuilder_AppendFormat(StringBuilder *sb, const String *format, va_list args);
+internal void StringBuilder_AppendFormat(StringBuilder *sb, const String *format, va_list args);
 
 /// <summary>
 /// Gets the internal string buffer of the given <see cref="StringBuilder"/>, which contains a null-terminated string.
@@ -53,6 +57,6 @@ void StringBuilder_AppendFormat(StringBuilder *sb, const String *format, va_list
 /// <returns>
 /// A pointer to a null-terminated string with the same value as the given <see cref="StringBuilder"/>.
 /// </returns>
-const char *StringBuilder_GetBuffer(const StringBuilder *sb);
+internal const char *StringBuilder_GetBuffer(const StringBuilder *sb);
 
 #endif

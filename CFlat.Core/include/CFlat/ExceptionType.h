@@ -26,6 +26,7 @@
 
 #include "CFlat/Language/Bool.h"
 
+/* Forward declarations */
 typedef struct String String;
 
 /* Macros */

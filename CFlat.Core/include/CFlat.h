@@ -33,6 +33,7 @@
 #include "CFlat/Language/Exceptions.h"
 #include "CFlat/Language/Float.h"
 #include "CFlat/Language/Integer.h"
+#include "CFlat/Language/Keywords.h"
 #include "CFlat/Language/Null.h"
 
 #endif

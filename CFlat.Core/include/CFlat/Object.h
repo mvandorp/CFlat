@@ -27,6 +27,7 @@
 #include "CFlat/Language/Bool.h"
 #include "CFlat/Language/Integer.h"
 
+/* Macros */
 /// <summary>
 /// Initializer for an <see cref="Object"/> that initializes the destructor to the given value.
 /// </summary>
@@ -37,6 +38,7 @@
 /// </summary>
 #define CFLAT_CONST_OBJECT_INITIALIZER() { uintsize_MaxValue, null, null }
 
+/* Types */
 /// <summary>
 /// A function to perform clean up of the given object before it gets deallocated.
 /// </summary>
@@ -71,6 +73,7 @@ typedef struct Object {
     Deallocator Deallocator;
 } Object;
 
+/* Functions */
 /// <summary>
 /// Initializes the given <see cref="Object"/> and sets the destructor.
 /// </summary>

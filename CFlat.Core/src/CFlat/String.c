@@ -28,17 +28,17 @@
 
 #include <stdarg.h>
 
-/* Static constants */
-static const String Empty = CFLAT_STRING_LITERAL("");
+/* Private constants */
+private const String Empty = CFLAT_STRING_LITERAL("");
 
-/* Extern constants */
-extern const String * const String_Empty = &Empty;
+/* Public constants */
+public const String * const String_Empty = &Empty;
 
 /**************************************/
-/* Extern function definitions        */
+/* Public function definitions        */
 /**************************************/
 
-String *String_New(const char *value)
+public String *String_New(const char *value)
 {
     String *str = Memory_Allocate(sizeof(String));
 
@@ -51,7 +51,7 @@ String *String_New(const char *value)
     return str;
 }
 
-void String_Constructor(String *str, const char *value)
+public void String_Constructor(String *str, const char *value)
 {
     // Initialize the object and set the destructor.
     Object_Constructor(str, String_Destructor);
@@ -67,14 +67,14 @@ void String_Constructor(String *str, const char *value)
     }
 }
 
-void String_Destructor(void *str)
+public void String_Destructor(void *str)
 {
     Validate_NotNull(str);
 
     Memory_Deallocate((char*)((String*)str)->Value);
 }
 
-char String_GetCharAt(const String *str, uintsize index)
+public char String_GetCharAt(const String *str, uintsize index)
 {
     Validate_NotNull(str);
     Validate_IsTrue(index < str->Length, ArgumentOutOfRangeException,
@@ -83,21 +83,21 @@ char String_GetCharAt(const String *str, uintsize index)
     return str->Value[index];
 }
 
-const char *String_GetCString(const String *str)
+public const char *String_GetCString(const String *str)
 {
     Validate_NotNull(str);
 
     return str->Value;
 }
 
-uintsize String_GetLength(const String *str)
+public uintsize String_GetLength(const String *str)
 {
     Validate_NotNull(str);
 
     return str->Length;
 }
 
-bool String_Equals(const String *str1, const String *str2)
+public bool String_Equals(const String *str1, const String *str2)
 {
     return str1 == str2 || (
         str1 != null &&
@@ -106,7 +106,7 @@ bool String_Equals(const String *str1, const String *str2)
         CString_Equals(String_GetCString(str1), String_GetCString(str2)));
 }
 
-bool String_EqualsCString(const String *str1, const char *str2)
+public bool String_EqualsCString(const String *str1, const char *str2)
 {
     return (str1 == null && str2 == null) || (
         str1 != null &&
@@ -114,7 +114,7 @@ bool String_EqualsCString(const String *str1, const char *str2)
         CString_Equals(String_GetCString(str1), str2));
 }
 
-String *String_FormatCString(const char *format, ...)
+public String *String_FormatCString(const char *format, ...)
 {
     Validate_NotNull(format);
 
@@ -131,7 +131,7 @@ String *String_FormatCString(const char *format, ...)
     return result;
 }
 
-String *String_FormatString(const String *format, ...)
+public String *String_FormatString(const String *format, ...)
 {
     Validate_NotNull(format);
 
@@ -145,17 +145,17 @@ String *String_FormatString(const String *format, ...)
     return result;
 }
 
-uintsize String_IndexOf(const String *str, char value)
+public uintsize String_IndexOf(const String *str, char value)
 {
     return String_IndexOf_Substring(str, value, 0, String_GetLength(str));
 }
 
-uintsize String_IndexOf_Offset(const String *str, char value, uintsize startIndex)
+public uintsize String_IndexOf_Offset(const String *str, char value, uintsize startIndex)
 {
     return String_IndexOf_Substring(str, value, startIndex, String_GetLength(str) - startIndex);
 }
 
-uintsize String_IndexOf_Substring(const String *str, char value, uintsize startIndex, uintsize count)
+public uintsize String_IndexOf_Substring(const String *str, char value, uintsize startIndex, uintsize count)
 {
     Validate_NotNull(str);
     Validate_IsTrue(startIndex <= str->Length, ArgumentOutOfRangeException,
@@ -175,17 +175,17 @@ uintsize String_IndexOf_Substring(const String *str, char value, uintsize startI
     return InvalidIndex;
 }
 
-uintsize String_IndexOfAny(const String *str, const char *anyOf)
+public uintsize String_IndexOfAny(const String *str, const char *anyOf)
 {
     return String_IndexOfAny_Substring(str, anyOf, 0, String_GetLength(str));
 }
 
-uintsize String_IndexOfAny_Offset(const String *str, const char *anyOf, uintsize startIndex)
+public uintsize String_IndexOfAny_Offset(const String *str, const char *anyOf, uintsize startIndex)
 {
     return String_IndexOfAny_Substring(str, anyOf, startIndex, String_GetLength(str) - startIndex);
 }
 
-uintsize String_IndexOfAny_Substring(const String *str, const char *anyOf, uintsize startIndex, uintsize count)
+public uintsize String_IndexOfAny_Substring(const String *str, const char *anyOf, uintsize startIndex, uintsize count)
 {
     Validate_NotNull(str);
     Validate_NotNull(anyOf);
@@ -206,7 +206,7 @@ uintsize String_IndexOfAny_Substring(const String *str, const char *anyOf, uints
     return InvalidIndex;
 }
 
-uintsize String_IndexOfCString(const String *str, const char *value)
+public uintsize String_IndexOfCString(const String *str, const char *value)
 {
     String valueBuffer;
     String *valueWrapper = String_WrapCString(value, &valueBuffer);
@@ -214,7 +214,7 @@ uintsize String_IndexOfCString(const String *str, const char *value)
     return String_IndexOfString(str, valueWrapper);
 }
 
-uintsize String_IndexOfCString_Offset(const String *str, const char *value, uintsize startIndex)
+public uintsize String_IndexOfCString_Offset(const String *str, const char *value, uintsize startIndex)
 {
     String valueBuffer;
     String *valueWrapper = String_WrapCString(value, &valueBuffer);
@@ -222,7 +222,11 @@ uintsize String_IndexOfCString_Offset(const String *str, const char *value, uint
     return String_IndexOfString_Offset(str, valueWrapper, startIndex);
 }
 
-uintsize String_IndexOfCString_Substring(const String *str, const char *value, uintsize startIndex, uintsize count)
+public uintsize String_IndexOfCString_Substring(
+    const String *str,
+    const char *value,
+    uintsize startIndex,
+    uintsize count)
 {
     String valueBuffer;
     String *valueWrapper = String_WrapCString(value, &valueBuffer);
@@ -230,17 +234,21 @@ uintsize String_IndexOfCString_Substring(const String *str, const char *value, u
     return String_IndexOfString_Substring(str, valueWrapper, startIndex, count);
 }
 
-uintsize String_IndexOfString(const String *str, const String *value)
+public uintsize String_IndexOfString(const String *str, const String *value)
 {
     return String_IndexOfString_Substring(str, value, 0, String_GetLength(str));
 }
 
-uintsize String_IndexOfString_Offset(const String *str, const String *value, uintsize startIndex)
+public uintsize String_IndexOfString_Offset(const String *str, const String *value, uintsize startIndex)
 {
     return String_IndexOfString_Substring(str, value, startIndex, String_GetLength(str) - startIndex);
 }
 
-uintsize String_IndexOfString_Substring(const String *str, const String *value, uintsize startIndex, uintsize count)
+public uintsize String_IndexOfString_Substring(
+    const String *str,
+    const String *value,
+    uintsize startIndex,
+    uintsize count)
 {
     Validate_NotNull(str);
     Validate_NotNull(value);
@@ -281,17 +289,17 @@ uintsize String_IndexOfString_Substring(const String *str, const String *value, 
     return InvalidIndex;
 }
 
-uintsize String_LastIndexOf(const String *str, char value)
+public uintsize String_LastIndexOf(const String *str, char value)
 {
     return String_LastIndexOf_Substring(str, value, String_GetLength(str) - 1, String_GetLength(str));
 }
 
-uintsize String_LastIndexOf_Offset(const String *str, char value, uintsize startIndex)
+public uintsize String_LastIndexOf_Offset(const String *str, char value, uintsize startIndex)
 {
     return String_LastIndexOf_Substring(str, value, startIndex, startIndex + 1);
 }
 
-uintsize String_LastIndexOf_Substring(const String *str, char value, uintsize startIndex, uintsize count)
+public uintsize String_LastIndexOf_Substring(const String *str, char value, uintsize startIndex, uintsize count)
 {
     Validate_NotNull(str);
     Validate_IsTrue(startIndex < str->Length || str->Length == 0, ArgumentOutOfRangeException,
@@ -316,7 +324,7 @@ uintsize String_LastIndexOf_Substring(const String *str, char value, uintsize st
     return InvalidIndex;
 }
 
-uintsize String_LastIndexOfAny(const String *str, const char *anyOf)
+public uintsize String_LastIndexOfAny(const String *str, const char *anyOf)
 {
     Validate_NotNull(str);
 
@@ -328,12 +336,16 @@ uintsize String_LastIndexOfAny(const String *str, const char *anyOf)
     }
 }
 
-uintsize String_LastIndexOfAny_Offset(const String *str, const char *anyOf, uintsize startIndex)
+public uintsize String_LastIndexOfAny_Offset(const String *str, const char *anyOf, uintsize startIndex)
 {
     return String_LastIndexOfAny_Substring(str, anyOf, startIndex, startIndex + 1);
 }
 
-uintsize String_LastIndexOfAny_Substring(const String *str, const char *anyOf, uintsize startIndex, uintsize count)
+public uintsize String_LastIndexOfAny_Substring(
+    const String *str,
+    const char *anyOf,
+    uintsize startIndex,
+    uintsize count)
 {
     Validate_NotNull(str);
     Validate_IsTrue(startIndex < str->Length || str->Length == 0, ArgumentOutOfRangeException,
@@ -358,7 +370,7 @@ uintsize String_LastIndexOfAny_Substring(const String *str, const char *anyOf, u
     return InvalidIndex;
 }
 
-uintsize String_LastIndexOfCString(const String *str, const char *value)
+public uintsize String_LastIndexOfCString(const String *str, const char *value)
 {
     String valueBuffer;
     String *valueWrapper = String_WrapCString(value, &valueBuffer);
@@ -366,7 +378,7 @@ uintsize String_LastIndexOfCString(const String *str, const char *value)
     return String_LastIndexOfString(str, valueWrapper);
 }
 
-uintsize String_LastIndexOfCString_Offset(const String *str, const char *value, uintsize startIndex)
+public uintsize String_LastIndexOfCString_Offset(const String *str, const char *value, uintsize startIndex)
 {
     String valueBuffer;
     String *valueWrapper = String_WrapCString(value, &valueBuffer);
@@ -374,7 +386,11 @@ uintsize String_LastIndexOfCString_Offset(const String *str, const char *value, 
     return String_LastIndexOfString_Offset(str, valueWrapper, startIndex);
 }
 
-uintsize String_LastIndexOfCString_Substring(const String *str, const char *value, uintsize startIndex, uintsize count)
+public uintsize String_LastIndexOfCString_Substring(
+    const String *str,
+    const char *value,
+    uintsize startIndex,
+    uintsize count)
 {
     String valueBuffer;
     String *valueWrapper = String_WrapCString(value, &valueBuffer);
@@ -382,7 +398,7 @@ uintsize String_LastIndexOfCString_Substring(const String *str, const char *valu
     return String_LastIndexOfString_Substring(str, valueWrapper, startIndex, count);
 }
 
-uintsize String_LastIndexOfString(const String *str, const String *value)
+public uintsize String_LastIndexOfString(const String *str, const String *value)
 {
     Validate_NotNull(str);
     Validate_NotNull(value);
@@ -400,12 +416,12 @@ uintsize String_LastIndexOfString(const String *str, const String *value)
     }
 }
 
-uintsize String_LastIndexOfString_Offset(const String *str, const String *value, uintsize startIndex)
+public uintsize String_LastIndexOfString_Offset(const String *str, const String *value, uintsize startIndex)
 {
     return String_LastIndexOfString_Substring(str, value, startIndex, startIndex + 1);
 }
 
-uintsize String_LastIndexOfString_Substring(
+public uintsize String_LastIndexOfString_Substring(
     const String *str,
     const String *value,
     uintsize startIndex,
@@ -455,7 +471,7 @@ uintsize String_LastIndexOfString_Substring(
     return InvalidIndex;
 }
 
-char *String_ToCString(const String *str)
+public char *String_ToCString(const String *str)
 {
     Validate_NotNull(str);
 
@@ -463,10 +479,10 @@ char *String_ToCString(const String *str)
 }
 
 /**************************************/
-/* Private function definitions       */
+/* Internal function definitions      */
 /**************************************/
 
-String *String_Format(const String *format, va_list args)
+internal String *String_Format(const String *format, va_list args)
 {
     assert(format != null);
 
@@ -478,7 +494,7 @@ String *String_Format(const String *format, va_list args)
     return StringBuilder_DeleteAndToString(&sb);
 }
 
-String *String_WrapCString(const char *value, String *buffer)
+internal String *String_WrapCString(const char *value, String *buffer)
 {
     assert(buffer != null);
 

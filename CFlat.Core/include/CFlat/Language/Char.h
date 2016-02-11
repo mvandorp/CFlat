@@ -26,6 +26,7 @@
 
 #include "CFlat/Language/Bool.h"
 
+/* Macros */
 /// <summary>
 /// Represents the smallest possible value of <see cref="char"/>.
 /// </summary>
@@ -36,6 +37,7 @@
 /// </summary>
 #define char_MaxValue ((char)CHAR_MAX)
 
+/* Functions */
 /// <summary>
 /// Returns whether the given character is catagorized as a binary digit.
 /// </summary>

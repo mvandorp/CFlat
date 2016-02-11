@@ -26,11 +26,7 @@
 #include "CFlat/String.h"
 #include "CFlat/Validate.h"
 
-/**************************************/
-/* Extern function definitions        */
-/**************************************/
-
-StringReader *StringReader_New(const String *str)
+public StringReader *StringReader_New(const String *str)
 {
     Validate_NotNull(str);
 
@@ -46,7 +42,7 @@ StringReader *StringReader_New(const String *str)
     return reader;
 }
 
-void StringReader_Constructor(StringReader *reader, const String *str)
+public void StringReader_Constructor(StringReader *reader, const String *str)
 {
     Validate_NotNull(reader);
     Validate_NotNull(str);
@@ -57,7 +53,7 @@ void StringReader_Constructor(StringReader *reader, const String *str)
     reader->Position = 0;
 }
 
-void StringReader_Destructor(void *reader)
+public void StringReader_Destructor(void *reader)
 {
     Validate_NotNull(reader);
 
@@ -66,12 +62,12 @@ void StringReader_Destructor(void *reader)
     Object_Release(stringReader->Value);
 }
 
-int StringReader_Peek(const StringReader *reader)
+public int StringReader_Peek(const StringReader *reader)
 {
     return StringReader_PeekOffset(reader, 0);
 }
 
-int StringReader_PeekOffset(const StringReader *reader, uintsize offset)
+public int StringReader_PeekOffset(const StringReader *reader, uintsize offset)
 {
     Validate_NotNull(reader);
 
@@ -83,7 +79,7 @@ int StringReader_PeekOffset(const StringReader *reader, uintsize offset)
     }
 }
 
-int StringReader_Read(StringReader *reader)
+public int StringReader_Read(StringReader *reader)
 {
     Validate_NotNull(reader);
 
@@ -95,7 +91,7 @@ int StringReader_Read(StringReader *reader)
     }
 }
 
-void StringReader_Skip(StringReader *reader, uintsize amount)
+public void StringReader_Skip(StringReader *reader, uintsize amount)
 {
     Validate_NotNull(reader);
 

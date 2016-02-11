@@ -27,8 +27,10 @@
 #include "CFlat/Language/Bool.h"
 #include "CFlat/Language/Integer.h"
 
+/* Forward declarations */
 typedef struct String String;
 
+/* Functions */
 /// <summary>
 /// Gets the length of a null-terminated string.
 ///

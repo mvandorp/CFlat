@@ -23,7 +23,7 @@
 #include "CFlat/Memory.h"
 #include "CFlat/Validate.h"
 
-void Object_Constructor(void *obj, Destructor dtor)
+public void Object_Constructor(void *obj, Destructor dtor)
 {
     Validate_NotNull(obj);
 
@@ -34,7 +34,7 @@ void Object_Constructor(void *obj, Destructor dtor)
     object->Deallocator = null;
 }
 
-void Object_SetDeallocator(void *obj, Deallocator dealloc)
+public void Object_SetDeallocator(void *obj, Deallocator dealloc)
 {
     Validate_NotNull(obj);
 
@@ -46,7 +46,7 @@ void Object_SetDeallocator(void *obj, Deallocator dealloc)
     }
 }
 
-void Object_SetDestructor(void *obj, Destructor dtor)
+public void Object_SetDestructor(void *obj, Destructor dtor)
 {
     Validate_NotNull(obj);
 
@@ -58,7 +58,7 @@ void Object_SetDestructor(void *obj, Destructor dtor)
     }
 }
 
-void Object_Delete(const void *obj)
+public void Object_Delete(const void *obj)
 {
     if (obj == null) {
         return;
@@ -75,7 +75,7 @@ void Object_Delete(const void *obj)
     }
 }
 
-const void *Object_Aquire(const void *obj)
+public const void *Object_Aquire(const void *obj)
 {
     if (obj == null) {
         return null;
@@ -91,7 +91,7 @@ const void *Object_Aquire(const void *obj)
     return obj;
 }
 
-bool Object_Release(const void *obj)
+public bool Object_Release(const void *obj)
 {
     if (obj == null) {
         return false;

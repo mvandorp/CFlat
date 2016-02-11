@@ -25,7 +25,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void *Memory_Allocate(uintsize size)
+public void *Memory_Allocate(uintsize size)
 {
     if (size == 0) {
         return null;
@@ -39,7 +39,7 @@ void *Memory_Allocate(uintsize size)
     return memory;
 }
 
-void *Memory_AllocateZeroed(uintsize size)
+public void *Memory_AllocateZeroed(uintsize size)
 {
     if (size == 0) {
         return null;
@@ -53,12 +53,12 @@ void *Memory_AllocateZeroed(uintsize size)
     return memory;
 }
 
-void Memory_Deallocate(void *memory)
+public void Memory_Deallocate(void *memory)
 {
     free(memory);
 }
 
-void *Memory_Reallocate(void *memory, uintsize newSize)
+public void *Memory_Reallocate(void *memory, uintsize newSize)
 {
     if (newSize == 0) {
         Memory_Deallocate(memory);
@@ -74,7 +74,7 @@ void *Memory_Reallocate(void *memory, uintsize newSize)
     return memory;
 }
 
-void Memory_Copy(const void *source, void *destination, uintsize length)
+public void Memory_Copy(const void *source, void *destination, uintsize length)
 {
     Validate_NotNull(source);
     Validate_NotNull(destination);
@@ -82,7 +82,7 @@ void Memory_Copy(const void *source, void *destination, uintsize length)
     memmove(destination, source, length);
 }
 
-void Memory_CopyOffset(
+public void Memory_CopyOffset(
     const void *source,
     uintsize sourceOffset,
     void *destination,

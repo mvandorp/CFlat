@@ -27,16 +27,19 @@
 #include "CFlat/Language/Bool.h"
 #include "CFlat/Language/Integer.h"
 
+/* Types */
 /// <summary>
 /// Represents text as an immutable string of characters.
 /// </summary>
 typedef struct String String;
 
+/* Constants */
 /// <summary>
 /// Represents an empty string.
 /// </summary>
 extern const String * const String_Empty;
 
+/* Functions */
 /// <summary>
 /// Allocates and initializes a new <see cref="String"/> to the value represented by the given null-terminated string.
 ///

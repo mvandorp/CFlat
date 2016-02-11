@@ -35,11 +35,7 @@
     #define CFLAT_BOOL char
 #endif
 
-/// <summary>
-/// Represents a boolean value, which can be either <see cref="true"/> or <see cref="false"/>.
-/// </summary>
-typedef CFLAT_BOOL bool;
-
+/* Macros */
 /// <summary>
 /// The <see cref="bool"/> value <c>true</c>.
 /// </summary>
@@ -49,6 +45,12 @@ typedef CFLAT_BOOL bool;
 /// The <see cref="bool"/> value <c>false</c>.
 /// </summary>
 #define false ((bool)0)
+
+/* Types */
+/// <summary>
+/// Represents a boolean value, which can be either <see cref="true"/> or <see cref="false"/>.
+/// </summary>
+typedef CFLAT_BOOL bool;
 
 #undef CFLAT_BOOL
 

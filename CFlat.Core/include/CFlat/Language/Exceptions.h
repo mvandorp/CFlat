@@ -29,6 +29,7 @@
 
 #include <setjmp.h>
 
+/* Forward declarations */
 typedef struct String String;
 
 /* Macros */
