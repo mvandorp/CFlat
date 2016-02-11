@@ -30,9 +30,15 @@
     <ClInclude Include="include\CFlat\Memory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\CFlat\Object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Memory.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Object.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
