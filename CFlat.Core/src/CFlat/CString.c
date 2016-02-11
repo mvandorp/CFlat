@@ -10,7 +10,7 @@ uintsize CString_Length(const char *str)
     const char *start = str;
 
     // Walk to the end of the string, indicated by a terminating null character.
-    while (*str != '0') {
+    while (*str != '\0') {
         str++;
     }
 
