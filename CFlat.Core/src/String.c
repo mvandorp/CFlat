@@ -14,6 +14,7 @@ String *String_New(const char *cString)
     // Allocate a new string and set the destructor callback.
     String *str = Object_New(sizeof(String), (Destructor)String_Destructor);
 
+    // TODO: If the allocation failed, throw an OutOfMemoryException.
     assert(str != null);
 
     // Initialize the string to the value represented by cString.
@@ -24,6 +25,7 @@ String *String_New(const char *cString)
 
 void String_Constructor(String *str, const char *cString)
 {
+    // TODO: If str is null, throw an ArgumentNullException.
     assert(str != null);
 
     if (cString == null) {
@@ -34,12 +36,14 @@ void String_Constructor(String *str, const char *cString)
         str->length = CString_Length(cString);
         str->cString = CString_Duplicate(cString);
 
+        // TODO: If the duplication failed, throw an OutOfMemoryException.
         assert(str->cString != null);
     }
 }
 
 void String_Destructor(String *str)
 {
+    // TODO: If str is null, throw an ArgumentNullException.
     assert(str != null);
 
     Memory_Deallocate(str->cString);

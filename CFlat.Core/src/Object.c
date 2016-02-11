@@ -18,6 +18,7 @@ void *Object_New(uintsize size, Destructor dtor)
 {
     Object *object = Memory_Allocate(size + sizeof(Object));
 
+    // TODO: If the allocation failed, throw an OutOfMemoryException.
     assert(object != null);
 
     object->referenceCount = 1;

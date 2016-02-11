@@ -4,6 +4,7 @@
 
 uintsize CString_Length(const char *str)
 {
+    // TODO: If str is null, throw an ArgumentNullException.
     assert(str != null);
 
     const char *start = str;
@@ -19,6 +20,7 @@ uintsize CString_Length(const char *str)
 
 char *CString_Duplicate(const char *str)
 {
+    // TODO: If str is null, throw an ArgumentNullException.
     assert(str != null);
 
     // Add one to the length to account for the terminating null character.

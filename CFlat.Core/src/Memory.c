@@ -39,6 +39,7 @@ void *Memory_Reallocate(void *memory, uintsize newSize)
 
 void Memory_Copy(const void *source, void *destination, uintsize length)
 {
+    // TODO: If source or destination is null, throw an ArgumentNullException.
 	assert(source != null);
 	assert(destination != null);
 
@@ -52,6 +53,7 @@ void Memory_CopyOffset(
     uintsize destinationOffset,
     uintsize length)
 {
+    // TODO: If source or destination is null, throw an ArgumentNullException.
 	assert(source != null);
 	assert(destination != null);
 
