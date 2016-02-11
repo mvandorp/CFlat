@@ -43,12 +43,12 @@ typedef CFLAT_BOOL bool;
 /// <summary>
 /// The <see cref="bool"/> value <c>true</c>.
 /// </summary>
-extern const bool true;
+#define true ((bool)1)
 
 /// <summary>
 /// The <see cref="bool"/> value <c>false</c>.
 /// </summary>
-extern const bool false;
+#define false ((bool)0)
 
 #undef CFLAT_BOOL
 

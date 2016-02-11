@@ -33,7 +33,6 @@
     <ClCompile Include="src\CFlat\String.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\CFlat\Language\Boolean.c" />
     <ClCompile Include="src\CFlat\Language\Integer.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

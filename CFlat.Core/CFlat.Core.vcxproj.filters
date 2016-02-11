@@ -56,9 +56,6 @@
     <ClCompile Include="src\CFlat\StringHelper.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\CFlat\Language\Boolean.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\CFlat\Language\Integer.c">
       <Filter>Source Files</Filter>
     </ClCompile>
