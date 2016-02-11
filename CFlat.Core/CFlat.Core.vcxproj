@@ -10,6 +10,9 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\CFlat\Language\Boolean.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9C532CDA-BB89-4A6A-934C-CBC5CD94BC02}</ProjectGuid>
     <RootNamespace>CFlatCore</RootNamespace>
