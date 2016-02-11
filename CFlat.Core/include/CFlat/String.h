@@ -14,7 +14,7 @@ typedef struct String String;
 
 /// <summary>
 /// Allocates and initializes a new <see cref="String"/> to the value represented by the given null-terminated string.
-/// 
+///
 /// The lifetime of the string should be managed with Object_Aquire(), Object_Release() and Object_Delete().
 /// </summary>
 /// <param name="cString">Pointer to a null-terminated string.</param>

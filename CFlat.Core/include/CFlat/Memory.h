@@ -16,7 +16,7 @@
 /// <returns>
 /// On success, returns the pointer to the newly allocated memory. The returned pointer must be deallocated with
 /// Memory_Deallocate() or Memory_Reallocate().
-/// 
+///
 /// On failure, returns <see cref="null"/>.
 /// </returns>
 /// <seealso cref="Memory_AllocateZeroed()"/>
@@ -33,7 +33,7 @@ void *Memory_Allocate(uintsize size);
 /// <returns>
 /// On success, returns the pointer to the newly allocated memory. The returned pointer must be deallocated with
 /// Memory_Deallocate() or Memory_Reallocate().
-/// 
+///
 /// On failure, returns <see cref="null"/>.
 /// </returns>
 /// <seealso cref="Memory_Allocate()"/>
@@ -43,9 +43,9 @@ void *Memory_AllocateZeroed(uintsize size);
 
 /// <summary>
 /// Deallocates memory previously allocated by Memory_Allocate(), Memory_AllocateZeroed() or Memory_Reallocate().
-/// 
+///
 /// If <paramref name="memory"/> is <see cref="null"/>, the function does nothing.
-/// 
+///
 /// The behaviour is undefined if the memory pointed to by <paramref name="memory"/> has already been deallocated by
 /// Memory_Deallocate() or Memory_Reallocate().
 /// </summary>
@@ -58,7 +58,7 @@ void Memory_Deallocate(void *memory);
 /// <summary>
 /// Reallocates memory previously allocated by Memory_Allocate(), Memory_AllocateZeroed() or Memory_Reallocate() so
 /// that it is <paramref name="newSize"/> bytes long.
-/// 
+///
 /// The reallocation is achieved through either:
 /// <list>
 /// <item>
@@ -76,18 +76,18 @@ void Memory_Deallocate(void *memory);
 /// </description>
 /// </item>
 /// </list>
-/// 
+///
 /// If <paramref name="newSize"/> is greater than the old size, the newly allocated portion of the memory block remains
 /// uninitialized.
-/// 
+///
 /// If memory allocation fails, the old memory block is not freed and <see cref="null"/> is returned.
-/// 
+///
 /// If <paramref name="memory"/> is <see cref="null"/>, the behaviour is the same as calling
 /// <c>Memory_Allocate(newSize)</c>.
 ///
 /// If <paramref name="newSize"/> is zero, the behaviour is the same as calling <c>Memory_Deallocate(memory)</c>, and
 /// <see cref="null"/> is returned.
-/// 
+///
 /// The behaviour is undefined if the memory pointed to by <paramref name="memory"/> has been deallocated by
 /// Memory_Deallocate() or Memory_Reallocate().
 /// </summary>
@@ -96,7 +96,7 @@ void Memory_Deallocate(void *memory);
 /// <returns>
 /// On success, returns the pointer to the reallocated memory, which may be the same are <paramref name="memory"/> or a
 /// different value. The returned pointer must be deallocated with Memory_Deallocate() or Memory_Reallocate().
-/// 
+///
 /// On failure, returns <see cref="null"/>.
 /// </returns>
 /// <seealso cref="Memory_Allocate()"/>
@@ -125,9 +125,9 @@ void Memory_Copy(const void *source, void *destination, uintsize length);
 /// <param name="length">The number of bytes to copy.</param>
 void Memory_CopyOffset(
     const void *source,
-    uintsize sourceOffset, 
+    uintsize sourceOffset,
     void *destination,
-    uintsize destinationOffset, 
+    uintsize destinationOffset,
     uintsize length);
 
 #endif

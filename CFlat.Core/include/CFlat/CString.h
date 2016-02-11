@@ -9,7 +9,7 @@
 
 /// <summary>
 /// Gets the length of a null-terminated string.
-/// 
+///
 /// The length does not include the terminating null character.
 /// </summary>
 /// <param name="str">A null-terminated string.</param>
@@ -23,7 +23,7 @@ uintsize CString_Length(const char *str);
 /// <param name="str">A null-terminated string.</param>
 /// <returns>
 /// On success, returns the pointer to the copy of the string.
-/// 
+///
 /// On failure, returns <see cref="null"/>.
 char *CString_Duplicate(const char *str);
 

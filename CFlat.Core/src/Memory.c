@@ -5,25 +5,25 @@
 
 void *Memory_Allocate(uintsize size)
 {
-	if (size == 0) {
-		return null;
-	}
+    if (size == 0) {
+        return null;
+    }
 
-	return malloc(size);
+    return malloc(size);
 }
 
 void *Memory_AllocateZeroed(uintsize size)
 {
-	if (size == 0) {
-		return null;
-	}
+    if (size == 0) {
+        return null;
+    }
 
-	return calloc(1, size);
+    return calloc(1, size);
 }
 
 void Memory_Deallocate(void *memory)
 {
-	free(memory);
+    free(memory);
 }
 
 void *Memory_Reallocate(void *memory, uintsize newSize)
@@ -40,10 +40,10 @@ void *Memory_Reallocate(void *memory, uintsize newSize)
 void Memory_Copy(const void *source, void *destination, uintsize length)
 {
     // TODO: If source or destination is null, throw an ArgumentNullException.
-	assert(source != null);
-	assert(destination != null);
+    assert(source != null);
+    assert(destination != null);
 
-	memmove(destination, source, length);
+    memmove(destination, source, length);
 }
 
 void Memory_CopyOffset(
@@ -54,11 +54,11 @@ void Memory_CopyOffset(
     uintsize length)
 {
     // TODO: If source or destination is null, throw an ArgumentNullException.
-	assert(source != null);
-	assert(destination != null);
+    assert(source != null);
+    assert(destination != null);
 
-	byte *src = (byte*)source + sourceOffset;
-	byte *dest = (byte*)destination + destinationOffset;
+    byte *src = (byte*)source + sourceOffset;
+    byte *dest = (byte*)destination + destinationOffset;
 
-	Memory_Copy(src, dest, length);
+    Memory_Copy(src, dest, length);
 }

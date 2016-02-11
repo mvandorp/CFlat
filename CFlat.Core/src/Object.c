@@ -47,7 +47,7 @@ void *Object_Aquire(void *obj)
     if (obj == null) {
         return;
     }
-    
+
     Object *object = Object_DataToObject(obj);
 
     object->referenceCount++;
@@ -60,7 +60,7 @@ bool Object_Release(void *obj)
     if (obj == null) {
         return false;
     }
-    
+
     Object *object = Object_DataToObject(obj);
 
     object->referenceCount--;
