@@ -768,7 +768,7 @@ WARN_LOGFILE           =
 # spaces.
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = "./"
+INPUT                  = "./include"
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
@@ -871,7 +871,11 @@ EXCLUDE_PATTERNS       =
 # Note that the wildcards are matched against the file with absolute path, so to
 # exclude all test directories use the pattern */test/*
 
-EXCLUDE_SYMBOLS        = CFLAT_BOOL
+EXCLUDE_SYMBOLS        =                    \
+    CFLAT_BOOL                              \
+    CFLAT_EXCEPTIONTYPE_BASE_BITS           \
+    CFLAT_EXCEPTIONTYPE_BASE_VALUE          \
+    CFLAT_EXCEPTIONTYPE_VALUE
 
 # The EXAMPLE_PATH tag can be used to specify one or more files or directories
 # that contain example code fragments that are included (see the \include

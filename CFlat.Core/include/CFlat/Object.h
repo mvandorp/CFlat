@@ -98,7 +98,7 @@ void Object_SetDeallocator(void *obj, Deallocator deallocator);
 /// Sets the destructor of the given <see cref="Object"/>.
 /// </summary>
 /// <param name="obj">Pointer to an <see cref="Object"/>.</param>
-/// <param name="deallocator">
+/// <param name="dtor">
 /// Pointer to a <see cref="Destructor"/> to call when the object needs to be destroyed, or <see cref="null"/> if
 /// <paramref name="obj"/> should not automatically be destroyed.
 /// </param>

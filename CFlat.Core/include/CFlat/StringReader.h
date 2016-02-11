@@ -87,7 +87,7 @@ int StringReader_Read(StringReader *reader);
 /// Advances the position of the reader by the given amount.
 /// </summary>
 /// <param name="reader">Pointer to a <see cref="StringReader"/>.</param>
-/// <param name="name">The number of characters to skip.</param>
+/// <param name="amount">The number of characters to skip.</param>
 void StringReader_Skip(StringReader *reader, uintsize amount);
 
 #ifdef CFLAT_CORE_INTERNAL
