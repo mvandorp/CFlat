@@ -14,6 +14,8 @@
     <ClInclude Include="include\CFlat.h" />
     <ClInclude Include="include\CFlat\CString.h" />
     <ClInclude Include="include\CFlat\Language\Boolean.h" />
+    <ClInclude Include="include\CFlat\Language\Exceptions.h" />
+    <ClInclude Include="include\CFlat\ExceptionType.h" />
     <ClInclude Include="include\CFlat\Language\Integer.h" />
     <ClInclude Include="include\CFlat\Language\Null.h" />
     <ClInclude Include="include\CFlat\Memory.h" />
@@ -25,15 +27,14 @@
     <ClInclude Include="src\CFlat\StringHelper.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\CFlat\ExceptionType.c" />
+    <ClCompile Include="src\CFlat\Language\Exceptions.c" />
     <ClCompile Include="src\CFlat\StringBuilder.c" />
     <ClCompile Include="src\CFlat\StringHelper.c" />
     <ClCompile Include="src\CFlat\CString.c" />
     <ClCompile Include="src\CFlat\Memory.c" />
     <ClCompile Include="src\CFlat\Object.c" />
     <ClCompile Include="src\CFlat\String.c" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\CFlat\Language\Integer.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9C532CDA-BB89-4A6A-934C-CBC5CD94BC02}</ProjectGuid>

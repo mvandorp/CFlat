@@ -51,12 +51,15 @@
     <ClInclude Include="src\CFlat\StringBuilder-private.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\CFlat\Language\Exceptions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CFlat\ExceptionType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CFlat\StringHelper.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CFlat\Language\Integer.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CFlat\CString.c">
@@ -72,6 +75,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CFlat\StringBuilder.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\Language\Exceptions.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\ExceptionType.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
