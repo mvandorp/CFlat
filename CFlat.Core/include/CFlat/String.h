@@ -425,4 +425,8 @@ uintsize String_LastIndexOfString_Substring(
 /// </returns>
 char *String_ToCString(const String *str);
 
+#ifdef CFLAT_CORE_INTERNAL
+ #include "CFlat/String.internal.h"
+#endif
+
 #endif

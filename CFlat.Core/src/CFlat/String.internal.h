@@ -17,10 +17,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CFLAT_CORE_STRING_PRIVATE_H
-#define CFLAT_CORE_STRING_PRIVATE_H
+#ifndef CFLAT_CORE_STRING_INTERNAL_H
+#define CFLAT_CORE_STRING_INTERNAL_H
 
 #include "CFlat/Object.h"
+#include "CFlat/Language/Integer.h"
 
 #include <stdarg.h>
 

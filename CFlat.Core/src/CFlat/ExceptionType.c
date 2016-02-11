@@ -2,7 +2,6 @@
 
 #include "CFlat.h"
 #include "CFlat/String.h"
-#include "CFlat/String-private.h"
 
 #define EXCEPTION(name, message)
 #define EXCEPTIONS \

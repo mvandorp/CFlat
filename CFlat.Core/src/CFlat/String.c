@@ -18,14 +18,12 @@
  */
 
 #include "CFlat/String.h"
-#include "CFlat/String-private.h"
 
 #include "CFlat.h"
 #include "CFlat/CString.h"
 #include "CFlat/Memory.h"
 #include "CFlat/Object.h"
 #include "CFlat/StringBuilder.h"
-#include "CFlat/StringBuilder-private.h"
 #include "CFlat/Validate.h"
 
 #include <stdarg.h>

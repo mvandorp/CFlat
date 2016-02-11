@@ -22,7 +22,6 @@
 #include "CFlat.h"
 #include "CFlat/Memory.h"
 #include "CFlat/String.h"
-#include "CFlat/String-private.h"
 #include "CFlat/Validate.h"
 
 uintsize CString_Length(const char *str)

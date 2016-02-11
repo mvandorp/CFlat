@@ -4,7 +4,6 @@
 #include "CFlat/Memory.h"
 #include "CFlat/Object.h"
 #include "CFlat/String.h"
-#include "CFlat/String-private.h"
 #include "CFlat/Validate.h"
 
 #include <stdio.h>

@@ -303,4 +303,8 @@ String *StringBuilder_ToString(const StringBuilder *sb);
 /// </returns>
 char *StringBuilder_ToCString(const StringBuilder *sb);
 
+#ifdef CFLAT_CORE_INTERNAL
+ #include "CFlat/StringBuilder.internal.h"
+#endif
+
 #endif

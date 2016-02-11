@@ -17,13 +17,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CFLAT_CORE_STRINGBUILDER_PRIVATE_H
-#define CFLAT_CORE_STRINGBUILDER_PRIVATE_H
+#ifndef CFLAT_CORE_STRINGBUILDER_INTERNAL_H
+#define CFLAT_CORE_STRINGBUILDER_INTERNAL_H
+
+#include "CFlat/Object.h"
+#include "CFlat/Language/Integer.h"
 
 #include <stdarg.h>
 
 typedef struct String String;
-typedef struct StringBuilder StringBuilder;
+
+typedef struct StringBuilder {
+    Object Base;
+    char *Value;
+    uintsize Length;
+    uintsize Capacity;
+} StringBuilder;
 
 /// <summary>
 /// Appends a string that is formatted according to the given format string, to the given <see cref="StringBuilder"/>.
