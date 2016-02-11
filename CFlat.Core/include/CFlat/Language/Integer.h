@@ -968,7 +968,7 @@ typedef CFLAT_UINT32_FAST uint32_fast;
 /// Returns the larger of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
-/// <param name="x">The second number.</param>
+/// <param name="y">The second number.</param>
 /// <returns>The larger of two numbers.</returns>
 sbyte sbyte_Max(sbyte x, sbyte y);
 
@@ -976,7 +976,7 @@ sbyte sbyte_Max(sbyte x, sbyte y);
 /// Returns the smaller of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
-/// <param name="x">The second number.</param>
+/// <param name="y">The second number.</param>
 /// <returns>The smaller of two numbers.</returns>
 sbyte sbyte_Min(sbyte x, sbyte y);
 
@@ -1007,7 +1007,7 @@ String *sbyte_ToStringFormatC(sbyte value, const char *format);
 /// Returns the larger of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
-/// <param name="x">The second number.</param>
+/// <param name="y">The second number.</param>
 /// <returns>The larger of two numbers.</returns>
 byte byte_Max(byte x, byte y);
 
@@ -1015,7 +1015,7 @@ byte byte_Max(byte x, byte y);
 /// Returns the smaller of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
-/// <param name="x">The second number.</param>
+/// <param name="y">The second number.</param>
 /// <returns>The smaller of two numbers.</returns>
 byte byte_Min(byte x, byte y);
 
@@ -1046,7 +1046,7 @@ String *byte_ToStringFormatC(byte value, const char *format);
 /// Returns the larger of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
-/// <param name="x">The second number.</param>
+/// <param name="y">The second number.</param>
 /// <returns>The larger of two numbers.</returns>
 short short_Max(short x, short y);
 
@@ -1054,7 +1054,7 @@ short short_Max(short x, short y);
 /// Returns the smaller of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
-/// <param name="x">The second number.</param>
+/// <param name="y">The second number.</param>
 /// <returns>The smaller of two numbers.</returns>
 short short_Min(short x, short y);
 
@@ -1085,7 +1085,7 @@ String *short_ToStringFormatC(short value, const char *format);
 /// Returns the larger of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
-/// <param name="x">The second number.</param>
+/// <param name="y">The second number.</param>
 /// <returns>The larger of two numbers.</returns>
 ushort ushort_Max(ushort x, ushort y);
 
@@ -1093,7 +1093,7 @@ ushort ushort_Max(ushort x, ushort y);
 /// Returns the smaller of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
-/// <param name="x">The second number.</param>
+/// <param name="y">The second number.</param>
 /// <returns>The smaller of two numbers.</returns>
 ushort ushort_Min(ushort x, ushort y);
 
@@ -1124,7 +1124,7 @@ String *ushort_ToStringFormatC(ushort value, const char *format);
 /// Returns the larger of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
-/// <param name="x">The second number.</param>
+/// <param name="y">The second number.</param>
 /// <returns>The larger of two numbers.</returns>
 int int_Max(int x, int y);
 
@@ -1132,7 +1132,7 @@ int int_Max(int x, int y);
 /// Returns the smaller of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
-/// <param name="x">The second number.</param>
+/// <param name="y">The second number.</param>
 /// <returns>The smaller of two numbers.</returns>
 int int_Min(int x, int y);
 
@@ -1163,7 +1163,7 @@ String *int_ToStringFormatC(int value, const char *format);
 /// Returns the larger of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
-/// <param name="x">The second number.</param>
+/// <param name="y">The second number.</param>
 /// <returns>The larger of two numbers.</returns>
 uint uint_Max(uint x, uint y);
 
@@ -1171,7 +1171,7 @@ uint uint_Max(uint x, uint y);
 /// Returns the smaller of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
-/// <param name="x">The second number.</param>
+/// <param name="y">The second number.</param>
 /// <returns>The smaller of two numbers.</returns>
 uint uint_Min(uint x, uint y);
 
@@ -1202,7 +1202,7 @@ String *uint_ToStringFormatC(uint value, const char *format);
 /// Returns the larger of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
-/// <param name="x">The second number.</param>
+/// <param name="y">The second number.</param>
 /// <returns>The larger of two numbers.</returns>
 long long_Max(long x, long y);
 
@@ -1210,7 +1210,7 @@ long long_Max(long x, long y);
 /// Returns the smaller of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
-/// <param name="x">The second number.</param>
+/// <param name="y">The second number.</param>
 /// <returns>The smaller of two numbers.</returns>
 long long_Min(long x, long y);
 
@@ -1241,7 +1241,7 @@ String *long_ToStringFormatC(long value, const char *format);
 /// Returns the larger of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
-/// <param name="x">The second number.</param>
+/// <param name="y">The second number.</param>
 /// <returns>The larger of two numbers.</returns>
 ulong ulong_Max(ulong x, ulong y);
 
@@ -1249,7 +1249,7 @@ ulong ulong_Max(ulong x, ulong y);
 /// Returns the smaller of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
-/// <param name="x">The second number.</param>
+/// <param name="y">The second number.</param>
 /// <returns>The smaller of two numbers.</returns>
 ulong ulong_Min(ulong x, ulong y);
 
@@ -1280,7 +1280,7 @@ String *ulong_ToStringFormatC(ulong value, const char *format);
 /// Returns the larger of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
-/// <param name="x">The second number.</param>
+/// <param name="y">The second number.</param>
 /// <returns>The larger of two numbers.</returns>
 intmax intmax_Max(intmax x, intmax y);
 
@@ -1288,7 +1288,7 @@ intmax intmax_Max(intmax x, intmax y);
 /// Returns the smaller of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
-/// <param name="x">The second number.</param>
+/// <param name="y">The second number.</param>
 /// <returns>The smaller of two numbers.</returns>
 intmax intmax_Min(intmax x, intmax y);
 
@@ -1319,7 +1319,7 @@ String *intmax_ToStringFormatC(intmax value, const char *format);
 /// Returns the larger of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
-/// <param name="x">The second number.</param>
+/// <param name="y">The second number.</param>
 /// <returns>The larger of two numbers.</returns>
 uintmax uintmax_Max(uintmax x, uintmax y);
 
@@ -1327,7 +1327,7 @@ uintmax uintmax_Max(uintmax x, uintmax y);
 /// Returns the smaller of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
-/// <param name="x">The second number.</param>
+/// <param name="y">The second number.</param>
 /// <returns>The smaller of two numbers.</returns>
 uintmax uintmax_Min(uintmax x, uintmax y);
 

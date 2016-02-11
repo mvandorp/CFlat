@@ -115,7 +115,7 @@ bool double_IsPositiveInfinity(double value);
 /// Returns the larger of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
-/// <param name="x">The second number.</param>
+/// <param name="y">The second number.</param>
 /// <returns>The larger of two numbers.</returns>
 double double_Max(double x, double y);
 
@@ -123,7 +123,7 @@ double double_Max(double x, double y);
 /// Returns the smaller of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
-/// <param name="x">The second number.</param>
+/// <param name="y">The second number.</param>
 /// <returns>The smaller of two numbers.</returns>
 double double_Min(double x, double y);
 

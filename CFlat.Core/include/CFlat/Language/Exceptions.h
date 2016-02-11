@@ -57,20 +57,35 @@ typedef struct String String;
 /// <remarks>This macro is intended for internal use only.</remarks>
 #define __CFLAT_EXCEPTION_HANDLE(statePtr) (&((statePtr)->Exception))
 
+/// <summary>
+/// Begins a try block.
+/// </summary>
 #define try                                                                         \
 {                                                                                   \
     struct __CFLAT_EXCEPTION_STATE __CFLAT_EXCEPTION_STATE;                         \
     __CFLAT_EXCEPTION_BEGINTRY(&__CFLAT_EXCEPTION_STATE);                           \
     __CFLAT_EXCEPTION_TYPE(&__CFLAT_EXCEPTION_STATE) = __CFLAT_EXCEPTION_TRY();     \
     if (!__CFLAT_EXCEPTION_TYPE(&__CFLAT_EXCEPTION_STATE)) {
+
+/// <summary>
+/// Begins a catch block.
+/// </summary>
 #define catch(toCatch, var)                                                         \
     }                                                                               \
     else if (__CFLAT_EXCEPTION_CATCH(&__CFLAT_EXCEPTION_STATE, toCatch)) {          \
         ExceptionHandle var = __CFLAT_EXCEPTION_HANDLE(&__CFLAT_EXCEPTION_STATE);
+
+/// <summary>
+/// Begins a finally block.
+/// </summary>
 #define finally                                                                     \
     }                                                                               \
     __CFLAT_EXCEPTION_FINALLY(&__CFLAT_EXCEPTION_STATE);                            \
     {
+
+/// <summary>
+/// Indicates the end of a try-catch-finally block.
+/// </summary>
 #define endtry                                                                      \
     }                                                                               \
     __CFLAT_EXCEPTION_ENDTRY(&__CFLAT_EXCEPTION_STATE);                             \

@@ -115,7 +115,7 @@ bool float_IsPositiveInfinity(float value);
 /// Returns the larger of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
-/// <param name="x">The second number.</param>
+/// <param name="y">The second number.</param>
 /// <returns>The larger of two numbers.</returns>
 float float_Max(float x, float y);
 
@@ -123,7 +123,7 @@ float float_Max(float x, float y);
 /// Returns the smaller of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
-/// <param name="x">The second number.</param>
+/// <param name="y">The second number.</param>
 /// <returns>The smaller of two numbers.</returns>
 float float_Min(float x, float y);
 
