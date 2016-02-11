@@ -65,7 +65,7 @@
       <OpenMPSupport>false</OpenMPSupport>
       <CompileAs>CompileAsC</CompileAs>
       <ExceptionHandling>false</ExceptionHandling>
-      <DisableSpecificWarnings>4001; 4711</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4001; 4479; 4711</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -87,7 +87,7 @@
       <OpenMPSupport>false</OpenMPSupport>
       <CompileAs>CompileAsC</CompileAs>
       <ExceptionHandling>false</ExceptionHandling>
-      <DisableSpecificWarnings>4001; 4711</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4001; 4479; 4711</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
