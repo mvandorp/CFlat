@@ -18,5 +18,8 @@
     <ClInclude Include="include\CFlat\Language\Boolean.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\CFlat\Language\Integer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
