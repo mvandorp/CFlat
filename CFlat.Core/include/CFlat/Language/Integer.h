@@ -11,6 +11,9 @@
 /* Special integer types */
 /// @name Special integer types
 /// @{
+#define CFLAT_UINTSIZE_MIN 0
+#define CFLAT_UINTSIZE_MAX SIZE_MAX
+
 /// <summary>
 /// Represents an unsigned integer with a width of at least 16 bits
 /// that is large enough to store the size of any array or object.
@@ -20,12 +23,12 @@ typedef size_t uintsize;
 /// <summary>
 /// Represents the smallest possible value of <see cref="uintsize"/>.
 /// </summary>
-extern const uintsize UIntSize_Min;
+extern const uintsize UIntSize_MinValue;
 
 /// <summary>
 /// Represents the largest possible value of <see cref="uintsize"/>.
 /// </summary>
-extern const uintsize UIntSize_Max;
+extern const uintsize UIntSize_MaxValue;
 
 /* Standard integer types */
 /// @}
@@ -289,6 +292,10 @@ extern const ulong ULong_MaxValue;
 #endif
 
 #ifdef CFLAT_INT8
+    #define CFLAT_INT8_MIN 0x80
+    #define CFLAT_INT8_MAX 0x7F
+    #define CFLAT_UINT8_MAX 0xFF
+
     /// <summary>
     /// Represents the smallest possible value of <see cref="int8"/>.
     /// </summary>
@@ -315,6 +322,10 @@ extern const ulong ULong_MaxValue;
 #endif
 
 #ifdef CFLAT_INT16
+    #define CFLAT_INT16_MIN 0x8000
+    #define CFLAT_INT16_MAX 0x7FFF
+    #define CFLAT_UINT16_MAX 0xFFFF
+
     /// <summary>
     /// Represents the smallest possible value of <see cref="int16"/>.
     /// </summary>
@@ -341,6 +352,10 @@ extern const ulong ULong_MaxValue;
 #endif
 
 #ifdef CFLAT_INT32
+    #define CFLAT_INT32_MIN 0x80000000
+    #define CFLAT_INT32_MAX 0x7FFFFFFF
+    #define CFLAT_UINT32_MAX 0xFFFFFFFF
+
     /// <summary>
     /// Represents the smallest possible value of <see cref="int32"/>.
     /// </summary>
@@ -367,6 +382,10 @@ extern const ulong ULong_MaxValue;
 #endif
 
 #ifdef CFLAT_INT64
+    #define CFLAT_INT64_MIN 0x8000000000000000
+    #define CFLAT_INT64_MAX 0x7FFFFFFFFFFFFFFF
+    #define CFLAT_UINT64_MAX 0xFFFFFFFFFFFFFFFF
+
     /// <summary>
     /// Represents the smallest possible value of <see cref="int64"/>.
     /// </summary>

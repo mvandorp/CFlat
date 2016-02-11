@@ -1,5 +1,8 @@
 #include "CFlat/Language/Integer.h"
 
+const uintsize UIntSize_MinValue = CFLAT_UINTSIZE_MIN;
+const uintsize UIntSize_MaxValue= CFLAT_UINTSIZE_MAX;
+
 /* Standard integer types */
 const sbyte Char_MinValue = CHAR_MIN;
 const sbyte Char_MaxValue = CHAR_MAX;
@@ -22,31 +25,31 @@ const ulong ULong_MaxValue = ULONG_MAX;
 
 /* Exact-width integer types */
 #ifdef CFLAT_INT8
-    const int8 Int8_MinValue = 0x80;
-    const int8 Int8_MaxValue = 0x7F;
-    const uint8 UInt8_MinValue = 0x00;
-    const uint8 UInt8_MaxValue = 0xFF;
+    const int8 Int8_MinValue = CFLAT_INT8_MIN;
+    const int8 Int8_MaxValue = CFLAT_INT8_MAX;
+    const uint8 UInt8_MinValue = 0;
+    const uint8 UInt8_MaxValue = CFLAT_UINT8_MAX;
 #endif
 
 #ifdef CFLAT_INT16
-    const int16 Int16_MinValue = 0x8000;
-    const int16 Int16_MaxValue = 0x7FFF;
+    const int16 Int16_MinValue = CFLAT_INT16_MIN;
+    const int16 Int16_MaxValue = CFLAT_INT16_MAX;
     const uint16 UInt16_MinValue = 0;
-    const uint16 UInt16_MaxValue = 0xFFFF;
+    const uint16 UInt16_MaxValue = CFLAT_INT16_MAX;
 #endif
 
 #ifdef CFLAT_INT32
-    const int32 Int32_MinValue = 0x80000000;
-    const int32 Int32_MaxValue = 0x7FFFFFFF;
+    const int32 Int32_MinValue = CFLAT_INT32_MIN;
+    const int32 Int32_MaxValue = CFLAT_INT32_MAX;
     const uint32 UInt32_MinValue = 0;
-    const uint32 UInt32_MaxValue = 0xFFFFFFFF;
+    const uint32 UInt32_MaxValue = CFLAT_UINT32_MAX;
 #endif
 
 #ifdef CFLAT_INT64
-    const int64 Int64_MinValue = 0x8000000000000000;
-    const int64 Int64_MaxValue = 0x7FFFFFFFFFFFFFFF;
+    const int64 Int64_MinValue = CFLAT_INT64_MIN;
+    const int64 Int64_MaxValue = CFLAT_INT64_MAX;
     const uint64 UInt64_MinValue = 0;
-    const uint64 UInt64_MaxValue = 0xFFFFFFFFFFFFFFFF;
+    const uint64 UInt64_MaxValue = CFLAT_UINT64_MAX;
 #endif
 
 /* Least-width integer types */
