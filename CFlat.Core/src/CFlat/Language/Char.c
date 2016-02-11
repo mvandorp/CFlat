@@ -1,6 +1,7 @@
 #include "CFlat/Language/Char.h"
 
 #include "CFlat.h"
+#include "CFlat/String.h"
 
 /* Macros */
 #define CHAR_CONTROL            0x0001
@@ -268,4 +269,13 @@ public int char_ToUpper(int c)
     else {
         return c;
     }
+}
+
+public String *char_ToString(char c)
+{
+    char buffer[2];
+    buffer[0] = c;
+    buffer[1] = '\0';
+
+    return String_New(buffer);
 }

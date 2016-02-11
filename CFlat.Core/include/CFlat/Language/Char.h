@@ -26,6 +26,8 @@
 
 #include "CFlat/Language/Bool.h"
 
+typedef struct String String;
+
 /* Macros */
 /// <summary>
 /// Represents the smallest possible value of <see cref="char"/>.
@@ -146,5 +148,12 @@ int char_ToLower(int c);
 /// The uppercase equivalent of <c>c</c> if <c>c</c> is a lowercase letter; otherwise returns <c>c</c>.
 /// </returns>
 int char_ToUpper(int c);
+
+/// <summary>
+/// Converts the given character to a string representation.
+/// </summary>
+/// <param name="c">The value to be converted to a string.</param>
+/// <returns>The string representation of the given character.</returns>
+String *char_ToString(char c);
 
 #endif
