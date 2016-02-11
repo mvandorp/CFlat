@@ -92,6 +92,16 @@ void Object_Constructor(void *obj, Destructor destructor);
 void Object_SetDeallocator(void *obj, Deallocator deallocator);
 
 /// <summary>
+/// Sets the destructor of the given <see cref="Object"/>.
+/// </summary>
+/// <param name="obj">Pointer to an <see cref="Object"/>.</param>
+/// <param name="deallocator">
+/// Pointer to a <see cref="Destructor"/> to call when the object needs to be destroyed, or <see cref="null"/> if
+/// <paramref name="obj"/> should not automatically be destroyed.
+/// </param>
+void Object_SetDestructor(void *obj, Destructor dtor);
+
+/// <summary>
 /// Deletes an <see cref="Object"/> regardless of its reference count.
 ///
 /// Deleting an object is performed by first calling the destructor of the object, and then deallocating the memory

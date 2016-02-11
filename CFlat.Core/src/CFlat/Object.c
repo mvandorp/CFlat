@@ -40,7 +40,22 @@ void Object_SetDeallocator(void *obj, Deallocator dealloc)
 
     Object *object = (Object*)obj;
 
-    object->Deallocator = dealloc;
+    // Prevent modifying a constant object.
+    if (object->RefCount != uintsize_MaxValue) {
+        object->Deallocator = dealloc;
+    }
+}
+
+void Object_SetDestructor(void *obj, Destructor dtor)
+{
+    Validate_NotNull(obj);
+
+    Object *object = (Object*)obj;
+
+    // Prevent modifying a constant object.
+    if (object->RefCount != uintsize_MaxValue) {
+        object->Destructor = dtor;
+    }
 }
 
 void Object_Delete(const void *obj)
