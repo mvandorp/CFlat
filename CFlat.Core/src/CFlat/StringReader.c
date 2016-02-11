@@ -75,13 +75,18 @@ void StringReader_Destructor(void *reader)
 
 int StringReader_Peek(const StringReader *reader)
 {
+    return StringReader_PeekOffset(reader, 0);
+}
+
+int StringReader_PeekOffset(const StringReader *reader, uintsize offset)
+{
     Validate_NotNull(reader);
 
-    if (reader->Position >= String_GetLength(reader->Value)) {
+    if (reader->Position + offset >= String_GetLength(reader->Value)) {
         return -1;
     }
     else {
-        return String_GetCharAt(reader->Value, reader->Position);
+        return String_GetCharAt(reader->Value, reader->Position + offset);
     }
 }
 
@@ -94,5 +99,19 @@ int StringReader_Read(StringReader *reader)
     }
     else {
         return String_GetCharAt(reader->Value, reader->Position++);
+    }
+}
+
+void StringReader_Skip(StringReader *reader, uintsize amount)
+{
+    Validate_NotNull(reader);
+
+    uintsize length = String_GetLength(reader->Value);
+
+    if (reader->Position + amount >= length) {
+        reader->Position = length;
+    }
+    else {
+        reader->Position += amount;
     }
 }

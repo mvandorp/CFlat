@@ -24,6 +24,8 @@
 #ifndef CFLAT_CORE_STRINGREADER_H
 #define CFLAT_CORE_STRINGREADER_H
 
+#include "CFlat/Language/Integer.h"
+
 typedef struct String String;
 
 /// <summary>
@@ -62,10 +64,27 @@ void StringReader_Destructor(void *reader);
 int StringReader_Peek(const StringReader *reader);
 
 /// <summary>
+/// Returns the character at the given offset without advancing the position of the reader.
+/// </summary>
+/// <param name="reader">Pointer to a <see cref="StringReader"/>.</param>
+/// <param name="offset">The offset at which to peek.</param>
+/// <returns>
+/// An integer representing the character at the given offset, or -1 if no more characters are available.
+/// </returns>
+int StringReader_PeekOffset(const StringReader *reader, uintsize offset);
+
+/// <summary>
 /// Returns the next available character and advances the position of the reader.
 /// </summary>
 /// <param name="reader">Pointer to a <see cref="StringReader"/>.</param>
 /// <returns>An integer representing the next character, or -1 if no more characters are available.</returns>
 int StringReader_Read(StringReader *reader);
+
+/// <summary>
+/// Advances the position of the reader by the given amount.
+/// </summary>
+/// <param name="reader">Pointer to a <see cref="StringReader"/>.</param>
+/// <param name="name">The number of characters to skip.</param>
+void StringReader_Skip(StringReader *reader, uintsize amount);
 
 #endif
