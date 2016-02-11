@@ -24,13 +24,13 @@
 
 // Define strings containing the exception names.
 #define EXCEPTION(name, message) \
-String name##Name = CFLAT_STRING_LITERAL(#name);
+static const String name##Name = CFLAT_STRING_LITERAL(#name);
 EXCEPTIONS
 #undef EXCEPTION
 
 // Define strings containing the exception messages.
 #define EXCEPTION(name, message) \
-String name##Message = CFLAT_STRING_LITERAL(message);
+static const String name##Message = CFLAT_STRING_LITERAL(message);
 EXCEPTIONS
 #undef EXCEPTION
 
@@ -43,7 +43,7 @@ bool ExceptionType_IsAssignableFrom(ExceptionType type1, ExceptionType type2)
     return (type1 & type2) == type1;
 }
 
-String *ExceptionType_GetName(ExceptionType type)
+const String *ExceptionType_GetName(ExceptionType type)
 {
     // Return the address of the string containing the exception name.
     switch (type) {
@@ -57,7 +57,7 @@ String *ExceptionType_GetName(ExceptionType type)
     #undef EXCEPTION
 }
 
-String *ExceptionType_GetDefaultMessage(ExceptionType type)
+const String *ExceptionType_GetDefaultMessage(ExceptionType type)
 {
     // Return the address of the string containing the exception message.
     switch (type) {

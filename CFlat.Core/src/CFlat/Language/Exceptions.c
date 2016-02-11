@@ -137,7 +137,7 @@ bool Exception_IsInstanceOf(const ExceptionHandle ex, ExceptionType type)
     return ExceptionType_IsAssignableFrom(type, ex->Type);
 }
 
-String *Exception_GetMessage(const ExceptionHandle ex)
+const String *Exception_GetMessage(const ExceptionHandle ex)
 {
     Validate_NotNull(ex);
 
@@ -206,8 +206,8 @@ static String *GenerateExceptionText(const ExceptionHandle ex)
 {
     assert(ex != null);
 
-    String *name = ExceptionType_GetName(ex->Type);
-    String *message = Exception_GetMessage(ex);
+    const String *name = ExceptionType_GetName(ex->Type);
+    const String *message = Exception_GetMessage(ex);
     String *result;
 
     if (message == null || String_GetLength(message) == 0) {

@@ -38,60 +38,60 @@ typedef struct String String;
 /// Specifies the type of an exception.
 /// </summary>
 typedef enum ExceptionType {
-	/// <summary>
-	/// Base class for all exceptions.
-	/// </summary>
-	Exception = CFLAT_EXCEPTIONTYPE_BASE_VALUE(1),
+    /// <summary>
+    /// Base class for all exceptions.
+    /// </summary>
+    Exception = CFLAT_EXCEPTIONTYPE_BASE_VALUE(1),
 
-	/// <summary>
-	/// Base class for all runtime-generated errors.
-	/// </summary>
-	SystemException = CFLAT_EXCEPTIONTYPE_BASE_VALUE(2) | Exception,
+    /// <summary>
+    /// Base class for all runtime-generated errors.
+    /// </summary>
+    SystemException = CFLAT_EXCEPTIONTYPE_BASE_VALUE(2) | Exception,
 
-	/// <summary>
-	/// Base class for all argument exceptions.
-	/// </summary>
-	ArgumentException = CFLAT_EXCEPTIONTYPE_BASE_VALUE(3) | SystemException,
+    /// <summary>
+    /// Base class for all argument exceptions.
+    /// </summary>
+    ArgumentException = CFLAT_EXCEPTIONTYPE_BASE_VALUE(3) | SystemException,
 
     /// <summary>
     /// Base class for all I/O exceptions.
     /// </summary>
     IOException = CFLAT_EXCEPTIONTYPE_BASE_VALUE(4) | SystemException,
 
-	/// <summary>
-	/// Thrown by the runtime only when an array is indexed improperly.
-	/// </summary>
+    /// <summary>
+    /// Thrown by the runtime only when an array is indexed improperly.
+    /// </summary>
     IndexOutOfRangeException = CFLAT_EXCEPTIONTYPE_VALUE(1) | SystemException,
 
-	/// <summary>
-	/// Thrown by the runtime only when a null object is referenced.
-	/// </summary>
-	NullReferenceException = CFLAT_EXCEPTIONTYPE_VALUE(2) | SystemException,
+    /// <summary>
+    /// Thrown by the runtime only when a null object is referenced.
+    /// </summary>
+    NullReferenceException = CFLAT_EXCEPTIONTYPE_VALUE(2) | SystemException,
 
-	/// <summary>
-	/// Thrown by the runtime only when invalid memory is accessed.
-	/// </summary>
-	AccessViolationException = CFLAT_EXCEPTIONTYPE_VALUE(3) | SystemException,
+    /// <summary>
+    /// Thrown by the runtime only when invalid memory is accessed.
+    /// </summary>
+    AccessViolationException = CFLAT_EXCEPTIONTYPE_VALUE(3) | SystemException,
 
-	/// <summary>
-	/// Thrown by methods when in an invalid state.
-	/// </summary>
-	InvalidOperationException = CFLAT_EXCEPTIONTYPE_VALUE(4) | SystemException,
+    /// <summary>
+    /// Thrown by methods when in an invalid state.
+    /// </summary>
+    InvalidOperationException = CFLAT_EXCEPTIONTYPE_VALUE(4) | SystemException,
 
-	/// <summary>
-	/// Thrown by methods that do not allow an argument to be null.
-	/// </summary>
-	ArgumentNullException = CFLAT_EXCEPTIONTYPE_VALUE(5) | ArgumentException,
+    /// <summary>
+    /// Thrown by methods that do not allow an argument to be null.
+    /// </summary>
+    ArgumentNullException = CFLAT_EXCEPTIONTYPE_VALUE(5) | ArgumentException,
 
-	/// <summary>
-	/// Thrown by methods that verify that arguments are in a given range.
-	/// </summary>
-	ArgumentOutOfRangeException = CFLAT_EXCEPTIONTYPE_VALUE(6) | ArgumentException,
+    /// <summary>
+    /// Thrown by methods that verify that arguments are in a given range.
+    /// </summary>
+    ArgumentOutOfRangeException = CFLAT_EXCEPTIONTYPE_VALUE(6) | ArgumentException,
 
-	/// <summary>
-	/// Thrown by methods when there is not enough memory to complete a certain operation
-	/// </summary>
-	OutOfMemoryException = CFLAT_EXCEPTIONTYPE_VALUE(7) | SystemException,
+    /// <summary>
+    /// Thrown by methods when there is not enough memory to complete a certain operation
+    /// </summary>
+    OutOfMemoryException = CFLAT_EXCEPTIONTYPE_VALUE(7) | SystemException,
 
     /// <summary>
     /// Thrown by methods when an attempt to access a file that does not exist on disk fails.
@@ -136,13 +136,13 @@ bool ExceptionType_IsAssignableFrom(ExceptionType type1, ExceptionType type2);
 /// </summary>
 /// <param name="type">The type of which to get the name.</param>
 /// <returns>A pointer to a <see cref="String"/> representing the name of the given exception type.</returns>
-String *ExceptionType_GetName(ExceptionType type);
+const String *ExceptionType_GetName(ExceptionType type);
 
 /// <summary>
 /// Gets a pointer to a <see cref="String"/> describing an exception of the given type.
 /// </summary>
 /// <param name="type">The type for which to get the default message.</param>
 /// <returns>A pointer to a <see cref="String"/> describing an exception of the given type.</returns>
-String *ExceptionType_GetDefaultMessage(ExceptionType type);
+const String *ExceptionType_GetDefaultMessage(ExceptionType type);
 
 #endif

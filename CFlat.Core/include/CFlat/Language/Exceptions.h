@@ -174,7 +174,7 @@ bool Exception_IsInstanceOf(const ExceptionHandle ex, ExceptionType type);
 /// Gets the message describing the exception pointed to by the given <see cref="ExceptionHandle"/>.
 /// </summary>
 /// <param name="ex">The <see cref="ExceptionHandle"/> of the exception.</param>
-String *Exception_GetMessage(const ExceptionHandle ex);
+const String *Exception_GetMessage(const ExceptionHandle ex);
 
 /// <summary>
 /// Gets the type of the exception pointed to by the given <see cref="ExceptionHandle"/>.
