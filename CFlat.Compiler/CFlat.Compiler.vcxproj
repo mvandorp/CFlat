@@ -41,16 +41,16 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>bin\$(Configuration)\</OutDir>
     <IntDir>obj\$(Configuration)\</IntDir>
-    <IncludePath>..\CFlat.Core\include\;$(ProjectDir)\src\;$(ProjectDir)\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\CFlat.Core\include\;$(ProjectDir)\src\;$(ProjectDir)\include\;$(IncludePath)</IncludePath>
     <SourcePath>$(ProjectDir)\src\;$(SourcePath)</SourcePath>
-    <LibraryPath>..\CFlat.Core\bin\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)\CFlat.Core\bin\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>bin\$(Configuration)\</OutDir>
     <IntDir>obj\$(Configuration)\</IntDir>
-    <IncludePath>..\CFlat.Core\include\;$(ProjectDir)\src\;$(ProjectDir)\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)\CFlat.Core\include\;$(ProjectDir)\src\;$(ProjectDir)\include\;$(IncludePath)</IncludePath>
     <SourcePath>$(ProjectDir)\src\;$(SourcePath)</SourcePath>
-    <LibraryPath>..\CFlat.Core\bin\$(Configuration)\;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)\CFlat.Core\bin\$(Configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

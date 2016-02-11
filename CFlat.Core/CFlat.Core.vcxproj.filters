@@ -47,27 +47,25 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Memory.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Object.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\String.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CString.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\CFlat\StringHelper.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\Language\Integer.c">
+    <ClCompile Include="src\CFlat\Language\Boolean.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Language\Boolean.c">
+    <ClCompile Include="src\CFlat\Language\Integer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\CString.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\Memory.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\Object.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\String.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

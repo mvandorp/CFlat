@@ -1,7 +1,7 @@
 #include "CFlat/Language/Integer.h"
 
 const uintsize UIntSize_MinValue = CFLAT_UINTSIZE_MIN;
-const uintsize UIntSize_MaxValue= CFLAT_UINTSIZE_MAX;
+const uintsize UIntSize_MaxValue = CFLAT_UINTSIZE_MAX;
 
 /* Standard integer types */
 const sbyte Char_MinValue = CHAR_MIN;

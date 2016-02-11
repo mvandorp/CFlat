@@ -8,7 +8,7 @@ String String_WrapCString(const char *value)
 
     // Do not set the destructor to prevent the value from being deallocated.
     Object_Constructor(&str, null);
-    
+
     // Initialize the string.
     if (value == null) {
         str.length = 0;

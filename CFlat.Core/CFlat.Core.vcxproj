@@ -24,14 +24,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CFlat\StringHelper.c" />
-    <ClCompile Include="src\CString.c" />
-    <ClCompile Include="src\Memory.c" />
-    <ClCompile Include="src\Object.c" />
-    <ClCompile Include="src\String.c" />
+    <ClCompile Include="src\CFlat\CString.c" />
+    <ClCompile Include="src\CFlat\Memory.c" />
+    <ClCompile Include="src\CFlat\Object.c" />
+    <ClCompile Include="src\CFlat\String.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Language\Boolean.c" />
-    <ClCompile Include="src\Language\Integer.c" />
+    <ClCompile Include="src\CFlat\Language\Boolean.c" />
+    <ClCompile Include="src\CFlat\Language\Integer.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{9C532CDA-BB89-4A6A-934C-CBC5CD94BC02}</ProjectGuid>
