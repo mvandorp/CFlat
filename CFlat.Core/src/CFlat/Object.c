@@ -68,7 +68,10 @@ const void *Object_Aquire(const void *obj)
 
     Object *object = (Object*)obj;
 
-    object->RefCount++;
+    // Prevent overflow and prevent modifying a constant object.
+    if (object->RefCount != UIntSize_MaxValue) {
+        object->RefCount++;
+    }
 
     return obj;
 }
@@ -81,7 +84,10 @@ bool Object_Release(const void *obj)
 
     Object *object = (Object*)obj;
 
-    object->RefCount--;
+    // Prevent modifying a constant object.
+    if (object->RefCount != UIntSize_MaxValue) {
+        object->RefCount--;
+    }
 
     if (object->RefCount == 0) {
         Object_Delete(object);
