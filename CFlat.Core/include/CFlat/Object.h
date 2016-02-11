@@ -35,7 +35,7 @@
 /// <summary>
 /// Initializer for a const <see cref="Object"/>.
 /// </summary>
-#define CFLAT_CONST_OBJECT_INITIALIZER() { UIntSize_MaxValue, null, null }
+#define CFLAT_CONST_OBJECT_INITIALIZER() { uintsize_MaxValue, null, null }
 
 /// <summary>
 /// A function to perform clean up of the given object before it gets deallocated.

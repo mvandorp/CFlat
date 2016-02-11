@@ -27,6 +27,16 @@
 #include "CFlat/Language/Bool.h"
 
 /// <summary>
+/// Represents the smallest possible value of <see cref="char"/>.
+/// </summary>
+#define char_MinValue ((char)CHAR_MIN)
+
+/// <summary>
+/// Represents the largest possible value of <see cref="char"/>.
+/// </summary>
+#define char_MaxValue ((char)CHAR_MAX)
+
+/// <summary>
 /// Returns whether the given character is catagorized as a binary digit.
 /// </summary>
 /// <param name="c">The character to check.</param>

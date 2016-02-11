@@ -41,12 +41,12 @@ typedef size_t uintsize;
 /// <summary>
 /// Represents the smallest possible value of <see cref="uintsize"/>.
 /// </summary>
-#define UIntSize_MinValue ((uintsize)0)
+#define uintsize_MinValue ((uintsize)0)
 
 /// <summary>
 /// Represents the largest possible value of <see cref="uintsize"/>.
 /// </summary>
-#define UIntSize_MaxValue ((uintsize)SIZE_MAX)
+#define uintsize_MaxValue ((uintsize)SIZE_MAX)
 
 /* Standard integer types */
 /**
@@ -80,98 +80,88 @@ typedef unsigned int uint;
 typedef unsigned long ulong;
 
 /// <summary>
-/// Represents the smallest possible value of <see cref="char"/>.
-/// </summary>
-#define Char_MinValue ((char)CHAR_MIN)
-
-/// <summary>
-/// Represents the largest possible value of <see cref="char"/>.
-/// </summary>
-#define Char_MaxValue ((char)CHAR_MAX)
-
-/// <summary>
 /// Represents the smallest possible value of <see cref="sbyte"/>.
 /// </summary>
-#define SByte_MinValue ((sbyte)SCHAR_MIN)
+#define sbyte_MinValue ((sbyte)SCHAR_MIN)
 
 /// <summary>
 /// Represents the largest possible value of <see cref="sbyte"/>.
 /// </summary>
-#define SByte_MaxValue ((sbyte)SCHAR_MAX)
+#define sbyte_MaxValue ((sbyte)SCHAR_MAX)
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="byte"/>.
 /// </summary>
 /// <remarks>The value of this constant is 0.</remarks>
-#define Byte_MinValue ((byte)0)
+#define byte_MinValue ((byte)0)
 
 /// <summary>
 /// Represents the largest possible value of <see cref="byte"/>.
 /// </summary>
-#define Byte_MaxValue ((byte)UCHAR_MAX)
+#define byte_MaxValue ((byte)UCHAR_MAX)
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="short"/>.
 /// </summary>
-#define Short_MinValue ((short)SHRT_MIN)
+#define short_MinValue ((short)SHRT_MIN)
 
 /// <summary>
 /// Represents the largest possible value of <see cref="short"/>.
 /// </summary>
-#define Short_MaxValue ((short)SHRT_MAX)
+#define short_MaxValue ((short)SHRT_MAX)
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="ushort"/>.
 /// </summary>
 /// <remarks>The value of this constant is 0.</remarks>
-#define UShort_MinValue ((ushort)0)
+#define ushort_MinValue ((ushort)0)
 
 /// <summary>
 /// Represents the largest possible value of <see cref="ushort"/>.
 /// </summary>
-#define UShort_MaxValue ((ushort)USHRT_MAX)
+#define ushort_MaxValue ((ushort)USHRT_MAX)
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="int"/>.
 /// </summary>
-#define Int_MinValue ((int)INT_MIN)
+#define int_MinValue ((int)INT_MIN)
 
 /// <summary>
 /// Represents the largest possible value of <see cref="int"/>.
 /// </summary>
-#define Int_MaxValue ((int)INT_MAX)
+#define int_MaxValue ((int)INT_MAX)
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="uint"/>.
 /// </summary>
 /// <remarks>The value of this constant is 0.</remarks>
-#define UInt_MinValue ((uint)0)
+#define uint_MinValue ((uint)0)
 
 /// <summary>
 /// Represents the largest possible value of <see cref="uint"/>.
 /// </summary>
-#define UInt_MaxValue ((uint)UINT_MAX)
+#define uint_MaxValue ((uint)UINT_MAX)
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="long"/>.
 /// </summary>
-#define Long_MinValue ((long)LONG_MIN)
+#define long_MinValue ((long)LONG_MIN)
 
 /// <summary>
 /// Represents the largest possible value of <see cref="long"/>.
 /// </summary>
-#define Long_MaxValue ((long)LONG_MAX)
+#define long_MaxValue ((long)LONG_MAX)
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="ulong"/>.
 /// </summary>
 /// <remarks>The value of this constant is 0.</remarks>
-#define ULong_MinValue ((ulong)0)
+#define ulong_MinValue ((ulong)0)
 
 /// <summary>
 /// Represents the largest possible value of <see cref="ulong"/>.
 /// </summary>
-#define ULong_MaxValue ((ulong)ULONG_MAX)
+#define ulong_MaxValue ((ulong)ULONG_MAX)
 
 /* Max-width integer types */
 /**
@@ -211,23 +201,23 @@ typedef CFLAT_UINTMAX uintmax;
 /// <summary>
 /// Represents the smallest possible value of <see cref="intmax"/>.
 /// </summary>
-#define IntMax_MinValue CFLAT_INTMAX_MIN
+#define intmax_MinValue CFLAT_INTMAX_MIN
 
 /// <summary>
 /// Represents the largest possible value of <see cref="intmax"/>.
 /// </summary>
-#define IntMax_MaxValue CFLAT_INTMAX_MAX
+#define intmax_MaxValue CFLAT_INTMAX_MAX
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="uintmax"/>.
 /// </summary>
 /// <remarks>The value of this constant is 0.</remarks>
-#define UIntMax_MinValue 0
+#define uintmax_MinValue 0
 
 /// <summary>
 /// Represents the largest possible value of <see cref="uintmax"/>.
 /// </summary>
-#define UIntMax_MaxValue CFLAT_UINTMAX_MAX
+#define uintmax_MaxValue CFLAT_UINTMAX_MAX
 
 /* Exact-width integer types */
 /**
@@ -359,25 +349,25 @@ typedef CFLAT_UINTMAX uintmax;
     /// Represents the smallest possible value of <see cref="int8"/>.
     /// </summary>
     /// <remarks>The value of this constant is -128 (hexadecimal 0x80).</remarks>
-    #define Int8_MinValue ((int8)0x80)
+    #define int8_MinValue ((int8)0x80)
 
     /// <summary>
     /// Represents the largest possible value of <see cref="int8"/>.
     /// </summary>
     /// <remarks>The value of this constant is 127 (hexadecimal 0x7F).</remarks>
-    #define Int8_MaxValue ((int8)0x7F)
+    #define int8_MaxValue ((int8)0x7F)
 
     /// <summary>
     /// Represents the smallest possible value of <see cref="uint8"/>.
     /// </summary>
     /// <remarks>The value of this constant is 0.</remarks>
-    #define UInt8_MinValue ((int8)0)
+    #define uint8_MinValue ((int8)0)
 
     /// <summary>
     /// Represents the largest possible value of <see cref="uint8"/>.
     /// </summary>
     /// <remarks>The value of this constant is 255 (hexadecimal 0xFF).</remarks>
-    #define UInt8_MaxValue ((int8)0xFF)
+    #define uint8_MaxValue ((int8)0xFF)
 #endif
 
 #ifdef CFLAT_INT16
@@ -385,25 +375,25 @@ typedef CFLAT_UINTMAX uintmax;
     /// Represents the smallest possible value of <see cref="int16"/>.
     /// </summary>
     /// <remarks>The value of this constant is -32768 (hexadecimal 0x8000).</remarks>
-    #define Int16_MinValue ((int16)0x8000)
+    #define int16_MinValue ((int16)0x8000)
 
     /// <summary>
     /// Represents the largest possible value of <see cref="int16"/>.
     /// </summary>
     /// <remarks>The value of this constant is 32767 (hexadecimal 0x7FFF).</remarks>
-    #define Int16_MaxValue ((int16)0x7FFF)
+    #define int16_MaxValue ((int16)0x7FFF)
 
     /// <summary>
     /// Represents the smallest possible value of <see cref="uint16"/>.
     /// </summary>
     /// <remarks>The value of this constant is 0.</remarks>
-    #define UInt16_MinValue ((uint16)0)
+    #define uint16_MinValue ((uint16)0)
 
     /// <summary>
     /// Represents the largest possible value of <see cref="uint16"/>.
     /// </summary>
     /// <remarks>The value of this constant is 65535 (hexadecimal 0xFFFF).</remarks>
-    #define UInt16_MaxValue ((uint16)0xFFFF)
+    #define uint16_MaxValue ((uint16)0xFFFF)
 #endif
 
 #ifdef CFLAT_INT32
@@ -411,25 +401,25 @@ typedef CFLAT_UINTMAX uintmax;
     /// Represents the smallest possible value of <see cref="int32"/>.
     /// </summary>
     /// <remarks>The value of this constant is -2147483648 (hexadecimal 0x80000000).</remarks>
-    #define Int32_MinValue ((int32)0x80000000)
+    #define int32_MinValue ((int32)0x80000000)
 
     /// <summary>
     /// Represents the largest possible value of <see cref="int32"/>.
     /// </summary>
     /// <remarks>The value of this constant is 2147483647 (hexadecimal 0x7FFFFFFF).</remarks>
-    #define Int32_MaxValue ((int32)0x7FFFFFFF)
+    #define int32_MaxValue ((int32)0x7FFFFFFF)
 
     /// <summary>
     /// Represents the smallest possible value of <see cref="uint32"/>.
     /// </summary>
     /// <remarks>The value of this constant is 0.</remarks>
-    #define UInt32_MinValue ((uint32)0)
+    #define uint32_MinValue ((uint32)0)
 
     /// <summary>
     /// Represents the largest possible value of <see cref="uint32"/>.
     /// </summary>
     /// <remarks>The value of this constant is 4294967295 (hexadecimal 0xFFFFFFFF).</remarks>
-    #define UInt32_MaxValue ((uint32)0xFFFFFFFF)
+    #define uint32_MaxValue ((uint32)0xFFFFFFFF)
 #endif
 
 #ifdef CFLAT_INT64
@@ -437,25 +427,25 @@ typedef CFLAT_UINTMAX uintmax;
     /// Represents the smallest possible value of <see cref="int64"/>.
     /// </summary>
     /// <remarks>The value of this constant is -9223372036854775808 (hexadecimal 0x8000000000000000).</remarks>
-    #define Int64_MinValue ((int64)0x8000000000000000)
+    #define int64_MinValue ((int64)0x8000000000000000)
 
     /// <summary>
     /// Represents the largest possible value of <see cref="int64"/>.
     /// </summary>
     /// <remarks>The value of this constant is 9223372036854775807 (hexadecimal 0x7FFFFFFFFFFFFFFF).</remarks>
-    #define Int64_MaxValue ((int64)0x7FFFFFFFFFFFFFFF)
+    #define int64_MaxValue ((int64)0x7FFFFFFFFFFFFFFF)
 
     /// <summary>
     /// Represents the smallest possible value of <see cref="uint64"/>.
     /// </summary>
     /// <remarks>The value of this constant is 0.</remarks>
-    #define UInt64_MinValue ((uint64)0)
+    #define uint64_MinValue ((uint64)0)
 
     /// <summary>
     /// Represents the largest possible value of <see cref="uint64"/>.
     /// </summary>
     /// <remarks>The value of this constant is 18446744073709551613 (hexadecimal 0xFFFFFFFFFFFFFFFF).</remarks>
-    #define UInt64_MaxValue ((uint64)0xFFFFFFFFFFFFFFFF)
+    #define uint64_MaxValue ((uint64)0xFFFFFFFFFFFFFFFF)
 #endif
 
 /* Least-width integer types */
@@ -657,76 +647,76 @@ typedef CFLAT_UINT32_LEAST uint32_least;
 /// <summary>
 /// Represents the smallest possible value of <see cref="int8_least"/>.
 /// </summary>
-#define Int8Least_MinValue ((int8_least)CFLAT_INT8_LEAST_MIN)
+#define int8_least_MinValue ((int8_least)CFLAT_INT8_LEAST_MIN)
 
 /// <summary>
 /// Represents the largest possible value of <see cref="int8_least"/>.
 /// </summary>
-#define Int8Least_MaxValue ((int8_least)CFLAT_INT8_LEAST_MAX)
+#define int8_least_MaxValue ((int8_least)CFLAT_INT8_LEAST_MAX)
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="uint8_least"/>.
 /// </summary>
 /// <remarks>The value of this constant is 0.</remarks>
-#define UInt8Least_MinValue ((uint8_least)0)
+#define uint8_least_MinValue ((uint8_least)0)
 
 /// <summary>
 /// Represents the largest possible value of <see cref="uint8_least"/>.
 /// </summary>
-#define UInt8Least_MaxValue ((uint8_least)CFLAT_UINT8_LEAST_MAX)
+#define uint8_least_MaxValue ((uint8_least)CFLAT_UINT8_LEAST_MAX)
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="int16_least"/>.
 /// </summary>
-#define Int16Least_MinValue ((int16_least)CFLAT_INT16_LEAST_MIN)
+#define int16_least_MinValue ((int16_least)CFLAT_INT16_LEAST_MIN)
 
 /// <summary>
 /// Represents the largest possible value of <see cref="int16_least"/>.
 /// </summary>
-#define Int16Least_MaxValue ((int16_least)CFLAT_INT16_LEAST_MAX)
+#define int16_least_MaxValue ((int16_least)CFLAT_INT16_LEAST_MAX)
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="uint16_least"/>.
 /// </summary>
 /// <remarks>The value of this constant is 0.</remarks>
-#define UInt16Least_MinValue ((uint16_least)0)
+#define uint16_least_MinValue ((uint16_least)0)
 
 /// <summary>
 /// Represents the largest possible value of <see cref="uint16_least"/>.
 /// </summary>
-#define UInt16Least_MaxValue ((uint16_least)CFLAT_UINT16_LEAST_MAX)
+#define uint16_least_MaxValue ((uint16_least)CFLAT_UINT16_LEAST_MAX)
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="int32_least"/>.
 /// </summary>
-#define Int32Least_MinValue ((int32_least)CFLAT_INT32_LEAST_MIN)
+#define int32_least_MinValue ((int32_least)CFLAT_INT32_LEAST_MIN)
 
 /// <summary>
 /// Represents the largest possible value of <see cref="int32_least"/>.
 /// </summary>
-#define Int32Least_MaxValue ((int32_least)CFLAT_INT32_LEAST_MAX)
+#define int32_least_MaxValue ((int32_least)CFLAT_INT32_LEAST_MAX)
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="uint32_least"/>.
 /// </summary>
 /// <remarks>The value of this constant is 0.</remarks>
-#define UInt32Least_MinValue ((uint32_least)0)
+#define uint32_least_MinValue ((uint32_least)0)
 
 /// <summary>
 /// Represents the largest possible value of <see cref="uint32_least"/>.
 /// </summary>
-#define UInt32Least_MaxValue ((uint32_least)CFLAT_UINT32_LEAST_MAX)
+#define uint32_least_MaxValue ((uint32_least)CFLAT_UINT32_LEAST_MAX)
 
 #ifdef CFLAT_INT64_LEAST
     /// <summary>
     /// Represents the smallest possible value of <see cref="int64_least"/>.
     /// </summary>
-    #define Int64Least_MinValue ((int64_least)CFLAT_INT64_LEAST_MIN)
+    #define int64_least_MinValue ((int64_least)CFLAT_INT64_LEAST_MIN)
 
     /// <summary>
     /// Represents the largest possible value of <see cref="int64_least"/>.
     /// </summary>
-    #define Int64Least_MaxValue ((int64_least)CFLAT_INT64_LEAST_MAX)
+    #define int64_least_MaxValue ((int64_least)CFLAT_INT64_LEAST_MAX)
 #endif
 
 #ifdef CFLAT_UINT64_LEAST
@@ -734,12 +724,12 @@ typedef CFLAT_UINT32_LEAST uint32_least;
     /// Represents the smallest possible value of <see cref="uint64_least"/>.
     /// </summary>
     /// <remarks>The value of this constant is 0.</remarks>
-    #define UInt64Least_MinValue ((uint64_least)0)
+    #define uint64_least_MinValue ((uint64_least)0)
 
     /// <summary>
     /// Represents the largest possible value of <see cref="uint64_least"/>.
     /// </summary>
-    #define UInt64Least_MaxValue ((uint64_least)CFLAT_UINT64_LEAST_MAX)
+    #define uint64_least_MaxValue ((uint64_least)CFLAT_UINT64_LEAST_MAX)
 #endif
 
 /* Fast integer types */
@@ -878,76 +868,76 @@ typedef CFLAT_UINT32_FAST uint32_fast;
 /// <summary>
 /// Represents the smallest possible value of <see cref="int8_fast"/>.
 /// </summary>
-#define Int8Fast_MinValue ((int8_fast)CFLAT_INT8_FAST_MIN)
+#define int8_fast_MinValue ((int8_fast)CFLAT_INT8_FAST_MIN)
 
 /// <summary>
 /// Represents the largest possible value of <see cref="int8_fast"/>.
 /// </summary>
-#define Int8Fast_MaxValue ((int8_fast)CFLAT_INT8_FAST_MAX)
+#define int8_fast_MaxValue ((int8_fast)CFLAT_INT8_FAST_MAX)
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="uint8_fast"/>.
 /// </summary>
 /// <remarks>The value of this constant is 0.</remarks>
-#define UInt8Fast_MinValue ((uint8_fast)0)
+#define uint8_fast_MinValue ((uint8_fast)0)
 
 /// <summary>
 /// Represents the largest possible value of <see cref="uint8_fast"/>.
 /// </summary>
-#define UInt8Fast_MaxValue ((uint8_fast)CFLAT_UINT8_FAST_MAX)
+#define uint8_fast_MaxValue ((uint8_fast)CFLAT_UINT8_FAST_MAX)
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="int16_fast"/>.
 /// </summary>
-#define Int16Fast_MinValue ((int16_fast)CFLAT_INT16_FAST_MIN)
+#define int16_fast_MinValue ((int16_fast)CFLAT_INT16_FAST_MIN)
 
 /// <summary>
 /// Represents the largest possible value of <see cref="int16_fast"/>.
 /// </summary>
-#define Int16Fast_MaxValue ((int16_fast)CFLAT_INT16_FAST_MAX)
+#define int16_fast_MaxValue ((int16_fast)CFLAT_INT16_FAST_MAX)
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="uint16_fast"/>.
 /// </summary>
 /// <remarks>The value of this constant is 0.</remarks>
-#define UInt16Fast_MinValue ((uint16_fast)0)
+#define uint16_fast_MinValue ((uint16_fast)0)
 
 /// <summary>
 /// Represents the largest possible value of <see cref="uint16_fast"/>.
 /// </summary>
-#define UInt16Fast_MaxValue ((uint16_fast)CFLAT_UINT16_FAST_MAX)
+#define uint16_fast_MaxValue ((uint16_fast)CFLAT_UINT16_FAST_MAX)
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="int32_fast"/>.
 /// </summary>
-#define Int32Fast_MinValue ((int32_fast)CFLAT_INT32_FAST_MIN)
+#define int32_fast_MinValue ((int32_fast)CFLAT_INT32_FAST_MIN)
 
 /// <summary>
 /// Represents the largest possible value of <see cref="int32_fast"/>.
 /// </summary>
-#define Int32Fast_MaxValue ((int32_fast)CFLAT_INT32_FAST_MAX)
+#define int32_fast_MaxValue ((int32_fast)CFLAT_INT32_FAST_MAX)
 
 /// <summary>
 /// Represents the smallest possible value of <see cref="uint32_fast"/>.
 /// </summary>
 /// <remarks>The value of this constant is 0.</remarks>
-#define UInt32Fast_MinValue ((uint32_fast)0)
+#define uint32_fast_MinValue ((uint32_fast)0)
 
 /// <summary>
 /// Represents the largest possible value of <see cref="uint32_fast"/>.
 /// </summary>
-#define UInt32Fast_MaxValue ((uint32_fast)CFLAT_UINT32_FAST_MAX)
+#define uint32_fast_MaxValue ((uint32_fast)CFLAT_UINT32_FAST_MAX)
 
 #ifdef CFLAT_INT64_FAST
     /// <summary>
     /// Represents the smallest possible value of <see cref="int64_fast"/>.
     /// </summary>
-    #define Int64Fast_MinValue ((int64_fast)CFLAT_INT64_FAST_MIN)
+    #define int64_fast_MinValue ((int64_fast)CFLAT_INT64_FAST_MIN)
 
     /// <summary>
     /// Represents the largest possible value of <see cref="int64_fast"/>.
     /// </summary>
-    #define Int64Fast_MaxValue ((int64_fast)CFLAT_INT64_FAST_MAX)
+    #define int64_fast_MaxValue ((int64_fast)CFLAT_INT64_FAST_MAX)
 #endif
 
 #ifdef CFLAT_UINT64_FAST
@@ -955,12 +945,12 @@ typedef CFLAT_UINT32_FAST uint32_fast;
     /// Represents the smallest possible value of <see cref="uint64_fast"/>.
     /// </summary>
     /// <remarks>The value of this constant is 0.</remarks>
-    #define UInt64Fast_MinValue ((uint64_fast)0)
+    #define uint64_fast_MinValue ((uint64_fast)0)
 
     /// <summary>
     /// Represents the largest possible value of <see cref="uint64_fast"/>.
     /// </summary>
-    #define UInt64Fast_MaxValue ((uint64_fast)CFLAT_UINT64_FAST_MAX)
+    #define uint64_fast_MaxValue ((uint64_fast)CFLAT_UINT64_FAST_MAX)
 #endif
 
 /**
