@@ -66,6 +66,12 @@
     <ClInclude Include="include\CFlat\Language\Char.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\CFlat\Language\Double.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CFlat\Language\Float.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CFlat\CString.c">
@@ -96,6 +102,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CFlat\Language\Char.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\Language\Float.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\Language\Double.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

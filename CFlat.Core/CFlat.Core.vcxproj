@@ -15,8 +15,10 @@
     <ClInclude Include="include\CFlat\CString.h" />
     <ClInclude Include="include\CFlat\Language\Boolean.h" />
     <ClInclude Include="include\CFlat\Language\Char.h" />
+    <ClInclude Include="include\CFlat\Language\Double.h" />
     <ClInclude Include="include\CFlat\Language\Exceptions.h" />
     <ClInclude Include="include\CFlat\ExceptionType.h" />
+    <ClInclude Include="include\CFlat\Language\Float.h" />
     <ClInclude Include="include\CFlat\Language\Integer.h" />
     <ClInclude Include="include\CFlat\Language\Null.h" />
     <ClInclude Include="include\CFlat\Math.h" />
@@ -32,7 +34,9 @@
   <ItemGroup>
     <ClCompile Include="src\CFlat\Language\Char.c" />
     <ClCompile Include="src\CFlat\ExceptionType.c" />
+    <ClCompile Include="src\CFlat\Language\Double.c" />
     <ClCompile Include="src\CFlat\Language\Exceptions.c" />
+    <ClCompile Include="src\CFlat\Language\Float.c" />
     <ClCompile Include="src\CFlat\Math.c" />
     <ClCompile Include="src\CFlat\StringBuilder.c" />
     <ClCompile Include="src\CFlat\CString.c" />

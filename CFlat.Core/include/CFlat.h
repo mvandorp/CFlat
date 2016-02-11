@@ -28,7 +28,9 @@
 
 #include "CFlat/Language/Boolean.h"
 #include "CFlat/Language/Char.h"
+#include "CFlat/Language/Double.h"
 #include "CFlat/Language/Exceptions.h"
+#include "CFlat/Language/Float.h"
 #include "CFlat/Language/Integer.h"
 #include "CFlat/Language/Null.h"
 
