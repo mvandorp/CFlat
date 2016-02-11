@@ -39,6 +39,12 @@
     <ClInclude Include="include\CFlat\CString.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\CFlat\String-private.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CFlat\StringHelper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Memory.c">
@@ -51,6 +57,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CString.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\StringHelper.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

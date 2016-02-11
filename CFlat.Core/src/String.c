@@ -1,4 +1,5 @@
 #include "CFlat/String.h"
+#include "CFlat/String-private.h"
 
 #include "CFlat/CString.h"
 #include "CFlat/Memory.h"
@@ -6,13 +7,7 @@
 
 #include <stdarg.h>
 
-struct String {
-    Object object;
-    uintsize length;
-    const char* value;
-};
-
-static const String Empty = { CFLAT_OBJECT_INITIALIZER(null), 0, "" };
+static const String Empty = CFLAT_STRING_LITERAL("");
 
 String *String_New(const char *value)
 {

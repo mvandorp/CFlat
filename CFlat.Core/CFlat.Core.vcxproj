@@ -19,8 +19,11 @@
     <ClInclude Include="include\CFlat\Memory.h" />
     <ClInclude Include="include\CFlat\Object.h" />
     <ClInclude Include="include\CFlat\String.h" />
+    <ClInclude Include="src\CFlat\String-private.h" />
+    <ClInclude Include="src\CFlat\StringHelper.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\CFlat\StringHelper.c" />
     <ClCompile Include="src\CString.c" />
     <ClCompile Include="src\Memory.c" />
     <ClCompile Include="src\Object.c" />
