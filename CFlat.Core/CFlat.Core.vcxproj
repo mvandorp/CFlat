@@ -18,6 +18,7 @@
     <ClInclude Include="include\CFlat\ExceptionType.h" />
     <ClInclude Include="include\CFlat\Language\Integer.h" />
     <ClInclude Include="include\CFlat\Language\Null.h" />
+    <ClInclude Include="include\CFlat\Math.h" />
     <ClInclude Include="include\CFlat\Memory.h" />
     <ClInclude Include="include\CFlat\Object.h" />
     <ClInclude Include="include\CFlat\String.h" />
@@ -30,6 +31,7 @@
   <ItemGroup>
     <ClCompile Include="src\CFlat\ExceptionType.c" />
     <ClCompile Include="src\CFlat\Language\Exceptions.c" />
+    <ClCompile Include="src\CFlat\Math.c" />
     <ClCompile Include="src\CFlat\StringBuilder.c" />
     <ClCompile Include="src\CFlat\CString.c" />
     <ClCompile Include="src\CFlat\Memory.c" />
