@@ -44,7 +44,7 @@ typedef enum ArgumentType {
 } ArgumentType;
 
 /* Private functions */
-private va_list ProcessFormatItem(StringBuilder *sb, StringReader *reader, StringBuilder *buffer, va_list args);
+private void ProcessFormatItem(StringBuilder *sb, StringReader *reader, StringBuilder *buffer, va_list *args);
 private ArgumentType ReadFormatItem(StringReader *reader, char **formatString, StringBuilder *formatBuffer);
 private ArgumentType ParseFormatItem(char *formatItem, char **formatString);
 private ArgumentType ToArgumentType(const char *type);
@@ -73,7 +73,7 @@ internal void StringBuilder_AppendFormat(StringBuilder *sb, const String *format
             }
             // Parse format item.
             else {
-                args = ProcessFormatItem(sb, reader, buffer, args);
+                ProcessFormatItem(sb, reader, buffer, &args);
             }
         }
         // Found random closing brace.
@@ -101,12 +101,13 @@ internal void StringBuilder_AppendFormat(StringBuilder *sb, const String *format
 /// Processes the format item that the given <see cref="StringReader"/> is reading and appends the resulting string
 /// to the given  <see cref="StringReader"/>.
 /// </summary>
-private va_list ProcessFormatItem(StringBuilder *sb, StringReader *reader, StringBuilder *buffer, va_list args)
+private void ProcessFormatItem(StringBuilder *sb, StringReader *reader, StringBuilder *buffer, va_list *args)
 {
     assert(sb != null);
     assert(reader != null);
     assert(buffer != null);
     assert(StringReader_Peek(reader) == '{');
+    assert(args != null);
 
     // Read the type and format.
     char *formatPointer;
@@ -118,51 +119,49 @@ private va_list ProcessFormatItem(StringBuilder *sb, StringReader *reader, Strin
 
     switch (formatSpecifier) {
         case ArgumentType_CString:
-            StringBuilder_AppendCString(sb, va_arg(args, char*));
+            StringBuilder_AppendCString(sb, va_arg(*args, char*));
             break;
 
         case ArgumentType_String:
-            StringBuilder_AppendString(sb, va_arg(args, String*));
+            StringBuilder_AppendString(sb, va_arg(*args, String*));
             break;
 
         case ArgumentType_Char:
-            StringBuilder_Append(sb, (char)va_arg(args, int));
+            StringBuilder_Append(sb, (char)va_arg(*args, int));
             break;
 
         case ArgumentType_SByte:
         case ArgumentType_Short:
         case ArgumentType_Int:
-            int_ToStringBuffered(sb, va_arg(args, int), format);
+            int_ToStringBuffered(sb, va_arg(*args, int), format);
             break;
 
         case ArgumentType_Long:
-            long_ToStringBuffered(sb, va_arg(args, long), format);
+            long_ToStringBuffered(sb, va_arg(*args, long), format);
             break;
 
         case ArgumentType_Byte:
         case ArgumentType_UShort:
         case ArgumentType_UInt:
-            uint_ToStringBuffered(sb, va_arg(args, uint), format);
+            uint_ToStringBuffered(sb, va_arg(*args, uint), format);
             break;
 
         case ArgumentType_ULong:
-            ulong_ToStringBuffered(sb, va_arg(args, ulong), format);
+            ulong_ToStringBuffered(sb, va_arg(*args, ulong), format);
             break;
 
         case ArgumentType_Single:
-            float_ToStringBuffered(sb, (float)va_arg(args, double), format);
+            float_ToStringBuffered(sb, (float)va_arg(*args, double), format);
             break;
 
         case ArgumentType_Double:
-            double_ToStringBuffered(sb, va_arg(args, double), format);
+            double_ToStringBuffered(sb, va_arg(*args, double), format);
             break;
 
         default:
             assert(false);
             break;
     }
-
-    return args;
 }
 
 /// <summary>
