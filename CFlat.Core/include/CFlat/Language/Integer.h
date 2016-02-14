@@ -50,7 +50,7 @@ typedef size_t uintsize;
 /// <summary>
 /// Represents the largest possible value of <see cref="uintsize"/>.
 /// </summary>
-#define uintsize_MaxValue ((uintsize)SIZE_MAX)
+#define uintsize_MaxValue ((uintsize)-1)
 
 /* Standard integer types */
 /**
@@ -175,7 +175,7 @@ typedef unsigned long ulong;
  */
 
 #if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) || (_MSC_VER >= 1700)
-    #include <stdint.h.>
+    #include <stdint.h>
 
     #define CFLAT_INTMAX        intmax_t
     #define CFLAT_UINTMAX       uintmax_t
@@ -230,7 +230,7 @@ typedef CFLAT_UINTMAX uintmax;
  * @name Exact-width integer types
  */
 #if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) || (_MSC_VER >= 1700)
-    #include <stdint.h.>
+    #include <stdint.h>
 
     #ifdef INT8_MAX
         #define CFLAT_INT8      int8_t
@@ -459,7 +459,7 @@ typedef CFLAT_UINTMAX uintmax;
  * @name Least-width integer types
  */
 #if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) || (defined(_MSC_VER) && _MSC_VER >= 1700)
-    #include <stdint.h.>
+    #include <stdint.h>
 
     #define CFLAT_INT8_LEAST        int_least8_t
     #define CFLAT_UINT8_LEAST       uint_least8_t
@@ -743,7 +743,7 @@ typedef CFLAT_UINT32_LEAST uint32_least;
  * @name Fast integer types
  */
 #if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) || (defined(_MSC_VER) && _MSC_VER >= 1700)
-    #include <stdint.h.>
+    #include <stdint.h>
 
     #define CFLAT_INT8_FAST        int_fast8_t
     #define CFLAT_UINT8_FAST       uint_fast8_t
