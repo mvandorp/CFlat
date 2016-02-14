@@ -1,0 +1,33 @@
+#!/usr/bin/make -f
+
+# General
+OutputFile              := libcb.a
+OutputType              := StaticLibrary
+# Options:
+#   - None
+#   - Application
+#   - SharedLibrary (.so)
+#   - StaticLibrary (.a)
+
+# Directories
+OutputDirectory         := bin/
+BuildDirectory          := obj/
+SourceDirectories       := src/
+IncludeDirectories      := src/ include/
+LibraryDirectories      :=
+
+# Dependencies
+BuildDependencies       :=
+Libraries               := m
+
+# Preprocessor options
+PreprocessorDefinitions := CFLAT_CORE_INTERNAL
+
+# Advanced Options
+CFLAGS                  := -std=c99 -Wall -Wextra
+CPPFLAGS                :=
+LDFLAGS                 :=
+LDLIBS                  :=
+
+# Files other than source and header files that should be included in a distribution tarball
+AuxiliaryFiles          :=

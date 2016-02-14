@@ -1,0 +1,33 @@
+#!/usr/bin/make -f
+
+# General
+OutputFile              := cb
+OutputType              := Application
+# Options:
+#   - None
+#   - Application
+#   - SharedLibrary (.so)
+#   - StaticLibrary (.a)
+
+# Directories
+OutputDirectory         := bin/
+BuildDirectory          := obj/
+SourceDirectories       := src/
+IncludeDirectories      := $(SolutionDir)CFlat.Core/include
+LibraryDirectories      := $(SolutionDir)CFlat.Core/bin
+
+# Dependencies
+BuildDependencies       := CFlat.Core/bin/libcb.a
+Libraries               := cb m
+
+# Preprocessor options
+PreprocessorDefinitions :=
+
+# Advanced Options
+CFLAGS                  := -std=c99 -Wall -Wextra
+CPPFLAGS                :=
+LDFLAGS                 :=
+LDLIBS                  :=
+
+# Files other than source and header files that should be included in a distribution tarball
+AuxiliaryFiles          :=

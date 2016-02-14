@@ -1,0 +1,7 @@
+#!/usr/bin/make -f
+
+# General
+OutputType := None
+
+# Version: major.minor.revision
+Version := 0.0.1
