@@ -44,7 +44,7 @@ typedef enum ArgumentType {
 } ArgumentType;
 
 /* Private functions */
-private va_list ProcessFormatItem(StringBuilder *sb, StringReader *reader, StringBuilder *buffer, va_list args);
+private void ProcessFormatItem(StringBuilder *sb, StringReader *reader, StringBuilder *buffer, va_list args);
 private ArgumentType ReadFormatItem(StringReader *reader, char **formatString, StringBuilder *formatBuffer);
 private ArgumentType ParseFormatItem(char *formatItem, char **formatString);
 private ArgumentType ToArgumentType(const char *type);
@@ -73,7 +73,7 @@ internal void StringBuilder_AppendFormat(StringBuilder *sb, const String *format
             }
             // Parse format item.
             else {
-                args = ProcessFormatItem(sb, reader, buffer, args);
+                ProcessFormatItem(sb, reader, buffer, args);
             }
         }
         // Found random closing brace.
@@ -101,7 +101,7 @@ internal void StringBuilder_AppendFormat(StringBuilder *sb, const String *format
 /// Processes the format item that the given <see cref="StringReader"/> is reading and appends the resulting string
 /// to the given  <see cref="StringReader"/>.
 /// </summary>
-private va_list ProcessFormatItem(StringBuilder *sb, StringReader *reader, StringBuilder *buffer, va_list args)
+private void ProcessFormatItem(StringBuilder *sb, StringReader *reader, StringBuilder *buffer, va_list args)
 {
     assert(sb != null);
     assert(reader != null);
@@ -161,8 +161,6 @@ private va_list ProcessFormatItem(StringBuilder *sb, StringReader *reader, Strin
             assert(false);
             break;
     }
-
-    return args;
 }
 
 /// <summary>
