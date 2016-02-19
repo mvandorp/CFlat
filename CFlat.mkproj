@@ -9,4 +9,4 @@ OutputType := None
 Doxyfile :=
 
 # Auxiliary distribution files
-AuxDistributionFiles :=
+AuxDistributionFiles := README.md
