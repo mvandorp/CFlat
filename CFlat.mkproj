@@ -1,7 +1,12 @@
 #!/usr/bin/make -f
 
+Version := 0.0.1
+
 # General
 OutputType := None
 
-# Version: major.minor.revision
-Version := 0.0.1
+# Doxygen config file
+Doxyfile :=
+
+# Auxiliary distribution files
+AuxDistributionFiles :=

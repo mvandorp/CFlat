@@ -12,16 +12,21 @@ OutputType              := StaticLibrary
 # Directories
 OutputDirectory         := bin/
 BuildDirectory          := obj/
-SourceDirectories       := src/
-IncludeDirectories      := src/ include/
-LibraryDirectories      :=
+
+# Input
+SourceFiles             := VCXPROJ_SOURCES
+HeaderFiles             := VCXPROJ_HEADERS
 
 # Dependencies
-BuildDependencies       :=
-Libraries               := m
+ProjectDependencies     :=
 
 # Preprocessor options
+IncludeDirectories      := src/ include/
 PreprocessorDefinitions := CFLAT_CORE_INTERNAL
+
+# Linker options
+LibraryDirectories      :=
+Libraries               := m
 
 # Advanced Options
 CFLAGS                  := -std=c99 -Wall -Wextra
@@ -29,5 +34,8 @@ CPPFLAGS                :=
 LDFLAGS                 :=
 LDLIBS                  :=
 
-# Files other than source and header files that should be included in a distribution tarball
-AuxiliaryFiles          :=
+# Doxygen config file
+Doxyfile                := default.doxygen
+
+# Auxiliary distribution files
+AuxDistributionFiles    := LICENSE.md

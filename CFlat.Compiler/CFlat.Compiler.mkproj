@@ -12,16 +12,21 @@ OutputType              := Application
 # Directories
 OutputDirectory         := bin/
 BuildDirectory          := obj/
-SourceDirectories       := src/
-IncludeDirectories      := $(SolutionDir)CFlat.Core/include
-LibraryDirectories      := $(SolutionDir)CFlat.Core/bin
+
+# Input
+SourceFiles             := VCXPROJ_SOURCES
+HeaderFiles             := VCXPROJ_HEADERS
 
 # Dependencies
-BuildDependencies       := CFlat.Core/bin/libcb.a
-Libraries               := cb m
+ProjectDependencies     := CFlat.Core
 
 # Preprocessor options
+IncludeDirectories      := $(SolutionDir)CFlat.Core/include
 PreprocessorDefinitions :=
+
+# Linker options
+LibraryDirectories      := $(SolutionDir)CFlat.Core/bin
+Libraries               := cb m
 
 # Advanced Options
 CFLAGS                  := -std=c99 -Wall -Wextra
@@ -29,5 +34,8 @@ CPPFLAGS                :=
 LDFLAGS                 :=
 LDLIBS                  :=
 
-# Files other than source and header files that should be included in a distribution tarball
-AuxiliaryFiles          :=
+# Doxygen config file
+Doxyfile                := default.doxygen
+
+# Auxiliary distribution files
+AuxDistributionFiles    := LICENSE.md
