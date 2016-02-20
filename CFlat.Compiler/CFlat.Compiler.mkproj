@@ -1,0 +1,41 @@
+#!/usr/bin/make -f
+
+# General
+OutputFile              := cb
+OutputType              := Application
+# Options:
+#   - None
+#   - Application
+#   - SharedLibrary (.so)
+#   - StaticLibrary (.a)
+
+# Directories
+OutputDirectory         := bin/
+BuildDirectory          := obj/
+
+# Input
+SourceFiles             := VCXPROJ_SOURCES
+HeaderFiles             := VCXPROJ_HEADERS
+
+# Dependencies
+ProjectDependencies     := CFlat.Core
+
+# Preprocessor options
+IncludeDirectories      := $(SolutionDir)CFlat.Core/include
+PreprocessorDefinitions :=
+
+# Linker options
+LibraryDirectories      := $(SolutionDir)CFlat.Core/bin
+Libraries               := cb m
+
+# Advanced Options
+CFLAGS                  := -std=c99 -Wall -Wextra
+CPPFLAGS                :=
+LDFLAGS                 :=
+LDLIBS                  :=
+
+# Doxygen config file
+Doxyfile                := default.doxygen
+
+# Auxiliary distribution files
+AuxDistributionFiles    := CFlat.Compiler.vcxproj LICENSE.md

@@ -1,0 +1,12 @@
+#!/usr/bin/make -f
+
+Version := 0.0.1
+
+# General
+OutputType := None
+
+# Doxygen config file
+Doxyfile :=
+
+# Auxiliary distribution files
+AuxDistributionFiles := README.md
