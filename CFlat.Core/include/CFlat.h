@@ -24,8 +24,7 @@
 #ifndef CFLAT_CORE_CFLAT_H
 #define CFLAT_CORE_CFLAT_H
 
-#include <assert.h>
-
+#include "CFlat/Language/Assert.h"
 #include "CFlat/Language/Bool.h"
 #include "CFlat/Language/Char.h"
 #include "CFlat/Language/Constants.h"
