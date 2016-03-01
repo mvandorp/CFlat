@@ -24,8 +24,6 @@
 #include "CFlat/Language/Keywords.h"
 #include "CFlat/Object.h"
 
-#include <stdarg.h>
-
 /* Forward declarations */
 typedef struct String String;
 
@@ -38,17 +36,6 @@ typedef struct StringBuilder {
 } StringBuilder;
 
 /* Functions */
-/// <summary>
-/// Appends a string that is formatted according to the given format string, to the given <see cref="StringBuilder"/>.
-/// Each format specifier replaced with a string representation of the corresponding argument.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="format">Pointer to a format string.</param>
-/// <param name="args">
-/// A variable argument list containing the objects to format according to the format specifiers in the format string.
-/// </param>
-internal void StringBuilder_AppendFormat(StringBuilder *sb, const String *format, va_list args);
-
 /// <summary>
 /// Gets the internal string buffer of the given <see cref="StringBuilder"/>, which contains a null-terminated string.
 /// The buffer becomes invalid when the <see cref="StringBuilder"/> is modified.

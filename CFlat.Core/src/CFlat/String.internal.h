@@ -24,8 +24,6 @@
 #include "CFlat/Object.h"
 #include "CFlat/Language/Integer.h"
 
-#include <stdarg.h>
-
 /* Macros */
 /// <summary>
 /// Evaluates to the size of the given string literal.
@@ -60,17 +58,6 @@ typedef struct String {
 } String;
 
 /* Functions */
-/// <summary>
-/// Returns a pointer to a new <see cref="String"/> that is formatted according to the given format string, with each
-/// format specifier replaced with a string representation of the corresponding argument.
-/// </summary>
-/// <param name="format">Pointer to a format string.</param>
-/// <param name="args">
-/// A variable argument list containing the objects to format according to the format specifiers in the format string.
-/// </param>
-/// <returns>A pointer to a new <see cref="String"/> that is formatted according to the given format string.</returns>
-internal String *String_Format(const String *format, va_list args);
-
 /// <summary>
 /// Returns a pointer to a <see cref="String"/> wrapper for given null-terminated string.
 /// </summary>

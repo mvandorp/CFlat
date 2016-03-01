@@ -25,6 +25,7 @@
 #define CFLAT_CORE_STRINGBUILDER_H
 
 #include "CFlat/Language/Integer.h"
+#include "CFlat/Language/VarArgs.h"
 
 /* Forward declarations */
 typedef struct String String;
@@ -193,6 +194,17 @@ void StringBuilder_AppendCString(StringBuilder *sb, const char *value);
 /// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
 /// <param name="value">Pointer to the string to append.</param>
 void StringBuilder_AppendString(StringBuilder *sb, const String *value);
+
+/// <summary>
+/// Appends a string that is formatted according to the given format string, to the given <see cref="StringBuilder"/>.
+/// Each format specifier replaced with a string representation of the corresponding argument.
+/// </summary>
+/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
+/// <param name="format">Pointer to a format string.</param>
+/// <param name="args">
+/// A variable argument list containing the objects to format according to the format specifiers in the format string.
+/// </param>
+void StringBuilder_AppendFormat(StringBuilder *sb, const String *format, VarArgs args);
 
 /// <summary>
 /// Appends a string that is formatted according to the given format string, to the given <see cref="StringBuilder"/>.

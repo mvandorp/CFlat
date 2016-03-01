@@ -24,6 +24,7 @@
     <ClInclude Include="include\CFlat\Language\Integer.h" />
     <ClInclude Include="include\CFlat\Language\Keywords.h" />
     <ClInclude Include="include\CFlat\Language\Null.h" />
+    <ClInclude Include="include\CFlat\Language\VarArgs.h" />
     <ClInclude Include="include\CFlat\Math.h" />
     <ClInclude Include="include\CFlat\Memory.h" />
     <ClInclude Include="include\CFlat\Object.h" />

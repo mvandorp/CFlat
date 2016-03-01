@@ -26,8 +26,6 @@
 #include "CFlat/StringBuilder.h"
 #include "CFlat/Validate.h"
 
-#include <stdarg.h>
-
 /* Private constants */
 private const String Empty = CFLAT_STRING_LITERAL("");
 
@@ -114,6 +112,18 @@ public bool String_EqualsCString(const String *str1, const char *str2)
         CString_Equals(String_GetCString(str1), str2));
 }
 
+public String *String_Format(const String *format, VarArgs args)
+{
+    assert(format != null);
+
+    StringBuilder sb;
+    StringBuilder_Constructor(&sb);
+
+    StringBuilder_AppendFormat(&sb, format, args);
+
+    return StringBuilder_DeleteAndToString(&sb);
+}
+
 public String *String_FormatCString(const char *format, ...)
 {
     Validate_NotNull(format);
@@ -121,12 +131,12 @@ public String *String_FormatCString(const char *format, ...)
     String strBuffer;
     String *str = String_WrapCString(format, &strBuffer);
 
-    va_list args;
-    va_start(args, format);
+    VarArgs args;
+    VarArgs_Start(args, format);
 
     String *result = String_Format(str, args);
 
-    va_end(args);
+    VarArgs_End(args);
 
     return result;
 }
@@ -135,12 +145,12 @@ public String *String_FormatString(const String *format, ...)
 {
     Validate_NotNull(format);
 
-    va_list args;
-    va_start(args, format);
+    VarArgs args;
+    VarArgs_Start(args, format);
 
     String *result = String_Format(format, args);
 
-    va_end(args);
+    VarArgs_End(args);
 
     return result;
 }
@@ -481,18 +491,6 @@ public char *String_ToCString(const String *str)
 /**************************************/
 /* Internal function definitions      */
 /**************************************/
-
-internal String *String_Format(const String *format, va_list args)
-{
-    assert(format != null);
-
-    StringBuilder sb;
-    StringBuilder_Constructor(&sb);
-
-    StringBuilder_AppendFormat(&sb, format, args);
-
-    return StringBuilder_DeleteAndToString(&sb);
-}
 
 internal String *String_WrapCString(const char *value, String *buffer)
 {

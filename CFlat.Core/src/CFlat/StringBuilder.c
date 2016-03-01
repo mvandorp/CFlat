@@ -27,8 +27,6 @@
 #include "CFlat/String.h"
 #include "CFlat/Validate.h"
 
-#include <stdarg.h>
-
 /* Private constants */
 private const uintsize DefaultCapacity = 16;
 
@@ -237,12 +235,12 @@ public void StringBuilder_AppendFormatCString(StringBuilder *sb, const char *for
     String strBuffer;
     String *str = String_WrapCString(format, &strBuffer);
 
-    va_list args;
-    va_start(args, format);
+    VarArgs args;
+    VarArgs_Start(args, format);
 
     StringBuilder_AppendFormat(sb, str, args);
 
-    va_end(args);
+    VarArgs_End(args);
 }
 
 public void StringBuilder_AppendFormatString(StringBuilder *sb, const String *format, ...)
@@ -250,12 +248,12 @@ public void StringBuilder_AppendFormatString(StringBuilder *sb, const String *fo
     Validate_NotNull(sb);
     Validate_NotNull(format);
 
-    va_list args;
-    va_start(args, format);
+    VarArgs args;
+    VarArgs_Start(args, format);
 
     StringBuilder_AppendFormat(sb, format, args);
 
-    va_end(args);
+    VarArgs_End(args);
 }
 
 public void StringBuilder_AppendLine(StringBuilder *sb)

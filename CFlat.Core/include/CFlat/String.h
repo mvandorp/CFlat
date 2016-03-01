@@ -26,6 +26,7 @@
 
 #include "CFlat/Language/Bool.h"
 #include "CFlat/Language/Integer.h"
+#include "CFlat/Language/VarArgs.h"
 
 /* Types */
 /// <summary>
@@ -108,6 +109,17 @@ bool String_Equals(const String *str1, const String *str2);
 /// the method returns <see cref="true"/>.
 /// </returns>
 bool String_EqualsCString(const String *str1, const char *str2);
+
+/// <summary>
+/// Returns a pointer to a new <see cref="String"/> that is formatted according to the given format string, with each
+/// format specifier replaced with a string representation of the corresponding argument.
+/// </summary>
+/// <param name="format">Pointer to a format string.</param>
+/// <param name="args">
+/// A variable argument list containing the objects to format according to the format specifiers in the format string.
+/// </param>
+/// <returns>A pointer to a new <see cref="String"/> that is formatted according to the given format string.</returns>
+String *String_Format(const String *format, VarArgs args);
 
 /// <summary>
 /// Returns a pointer to a new <see cref="String"/> that is formatted according to the given format string, with each
