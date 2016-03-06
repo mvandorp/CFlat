@@ -10,6 +10,41 @@
 /* Public function definitions        */
 /**************************************/
 
+/* IntPtr */
+#ifdef CFLAT_INTPTR
+public String *intptr_ToString(intptr value)
+{
+    return intmax_ToString((intmax)value);
+}
+
+public String *intptr_ToStringFormat(intptr value, const String *format)
+{
+    return intmax_ToStringFormat((intmax)value, format);
+}
+
+public String *intptr_ToStringFormatC(intptr value, const char *format)
+{
+    return intmax_ToStringFormatC((intmax)value, format);
+}
+#endif
+
+#ifdef CFLAT_UINTPTR
+public String *uintptr_ToString(uintptr value)
+{
+    return uintmax_ToString((uintmax)value);
+}
+
+public String *uintptr_ToStringFormat(uintptr value, const String *format)
+{
+    return uintmax_ToStringFormat((uintmax)value, format);
+}
+
+public String *uintptr_ToStringFormatC(uintptr value, const char *format)
+{
+    return uintmax_ToStringFormatC((uintmax)value, format);
+}
+#endif
+
 /* UIntSize */
 public uintsize uintsize_Max(uintsize x, uintsize y) {
     return MAX(x, y);
@@ -278,6 +313,20 @@ public String *uintmax_ToStringFormatC(uintmax value, const char *format)
 /**************************************/
 /* Internal function definitions      */
 /**************************************/
+
+#ifdef CFLAT_INTPTR
+internal void intptr_ToStringBuffered(StringBuilder *sb, intptr value, const String *format)
+{
+    intmax_ToStringBuffered(sb, (intmax)value, format);
+}
+#endif
+
+#ifdef CFLAT_UINTPTR
+internal void uintptr_ToStringBuffered(StringBuilder *sb, uintptr value, const String *format)
+{
+    uintmax_ToStringBuffered(sb, (uintmax)value, format);
+}
+#endif
 
 internal void uintsize_ToStringBuffered(StringBuilder *sb, uintsize value, const String *format)
 {

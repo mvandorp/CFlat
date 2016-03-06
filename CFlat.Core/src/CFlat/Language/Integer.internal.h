@@ -28,6 +28,26 @@ typedef struct String String;
 typedef struct StringBuilder StringBuilder;
 
 /* Functions */
+#ifdef CFLAT_INTPTR
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="sb">The <see cref="StringBuilder"/> onto which to append the resulting string.</param>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+internal void intptr_ToStringBuffered(StringBuilder *sb, intptr value, const String *format);
+#endif
+
+#ifdef CFLAT_UINTPTR
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="sb">The <see cref="StringBuilder"/> onto which to append the resulting string.</param>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+internal void uintptr_ToStringBuffered(StringBuilder *sb, uintptr value, const String *format);
+#endif
+
 /// <summary>
 /// Converts the given number to a string representation, using the specified format.
 /// </summary>

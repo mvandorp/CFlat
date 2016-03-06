@@ -36,6 +36,56 @@ typedef struct String String;
  * @{
  */
 
+#if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) || (_MSC_VER >= 1700)
+    #include <stdint.h>
+
+    #ifdef INTPTR_MAX
+        #define CFLAT_INTPTR        intptr_t
+        #define CFLAT_INTPTR_MIN    INTPTR_MIN
+        #define CFLAT_INTPTR_MAX    INTPTR_MAX
+    #endif
+
+    #ifdef INTPTR_MAX
+        #define CFLAT_UINTPTR       uintptr_t
+        #define CFLAT_UINTPTR_MAX   UINTPTR_MAX
+    #endif
+#endif
+
+#ifdef CFLAT_INTPTR
+    /// <summary>
+    /// Represents a signed integer capable of holding a void pointer.
+    /// </summary>
+    typedef CFLAT_INTPTR intptr;
+
+    /// <summary>
+    /// Represents the smallest possible value of <see cref="intptr"/>.
+    /// </summary>
+    #define intptr_MinValue CFLAT_INTPTR_MIN
+
+    /// <summary>
+    /// Represents the largest possible value of <see cref="intptr"/>.
+    /// </summary>
+    #define intptr_MaxValue CFLAT_INTPTR_MAX
+#endif
+
+#ifdef CFLAT_UINTPTR
+    /// <summary>
+    /// Represents an unsigned integer capable of holding a void pointer.
+    /// </summary>
+    typedef CFLAT_UINTPTR uintptr;
+
+    /// <summary>
+    /// Represents the smallest possible value of <see cref="uintptr"/>.
+    /// </summary>
+    /// <remarks>The value of this constant is 0.</remarks>
+    #define uintptr_MinValue 0
+
+    /// <summary>
+    /// Represents the largest possible value of <see cref="uintptr"/>.
+    /// </summary>
+    #define uintptr_MaxValue CFLAT_UINTPTR_MAX
+#endif
+
 /// <summary>
 /// Represents an unsigned integer with a width of at least 16 bits
 /// that is large enough to store the size of any array or object.
@@ -1002,6 +1052,56 @@ String *uintsize_ToStringFormat(uintsize value, const String *format);
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
 String *uintsize_ToStringFormatC(uintsize value, const char *format);
+
+#ifdef CFLAT_INTPTR
+/// <summary>
+/// Converts the given number to a string representation.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <returns>The string representation of the given number.</returns>
+String *intptr_ToString(intptr value);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *intptr_ToStringFormat(intptr value, const String *format);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *intptr_ToStringFormatC(intptr value, const char *format);
+#endif
+
+#ifdef CFLAT_UINTPTR
+/// <summary>
+/// Converts the given number to a string representation.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <returns>The string representation of the given number.</returns>
+String *uintptr_ToString(uintptr value);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *uintptr_ToStringFormat(uintptr value, const String *format);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *uintptr_ToStringFormatC(uintptr value, const char *format);
+#endif
 
 /// <summary>
 /// Returns the larger of two numbers.
