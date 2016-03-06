@@ -26,6 +26,11 @@
 
 /* Types */
 typedef enum ArgumentType {
+    ArgumentType_Pointer,
+    ArgumentType_IntPtr,
+    ArgumentType_UIntPtr,
+    ArgumentType_UIntSize,
+
     ArgumentType_Char,
     ArgumentType_CString,
     ArgumentType_String,
@@ -38,6 +43,8 @@ typedef enum ArgumentType {
     ArgumentType_UInt,
     ArgumentType_Long,
     ArgumentType_ULong,
+    ArgumentType_IntMax,
+    ArgumentType_UIntMax,
 
     ArgumentType_Single,
     ArgumentType_Double
@@ -118,6 +125,47 @@ private void ProcessFormatItem(StringBuilder *sb, StringReader *reader, StringBu
     String *format = String_WrapCString(formatPointer, &formatBuffer);
 
     switch (formatSpecifier) {
+        case ArgumentType_Pointer:
+            StringBuilder_Append(sb, '0');
+            StringBuilder_Append(sb, 'x');
+#ifdef CFLAT_UINTPTR
+            uintptr_ToStringBuffered(sb, (uintptr)VarArg(*args, void*), String_WrapCString("x8", &formatBuffer));
+#else
+            uintmax_ToStringBuffered(sb, (uintmax)VarArg(*args, void*), String_WrapCString("x8", &formatBuffer));
+#endif
+            break;
+
+#ifdef CFLAT_INTPTR
+        case ArgumentType_IntPtr:
+            if (sizeof(intptr) < sizeof(int)) {
+                intptr_ToStringBuffered(sb, (intptr)VarArg(*args, int), format);
+            }
+            else {
+                intptr_ToStringBuffered(sb, VarArg(*args, intptr), format);
+            }
+            break;
+#endif
+
+#ifdef CFLAT_UINTPTR
+        case ArgumentType_UIntPtr:
+            if (sizeof(uintptr) < sizeof(uint)) {
+                uintptr_ToStringBuffered(sb, (uintptr)VarArg(*args, uint), format);
+            }
+            else {
+                uintptr_ToStringBuffered(sb, VarArg(*args, uintptr), format);
+            }
+            break;
+#endif
+
+        case ArgumentType_UIntSize:
+            if (sizeof(uintsize) < sizeof(uint)) {
+                uintsize_ToStringBuffered(sb, (uintsize)VarArg(*args, uint), format);
+            }
+            else {
+                uintsize_ToStringBuffered(sb, VarArg(*args, uintsize), format);
+            }
+            break;
+
         case ArgumentType_CString:
             StringBuilder_AppendCString(sb, VarArg(*args, char*));
             break;
@@ -140,6 +188,10 @@ private void ProcessFormatItem(StringBuilder *sb, StringReader *reader, StringBu
             long_ToStringBuffered(sb, VarArg(*args, long), format);
             break;
 
+        case ArgumentType_IntMax:
+            intmax_ToStringBuffered(sb, VarArg(*args, intmax), format);
+            break;
+
         case ArgumentType_Byte:
         case ArgumentType_UShort:
         case ArgumentType_UInt:
@@ -148,6 +200,10 @@ private void ProcessFormatItem(StringBuilder *sb, StringReader *reader, StringBu
 
         case ArgumentType_ULong:
             ulong_ToStringBuffered(sb, VarArg(*args, ulong), format);
+            break;
+
+        case ArgumentType_UIntMax:
+            uintmax_ToStringBuffered(sb, VarArg(*args, uintmax), format);
             break;
 
         case ArgumentType_Single:
@@ -244,7 +300,23 @@ private ArgumentType ParseFormatItem(char *formatItem, char **formatString)
 private ArgumentType ToArgumentType(const char *type)
 {
     // TODO: Use a hashmap for lookup.
-    if (CString_Equals(type, "string")) {
+    if (CString_Equals(type, "pointer")) {
+        return ArgumentType_Pointer;
+    }
+#ifdef CFLAT_INTPTR
+    else if (CString_Equals(type, "intptr")) {
+        return ArgumentType_IntPtr;
+    }
+#endif
+#ifdef CFLAT_UINTPTR
+    else if (CString_Equals(type, "uintptr")) {
+        return ArgumentType_UIntPtr;
+    }
+#endif
+    else if (CString_Equals(type, "uintsize")) {
+        return ArgumentType_UIntSize;
+    }
+    else if (CString_Equals(type, "string")) {
         return ArgumentType_String;
     }
     else if (CString_Equals(type, "cstring")) {
@@ -264,6 +336,12 @@ private ArgumentType ToArgumentType(const char *type)
     }
     else if (CString_Equals(type, "ulong")) {
         return ArgumentType_ULong;
+    }
+    else if (CString_Equals(type, "intmax")) {
+        return ArgumentType_IntMax;
+    }
+    else if (CString_Equals(type, "uintmax")) {
+        return ArgumentType_UIntMax;
     }
     else if (CString_Equals(type, "short")) {
         return ArgumentType_Short;
