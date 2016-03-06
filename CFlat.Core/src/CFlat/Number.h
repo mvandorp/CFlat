@@ -20,6 +20,7 @@
 #ifndef CFLAT_CORE_NUMBER_H
 #define CFLAT_CORE_NUMBER_H
 
+#include "CFlat/Language/Bool.h"
 #include "CFlat/Language/Integer.h"
 #include "CFlat/Language/Keywords.h"
 
@@ -91,5 +92,15 @@ internal void Number_FormatSingleBuffered(StringBuilder *sb, float value, const 
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
 internal void Number_FormatDoubleBuffered(StringBuilder *sb, double value, const String *format);
+
+/// <summary>
+/// Determines whether the given number format will cause the number to be formatted in a numeral system other than
+/// the decimal system, for example hexadecimal or binary.
+/// </summary>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>
+/// <see cref="true"/> if <paramref name="value"/> is a non-decimal format; otherwise <see cref="false"/>.
+/// </returns>
+internal bool Number_IsNonDecimalFormat(const String *format);
 
 #endif

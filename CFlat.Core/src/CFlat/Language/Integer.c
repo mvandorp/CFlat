@@ -14,24 +14,31 @@
 #ifdef CFLAT_INTPTR
 public String *intptr_ToString(intptr value)
 {
-    return intmax_ToString((intmax)value);
+    return intptr_ToStringFormat(value, null);
 }
 
 public String *intptr_ToStringFormat(intptr value, const String *format)
 {
+    if (value < 0 && Number_IsNonDecimalFormat(format)) {
+        return uintmax_ToStringFormat((uintmax)value & uintptr_MaxValue, format);
+    }
+
     return intmax_ToStringFormat((intmax)value, format);
 }
 
 public String *intptr_ToStringFormatC(intptr value, const char *format)
 {
-    return intmax_ToStringFormatC((intmax)value, format);
+    String strBuffer;
+    String *str = String_WrapCString(format, &strBuffer);
+
+    return intptr_ToStringFormat(value, str);
 }
 #endif
 
 #ifdef CFLAT_UINTPTR
 public String *uintptr_ToString(uintptr value)
 {
-    return uintmax_ToString((uintmax)value);
+    return uintptr_ToStringFormat(value, null);
 }
 
 public String *uintptr_ToStringFormat(uintptr value, const String *format)
@@ -41,7 +48,10 @@ public String *uintptr_ToStringFormat(uintptr value, const String *format)
 
 public String *uintptr_ToStringFormatC(uintptr value, const char *format)
 {
-    return uintmax_ToStringFormatC((uintmax)value, format);
+    String strBuffer;
+    String *str = String_WrapCString(format, &strBuffer);
+
+    return uintptr_ToStringFormat(value, str);
 }
 #endif
 
@@ -56,7 +66,7 @@ public uintsize uintsize_Min(uintsize x, uintsize y) {
 
 public String *uintsize_ToString(uintsize value)
 {
-    return uintmax_ToString((uintmax)value);
+    return uintsize_ToStringFormat(value, null);
 }
 
 public String *uintsize_ToStringFormat(uintsize value, const String *format)
@@ -66,7 +76,10 @@ public String *uintsize_ToStringFormat(uintsize value, const String *format)
 
 public String *uintsize_ToStringFormatC(uintsize value, const char *format)
 {
-    return uintmax_ToStringFormatC((uintmax)value, format);
+    String strBuffer;
+    String *str = String_WrapCString(format, &strBuffer);
+
+    return uintsize_ToStringFormat(value, str);
 }
 
 /* Byte */
@@ -80,17 +93,24 @@ public sbyte sbyte_Min(sbyte x, sbyte y) {
 
 public String *sbyte_ToString(sbyte value)
 {
-    return intmax_ToStringFormat((intmax)value, null);
+    return sbyte_ToStringFormat(value, null);
 }
 
 public String *sbyte_ToStringFormat(sbyte value, const String *format)
 {
+    if (value < 0 && Number_IsNonDecimalFormat(format)) {
+        return uintmax_ToStringFormat((uintmax)value & byte_MaxValue, format);
+    }
+
     return intmax_ToStringFormat((intmax)value, format);
 }
 
 public String *sbyte_ToStringFormatC(sbyte value, const char *format)
 {
-    return intmax_ToStringFormatC((intmax)value, format);
+    String strBuffer;
+    String *str = String_WrapCString(format, &strBuffer);
+
+    return sbyte_ToStringFormat(value, str);
 }
 
 public byte byte_Max(byte x, byte y) {
@@ -103,7 +123,7 @@ public byte byte_Min(byte x, byte y) {
 
 public String *byte_ToString(byte value)
 {
-    return uintmax_ToStringFormat((uintmax)value, null);
+    return byte_ToStringFormat(value, null);
 }
 
 public String *byte_ToStringFormat(byte value, const String *format)
@@ -113,7 +133,10 @@ public String *byte_ToStringFormat(byte value, const String *format)
 
 public String *byte_ToStringFormatC(byte value, const char *format)
 {
-    return uintmax_ToStringFormatC((uintmax)value, format);
+    String strBuffer;
+    String *str = String_WrapCString(format, &strBuffer);
+
+    return byte_ToStringFormat(value, str);
 }
 
 /* Short */
@@ -127,17 +150,24 @@ public short short_Min(short x, short y) {
 
 public String *short_ToString(short value)
 {
-    return intmax_ToStringFormat((intmax)value, null);
+    return short_ToStringFormat(value, null);
 }
 
 public String *short_ToStringFormat(short value, const String *format)
 {
+    if (value < 0 && Number_IsNonDecimalFormat(format)) {
+        return uintmax_ToStringFormat((uintmax)value & ushort_MaxValue, format);
+    }
+
     return intmax_ToStringFormat((intmax)value, format);
 }
 
 public String *short_ToStringFormatC(short value, const char *format)
 {
-    return intmax_ToStringFormatC((intmax)value, format);
+    String strBuffer;
+    String *str = String_WrapCString(format, &strBuffer);
+
+    return short_ToStringFormat(value, str);
 }
 
 public ushort ushort_Max(ushort x, ushort y) {
@@ -150,7 +180,7 @@ public ushort ushort_Min(ushort x, ushort y) {
 
 public String *ushort_ToString(ushort value)
 {
-    return uintmax_ToStringFormat((uintmax)value, null);
+    return ushort_ToStringFormat(value, null);
 }
 
 public String *ushort_ToStringFormat(ushort value, const String *format)
@@ -160,7 +190,10 @@ public String *ushort_ToStringFormat(ushort value, const String *format)
 
 public String *ushort_ToStringFormatC(ushort value, const char *format)
 {
-    return uintmax_ToStringFormatC((uintmax)value, format);
+    String strBuffer;
+    String *str = String_WrapCString(format, &strBuffer);
+
+    return ushort_ToStringFormat(value, str);
 }
 
 /* Int */
@@ -174,17 +207,24 @@ public int int_Min(int x, int y) {
 
 public String *int_ToString(int value)
 {
-    return intmax_ToStringFormat((intmax)value, null);
+    return int_ToStringFormat(value, null);
 }
 
 public String *int_ToStringFormat(int value, const String *format)
 {
+    if (value < 0 && Number_IsNonDecimalFormat(format)) {
+        return uintmax_ToStringFormat((uintmax)value & uint_MaxValue, format);
+    }
+
     return intmax_ToStringFormat((intmax)value, format);
 }
 
 public String *int_ToStringFormatC(int value, const char *format)
 {
-    return intmax_ToStringFormatC((intmax)value, format);
+    String strBuffer;
+    String *str = String_WrapCString(format, &strBuffer);
+
+    return int_ToStringFormat(value, str);
 }
 
 public uint uint_Max(uint x, uint y) {
@@ -197,7 +237,7 @@ public uint uint_Min(uint x, uint y) {
 
 public String *uint_ToString(uint value)
 {
-    return uintmax_ToStringFormat((uintmax)value, null);
+    return uint_ToStringFormat(value, null);
 }
 
 public String *uint_ToStringFormat(uint value, const String *format)
@@ -207,7 +247,10 @@ public String *uint_ToStringFormat(uint value, const String *format)
 
 public String *uint_ToStringFormatC(uint value, const char *format)
 {
-    return uintmax_ToStringFormatC((uintmax)value, format);
+    String strBuffer;
+    String *str = String_WrapCString(format, &strBuffer);
+
+    return uint_ToStringFormat(value, str);
 }
 
 /* Long */
@@ -221,17 +264,24 @@ public long long_Min(long x, long y) {
 
 public String *long_ToString(long value)
 {
-    return intmax_ToStringFormat((intmax)value, null);
+    return long_ToStringFormat(value, null);
 }
 
 public String *long_ToStringFormat(long value, const String *format)
 {
+    if (value < 0 && Number_IsNonDecimalFormat(format)) {
+        return uintmax_ToStringFormat((uintmax)value & ulong_MaxValue, format);
+    }
+
     return intmax_ToStringFormat((intmax)value, format);
 }
 
 public String *long_ToStringFormatC(long value, const char *format)
 {
-    return intmax_ToStringFormatC((intmax)value, format);
+    String strBuffer;
+    String *str = String_WrapCString(format, &strBuffer);
+
+    return long_ToStringFormat(value, str);
 }
 
 public ulong ulong_Max(ulong x, ulong y) {
@@ -244,7 +294,7 @@ public ulong ulong_Min(ulong x, ulong y) {
 
 public String *ulong_ToString(ulong value)
 {
-    return uintmax_ToStringFormat((uintmax)value, null);
+    return ulong_ToStringFormat(value, null);
 }
 
 public String *ulong_ToStringFormat(ulong value, const String *format)
@@ -254,7 +304,10 @@ public String *ulong_ToStringFormat(ulong value, const String *format)
 
 public String *ulong_ToStringFormatC(ulong value, const char *format)
 {
-    return uintmax_ToStringFormatC((uintmax)value, format);
+    String strBuffer;
+    String *str = String_WrapCString(format, &strBuffer);
+
+    return ulong_ToStringFormat(value, str);
 }
 
 /* IntMax */
@@ -268,7 +321,7 @@ public intmax intmax_Min(intmax x, intmax y) {
 
 public String *intmax_ToString(intmax value)
 {
-    return Number_FormatIntMax(value, null);
+    return intmax_ToStringFormat(value, null);
 }
 
 public String *intmax_ToStringFormat(intmax value, const String *format)
@@ -281,7 +334,7 @@ public String *intmax_ToStringFormatC(intmax value, const char *format)
     String strBuffer;
     String *str = String_WrapCString(format, &strBuffer);
 
-    return Number_FormatIntMax(value, str);
+    return intmax_ToStringFormat(value, str);
 }
 
 public uintmax uintmax_Max(uintmax x, uintmax y) {
@@ -294,7 +347,7 @@ public uintmax uintmax_Min(uintmax x, uintmax y) {
 
 public String *uintmax_ToString(uintmax value)
 {
-    return Number_FormatUIntMax(value, null);
+    return uintmax_ToStringFormat(value, null);
 }
 
 public String *uintmax_ToStringFormat(uintmax value, const String *format)
@@ -307,7 +360,7 @@ public String *uintmax_ToStringFormatC(uintmax value, const char *format)
     String strBuffer;
     String *str = String_WrapCString(format, &strBuffer);
 
-    return Number_FormatUIntMax(value, str);
+    return uintmax_ToStringFormat(value, str);
 }
 
 /**************************************/
@@ -317,7 +370,12 @@ public String *uintmax_ToStringFormatC(uintmax value, const char *format)
 #ifdef CFLAT_INTPTR
 internal void intptr_ToStringBuffered(StringBuilder *sb, intptr value, const String *format)
 {
-    intmax_ToStringBuffered(sb, (intmax)value, format);
+    if (value < 0 && Number_IsNonDecimalFormat(format)) {
+        uintmax_ToStringFormat((uintmax)value & uintptr_MaxValue, format);
+    }
+    else {
+        intmax_ToStringBuffered(sb, (intmax)value, format);
+    }
 }
 #endif
 
@@ -335,7 +393,12 @@ internal void uintsize_ToStringBuffered(StringBuilder *sb, uintsize value, const
 
 internal void sbyte_ToStringBuffered(StringBuilder *sb, sbyte value, const String *format)
 {
-    intmax_ToStringBuffered(sb, (intmax)value, format);
+    if (value < 0 && Number_IsNonDecimalFormat(format)) {
+        uintmax_ToStringFormat((uintmax)value & byte_MaxValue, format);
+    }
+    else {
+        intmax_ToStringBuffered(sb, (intmax)value, format);
+    }
 }
 
 internal void byte_ToStringBuffered(StringBuilder *sb, byte value, const String *format)
@@ -345,7 +408,12 @@ internal void byte_ToStringBuffered(StringBuilder *sb, byte value, const String 
 
 internal void short_ToStringBuffered(StringBuilder *sb, short value, const String *format)
 {
-    intmax_ToStringBuffered(sb, (intmax)value, format);
+    if (value < 0 && Number_IsNonDecimalFormat(format)) {
+        uintmax_ToStringBuffered(sb, (uintmax)value & ushort_MaxValue, format);
+    }
+    else {
+        intmax_ToStringBuffered(sb, (intmax)value, format);
+    }
 }
 
 internal void ushort_ToStringBuffered(StringBuilder *sb, ushort value, const String *format)
@@ -355,7 +423,12 @@ internal void ushort_ToStringBuffered(StringBuilder *sb, ushort value, const Str
 
 internal void int_ToStringBuffered(StringBuilder *sb, int value, const String *format)
 {
-    intmax_ToStringBuffered(sb, (intmax)value, format);
+    if (value < 0 && Number_IsNonDecimalFormat(format)) {
+        uintmax_ToStringBuffered(sb, (uintmax)value & uint_MaxValue, format);
+    }
+    else {
+        intmax_ToStringBuffered(sb, (intmax)value, format);
+    }
 }
 
 internal void uint_ToStringBuffered(StringBuilder *sb, uint value, const String *format)
@@ -365,7 +438,12 @@ internal void uint_ToStringBuffered(StringBuilder *sb, uint value, const String 
 
 internal void long_ToStringBuffered(StringBuilder *sb, long value, const String *format)
 {
-    intmax_ToStringBuffered(sb, (intmax)value, format);
+    if (value < 0 && Number_IsNonDecimalFormat(format)) {
+        uintmax_ToStringBuffered(sb, (uintmax)value & ulong_MaxValue, format);
+    }
+    else {
+        intmax_ToStringBuffered(sb, (intmax)value, format);
+    }
 }
 
 internal void ulong_ToStringBuffered(StringBuilder *sb, ulong value, const String *format)

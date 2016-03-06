@@ -119,6 +119,30 @@ internal void Number_FormatDoubleBuffered(StringBuilder *sb, double value, const
     FormatNumberBuffered(sb, &number, format);
 }
 
+internal bool Number_IsNonDecimalFormat(const String *format)
+{
+    if (format == null) {
+        return false;
+    }
+
+    StringReader reader;
+    StringReader_Constructor(&reader, format);
+
+    char formatSpecifier;
+    int precisionSpecifier;
+    bool isNonDecimalFormat = false;
+
+    if (ProcessStandardFormatString(&reader, &formatSpecifier, &precisionSpecifier)) {
+        if (formatSpecifier == 'b' || formatSpecifier == 'B' || formatSpecifier == 'x' || formatSpecifier == 'X') {
+            isNonDecimalFormat = true;
+        }
+    }
+
+    Object_Release(&reader);
+
+    return isNonDecimalFormat;
+}
+
 /**************************************/
 /* Private function definitions       */
 /**************************************/
