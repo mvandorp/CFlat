@@ -970,6 +970,45 @@ typedef CFLAT_UINT32_FAST uint32_fast;
 /// <param name="x">The first number.</param>
 /// <param name="y">The second number.</param>
 /// <returns>The larger of two numbers.</returns>
+uintsize uintsize_Max(uintsize x, uintsize y);
+
+/// <summary>
+/// Returns the smaller of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The smaller of two numbers.</returns>
+uintsize uintsize_Min(uintsize x, uintsize y);
+
+/// <summary>
+/// Converts the given number to a string representation.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <returns>The string representation of the given number.</returns>
+String *uintsize_ToString(uintsize value);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *uintsize_ToStringFormat(uintsize value, const String *format);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+String *uintsize_ToStringFormatC(uintsize value, const char *format);
+
+/// <summary>
+/// Returns the larger of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The larger of two numbers.</returns>
 sbyte sbyte_Max(sbyte x, sbyte y);
 
 /// <summary>

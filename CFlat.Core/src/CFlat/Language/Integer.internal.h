@@ -34,6 +34,14 @@ typedef struct StringBuilder StringBuilder;
 /// <param name="sb">The <see cref="StringBuilder"/> onto which to append the resulting string.</param>
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
+internal void uintsize_ToStringBuffered(StringBuilder *sb, uintsize value, const String *format);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="sb">The <see cref="StringBuilder"/> onto which to append the resulting string.</param>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
 internal void sbyte_ToStringBuffered(StringBuilder *sb, sbyte value, const String *format);
 
 /// <summary>

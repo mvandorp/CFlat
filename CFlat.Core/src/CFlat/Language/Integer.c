@@ -10,6 +10,30 @@
 /* Public function definitions        */
 /**************************************/
 
+/* UIntSize */
+public uintsize uintsize_Max(uintsize x, uintsize y) {
+    return MAX(x, y);
+}
+
+public uintsize uintsize_Min(uintsize x, uintsize y) {
+    return MIN(x, y);
+}
+
+public String *uintsize_ToString(uintsize value)
+{
+    return uintmax_ToString((uintmax)value);
+}
+
+public String *uintsize_ToStringFormat(uintsize value, const String *format)
+{
+    return uintmax_ToStringFormat((uintmax)value, format);
+}
+
+public String *uintsize_ToStringFormatC(uintsize value, const char *format)
+{
+    return uintmax_ToStringFormatC((uintmax)value, format);
+}
+
 /* Byte */
 public sbyte sbyte_Max(sbyte x, sbyte y) {
     return MAX(x, y);
@@ -254,6 +278,11 @@ public String *uintmax_ToStringFormatC(uintmax value, const char *format)
 /**************************************/
 /* Internal function definitions      */
 /**************************************/
+
+internal void uintsize_ToStringBuffered(StringBuilder *sb, uintsize value, const String *format)
+{
+    uintmax_ToStringBuffered(sb, (uintmax)value, format);
+}
 
 internal void sbyte_ToStringBuffered(StringBuilder *sb, sbyte value, const String *format)
 {
