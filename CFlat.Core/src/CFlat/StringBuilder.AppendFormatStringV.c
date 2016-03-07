@@ -23,6 +23,7 @@
 #include "CFlat/CString.h"
 #include "CFlat/String.h"
 #include "CFlat/StringReader.h"
+#include "CFlat/Validate.h"
 
 /* Types */
 typedef enum ArgumentType {
@@ -60,10 +61,10 @@ private ArgumentType ToArgumentType(const char *type);
 /* Public function definitions        */
 /**************************************/
 
-public void StringBuilder_AppendFormat(StringBuilder *sb, const String *format, VarArgs args)
+public void StringBuilder_AppendFormatStringV(StringBuilder *sb, const String *format, VarArgs args)
 {
-    assert(sb != null);
-    assert(format != null);
+    Validate_NotNull(sb);
+    Validate_NotNull(format);
 
     StringReader *reader = StringReader_New(format);
     StringBuilder *buffer = StringBuilder_New();

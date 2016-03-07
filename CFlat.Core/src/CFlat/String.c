@@ -51,6 +51,8 @@ public String *String_New(const char *value)
 
 public void String_Constructor(String *str, const char *value)
 {
+    Validate_NotNull(str);
+
     // Initialize the object and set the destructor.
     Object_Constructor(str, String_Destructor);
 
@@ -112,47 +114,48 @@ public bool String_EqualsCString(const String *str1, const char *str2)
         CString_Equals(String_GetCString(str1), str2));
 }
 
-public String *String_Format(const String *format, VarArgs args)
-{
-    assert(format != null);
-
-    StringBuilder sb;
-    StringBuilder_Constructor(&sb);
-
-    StringBuilder_AppendFormat(&sb, format, args);
-
-    return StringBuilder_DeleteAndToString(&sb);
-}
-
 public String *String_FormatCString(const char *format, ...)
 {
-    Validate_NotNull(format);
-
-    String strBuffer;
-    String *str = String_WrapCString(format, &strBuffer);
-
     VarArgs args;
     VarArgs_Start(args, format);
 
-    String *result = String_Format(str, args);
+    String *result = String_FormatCStringV(format, args);
 
     VarArgs_End(args);
 
     return result;
+}
+
+public String *String_FormatCStringV(const char *format, VarArgs args)
+{
+    String strBuffer;
+    String *str = String_WrapCString(format, &strBuffer);
+
+    return String_FormatStringV(str, args);
 }
 
 public String *String_FormatString(const String *format, ...)
 {
-    Validate_NotNull(format);
-
     VarArgs args;
     VarArgs_Start(args, format);
 
-    String *result = String_Format(format, args);
+    String *result = String_FormatStringV(format, args);
 
     VarArgs_End(args);
 
     return result;
+}
+
+public String *String_FormatStringV(const String *format, VarArgs args)
+{
+    Validate_NotNull(format);
+
+    StringBuilder sb;
+    StringBuilder_Constructor(&sb);
+
+    StringBuilder_AppendFormatStringV(&sb, format, args);
+
+    return StringBuilder_DeleteAndToString(&sb);
 }
 
 public uintsize String_IndexOf(const String *str, char value)

@@ -152,10 +152,10 @@
     <ClCompile Include="src\CFlat\NumberBuffer.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\CFlat\StringBuilder.AppendFormat.c">
+    <ClCompile Include="src\CFlat\Language\Assert.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\CFlat\Language\Assert.c">
+    <ClCompile Include="src\CFlat\StringBuilder.AppendFormatStringV.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -201,17 +201,6 @@ void StringBuilder_AppendString(StringBuilder *sb, const String *value);
 /// </summary>
 /// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
 /// <param name="format">Pointer to a format string.</param>
-/// <param name="args">
-/// A variable argument list containing the objects to format according to the format specifiers in the format string.
-/// </param>
-void StringBuilder_AppendFormat(StringBuilder *sb, const String *format, VarArgs args);
-
-/// <summary>
-/// Appends a string that is formatted according to the given format string, to the given <see cref="StringBuilder"/>.
-/// Each format specifier replaced with a string representation of the corresponding argument.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="format">Pointer to a format string.</param>
 /// <param name="...">Objects to format according to the format specifiers in the format string.</param>
 void StringBuilder_AppendFormatCString(StringBuilder *sb, const char *format, ...);
 
@@ -221,8 +210,30 @@ void StringBuilder_AppendFormatCString(StringBuilder *sb, const char *format, ..
 /// </summary>
 /// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
 /// <param name="format">Pointer to a format string.</param>
+/// <param name="args">
+/// A variable argument list containing the objects to format according to the format specifiers in the format string.
+/// </param>
+void StringBuilder_AppendFormatCStringV(StringBuilder *sb, const char *format, VarArgs args);
+
+/// <summary>
+/// Appends a string that is formatted according to the given format string, to the given <see cref="StringBuilder"/>.
+/// Each format specifier replaced with a string representation of the corresponding argument.
+/// </summary>
+/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
+/// <param name="format">Pointer to a format string.</param>
 /// <param name="...">Objects to format according to the format specifiers in the format string.</param>
 void StringBuilder_AppendFormatString(StringBuilder *sb, const String *format, ...);
+
+/// <summary>
+/// Appends a string that is formatted according to the given format string, to the given <see cref="StringBuilder"/>.
+/// Each format specifier replaced with a string representation of the corresponding argument.
+/// </summary>
+/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
+/// <param name="format">Pointer to a format string.</param>
+/// <param name="args">
+/// A variable argument list containing the objects to format according to the format specifiers in the format string.
+/// </param>
+void StringBuilder_AppendFormatStringV(StringBuilder *sb, const String *format, VarArgs args);
 
 /// <summary>
 /// Appends a new line to the given <see cref="StringBuilder"/>.

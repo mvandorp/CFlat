@@ -115,17 +115,6 @@ bool String_EqualsCString(const String *str1, const char *str2);
 /// format specifier replaced with a string representation of the corresponding argument.
 /// </summary>
 /// <param name="format">Pointer to a format string.</param>
-/// <param name="args">
-/// A variable argument list containing the objects to format according to the format specifiers in the format string.
-/// </param>
-/// <returns>A pointer to a new <see cref="String"/> that is formatted according to the given format string.</returns>
-String *String_Format(const String *format, VarArgs args);
-
-/// <summary>
-/// Returns a pointer to a new <see cref="String"/> that is formatted according to the given format string, with each
-/// format specifier replaced with a string representation of the corresponding argument.
-/// </summary>
-/// <param name="format">Pointer to a format string.</param>
 /// <param name="...">Objects to format according to the format specifiers in the format string.</param>
 /// <returns>A pointer to a new <see cref="String"/> that is formatted according to the given format string.</returns>
 String *String_FormatCString(const char *format, ...);
@@ -135,9 +124,31 @@ String *String_FormatCString(const char *format, ...);
 /// format specifier replaced with a string representation of the corresponding argument.
 /// </summary>
 /// <param name="format">Pointer to a format string.</param>
+/// <param name="args">
+/// A variable argument list containing the objects to format according to the format specifiers in the format string.
+/// </param>
+/// <returns>A pointer to a new <see cref="String"/> that is formatted according to the given format string.</returns>
+String *String_FormatCStringV(const char *format, VarArgs args);
+
+/// <summary>
+/// Returns a pointer to a new <see cref="String"/> that is formatted according to the given format string, with each
+/// format specifier replaced with a string representation of the corresponding argument.
+/// </summary>
+/// <param name="format">Pointer to a format string.</param>
 /// <param name="...">Objects to format according to the format specifiers in the format string.</param>
 /// <returns>A pointer to a new <see cref="String"/> that is formatted according to the given format string.</returns>
 String *String_FormatString(const String *format, ...);
+
+/// <summary>
+/// Returns a pointer to a new <see cref="String"/> that is formatted according to the given format string, with each
+/// format specifier replaced with a string representation of the corresponding argument.
+/// </summary>
+/// <param name="format">Pointer to a format string.</param>
+/// <param name="args">
+/// A variable argument list containing the objects to format according to the format specifiers in the format string.
+/// </param>
+/// <returns>A pointer to a new <see cref="String"/> that is formatted according to the given format string.</returns>
+String *String_FormatStringV(const String *format, VarArgs args);
 
 /// <summary>
 /// Returns the index of the first occurance of the specified character in the given <see cref="String"/>.

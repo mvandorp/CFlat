@@ -229,29 +229,28 @@ public void StringBuilder_AppendString(StringBuilder *sb, const String *value)
 
 public void StringBuilder_AppendFormatCString(StringBuilder *sb, const char *format, ...)
 {
-    Validate_NotNull(sb);
-    Validate_NotNull(format);
-
-    String strBuffer;
-    String *str = String_WrapCString(format, &strBuffer);
-
     VarArgs args;
     VarArgs_Start(args, format);
 
-    StringBuilder_AppendFormat(sb, str, args);
+    StringBuilder_AppendFormatCStringV(sb, format, args);
 
     VarArgs_End(args);
 }
 
+public void StringBuilder_AppendFormatCStringV(StringBuilder *sb, const char *format, VarArgs args)
+{
+    String strBuffer;
+    String *str = String_WrapCString(format, &strBuffer);
+
+    StringBuilder_AppendFormatStringV(sb, str, args);
+}
+
 public void StringBuilder_AppendFormatString(StringBuilder *sb, const String *format, ...)
 {
-    Validate_NotNull(sb);
-    Validate_NotNull(format);
-
     VarArgs args;
     VarArgs_Start(args, format);
 
-    StringBuilder_AppendFormat(sb, format, args);
+    StringBuilder_AppendFormatStringV(sb, format, args);
 
     VarArgs_End(args);
 }
