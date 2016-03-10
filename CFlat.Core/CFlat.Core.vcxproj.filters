@@ -105,6 +105,12 @@
     <ClInclude Include="include\CFlat\Language\VarArgs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\CFlat\Collections\IEnumerable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CFlat\Collections\IEnumerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CFlat\CString.c">
@@ -156,6 +162,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CFlat\StringBuilder.AppendFormatStringV.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\Collections\IEnumerable.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\Collections\IEnumerator.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

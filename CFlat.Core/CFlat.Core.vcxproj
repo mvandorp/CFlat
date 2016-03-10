@@ -12,6 +12,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\CFlat.h" />
+    <ClInclude Include="include\CFlat\Collections\IEnumerable.h" />
+    <ClInclude Include="include\CFlat\Collections\IEnumerator.h" />
     <ClInclude Include="include\CFlat\CString.h" />
     <ClInclude Include="include\CFlat\Language\Assert.h" />
     <ClInclude Include="include\CFlat\Language\Bool.h" />
@@ -43,6 +45,8 @@
     <ClInclude Include="src\CFlat\StringReader.internal.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\CFlat\Collections\IEnumerable.c" />
+    <ClCompile Include="src\CFlat\Collections\IEnumerator.c" />
     <ClCompile Include="src\CFlat\Language\Assert.c" />
     <ClCompile Include="src\CFlat\Language\Char.c" />
     <ClCompile Include="src\CFlat\ExceptionType.c" />
