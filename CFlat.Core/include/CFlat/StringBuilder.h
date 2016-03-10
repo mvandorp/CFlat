@@ -283,7 +283,7 @@ char *StringBuilder_DeleteAndToCString(StringBuilder *sb);
 /// Inserts the given character into the given <see cref="StringBuilder"/> at the given index.
 /// </summary>
 /// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="index">The position where to insert <paramref name="value"/></param>
+/// <param name="index">The position where to insert <paramref name="value"/>.</param>
 /// <param name="value">The character to insert.</param>
 void StringBuilder_Insert(StringBuilder *sb, uintsize index, char value);
 

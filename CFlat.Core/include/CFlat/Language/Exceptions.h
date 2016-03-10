@@ -26,6 +26,7 @@
 
 #include "CFlat/ExceptionType.h"
 #include "CFlat/Language/Bool.h"
+#include "CFlat/Object.h"
 
 #include <setjmp.h>
 
@@ -40,40 +41,27 @@ typedef struct String String;
 #define __CFLAT_EXCEPTION_TRY() setjmp(__CFLAT_EXCEPTION_BUFFER)
 
 /// <summary>
-/// Gets the exception type of the given <see cref="__CFLAT_EXCEPTION_STATE"/>.
-/// </summary>
-/// <param name="statePtr">Pointer to a <see cref="__CFLAT_EXCEPTION_STATE"/>.</param>
-/// <returns>The exception type of the given <see cref="__CFLAT_EXCEPTION_STATE"/> as an l-value.</returns>
-/// <remarks>This macro is intended for internal use only.</remarks>
-#define __CFLAT_EXCEPTION_TYPE(statePtr) ((statePtr)->Exception.Type)
-
-/// <summary>
-/// Gets a pointer to the <see cref="__CFLAT_EXCEPTION"/> of the given <see cref="__CFLAT_EXCEPTION_STATE"/>.
-/// </summary>
-/// <param name="statePtr">Pointer to a <see cref="__CFLAT_EXCEPTION_STATE"/>.</param>
-/// <returns>
-/// A pointer to the <see cref="__CFLAT_EXCEPTION"/> of the given <see cref="__CFLAT_EXCEPTION_STATE"/>.
-/// </returns>
-/// <remarks>This macro is intended for internal use only.</remarks>
-#define __CFLAT_EXCEPTION_HANDLE(statePtr) (&((statePtr)->Exception))
-
-/// <summary>
 /// Begins a try block.
 /// </summary>
 #define try                                                                         \
 {                                                                                   \
     struct __CFLAT_EXCEPTION_STATE __CFLAT_EXCEPTION_STATE;                         \
     __CFLAT_EXCEPTION_BEGINTRY(&__CFLAT_EXCEPTION_STATE);                           \
-    __CFLAT_EXCEPTION_TYPE(&__CFLAT_EXCEPTION_STATE) = __CFLAT_EXCEPTION_TRY();     \
-    if (!__CFLAT_EXCEPTION_TYPE(&__CFLAT_EXCEPTION_STATE)) {
+    if (!__CFLAT_EXCEPTION_TRY()) {
 
 /// <summary>
 /// Begins a catch block.
 /// </summary>
-#define catch(toCatch, var)                                                         \
+#define catch(toCatch)                                                              \
     }                                                                               \
-    else if (__CFLAT_EXCEPTION_CATCH(&__CFLAT_EXCEPTION_STATE, toCatch)) {          \
-        ExceptionHandle var = __CFLAT_EXCEPTION_HANDLE(&__CFLAT_EXCEPTION_STATE);
+    else if (__CFLAT_EXCEPTION_CATCH(&__CFLAT_EXCEPTION_STATE, toCatch)) {
+
+/// <summary>
+/// Begins a catch block.
+/// </summary>
+#define catch_ex(toCatch, var)                                                      \
+        catch(toCatch)                                                              \
+        ExceptionHandle var = __CFLAT_EXCEPTION_STATE.Exception;
 
 /// <summary>
 /// Begins a finally block.
@@ -102,7 +90,8 @@ typedef struct String String;
 /// </summary>
 /// <param name="exception">The type of exception thrown.</param>
 /// <param name="message">
-/// Pointer to a string that describes the exception, or <see cref="null"/> to use the default exception message.
+/// Pointer to a null-terminated string that describes the exception, or <see cref="null"/> to use the default
+/// exception message.
 /// </param>
 #define throw_new(exception, message) __CFLAT_EXCEPTION_THROW_NEW(exception, message, __FILE__, __LINE__)
 
@@ -120,9 +109,13 @@ typedef struct String String;
 /// </remarks>
 struct __CFLAT_EXCEPTION {
     /// <summary>
+    /// The base class of the exception.
+    /// </summary>
+    Object Base;
+    /// <summary>
     /// Pointer to a string supplied by the user that describes the exception that occured.
     /// </summary>
-    const char *UserMessage;
+    const String *UserMessage;
     /// <summary>
     /// Pointer to a string representing the file where the exception occured.
     /// </summary>
@@ -136,6 +129,12 @@ struct __CFLAT_EXCEPTION {
     /// </summary>
     ExceptionType Type;
 };
+
+/// <summary>
+/// Represents an abstraction for an exception, so that information about an exception can be obtained through its
+/// handle.
+/// </summary>
+typedef struct __CFLAT_EXCEPTION *ExceptionHandle;
 
 /// <summary>
 /// Holds state information required for exception handling.
@@ -161,14 +160,8 @@ struct __CFLAT_EXCEPTION_STATE {
     /// <summary>
     /// The exception that occured.
     /// </summary>
-    struct __CFLAT_EXCEPTION Exception;
+    ExceptionHandle Exception;
 };
-
-/// <summary>
-/// Represents an abstraction for an exception, so that information about an exception can be obtained through its
-/// handle.
-/// </summary>
-typedef struct __CFLAT_EXCEPTION *ExceptionHandle;
 
 /* Variables */
 /// <summary>
@@ -191,6 +184,12 @@ bool Exception_IsInstanceOf(const ExceptionHandle ex, ExceptionType type);
 /// </summary>
 /// <param name="ex">The <see cref="ExceptionHandle"/> of the exception.</param>
 const String *Exception_GetMessage(const ExceptionHandle ex);
+
+/// <summary>
+/// Gets the name of the exception pointed to by the given <see cref="ExceptionHandle"/>.
+/// </summary>
+/// <param name="ex">The <see cref="ExceptionHandle"/> of the exception.</param>
+const String *Exception_GetName(const ExceptionHandle ex);
 
 /// <summary>
 /// Gets the type of the exception pointed to by the given <see cref="ExceptionHandle"/>.

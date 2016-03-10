@@ -161,7 +161,7 @@ public void StringBuilder_Destructor(void *sb)
     Memory_Deallocate(stringBuilder->Value);
 }
 
-/* Methods */
+/* Properties */
 public uintsize StringBuilder_GetLength(const StringBuilder *sb)
 {
     Validate_NotNull(sb);
@@ -179,13 +179,18 @@ public uintsize StringBuilder_GetCapacity(const StringBuilder *sb)
 public void StringBuilder_SetCapacity(StringBuilder *sb, uintsize capacity)
 {
     Validate_NotNull(sb);
-    Validate_IsTrue(capacity >= sb->Length, ArgumentOutOfRangeException,
+    Validate_IsTrue(
+        capacity >= sb->Length,
+        ArgumentOutOfRangeException,
         "Capacity cannot be smaller than the current length.");
 
-    sb->Capacity = capacity;
-    sb->Value = Memory_Reallocate(sb->Value, capacity + 1);
+    if (capacity != sb->Capacity) {
+        sb->Value = Memory_Reallocate(sb->Value, capacity + 1);
+        sb->Capacity = capacity;
+    }
 }
 
+/* Methods */
 public void StringBuilder_Append(StringBuilder *sb, char value)
 {
     Validate_NotNull(sb);
@@ -313,6 +318,7 @@ public char *StringBuilder_DeleteAndToCString(StringBuilder *sb)
 public void StringBuilder_Insert(StringBuilder *sb, uintsize index, char value)
 {
     Validate_NotNull(sb);
+    Validate_IsTrue(index <= sb->Length, ArgumentOutOfRangeException, "Index must be within the bounds of the string.");
 
     // Increase the capacity if needed.
     if (sb->Length == sb->Capacity) {

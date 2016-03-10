@@ -1,6 +1,7 @@
 #include "CFlat/Language/Exceptions.h"
 
 #include "CFlat.h"
+#include "CFlat/CString.h"
 #include "CFlat/Memory.h"
 #include "CFlat/Object.h"
 #include "CFlat/String.h"
@@ -14,29 +15,37 @@
 #define Catch               __CFLAT_EXCEPTION_CATCH
 #define Finally             __CFLAT_EXCEPTION_FINALLY
 #define EndTry              __CFLAT_EXCEPTION_ENDTRY
+#define Throw               __CFLAT_EXCEPTION_THROW
 #define ThrowAgain          __CFLAT_EXCEPTION_THROW_AGAIN
 #define ThrowNew            __CFLAT_EXCEPTION_THROW_NEW
-#define Throw               __CFLAT_EXCEPTION_THROW
-#define Exception_GetHandle __CFLAT_EXCEPTION_HANDLE
-#define jumpBuffer          __CFLAT_EXCEPTION_BUFFER
+#define JumpBuffer          __CFLAT_EXCEPTION_BUFFER
 
 typedef struct __CFLAT_EXCEPTION_STATE ExceptionState;
 typedef struct __CFLAT_EXCEPTION CFlatException;
 
 /* Public variables */
-public jmp_buf jumpBuffer;
+public jmp_buf JumpBuffer;
 
 /* Private variables */
-private CFlatException exception;
-private bool exceptionHandled = true;
-private int stackSize = 0;
+private ExceptionHandle CurrentException = null;
+private bool ExceptionHandled = true;
+private int StackSize = 0;
 
 /* Private function declarations */
+private ExceptionHandle Exception_New(ExceptionType type, const String *userMessage, const char *file, int line);
+private void Exception_Constructor(
+    ExceptionHandle ex,
+    ExceptionType type,
+    const String *userMessage,
+    const char *file,
+    int line);
+private void Exception_Destructor(void *ex);
+
 private void PushJumpBuffer(jmp_buf stack);
 private void PopJumpBuffer(jmp_buf stack);
 private void RestoreJumpBuffer(ExceptionState *state);
 private String *GenerateExceptionText(const ExceptionHandle ex);
-private void UnhandledException(const ExceptionHandle ex);
+private void UnhandledException(void);
 private bool IsInsideTryBlock(void);
 
 /**************************************/
@@ -53,7 +62,7 @@ public void BeginTry(ExceptionState *state)
     state->ShouldPopStack = true;
 
     // Clear the exception flag.
-    exceptionHandled = true;
+    ExceptionHandled = true;
 }
 
 public bool Catch(ExceptionState *state, ExceptionType ex)
@@ -63,9 +72,9 @@ public bool Catch(ExceptionState *state, ExceptionType ex)
     RestoreJumpBuffer(state);
 
     // Test whether the raised exception matches the given exception type.
-    if (Exception_IsInstanceOf(Exception_GetHandle(state), ex)) {
+    if (Exception_IsInstanceOf(state->Exception, ex)) {
         // If so, clear the exception flag.
-        exceptionHandled = true;
+        ExceptionHandled = true;
 
         // Return true to indicate that exception should be handled.
         return true;
@@ -86,8 +95,15 @@ public void EndTry(ExceptionState *state)
     RestoreJumpBuffer(state);
 
     // If the exception flag is still set at this point, throw the exception.
-    if (!exceptionHandled) {
+    if (!ExceptionHandled) {
         Throw();
+    }
+
+    // If there was an exception but it was handled, clean up the exception.
+    if (CurrentException != null) {
+        Object_Release(CurrentException);
+
+        CurrentException = null;
     }
 }
 
@@ -95,7 +111,11 @@ public void ThrowAgain(const ExceptionHandle ex)
 {
     Validate_NotNull(ex);
 
-    ThrowNew(ex->Type, ex->UserMessage, ex->File, ex->Line);
+    // Set exception information.
+    CurrentException = ex;
+
+    // Throw an exception with the set information.
+    Throw();
 }
 
 public void ThrowNew(ExceptionType type, const char *message, const char *file, int line)
@@ -104,10 +124,7 @@ public void ThrowNew(ExceptionType type, const char *message, const char *file, 
     assert(line > 0);
 
     // Set exception information.
-    exception.Type = type;
-    exception.UserMessage = message;
-    exception.File = file;
-    exception.Line = line;
+    CurrentException = Exception_New(type, String_New(message), file, line);
 
     // Throw an exception with the set information.
     Throw();
@@ -115,17 +132,20 @@ public void ThrowNew(ExceptionType type, const char *message, const char *file, 
 
 public void Throw(void)
 {
+    Validate_State(CurrentException != null,
+        "A throw statement with no arguments is not allowed outside of a catch clause.");
+
     // Set the exception flag.
-    exceptionHandled = false;
+    ExceptionHandled = false;
 
     // Test whether the exception occured within a try block.
     if (IsInsideTryBlock()) {
         // If so, jump to the corresponding catch/finally blocks.
-        longjmp(jumpBuffer, true);
+        longjmp(JumpBuffer, true);
     }
     else {
         // Otherwise, print an exception message and abort the program.
-        UnhandledException(&exception);
+        UnhandledException();
     }
 }
 
@@ -144,8 +164,13 @@ public const String *Exception_GetMessage(const ExceptionHandle ex)
         return ExceptionType_GetDefaultMessage(ex->Type);
     }
     else {
-        return String_New(ex->UserMessage);
+        return Object_Aquire(ex->UserMessage);
     }
+}
+
+public const String *Exception_GetName(const ExceptionHandle ex)
+{
+    return ExceptionType_GetName(Exception_GetType(ex));
 }
 
 public ExceptionType Exception_GetType(const ExceptionHandle ex)
@@ -160,13 +185,63 @@ public ExceptionType Exception_GetType(const ExceptionHandle ex)
 /**************************************/
 
 /// <summary>
+/// Allocates and initializes a new CFlatException and returns a ExceptionHandle.
+/// </summary>
+private ExceptionHandle Exception_New(ExceptionType type, const String *userMessage, const char *file, int line)
+{
+    ExceptionHandle ex = Memory_Allocate(sizeof(CFlatException));
+
+    // Initialize the exception.
+    Exception_Constructor(ex, type, userMessage, file, line);
+
+    // Set the proper deallocator that corresponds with the allocator.
+    Object_SetDeallocator(ex, Memory_Deallocate);
+
+    return ex;
+}
+
+/// <summary>
+/// Initializes the CFlatException referenced by the given ExceptionHandle.
+/// </summary>
+private void Exception_Constructor(
+    ExceptionHandle ex,
+    ExceptionType type,
+    const String *userMessage,
+    const char *file,
+    int line)
+{
+    Validate_NotNull(ex);
+
+    // Initialize the object and set the destructor.
+    Object_Constructor(ex, Exception_Destructor);
+
+    // Initialize the exception.
+    ex->Type = type;
+    ex->UserMessage = userMessage;
+    ex->File = file;
+    ex->Line = line;
+}
+
+/// <summary>
+/// Destroys the CFlatException referenced by the given ExceptionHandle.
+/// </summary>
+private void Exception_Destructor(void *ex)
+{
+    Validate_NotNull(ex);
+
+    ExceptionHandle exception = (ExceptionHandle)ex;
+
+    Object_Release(exception->UserMessage);
+}
+
+/// <summary>
 /// Pushes the current jump buffer onto the stack to support nested try-catch statements.
 /// </summary>
 private void PushJumpBuffer(jmp_buf stack)
 {
-    Memory_Copy(jumpBuffer, stack, sizeof(jmp_buf));
+    Memory_Copy(JumpBuffer, stack, sizeof(jmp_buf));
 
-    stackSize++;
+    StackSize++;
 }
 
 /// <summary>
@@ -174,9 +249,9 @@ private void PushJumpBuffer(jmp_buf stack)
 /// </summary>
 private void PopJumpBuffer(jmp_buf stack)
 {
-    Memory_Copy(stack, jumpBuffer, sizeof(jmp_buf));
+    Memory_Copy(stack, JumpBuffer, sizeof(jmp_buf));
 
-    stackSize--;
+    StackSize--;
 }
 
 /// <summary>
@@ -191,7 +266,7 @@ private void RestoreJumpBuffer(ExceptionState *state)
         PopJumpBuffer(state->JumpStack);
 
         // Copy the current exception into state.
-        state->Exception = exception;
+        state->Exception = CurrentException;
 
         // Clear the flag that indicates that the jump buffer should be popped off the stack.
         state->ShouldPopStack = false;
@@ -235,19 +310,16 @@ private String *GenerateExceptionText(const ExceptionHandle ex)
 /// <summary>
 /// Prints an exception message based on the given exception type and message, and then aborts the program.
 /// </summary>
-/// <param name="ex">The type of exception thrown.</param>
-/// <param name="msg">Pointer to a string that describes the error, or <see cref="null"/>.</param>
-/// <param name="file">Pointer to a string that contains the filename where the exception occured.</param>
-/// <param name="line">The line number where the exception occured.</param>
-private void UnhandledException(const ExceptionHandle ex)
+private void UnhandledException(void)
 {
-    assert(ex != null);
+    assert(CurrentException != null);
 
-    String *message = GenerateExceptionText(ex);
+    String *message = GenerateExceptionText(CurrentException);
 
     fprintf(stderr, "%s", String_GetCString(message));
 
     Object_Release(message);
+    Object_Release(CurrentException);
 
     abort();
 }
@@ -259,5 +331,5 @@ private void UnhandledException(const ExceptionHandle ex)
 private bool IsInsideTryBlock(void)
 {
     // If we are inside a try block, the stack size must be greater than zero.
-    return stackSize > 0;
+    return StackSize > 0;
 }

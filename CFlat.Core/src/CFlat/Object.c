@@ -75,7 +75,7 @@ public void Object_Delete(const void *obj)
     }
 }
 
-public const void *Object_Aquire(const void *obj)
+public void *Object_Aquire(const void *obj)
 {
     if (obj == null) {
         return null;
@@ -88,7 +88,7 @@ public const void *Object_Aquire(const void *obj)
         object->RefCount++;
     }
 
-    return obj;
+    return (void*)obj;
 }
 
 public bool Object_Release(const void *obj)

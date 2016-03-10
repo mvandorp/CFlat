@@ -132,7 +132,7 @@ void Object_Delete(const void *obj);
 /// <returns><paramref name="obj"/>.</returns>
 /// <seealso cref="Object_Delete()"/>
 /// <seealso cref="Object_Release()"/>
-const void *Object_Aquire(const void *obj);
+void *Object_Aquire(const void *obj);
 
 /// <summary>
 /// Decrements the reference count of an <see cref="Object"/>.
