@@ -14,6 +14,7 @@
     <ClInclude Include="include\CFlat.h" />
     <ClInclude Include="include\CFlat\Collections\IEnumerable.h" />
     <ClInclude Include="include\CFlat\Collections\IEnumerator.h" />
+    <ClInclude Include="include\CFlat\Collections\List.h" />
     <ClInclude Include="include\CFlat\CString.h" />
     <ClInclude Include="include\CFlat\Language\Assert.h" />
     <ClInclude Include="include\CFlat\Language\Bool.h" />
@@ -34,6 +35,8 @@
     <ClInclude Include="include\CFlat\StringBuilder.h" />
     <ClInclude Include="include\CFlat\StringReader.h" />
     <ClInclude Include="include\CFlat\Validate.h" />
+    <ClInclude Include="src\CFlat\Collections\List.internal.h" />
+    <ClInclude Include="src\CFlat\Collections\ListEnumerator.h" />
     <ClInclude Include="src\CFlat\Language\Double.internal.h" />
     <ClInclude Include="src\CFlat\Language\Float.internal.h" />
     <ClInclude Include="src\CFlat\Language\Integer.internal.h" />
@@ -47,6 +50,8 @@
   <ItemGroup>
     <ClCompile Include="src\CFlat\Collections\IEnumerable.c" />
     <ClCompile Include="src\CFlat\Collections\IEnumerator.c" />
+    <ClCompile Include="src\CFlat\Collections\List.c" />
+    <ClCompile Include="src\CFlat\Collections\ListEnumerator.c" />
     <ClCompile Include="src\CFlat\Language\Assert.c" />
     <ClCompile Include="src\CFlat\Language\Char.c" />
     <ClCompile Include="src\CFlat\ExceptionType.c" />
