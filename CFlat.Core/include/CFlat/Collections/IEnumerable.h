@@ -34,10 +34,10 @@ typedef struct IEnumerator IEnumerator;
 /// Initializer for an <see cref="IEnumerableVTable"/>.
 /// </summary>
 /// <param name="destructor">
-/// A <see cref="Destructor"/> that is called when the object needs to be destroyed, or <see cref="null"/> if the
+/// A <see cref="DestructorFunc"/> that is called when the object needs to be destroyed, or <see cref="null"/> if the
 /// object should not automatically be destroyed.
 /// </param>
-/// <param name="getEnumerator">A <see cref="IEnumerable_GetEnumeratorCallback"/>.</param>
+/// <param name="getEnumerator">An <see cref="IEnumerable_GetEnumeratorFunc"/>.</param>
 #define IEnumerableVTable_Initializer(destructor, getEnumerator) { ObjectVTable_Initializer(destructor), getEnumerator }
 
 /* Types */
@@ -52,10 +52,11 @@ typedef struct IEnumerable {
 } IEnumerable;
 
 /// <summary>
-/// A function that returns an <see cref="IEnumerator"/> for a given <see cref="IEnumerable"/>.
+/// A function that returns a pointer to an <see cref="IEnumerator"/> that iterates through a given
+/// <see cref="IEnumerable"/>.
 /// </summary>
 /// <param name="enumerable">Pointer to an <see cref="IEnumerable"/>.</param>
-typedef IEnumerator *(*IEnumerable_GetEnumeratorCallback)(const IEnumerable *enumerable);
+typedef IEnumerator *(*IEnumerable_GetEnumeratorFunc)(const IEnumerable *enumerable);
 
 /// <summary>
 /// A virtual method table for the <see cref="IEnumerable"/> class.
@@ -69,7 +70,7 @@ typedef struct IEnumerableVTable {
     /// <summary>
     /// A function that returns an <see cref="IEnumerator"/> for this <see cref="IEnumerable"/>.
     /// </summary>
-    IEnumerable_GetEnumeratorCallback GetEnumerator;
+    IEnumerable_GetEnumeratorFunc GetEnumerator;
 } IEnumerableVTable;
 
 /* Functions */
@@ -81,10 +82,10 @@ typedef struct IEnumerableVTable {
 void IEnumerable_Constructor(IEnumerable *enumerable, const IEnumerableVTable *vtable);
 
 /// <summary>
-/// Returns an <see cref="IEnumerator"/> that iterates through the given <see cref="IEnumerable"/>.
+/// Returns a pointer to an <see cref="IEnumerator"/> that iterates through the given <see cref="IEnumerable"/>.
 /// </summary>
-/// <param name="enumerable">Pointer to a <see cref="IEnumerable"/>.</param>
-/// <returns>An <see cref="IEnumerator"/> that iterates through the given <see cref="IEnumerable"/>.</returns>
+/// <param name="enumerable">Pointer to an <see cref="IEnumerable"/>.</param>
+/// <returns>An <see cref="IEnumerator"/> that iterates through an <see cref="IEnumerable"/>.</returns>
 IEnumerator *IEnumerable_GetEnumerator(const IEnumerable *enumerable);
 
 #endif

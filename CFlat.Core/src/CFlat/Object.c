@@ -24,7 +24,7 @@
 #include "CFlat/Validate.h"
 
 /* Private functions */
-private void Object_Delete(const void *obj);
+private void Delete(const void *obj);
 
 /**************************************/
 /* Public function definitions        */
@@ -42,7 +42,7 @@ public void Object_Constructor(void *obj, const ObjectVTable *vtable)
     object->VTable = vtable;
 }
 
-public void Object_SetDeallocator(void *obj, Deallocator dealloc)
+public void Object_SetDeallocator(void *obj, DeallocatorFunc dealloc)
 {
     Validate_NotNull(obj);
 
@@ -97,7 +97,7 @@ public bool Object_Release(const void *obj)
     }
 
     if (object->RefCount == 0) {
-        Object_Delete(object);
+        Delete(object);
 
         return true;
     }
@@ -109,7 +109,7 @@ public bool Object_Release(const void *obj)
 /* Private function definitions       */
 /**************************************/
 
-private void Object_Delete(const void *obj)
+private void Delete(const void *obj)
 {
     assert(obj != null);
 

@@ -32,12 +32,12 @@
 /// Initializer for an <see cref="IEnumertorVTable"/>.
 /// </summary>
 /// <param name="destructor">
-/// A <see cref="Destructor"/> that is called when the object needs to be destroyed, or <see cref="null"/> if the
+/// A <see cref="DestructorFunc"/> that is called when the object needs to be destroyed, or <see cref="null"/> if the
 /// object should not automatically be destroyed.
 /// </param>
-/// <param name="getCurrent">A <see cref="IEnumerator_GetCurrentCallback"/>.</param>
-/// <param name="moveNext">A <see cref="IEnumerator_MoveNextCallback"/>.</param>
-/// <param name="reset">A <see cref="IEnumerator_ResetCallback"/>.</param>
+/// <param name="getCurrent">An <see cref="IEnumerator_GetCurrentFunc"/>.</param>
+/// <param name="moveNext">An <see cref="IEnumerator_MoveNextFunc"/>.</param>
+/// <param name="reset">An <see cref="IEnumerator_ResetFunc"/>.</param>
 #define IEnumeratorVTable_Initializer(destructor, getCurrent, moveNext, reset)  \
 {                                                                               \
     ObjectVTable_Initializer(destructor),                                       \
@@ -62,7 +62,7 @@ typedef struct IEnumerator {
 /// </summary>
 /// <param name="enumerator">Pointer to an <see cref="IEnumerator"/>.</param>
 /// <returns>A pointer to the current element.</returns>
-typedef void *(*IEnumerator_GetCurrentCallback)(const IEnumerator *enumerator);
+typedef void *(*IEnumerator_GetCurrentFunc)(const IEnumerator *enumerator);
 
 /// <summary>
 /// A function that moves a given <see cref="IEnumerator"/> to the next element.
@@ -72,14 +72,14 @@ typedef void *(*IEnumerator_GetCurrentCallback)(const IEnumerator *enumerator);
 /// <see cref="true"/> if the enumerator was successfully advanced to the next element;
 /// <see cref="false"/> if the enumerator passed the end of the collection.
 /// </returns>
-typedef bool(*IEnumerator_MoveNextCallback)(IEnumerator *enumerator);
+typedef bool(*IEnumerator_MoveNextFunc)(IEnumerator *enumerator);
 
 /// <summary>
 /// A function that resets a given <see cref="IEnumerator"/> to its initial position, which is before the first
 /// element in the collection.
 /// </summary>
 /// <param name="enumerator">Pointer to an <see cref="IEnumerator"/>.</param>
-typedef void(*IEnumerator_ResetCallback)(IEnumerator *enumerator);
+typedef void(*IEnumerator_ResetFunc)(IEnumerator *enumerator);
 
 /// <summary>
 /// A virtual method table for the <see cref="IEnumerator"/> class.
@@ -93,18 +93,18 @@ typedef struct IEnumeratorVTable {
     /// <summary>
     /// A function that returns the current element for a given <see cref="IEnumerator"/>.
     /// </summary>
-    IEnumerator_GetCurrentCallback GetCurrent;
+    IEnumerator_GetCurrentFunc GetCurrent;
 
     /// <summary>
     /// A function that moves a given <see cref="IEnumerator"/> to the next element.
     /// </summary>
-    IEnumerator_MoveNextCallback MoveNext;
+    IEnumerator_MoveNextFunc MoveNext;
 
     /// <summary>
     /// A function that resets a given <see cref="IEnumerator"/> to its initial position, which is before the first
     /// element in the collection.
     /// </summary>
-    IEnumerator_ResetCallback Reset;
+    IEnumerator_ResetFunc Reset;
 } IEnumeratorVTable;
 
 /* Functions */

@@ -14,9 +14,9 @@ private const int DefaultCapacity = 4;
 private void EnsureCapacity(List *list, int capacity);
 
 /* Private constants */
-private const IEnumerableVTable List_VTable = IEnumerableVTable_Initializer(
-    (Destructor)List_Destructor,
-    (IEnumerable_GetEnumeratorCallback)List_GetEnumerator);
+private const IEnumerableVTable VTable = IEnumerableVTable_Initializer(
+    (DestructorFunc)List_Destructor,
+    (IEnumerable_GetEnumeratorFunc)List_GetEnumerator);
 
 /**************************************/
 /* Public function definitions        */
@@ -49,12 +49,12 @@ public List *List_New_WithCapacity(uintsize elementSize, int capacity)
 /* Constructors */
 public void List_Constructor(List *list, uintsize elementSize)
 {
-    List_Constructor_Full(list, &List_VTable, elementSize, DefaultCapacity);
+    List_Constructor_Full(list, &VTable, elementSize, DefaultCapacity);
 }
 
 public void List_Constructor_WithCapacity(List *list, uintsize elementSize, int capacity)
 {
-    List_Constructor_Full(list, &List_VTable, elementSize, capacity);
+    List_Constructor_Full(list, &VTable, elementSize, capacity);
 }
 
 /* Destructor */

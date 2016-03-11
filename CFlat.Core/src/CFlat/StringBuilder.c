@@ -29,8 +29,8 @@
 
 /* Private constants */
 private const uintsize DefaultCapacity = 16;
-private const ObjectVTable StringBuilder_VTable = ObjectVTable_Initializer((Destructor)StringBuilder_Destructor);
-private const ObjectVTable StringBuilder_VTableNoDestructor = ObjectVTable_Initializer(null);
+private const ObjectVTable VTable = ObjectVTable_Initializer((DestructorFunc)StringBuilder_Destructor);
+private const ObjectVTable VTableNoDestructor = ObjectVTable_Initializer(null);
 
 /**************************************/
 /* Public function definitions        */
@@ -126,7 +126,7 @@ public void StringBuilder_Constructor_WithInitialStringValueAndCapacity(
     const String *value,
     uintsize capacity)
 {
-    Object_Constructor(sb, &StringBuilder_VTable);
+    Object_Constructor(sb, &VTable);
 
     // If the value is null, initialize to an empty string instead.
     if (value == null) {
@@ -321,11 +321,11 @@ public char *StringBuilder_DeleteAndToCString(StringBuilder *sb)
     char *buffer = (char*)StringBuilder_GetBuffer(sb);
 
     // Prevent the destructor from being invoked so that the buffer remains valid.
-    Object_SetVTable(sb, &StringBuilder_VTableNoDestructor);
+    Object_SetVTable(sb, &VTableNoDestructor);
 
     // If the StringBuilder was not deleted as a result of Object_Release(), throw an InvalidOperationException.
     if (!Object_Release(sb)) {
-        Object_SetVTable(sb, &StringBuilder_VTable);
+        Object_SetVTable(sb, &VTable);
         Object_Aquire(sb);
 
         throw_new(

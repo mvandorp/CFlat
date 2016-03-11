@@ -44,7 +44,7 @@
 /// Initializer for an <see cref="ObjectVTable"/>.
 /// </summary>
 /// <param name="destructor">
-/// A <see cref="Destructor"/> that is called when the object needs to be destroyed, or <see cref="null"/> if the
+/// A <see cref="DestructorFunc"/> that is called when the object needs to be destroyed, or <see cref="null"/> if the
 /// object should not automatically be destroyed.
 /// </param>
 #define ObjectVTable_Initializer(destructor) { destructor }
@@ -54,23 +54,23 @@
 /// A function to perform clean up of the given object before it gets deallocated.
 /// </summary>
 /// <param name="obj">The object to clean up.</param>
-typedef void(*Destructor)(void *obj);
+typedef void(*DestructorFunc)(void *obj);
 
 /// <summary>
 /// A function to deallocate the given object.
 /// </summary>
 /// <param name="obj">The object to deallocate.</param>
-typedef void(*Deallocator)(void *obj);
+typedef void(*DeallocatorFunc)(void *obj);
 
 /// <summary>
 /// A virtual method table for the <see cref="Object"/> class.
 /// </summary>
 typedef struct ObjectVTable {
     /// <summary>
-    /// The <see cref="Destructor"/> of the object.
+    /// The <see cref="DestructorFunc"/> of the object.
     /// </summary>
     /// <remarks>This member is intended for internal use only and should not be modified directly.</remarks>
-    Destructor Destructor;
+    DestructorFunc Destructor;
 } ObjectVTable;
 
 /// <summary>
@@ -84,10 +84,10 @@ typedef struct Object {
     /// <remarks>This member is intended for internal use only and should not be modified directly.</remarks>
     uintsize RefCount;
     /// <summary>
-    /// The <see cref="Deallocator"/> of the object.
+    /// The <see cref="DeallocatorFunc"/> of the object.
     /// </summary>
     /// <remarks>This member is intended for internal use only and should not be modified directly.</remarks>
-    Deallocator Deallocator;
+    DeallocatorFunc Deallocator;
     /// <summary>
     /// The virtual method table of the object.
     /// </summary>
@@ -108,10 +108,10 @@ void Object_Constructor(void *obj, const ObjectVTable *vtable);
 /// </summary>
 /// <param name="obj">Pointer to an <see cref="Object"/>.</param>
 /// <param name="deallocator">
-/// A <see cref="Deallocator"/> that is called when the <paramref name="obj"/> needs to be deallocated, or
+/// A <see cref="DeallocatorFunc"/> that is called when the <paramref name="obj"/> needs to be deallocated, or
 /// <see cref="null"/> if <paramref name="obj"/> should not automatically be deallocated.
 /// </param>
-void Object_SetDeallocator(void *obj, Deallocator deallocator);
+void Object_SetDeallocator(void *obj, DeallocatorFunc deallocator);
 
 /// <summary>
 /// Sets the virtual method table of the given <see cref="Object"/>.

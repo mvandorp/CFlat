@@ -16,17 +16,17 @@ typedef struct ListEnumerator {
 } ListEnumerator;
 
 /* Private functions */
-private void ListEnumerator_Constructor(ListEnumerator *enumerator, const List *list);
-private void ListEnumerator_Destructor(ListEnumerator *enumerator);
-private void *ListEnumerator_GetCurrent(const ListEnumerator *enumerator);
-private bool ListEnumerator_MoveNext(ListEnumerator *enumerator);
-private void ListEnumerator_Reset(ListEnumerator *enumerator);
+private void Constructor(ListEnumerator *enumerator, const List *list);
+private void Destructor(ListEnumerator *enumerator);
+private void *GetCurrent(const ListEnumerator *enumerator);
+private bool MoveNext(ListEnumerator *enumerator);
+private void Reset(ListEnumerator *enumerator);
 
-private const IEnumeratorVTable ListEnumerator_VTable = IEnumeratorVTable_Initializer(
-    (Destructor)ListEnumerator_Destructor,
-    (IEnumerator_GetCurrentCallback)ListEnumerator_GetCurrent,
-    (IEnumerator_MoveNextCallback)ListEnumerator_MoveNext,
-    (IEnumerator_ResetCallback)ListEnumerator_Reset);
+private const IEnumeratorVTable VTable = IEnumeratorVTable_Initializer(
+    (DestructorFunc)Destructor,
+    (IEnumerator_GetCurrentFunc)GetCurrent,
+    (IEnumerator_MoveNextFunc)MoveNext,
+    (IEnumerator_ResetFunc)Reset);
 
 /**************************************/
 /* Internal function definitions      */
@@ -39,7 +39,7 @@ internal IEnumerator *ListEnumerator_New(const List *list)
     ListEnumerator *enumerator = Memory_Allocate(sizeof(ListEnumerator));
 
     try {
-        ListEnumerator_Constructor(enumerator, list);
+        Constructor(enumerator, list);
 
         Object_SetDeallocator(enumerator, Memory_Deallocate);
     }
@@ -56,12 +56,12 @@ internal IEnumerator *ListEnumerator_New(const List *list)
 /* Private function definitions       */
 /**************************************/
 
-private void ListEnumerator_Constructor(ListEnumerator *enumerator, const List *list)
+private void Constructor(ListEnumerator *enumerator, const List *list)
 {
     Validate_NotNull(enumerator);
     Validate_NotNull(list);
 
-    IEnumerator_Constructor((IEnumerator*)enumerator, &ListEnumerator_VTable);
+    IEnumerator_Constructor((IEnumerator*)enumerator, &VTable);
 
     enumerator->List = Object_Aquire(list);
     enumerator->Index = 0;
@@ -69,14 +69,14 @@ private void ListEnumerator_Constructor(ListEnumerator *enumerator, const List *
     enumerator->Version = List_GetVersion(list);
 }
 
-private void ListEnumerator_Destructor(ListEnumerator *enumerator)
+private void Destructor(ListEnumerator *enumerator)
 {
     Validate_NotNull(enumerator);
 
     Object_Release(((ListEnumerator*)enumerator)->List);
 }
 
-private void *ListEnumerator_GetCurrent(const ListEnumerator *enumerator)
+private void *GetCurrent(const ListEnumerator *enumerator)
 {
     Validate_NotNull(enumerator);
     Validate_State(
@@ -87,7 +87,7 @@ private void *ListEnumerator_GetCurrent(const ListEnumerator *enumerator)
     return enumerator->Current;
 }
 
-private bool ListEnumerator_MoveNext(ListEnumerator *enumerator)
+private bool MoveNext(ListEnumerator *enumerator)
 {
     Validate_NotNull(enumerator);
 
@@ -111,7 +111,7 @@ private bool ListEnumerator_MoveNext(ListEnumerator *enumerator)
     }
 }
 
-private void ListEnumerator_Reset(ListEnumerator *enumerator)
+private void Reset(ListEnumerator *enumerator)
 {
     Validate_NotNull(enumerator);
 

@@ -49,7 +49,7 @@ private void UnhandledException(void);
 private bool IsInsideTryBlock(void);
 
 /* Private constants */
-private const ObjectVTable Exception_VTable = ObjectVTable_Initializer((Destructor)Exception_Destructor);
+private const ObjectVTable Exception_VTable = ObjectVTable_Initializer((DestructorFunc)Exception_Destructor);
 
 /**************************************/
 /* Public function definitions        */
@@ -188,7 +188,7 @@ public ExceptionType Exception_GetType(const ExceptionHandle ex)
 /**************************************/
 
 /// <summary>
-/// Allocates and initializes a new CFlatException and returns a ExceptionHandle.
+/// Allocates and initializes a new CFlatException and returns an ExceptionHandle.
 /// </summary>
 private ExceptionHandle Exception_New(ExceptionType type, const String *userMessage, const char *file, int line)
 {

@@ -33,7 +33,7 @@ private const String Empty = CFLAT_STRING_LITERAL("");
 public const String * const String_Empty = &Empty;
 
 /* Internal constants */
-internal const ObjectVTable String_VTable = ObjectVTable_Initializer((Destructor)String_Destructor);
+internal const ObjectVTable String_VTable = ObjectVTable_Initializer((DestructorFunc)String_Destructor);
 
 internal const ObjectVTable String_VTableNoDestructor = ObjectVTable_Initializer(null);
 

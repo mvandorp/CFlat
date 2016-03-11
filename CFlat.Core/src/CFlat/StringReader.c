@@ -27,7 +27,7 @@
 #include "CFlat/Validate.h"
 
 /* Private constants */
-private const ObjectVTable StringReader_VTable = ObjectVTable_Initializer((Destructor)StringReader_Destructor);
+private const ObjectVTable VTable = ObjectVTable_Initializer((DestructorFunc)StringReader_Destructor);
 
 /**************************************/
 /* Public function definitions        */
@@ -57,7 +57,7 @@ public void StringReader_Constructor(StringReader *reader, const String *str)
 {
     Validate_NotNull(str);
 
-    Object_Constructor(reader, &StringReader_VTable);
+    Object_Constructor(reader, &VTable);
 
     reader->Value = Object_Aquire(str);
     reader->Position = 0;
