@@ -27,39 +27,68 @@
 #include "CFlat/Object.h"
 #include "CFlat/Language/Bool.h"
 
+/* Macros */
+/// <summary>
+/// Initializer for an <see cref="IEnumertorVTable"/>.
+/// </summary>
+/// <param name="destructor">
+/// A <see cref="Destructor"/> that is called when the object needs to be destroyed, or <see cref="null"/> if the
+/// object should not automatically be destroyed.
+/// </param>
+/// <param name="getCurrent">A <see cref="IEnumerator_GetCurrentCallback"/>.</param>
+/// <param name="moveNext">A <see cref="IEnumerator_MoveNextCallback"/>.</param>
+/// <param name="reset">A <see cref="IEnumerator_ResetCallback"/>.</param>
+#define IEnumeratorVTable_Initializer(destructor, getCurrent, moveNext, reset)  \
+{                                                                               \
+    ObjectVTable_Initializer(destructor),                                       \
+    getCurrent,                                                                 \
+    moveNext,                                                                   \
+    reset                                                                       \
+}
+
 /* Types */
+/// <summary>
+/// Supports a simple iteration over a collection of elements.
+/// </summary>
+typedef struct IEnumerator {
+    /// <summary>
+    /// The base class of <see cref="IEnumerator"/>.
+    /// </summary>
+    Object Base;
+} IEnumerator;
+
 /// <summary>
 /// A function that returns the current element for a given <see cref="IEnumerator"/>.
 /// </summary>
 /// <param name="enumerator">Pointer to an <see cref="IEnumerator"/>.</param>
 /// <returns>A pointer to the current element.</returns>
-typedef void *(*IEnumerator_GetCurrentCallback)(const void *enumerator);
+typedef void *(*IEnumerator_GetCurrentCallback)(const IEnumerator *enumerator);
 
 /// <summary>
 /// A function that moves a given <see cref="IEnumerator"/> to the next element.
 /// </summary>
 /// <param name="enumerator">Pointer to an <see cref="IEnumerator"/>.</param>
 /// <returns>
-///     <see cref="true"/> if the enumerator was successfully advanced to the next element;
-///     <see cref="false"/> if the enumerator passed the end of the collection.
+/// <see cref="true"/> if the enumerator was successfully advanced to the next element;
+/// <see cref="false"/> if the enumerator passed the end of the collection.
 /// </returns>
-typedef bool(*IEnumerator_MoveNextCallback)(void *enumerator);
+typedef bool(*IEnumerator_MoveNextCallback)(IEnumerator *enumerator);
 
 /// <summary>
 /// A function that resets a given <see cref="IEnumerator"/> to its initial position, which is before the first
 /// element in the collection.
 /// </summary>
 /// <param name="enumerator">Pointer to an <see cref="IEnumerator"/>.</param>
-typedef void(*IEnumerator_ResetCallback)(void *enumerator);
+typedef void(*IEnumerator_ResetCallback)(IEnumerator *enumerator);
 
 /// <summary>
-/// Supports a simple iteration over a collection of elements.
+/// A virtual method table for the <see cref="IEnumerator"/> class.
 /// </summary>
-typedef struct IEnumerator {
+typedef struct IEnumeratorVTable {
     /// <summary>
-    /// The base class of the <see cref="IEnumerator"/>.
+    /// The base class of <see cref="IEnumeratorVTable"/>.
     /// </summary>
-    Object Base;
+    ObjectVTable Base;
 
     /// <summary>
     /// A function that returns the current element for a given <see cref="IEnumerator"/>.
@@ -76,58 +105,40 @@ typedef struct IEnumerator {
     /// element in the collection.
     /// </summary>
     IEnumerator_ResetCallback Reset;
-} IEnumerator;
+} IEnumeratorVTable;
 
 /* Functions */
 /// <summary>
 /// Initializes the given <see cref="IEnumerator"/>.
 /// </summary>
 /// <param name="enumerator">Pointer to an uninitialized <see cref="IEnumerator"/>.</param>
-/// <param name="destructor">
-///     Pointer to a <see cref="Destructor"/> to call when the object needs to be destroyed, or <see cref="null"/> if
-///     <paramref name="enumerator"/> should not automatically be destroyed.
-/// </param>
-/// <param name="getCurrent">
-///     An <see cref="IEnumerator_GetCurrentCallback"/> that returns the current element for a given
-///     <see cref="IEnumerator"/>.
-/// </param>
-/// <param name="moveNext">
-///     An <see cref="IEnumerator_MoveNextCallback"/> that that moves a given <see cref="IEnumerator"/> to the next
-///     element.
-/// </param>
-/// <param name="reset">
-///     An <see cref="IEnumerator_ResetCallback"/> that resets a given <see cref="IEnumerator"/> to its initial
-///     position, which is before the first element in the collection.
-/// </param>
+/// <param name="vtable">Pointer to a virtual method table.</param>
 void IEnumerator_Constructor(
-    void *enumerator,
-    Destructor destructor,
-    IEnumerator_GetCurrentCallback getCurrent,
-    IEnumerator_MoveNextCallback moveNext,
-    IEnumerator_ResetCallback reset);
+    IEnumerator *enumerator,
+    const IEnumeratorVTable *vtable);
 
 /// <summary>
 /// Returns the current element for the given <see cref="IEnumerator"/>.
 /// </summary>
 /// <param name="enumerator">Pointer to an <see cref="IEnumerator"/>.</param>
 /// <returns>A pointer to the current element.</returns>
-void *IEnumerator_GetCurrent(const void *enumerator);
+void *IEnumerator_GetCurrent(const IEnumerator *enumerator);
 
 /// <summary>
 /// Moves the given <see cref="IEnumerator"/> to the next element.
 /// </summary>
 /// <param name="enumerator">Pointer to an <see cref="IEnumerator"/>.</param>
 /// <returns>
-///     <see cref="true"/> if the enumerator was successfully advanced to the next element;
-///     <see cref="false"/> if the enumerator passed the end of the collection.
+/// <see cref="true"/> if the enumerator was successfully advanced to the next element;
+/// <see cref="false"/> if the enumerator passed the end of the collection.
 /// </returns>
-bool IEnumerator_MoveNext(void *enumerator);
+bool IEnumerator_MoveNext(IEnumerator *enumerator);
 
 /// <summary>
 /// Resets the given <see cref="IEnumerator"/> to its initial position, which is before the first element in the
 /// collection.
 /// </summary>
 /// <param name="enumerator">Pointer to an <see cref="IEnumerator"/>.</param>
-void IEnumerator_Reset(void *enumerator);
+void IEnumerator_Reset(IEnumerator *enumerator);
 
 #endif

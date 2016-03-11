@@ -40,8 +40,7 @@ typedef struct StringBuilder StringBuilder;
 /// <summary>
 /// Allocates and initializes a new <see cref="StringBuilder"/>.
 ///
-/// The lifetime of the <see cref="StringBuilder"/> should be managed with Object_Aquire(), Object_Release() and
-/// Object_Delete().
+/// The lifetime of the <see cref="StringBuilder"/> should be managed with Object_Aquire() and Object_Release().
 /// </summary>
 /// <returns>Pointer to the newly allocated <see cref="StringBuilder"/>.</returns>
 StringBuilder *StringBuilder_New(void);
@@ -49,8 +48,7 @@ StringBuilder *StringBuilder_New(void);
 /// <summary>
 /// Allocates and initializes a new <see cref="StringBuilder"/> using the given capacity.
 ///
-/// The lifetime of the <see cref="StringBuilder"/> should be managed with Object_Aquire(), Object_Release() and
-/// Object_Delete().
+/// The lifetime of the <see cref="StringBuilder"/> should be managed with Object_Aquire() and Object_Release().
 /// </summary>
 /// <param name="capacity">The initial capacity of the <see cref="StringBuilder"/>.</param>
 /// <returns>Pointer to the newly allocated <see cref="StringBuilder"/>.</returns>
@@ -59,8 +57,7 @@ StringBuilder *StringBuilder_New_WithCapacity(uintsize capacity);
 /// <summary>
 /// Allocates and initializes a new <see cref="StringBuilder"/> using the given initial value.
 ///
-/// The lifetime of the <see cref="StringBuilder"/> should be managed with Object_Aquire(), Object_Release() and
-/// Object_Delete().
+/// The lifetime of the <see cref="StringBuilder"/> should be managed with Object_Aquire() and Object_Release().
 /// </summary>
 /// <param name="value">Pointer to a null-terminated string used as the initial value.</param>
 /// <returns>Pointer to the newly allocated <see cref="StringBuilder"/>.</returns>
@@ -69,8 +66,7 @@ StringBuilder *StringBuilder_New_WithInitialCStringValue(const char *value);
 /// <summary>
 /// Allocates and initializes a new <see cref="StringBuilder"/> using the given initial value and capacity.
 ///
-/// The lifetime of the <see cref="StringBuilder"/> should be managed with Object_Aquire(), Object_Release() and
-/// Object_Delete().
+/// The lifetime of the <see cref="StringBuilder"/> should be managed with Object_Aquire() and Object_Release().
 /// </summary>
 /// <param name="value">Pointer to a null-terminated string used as the initial value.</param>
 /// <param name="capacity">The initial capacity of the <see cref="StringBuilder"/>.</param>
@@ -80,8 +76,7 @@ StringBuilder *StringBuilder_New_WithInitialCStringValueAndCapacity(const char *
 /// <summary>
 /// Allocates and initializes a new <see cref="StringBuilder"/> using the given initial value.
 ///
-/// The lifetime of the <see cref="StringBuilder"/> should be managed with Object_Aquire(), Object_Release() and
-/// Object_Delete().
+/// The lifetime of the <see cref="StringBuilder"/> should be managed with Object_Aquire() and Object_Release().
 /// </summary>
 /// <param name="value">Pointer to a <see cref="String"/> used as the initial value.</param>
 /// <returns>Pointer to the newly allocated <see cref="StringBuilder"/>.</returns>
@@ -90,8 +85,7 @@ StringBuilder *StringBuilder_New_WithInitialStringValue(const String *value);
 /// <summary>
 /// Allocates and initializes a new <see cref="StringBuilder"/> using the given initial value and capacity.
 ///
-/// The lifetime of the <see cref="StringBuilder"/> should be managed with Object_Aquire(), Object_Release() and
-/// Object_Delete().
+/// The lifetime of the <see cref="StringBuilder"/> should be managed with Object_Aquire() and Object_Release().
 /// </summary>
 /// <param name="value">Pointer to a <see cref="String"/> used as the initial value.</param>
 /// <param name="capacity">The initial capacity of the <see cref="StringBuilder"/>.</param>
@@ -151,7 +145,7 @@ void StringBuilder_Constructor_WithInitialStringValueAndCapacity(
 /// Destroys the given <see cref="StringBuilder"/>.
 /// </summary>
 /// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-void StringBuilder_Destructor(void *sb);
+void StringBuilder_Destructor(StringBuilder *sb);
 
 /// <summary>
 /// Gets the length of the given <see cref="StringBuilder"/>.

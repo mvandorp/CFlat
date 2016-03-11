@@ -32,6 +32,11 @@ private const String Empty = CFLAT_STRING_LITERAL("");
 /* Public constants */
 public const String * const String_Empty = &Empty;
 
+/* Internal constants */
+internal const ObjectVTable String_VTable = ObjectVTable_Initializer((Destructor)String_Destructor);
+
+internal const ObjectVTable String_VTableNoDestructor = ObjectVTable_Initializer(null);
+
 /**************************************/
 /* Public function definitions        */
 /**************************************/
@@ -40,11 +45,16 @@ public String *String_New(const char *value)
 {
     String *str = Memory_Allocate(sizeof(String));
 
-    // Initialize the string to the value represented by value.
-    String_Constructor(str, value);
+    try {
+        String_Constructor(str, value);
 
-    // Set the proper deallocator that corresponds with the allocator.
-    Object_SetDeallocator(str, Memory_Deallocate);
+        Object_SetDeallocator(str, Memory_Deallocate);
+    }
+    catch (Exception) {
+        Memory_Deallocate(str);
+        throw;
+    }
+    endtry;
 
     return str;
 }
@@ -53,10 +63,8 @@ public void String_Constructor(String *str, const char *value)
 {
     Validate_NotNull(str);
 
-    // Initialize the object and set the destructor.
-    Object_Constructor(str, String_Destructor);
+    Object_Constructor(str, &String_VTable);
 
-    // Initialize the string.
     if (value == null) {
         str->Length = 0;
         str->Value = "";
@@ -67,11 +75,11 @@ public void String_Constructor(String *str, const char *value)
     }
 }
 
-public void String_Destructor(void *str)
+public void String_Destructor(String *str)
 {
     Validate_NotNull(str);
 
-    Memory_Deallocate((char*)((String*)str)->Value);
+    Memory_Deallocate((void*)str->Value);
 }
 
 public char String_GetCharAt(const String *str, uintsize index)
@@ -507,7 +515,7 @@ internal String *String_WrapCString(const char *value, String *buffer)
         // Otherwise, initialize the buffer.
 
         // Do not set the destructor to prevent the value from being deallocated.
-        Object_Constructor(buffer, null);
+        Object_Constructor(buffer, &String_VTableNoDestructor);
 
         buffer->Length = CString_Length(value);
         buffer->Value = value;

@@ -30,10 +30,9 @@ typedef struct IEnumerator IEnumerator;
 /// <summary>
 /// Allocates and initializes a new <see cref="IEnumerator"/> that can iterate over the given <see cref="List"/>.
 ///
-/// The lifetime of the <see cref="IEnumerator"/> should be managed with Object_Aquire(), Object_Release() and
-/// Object_Delete().
+/// The lifetime of the <see cref="IEnumerator"/> should be managed with Object_Aquire() and Object_Release().
 /// </summary>
-/// <param name="list">Pointer to an <see cref="IEnumerator"/>.</param>
+/// <param name="list">Pointer to a <see cref="List"/>.</param>
 /// <returns>Pointer to the newly allocated <see cref="IEnumerator"/>.</returns>
 internal IEnumerator *ListEnumerator_New(const List *list);
 

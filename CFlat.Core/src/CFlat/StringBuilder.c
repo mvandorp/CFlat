@@ -29,6 +29,8 @@
 
 /* Private constants */
 private const uintsize DefaultCapacity = 16;
+private const ObjectVTable StringBuilder_VTable = ObjectVTable_Initializer((Destructor)StringBuilder_Destructor);
+private const ObjectVTable StringBuilder_VTableNoDestructor = ObjectVTable_Initializer(null);
 
 /**************************************/
 /* Public function definitions        */
@@ -68,14 +70,18 @@ public StringBuilder *StringBuilder_New_WithInitialStringValue(const String *val
 
 public StringBuilder *StringBuilder_New_WithInitialStringValueAndCapacity(const String *value, uintsize capacity)
 {
-    // Allocate a new string builder and set the destructor callback.
     StringBuilder *sb = Memory_Allocate(sizeof(StringBuilder));
 
-    // Initialize the string builder with the given initial value and capacity.
-    StringBuilder_Constructor_WithInitialStringValueAndCapacity(sb, value, capacity);
+    try {
+        StringBuilder_Constructor_WithInitialStringValueAndCapacity(sb, value, capacity);
 
-    // Set the proper deallocator that corresponds with the allocator.
-    Object_SetDeallocator(sb, Memory_Deallocate);
+        Object_SetDeallocator(sb, Memory_Deallocate);
+    }
+    catch (Exception) {
+        Memory_Deallocate(sb);
+        throw;
+    }
+    endtry;
 
     return sb;
 }
@@ -120,10 +126,7 @@ public void StringBuilder_Constructor_WithInitialStringValueAndCapacity(
     const String *value,
     uintsize capacity)
 {
-    Validate_NotNull(sb);
-
-    // Initialize the object and set the destructor.
-    Object_Constructor(sb, StringBuilder_Destructor);
+    Object_Constructor(sb, &StringBuilder_VTable);
 
     // If the value is null, initialize to an empty string instead.
     if (value == null) {
@@ -142,23 +145,21 @@ public void StringBuilder_Constructor_WithInitialStringValueAndCapacity(
         capacity = length;
     }
 
-    // Initialize the stringbuilder.
+    // Initialize the StringBuilder.
     sb->Length = length;
     sb->Capacity = capacity;
     sb->Value = Memory_Allocate(capacity + 1);
 
-    // Initialize the contents of the stringbuilder to the given string.
+    // Initialize the contents of the StringBuilder to the given string.
     Memory_Copy(String_GetCString(value), sb->Value, length);
 }
 
 /* Destructor */
-public void StringBuilder_Destructor(void *sb)
+public void StringBuilder_Destructor(StringBuilder *sb)
 {
     Validate_NotNull(sb);
 
-    StringBuilder *stringBuilder = (StringBuilder*)sb;
-
-    Memory_Deallocate(stringBuilder->Value);
+    Memory_Deallocate(sb->Value);
 }
 
 /* Properties */
@@ -291,15 +292,26 @@ public void StringBuilder_Clear(StringBuilder *sb)
 
 public String *StringBuilder_DeleteAndToString(StringBuilder *sb)
 {
+    Validate_NotNull(sb);
+
     // Manually allocate a String wrapper for the C-string.
     String *str = Memory_Allocate(sizeof(String));
 
-    // Create a String wrapper to hold the actual value.
-    String_WrapCString(StringBuilder_DeleteAndToCString(sb), str);
+    try {
+        char *buffer = StringBuilder_DeleteAndToCString(sb);
 
-    // Restore the destructor and deallocator of the String.
-    Object_SetDestructor(str, String_Destructor);
-    Object_SetDeallocator(str, Memory_Deallocate);
+        // Create a String wrapper to hold the actual value.
+        String_WrapCString(buffer, str);
+
+        // Restore the vtable and deallocator of the String.
+        Object_SetVTable(str, &String_VTable);
+        Object_SetDeallocator(str, Memory_Deallocate);
+    }
+    catch (Exception) {
+        Memory_Deallocate(str);
+        throw;
+    }
+    endtry;
 
     return str;
 }
@@ -308,9 +320,18 @@ public char *StringBuilder_DeleteAndToCString(StringBuilder *sb)
 {
     char *buffer = (char*)StringBuilder_GetBuffer(sb);
 
-    // Make sure the destructor is not invoked and delete the StringBuilder.
-    Object_SetDestructor(sb, null);
-    Object_Delete(sb);
+    // Prevent the destructor from being invoked so that the buffer remains valid.
+    Object_SetVTable(sb, &StringBuilder_VTableNoDestructor);
+
+    // If the StringBuilder was not deleted as a result of Object_Release(), throw an InvalidOperationException.
+    if (!Object_Release(sb)) {
+        Object_SetVTable(sb, &StringBuilder_VTable);
+        Object_Aquire(sb);
+
+        throw_new(
+            InvalidOperationException,
+            "Could not delete the object because there are still references to the object.");
+    }
 
     return buffer;
 }

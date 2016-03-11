@@ -46,7 +46,7 @@ typedef struct List List;
 /// <summary>
 /// Allocates and initializes a new <see cref="List"/>.
 ///
-/// The lifetime of the <see cref="List"/> should be managed with Object_Aquire(), Object_Release() and Object_Delete().
+/// The lifetime of the <see cref="List"/> should be managed with Object_Aquire() and Object_Release().
 /// </summary>
 /// <param name="elementSize">The size in bytes of each element.</param>
 /// <returns>Pointer to the newly allocated <see cref="List"/>.</returns>
@@ -55,7 +55,7 @@ List *List_New(uintsize elementSize);
 /// <summary>
 /// Allocates and initializes a new <see cref="List"/> using the given capacity.
 ///
-/// The lifetime of the <see cref="List"/> should be managed with Object_Aquire(), Object_Release() and Object_Delete().
+/// The lifetime of the <see cref="List"/> should be managed with Object_Aquire() and Object_Release().
 /// </summary>
 /// <param name="elementSize">The size in bytes of each element.</param>
 /// <param name="capacity">The initial capacity of the <see cref="List"/>.</param>
@@ -81,7 +81,7 @@ void List_Constructor_WithCapacity(List *list, uintsize elementSize, int capacit
 /// Destroys the given <see cref="List"/>.
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
-void List_Destructor(void *list);
+void List_Destructor(List *list);
 
 /// <summary>
 /// Gets the capacity of the given <see cref="List"/>.
@@ -130,7 +130,7 @@ void List_AddRef(List *list, const void *value);
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
 /// <param name="enumerable">
-///     Pointer to an <see cref="IEnumerable"/> whose elements should be added to the end of the <see cref="List"/>.
+/// Pointer to an <see cref="IEnumerable"/> whose elements should be added to the end of the <see cref="List"/>.
 /// </param>
 void List_AddRange(List *list, IEnumerable *enumerable);
 
@@ -184,7 +184,7 @@ void List_InsertRef(List *list, int index, const void *value);
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
 /// <param name="index">The position where the new elements should be inserted.</param>
 /// <param name="enumerable">
-///     Pointer to an <see cref="IEnumerable"/> whose elements should be added to the end of the <see cref="List"/>.
+/// Pointer to an <see cref="IEnumerable"/> whose elements should be added to the end of the <see cref="List"/>.
 /// </param>
 void List_InsertRange(List *list, int index, IEnumerable *enumerable);
 

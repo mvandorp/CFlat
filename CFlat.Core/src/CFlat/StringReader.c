@@ -26,40 +26,48 @@
 #include "CFlat/String.h"
 #include "CFlat/Validate.h"
 
+/* Private constants */
+private const ObjectVTable StringReader_VTable = ObjectVTable_Initializer((Destructor)StringReader_Destructor);
+
+/**************************************/
+/* Public function definitions        */
+/**************************************/
+
 public StringReader *StringReader_New(const String *str)
 {
     Validate_NotNull(str);
 
-    // Allocate a new string reader and set the destructor callback.
     StringReader *reader = Memory_Allocate(sizeof(StringReader));
 
-    // Initialize the string reader with the given string.
-    StringReader_Constructor(reader, str);
+    try {
+        StringReader_Constructor(reader, str);
 
-    // Set the proper deallocator that corresponds with the allocator.
-    Object_SetDeallocator(reader, Memory_Deallocate);
+        Object_SetDeallocator(reader, Memory_Deallocate);
+    }
+    catch (Exception) {
+        Memory_Deallocate(reader);
+        throw;
+    }
+    endtry;
 
     return reader;
 }
 
 public void StringReader_Constructor(StringReader *reader, const String *str)
 {
-    Validate_NotNull(reader);
     Validate_NotNull(str);
 
-    Object_Constructor(reader, StringReader_Destructor);
+    Object_Constructor(reader, &StringReader_VTable);
 
     reader->Value = Object_Aquire(str);
     reader->Position = 0;
 }
 
-public void StringReader_Destructor(void *reader)
+public void StringReader_Destructor(StringReader *reader)
 {
     Validate_NotNull(reader);
 
-    StringReader *stringReader = (StringReader*)reader;
-
-    Object_Release(stringReader->Value);
+    Object_Release(reader->Value);
 }
 
 public int StringReader_Peek(const StringReader *reader)

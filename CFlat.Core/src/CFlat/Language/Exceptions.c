@@ -39,7 +39,7 @@ private void Exception_Constructor(
     const String *userMessage,
     const char *file,
     int line);
-private void Exception_Destructor(void *ex);
+private void Exception_Destructor(ExceptionHandle ex);
 
 private void PushJumpBuffer(jmp_buf stack);
 private void PopJumpBuffer(jmp_buf stack);
@@ -47,6 +47,9 @@ private void RestoreJumpBuffer(ExceptionState *state);
 private String *GenerateExceptionText(const ExceptionHandle ex);
 private void UnhandledException(void);
 private bool IsInsideTryBlock(void);
+
+/* Private constants */
+private const ObjectVTable Exception_VTable = ObjectVTable_Initializer((Destructor)Exception_Destructor);
 
 /**************************************/
 /* Public function definitions        */
@@ -191,11 +194,16 @@ private ExceptionHandle Exception_New(ExceptionType type, const String *userMess
 {
     ExceptionHandle ex = Memory_Allocate(sizeof(CFlatException));
 
-    // Initialize the exception.
-    Exception_Constructor(ex, type, userMessage, file, line);
+    try {
+        Exception_Constructor(ex, type, userMessage, file, line);
 
-    // Set the proper deallocator that corresponds with the allocator.
-    Object_SetDeallocator(ex, Memory_Deallocate);
+        Object_SetDeallocator(ex, Memory_Deallocate);
+    }
+    catch (Exception) {
+        Memory_Deallocate(ex);
+        throw;
+    }
+    endtry;
 
     return ex;
 }
@@ -210,12 +218,8 @@ private void Exception_Constructor(
     const char *file,
     int line)
 {
-    Validate_NotNull(ex);
+    Object_Constructor(ex, &Exception_VTable);
 
-    // Initialize the object and set the destructor.
-    Object_Constructor(ex, Exception_Destructor);
-
-    // Initialize the exception.
     ex->Type = type;
     ex->UserMessage = userMessage;
     ex->File = file;
@@ -225,13 +229,11 @@ private void Exception_Constructor(
 /// <summary>
 /// Destroys the CFlatException referenced by the given ExceptionHandle.
 /// </summary>
-private void Exception_Destructor(void *ex)
+private void Exception_Destructor(ExceptionHandle ex)
 {
     Validate_NotNull(ex);
 
-    ExceptionHandle exception = (ExceptionHandle)ex;
-
-    Object_Release(exception->UserMessage);
+    Object_Release(ex->UserMessage);
 }
 
 /// <summary>

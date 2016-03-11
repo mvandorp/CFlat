@@ -23,15 +23,23 @@
 #include "CFlat/Memory.h"
 #include "CFlat/Validate.h"
 
-public void Object_Constructor(void *obj, Destructor dtor)
+/* Private functions */
+private void Object_Delete(const void *obj);
+
+/**************************************/
+/* Public function definitions        */
+/**************************************/
+
+public void Object_Constructor(void *obj, const ObjectVTable *vtable)
 {
     Validate_NotNull(obj);
+    Validate_NotNull(vtable);
 
     Object *object = (Object*)obj;
 
     object->RefCount = 1;
-    object->Destructor = dtor;
     object->Deallocator = null;
+    object->VTable = vtable;
 }
 
 public void Object_SetDeallocator(void *obj, Deallocator dealloc)
@@ -46,32 +54,16 @@ public void Object_SetDeallocator(void *obj, Deallocator dealloc)
     }
 }
 
-public void Object_SetDestructor(void *obj, Destructor dtor)
+public void Object_SetVTable(void *obj, const ObjectVTable *vtable)
 {
     Validate_NotNull(obj);
+    Validate_NotNull(vtable);
 
     Object *object = (Object*)obj;
 
     // Prevent modifying a constant object.
     if (object->RefCount != uintsize_MaxValue) {
-        object->Destructor = dtor;
-    }
-}
-
-public void Object_Delete(const void *obj)
-{
-    if (obj == null) {
-        return;
-    }
-
-    Object *object = (Object*)obj;
-
-    if (object->Destructor != null) {
-        object->Destructor(object);
-    }
-
-    if (object->Deallocator != null) {
-        object->Deallocator(object);
+        object->VTable = vtable;
     }
 }
 
@@ -111,4 +103,23 @@ public bool Object_Release(const void *obj)
     }
 
     return false;
+}
+
+/**************************************/
+/* Private function definitions       */
+/**************************************/
+
+private void Object_Delete(const void *obj)
+{
+    assert(obj != null);
+
+    Object *object = (Object*)obj;
+
+    if (object->VTable->Destructor != null) {
+        object->VTable->Destructor(object);
+    }
+
+    if (object->Deallocator != null) {
+        object->Deallocator(object);
+    }
 }

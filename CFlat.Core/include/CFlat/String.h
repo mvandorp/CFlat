@@ -44,8 +44,7 @@ extern const String * const String_Empty;
 /// <summary>
 /// Allocates and initializes a new <see cref="String"/> to the value represented by the given null-terminated string.
 ///
-/// The lifetime of the <see cref="String"/> should be managed with Object_Aquire(), Object_Release() and
-/// Object_Delete().
+/// The lifetime of the <see cref="String"/> should be managed with Object_Aquire() and Object_Release().
 /// </summary>
 /// <param name="value">Pointer to a null-terminated string.</param>
 /// <returns>Pointer to the newly allocated string.</returns>
@@ -62,7 +61,7 @@ void String_Constructor(String *str, const char *value);
 /// Destroys the given <see cref="String"/>.
 /// </summary>
 /// <param name="str">Pointer to a <see cref="String"/>.</param>
-void String_Destructor(void *str);
+void String_Destructor(String *str);
 
 /// <summary>
 /// Gets the character at the given index of the given <see cref="String"/>.

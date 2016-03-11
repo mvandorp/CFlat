@@ -25,38 +25,27 @@
 #include "CFlat/Language/Integer.h"
 #include "CFlat/Language/Keywords.h"
 
-/* Forward declarations */
-typedef struct List List;
-
 /* Types */
-struct List {
+typedef struct List {
     IEnumerable Base;
     int Capacity;
     int Count;
     int ElementSize;
     int Version;
     byte *Array;
-};
+} List;
 
  /* Functions */
 /// <summary>
 /// Initializes the given <see cref="List"/> using the given capacity.
 /// </summary>
 /// <param name="list">Pointer to an uninitialized <see cref="List"/>.</param>
-/// <param name="destructor">
-///     Pointer to a <see cref="Destructor"/> to call when the object needs to be destroyed, or <see cref="null"/> if
-///     <paramref name="list"/> should not automatically be destroyed.
-/// </param>
-/// <param name="getEnumerator">
-///     Pointer to a <see cref="IEnumerable_GetEnumeratorCallback"/> that returns an <see cref="IEnumerator"/> for a
-///     given <see cref="List"/>.
-/// </param>
+/// <param name="table">Pointer to a virtual method table.</param>
 /// <param name="elementSize">The size in bytes of each element.</param>
 /// <param name="capacity">The initial capacity of the <see cref="List"/>.</param>
 internal void List_Constructor_Full(
     List *list,
-    Destructor destructor,
-    IEnumerable_GetEnumeratorCallback getEnumerator,
+    const IEnumerableVTable *vtable,
     uintsize elementSize,
     int capacity);
 

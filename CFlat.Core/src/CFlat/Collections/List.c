@@ -11,8 +11,12 @@
 private const int DefaultCapacity = 4;
 
 /* Private functions */
-private void List_EnsureCapacity(List *list, int capacity);
-private IEnumerator *List_GetEnumeratorGeneric(const void *list);
+private void EnsureCapacity(List *list, int capacity);
+
+/* Private constants */
+private const IEnumerableVTable List_VTable = IEnumerableVTable_Initializer(
+    (Destructor)List_Destructor,
+    (IEnumerable_GetEnumeratorCallback)List_GetEnumerator);
 
 /**************************************/
 /* Public function definitions        */
@@ -35,7 +39,6 @@ public List *List_New_WithCapacity(uintsize elementSize, int capacity)
     }
     catch (Exception) {
         Memory_Deallocate(list);
-
         throw;
     }
     endtry;
@@ -46,20 +49,20 @@ public List *List_New_WithCapacity(uintsize elementSize, int capacity)
 /* Constructors */
 public void List_Constructor(List *list, uintsize elementSize)
 {
-    List_Constructor_Full(list, List_Destructor, List_GetEnumeratorGeneric, elementSize, DefaultCapacity);
+    List_Constructor_Full(list, &List_VTable, elementSize, DefaultCapacity);
 }
 
 public void List_Constructor_WithCapacity(List *list, uintsize elementSize, int capacity)
 {
-    List_Constructor_Full(list, List_Destructor, List_GetEnumeratorGeneric, elementSize, capacity);
+    List_Constructor_Full(list, &List_VTable, elementSize, capacity);
 }
 
 /* Destructor */
-public void List_Destructor(void *list)
+public void List_Destructor(List *list)
 {
     Validate_NotNull(list);
 
-    Memory_Deallocate(((List*)list)->Array);
+    Memory_Deallocate(list->Array);
 }
 
 /* Properties */
@@ -149,7 +152,7 @@ public void List_InsertRef(List *list, int index, const void *value)
         ArgumentOutOfRangeException,
         "Index must be within the bounds of the List.");
 
-    List_EnsureCapacity(list, list->Count + 1);
+    EnsureCapacity(list, list->Count + 1);
 
     uintsize size = list->ElementSize;
 
@@ -225,16 +228,14 @@ public void List_RemoveRange(List *list, int startIndex, int count)
 
 internal void List_Constructor_Full(
     List *list,
-    Destructor destructor,
-    IEnumerable_GetEnumeratorCallback getEnumerator,
+    const IEnumerableVTable *vtable,
     uintsize elementSize,
     int capacity)
 {
-    Validate_NotNull(list);
     Validate_IsTrue(capacity >= 0, ArgumentOutOfRangeException, "Capacity cannot be negative.");
     Validate_IsTrue(elementSize > 0, ArgumentOutOfRangeException, "Element size cannot be zero.");
 
-    IEnumerable_Constructor(list, destructor, getEnumerator);
+    IEnumerable_Constructor((IEnumerable*)list, vtable);
 
     list->Array = null;
     list->Capacity = 0;
@@ -256,22 +257,20 @@ internal uintsize List_GetVersion(const List *list)
 /* Private function definitions       */
 /**************************************/
 
-private void List_EnsureCapacity(List *list, int minCapacity)
+private void EnsureCapacity(List *list, int minCapacity)
 {
     assert(list != null);
 
     if (list->Capacity < minCapacity) {
-        uint capacity = uint_Max(DefaultCapacity, uint_Max(minCapacity, list->Count * 2));
-
-        if (capacity > List_MaxCapacity) {
+        if (minCapacity > List_MaxCapacity) {
             throw_new(OutOfMemoryException, "Capacity exceeded the maximum capacity of a List.");
         }
 
+        uint capacity;
+        capacity = uint_Max(minCapacity, list->Count * 2);
+        capacity = uint_Max(capacity, DefaultCapacity);
+        capacity = uint_Min(capacity, List_MaxCapacity);
+
         List_SetCapacity(list, capacity);
     }
-}
-
-private IEnumerator *List_GetEnumeratorGeneric(const void *list)
-{
-    return List_GetEnumerator((const List*)list);
 }

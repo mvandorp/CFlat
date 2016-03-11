@@ -39,8 +39,7 @@ typedef struct StringReader StringReader;
 /// <summary>
 /// Allocates and initializes a new <see cref="StringReader"/> that reads from the given <see cref="String"/>.
 ///
-/// The lifetime of the <see cref="StringReader"/> should be managed with Object_Aquire(), Object_Release() and
-/// Object_Delete().
+/// The lifetime of the <see cref="StringReader"/> should be managed with Object_Aquire() and Object_Release().
 /// </summary>
 /// <param name="str">Pointer to a string.</param>
 /// <returns>Pointer to the newly allocated <see cref="StringReader"/>.</returns>
@@ -57,7 +56,7 @@ void StringReader_Constructor(StringReader *reader, const String *str);
 /// Destroys the given <see cref="StringReader"/>.
 /// </summary>
 /// <param name="reader">Pointer to a <see cref="StringReader"/>.</param>
-void StringReader_Destructor(void *reader);
+void StringReader_Destructor(StringReader *reader);
 
 /// <summary>
 /// Returns the next available character without advancing the position of the reader.

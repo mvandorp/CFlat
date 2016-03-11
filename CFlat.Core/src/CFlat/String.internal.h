@@ -39,10 +39,25 @@
 /// Initializer for a <see cref="String"/> that initializes the value to the given value string literal.
 /// </summary>
 /// <param name="value">A string literal.</param>
-#define CFLAT_STRING_LITERAL(value) { CFLAT_CONST_OBJECT_INITIALIZER(), CFLAT_STRING_LITERAL_LENGTH(value), value }
+#define CFLAT_STRING_LITERAL(value)                             \
+{                                                               \
+    CFLAT_CONST_OBJECT_INITIALIZER(&String_VTableNoDestructor), \
+    CFLAT_STRING_LITERAL_LENGTH(value),                         \
+    value                                                       \
+}
+
+/// <summary>
+/// The virtual method table for <see cref="String"/>.
+/// </summary>
+internal extern const ObjectVTable String_VTable;
+
+/// <summary>
+/// The virtual method table for <see cref="String"/>, without the destructor set.
+/// </summary>
+internal extern const ObjectVTable String_VTableNoDestructor;
 
 /* Types */
-typedef struct String {
+struct String {
     /// <summary>
     /// The base class of the string.
     /// </summary>
@@ -55,7 +70,7 @@ typedef struct String {
     /// Pointer to the null-terminated string that represents the value of the string.
     /// </summary>
     const char* Value;
-} String;
+};
 
 /* Functions */
 /// <summary>
