@@ -18,23 +18,20 @@
  */
 
 /**
- * @file CFlat.h
+ * @file Functions.h
  */
 
-#ifndef CFLAT_CORE_CFLAT_H
-#define CFLAT_CORE_CFLAT_H
+#ifndef CFLAT_CORE_LANGUAGE_FUNCTIONS_H
+#define CFLAT_CORE_LANGUAGE_FUNCTIONS_H
 
-#include "CFlat/Language/Assert.h"
 #include "CFlat/Language/Bool.h"
-#include "CFlat/Language/Char.h"
-#include "CFlat/Language/Constants.h"
-#include "CFlat/Language/Double.h"
-#include "CFlat/Language/Exceptions.h"
-#include "CFlat/Language/Float.h"
-#include "CFlat/Language/Functions.h"
-#include "CFlat/Language/Integer.h"
-#include "CFlat/Language/Keywords.h"
-#include "CFlat/Language/Null.h"
-#include "CFlat/Language/VarArgs.h"
+
+/// <summary>
+/// A function that determines whether two given objects compare equal.
+/// </summary>
+/// <param name="x">The first object to compare.</param>
+/// <param name="x">The second object to compare.</param>
+/// <returns><see cref="true"/> if the objects compare equal; otherwise <see cref="false"/>.</returns>
+typedef bool (*EqualityPredicate)(const void *x, const void *y);
 
 #endif
