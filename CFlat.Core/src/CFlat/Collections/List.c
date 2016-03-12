@@ -38,17 +38,17 @@ private const IListVTable VTable = IListVTable_Initializer(
 /**************************************/
 
 /* Allocators */
-public List *List_New(uintsize elementSize)
+public List *List_New(uintsize elementSize, EqualityPredicate equals)
 {
-    return List_New_WithCapacity(elementSize, 0);
+    return List_New_WithCapacity(elementSize, equals, 0);
 }
 
-public List *List_New_WithCapacity(uintsize elementSize, int capacity)
+public List *List_New_WithCapacity(uintsize elementSize, EqualityPredicate equals, int capacity)
 {
     List *list = Memory_Allocate(sizeof(List));
 
     try {
-        List_Constructor_WithCapacity(list, elementSize, capacity);
+        List_Constructor_WithCapacity(list, elementSize, equals, capacity);
 
         Object_SetDeallocator(list, Memory_Deallocate);
     }
@@ -61,12 +61,12 @@ public List *List_New_WithCapacity(uintsize elementSize, int capacity)
     return list;
 }
 
-public List *List_New_FromEnumerable(uintsize elementSize, const IEnumerable *enumerable)
+public List *List_New_FromEnumerable(uintsize elementSize, EqualityPredicate equals, const IEnumerable *collection)
 {
     List *list = Memory_Allocate(sizeof(List));
 
     try {
-        List_Constructor_FromEnumerable(list, elementSize, enumerable);
+        List_Constructor_FromEnumerable(list, elementSize, equals, collection);
 
         Object_SetDeallocator(list, Memory_Deallocate);
     }
@@ -79,12 +79,12 @@ public List *List_New_FromEnumerable(uintsize elementSize, const IEnumerable *en
     return list;
 }
 
-public List *List_New_FromCollection(uintsize elementSize, const ICollection *collection)
+public List *List_New_FromCollection(uintsize elementSize, EqualityPredicate equals, const ICollection *collection)
 {
     List *list = Memory_Allocate(sizeof(List));
 
     try {
-        List_Constructor_FromCollection(list, elementSize, collection);
+        List_Constructor_FromCollection(list, elementSize, equals, collection);
 
         Object_SetDeallocator(list, Memory_Deallocate);
     }
@@ -98,29 +98,37 @@ public List *List_New_FromCollection(uintsize elementSize, const ICollection *co
 }
 
 /* Constructors */
-public void List_Constructor(List *list, uintsize elementSize)
+public void List_Constructor(List *list, uintsize elementSize, EqualityPredicate equals)
 {
-    List_Constructor_WithCapacity(list, elementSize, DefaultCapacity);
+    List_Constructor_WithCapacity(list, elementSize, equals, DefaultCapacity);
 }
 
-public void List_Constructor_WithCapacity(List *list, uintsize elementSize, int capacity)
+public void List_Constructor_WithCapacity(List *list, uintsize elementSize, EqualityPredicate equals, int capacity)
 {
-    List_Constructor_Full(list, &VTable, elementSize, capacity);
+    List_Constructor_Full(list, &VTable, elementSize, equals, capacity);
 }
 
-public void List_Constructor_FromEnumerable(List *list, uintsize elementSize, const IEnumerable *enumerable)
-{
-    Validate_NotNull(enumerable);
-
-    List_Constructor(list, elementSize);
-    List_AddRange(list, enumerable);
-}
-
-public void List_Constructor_FromCollection(List *list, uintsize elementSize, const ICollection *collection)
+public void List_Constructor_FromEnumerable(
+    List *list,
+    uintsize elementSize,
+    EqualityPredicate equals,
+    const IEnumerable *collection)
 {
     Validate_NotNull(collection);
 
-    List_Constructor_WithCapacity(list, elementSize, ICollection_GetCount(collection));
+    List_Constructor(list, elementSize, equals);
+    List_AddRange(list, collection);
+}
+
+public void List_Constructor_FromCollection(
+    List *list,
+    uintsize elementSize,
+    EqualityPredicate equals,
+    const ICollection *collection)
+{
+    Validate_NotNull(collection);
+
+    List_Constructor_WithCapacity(list, elementSize, equals, ICollection_GetCount(collection));
     List_AddRange(list, (const IEnumerable*)collection);
 }
 
@@ -246,9 +254,9 @@ public void List_Clear(List *list)
     list->Version++;
 }
 
-public bool List_ContainsRef(const List *list, const void *item, EqualityPredicate equals)
+public bool List_ContainsRef(const List *list, const void *item)
 {
-    return List_IndexOfRef(list, item, equals) >= 0;
+    return List_IndexOfRef(list, item) >= 0;
 }
 
 public void List_CopyTo(const List *list, void *destination, uintsize destinationSize)
@@ -264,9 +272,9 @@ public void List_CopyTo(const List *list, void *destination, uintsize destinatio
     Memory_Copy(list->Array, destination, list->Count * list->ElementSize);
 }
 
-public bool List_RemoveRef(List *list, const void *item, EqualityPredicate equals)
+public bool List_RemoveRef(List *list, const void *item)
 {
-    int index = List_IndexOfRef(list, item, equals);
+    int index = List_IndexOfRef(list, item);
 
     if (index >= 0) {
         List_RemoveAt(list, index);
@@ -300,18 +308,23 @@ public void List_SetItemRef(List *list, int index, const void *item)
     list->Version++;
 }
 
-public int List_IndexOfRef(const List *list, const void *item, EqualityPredicate equals)
+public int List_IndexOfRef(const List *list, const void *item)
 {
     Validate_NotNull(list);
     Validate_NotNull(item);
-    Validate_NotNull(equals);
+
+    if (list->Equals == null) {
+        throw_new(
+            InvalidOperationException,
+            "Cannot find the index of an element because an equality predicate is not set.");
+    }
 
     byte *array = list->Array;
     uintsize size = list->ElementSize;
     int count = list->Count;
 
     for (int i = 0; i < count; i++) {
-        if (equals(&array[i * size], item)) {
+        if (list->Equals(&array[i * size], item)) {
             return i;
         }
     }
@@ -361,6 +374,7 @@ internal void List_Constructor_Full(
     List *list,
     const IListVTable *vtable,
     uintsize elementSize,
+    EqualityPredicate equals,
     int capacity)
 {
     Validate_IsTrue(capacity >= 0, ArgumentOutOfRangeException, "Capacity cannot be negative.");
@@ -368,6 +382,7 @@ internal void List_Constructor_Full(
 
     IList_Constructor((IList*)list, vtable);
 
+    list->Equals = equals;
     list->Array = null;
     list->Capacity = 0;
     list->Count = 0;

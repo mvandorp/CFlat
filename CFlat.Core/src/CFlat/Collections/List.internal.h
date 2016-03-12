@@ -20,8 +20,8 @@
 #ifndef CFLAT_CORE_COLLECTIONS_LIST_INTERNAL_H
 #define CFLAT_CORE_COLLECTIONS_LIST_INTERNAL_H
 
-#include "CFlat/Object.h"
 #include "CFlat/Collections/IList.h"
+#include "CFlat/Language/Functions.h"
 #include "CFlat/Language/Integer.h"
 #include "CFlat/Language/Keywords.h"
 
@@ -33,6 +33,7 @@ struct List {
     uintsize ElementSize;
     uintsize Version;
     byte *Array;
+    EqualityPredicate Equals;
 };
 
  /* Functions */
@@ -40,13 +41,17 @@ struct List {
 /// Initializes a <see cref="List"/> with the given capacity.
 /// </summary>
 /// <param name="list">Pointer to an uninitialized <see cref="List"/>.</param>
-/// <param name="table">Pointer to a virtual method table.</param>
+/// <param name="vtable">Pointer to a virtual method table.</param>
 /// <param name="elementSize">The size in bytes of each element.</param>
+/// <param name="equals">
+/// An <see cref="EqualityPredicate"/> that is used to check elements for equality, or <see cref="null"/>.
+/// </param>
 /// <param name="capacity">The initial capacity of the <see cref="List"/>.</param>
 internal void List_Constructor_Full(
     List *list,
     const IListVTable *vtable,
     uintsize elementSize,
+    EqualityPredicate equals,
     int capacity);
 
 /// <summary>

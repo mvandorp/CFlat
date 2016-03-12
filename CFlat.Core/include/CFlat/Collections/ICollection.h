@@ -26,7 +26,7 @@
 
 #include "CFlat/Collections/IEnumerable.h"
 #include "CFlat/Language/Bool.h"
-#include "CFlat/Language/Functions.h"
+#include "CFlat/Language/Integer.h"
 
 /* Forward declarations */
 typedef struct IEnumerator IEnumerator;
@@ -110,9 +110,8 @@ typedef void (*ICollection_ClearFunc)(ICollection *collection);
 /// </summary>
 /// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
 /// <param name="item">The item to find.</param>
-/// <param name="equals">An <see cref="EqualityPredicate"/> that is used to check elements for equality.</param>
 /// <returns><see cref="true"/> if <paramref name="item"/> was found; otherwise <see cref="false"/>.</returns>
-typedef bool (*ICollection_ContainsFunc)(const ICollection *collection, const void *item, EqualityPredicate equals);
+typedef bool (*ICollection_ContainsFunc)(const ICollection *collection, const void *item);
 
 /// <summary>
 /// A function that copies the elements of an <see cref="ICollection"/> to the given array.
@@ -129,11 +128,10 @@ typedef void (*ICollection_CopyToFunc)(const ICollection *collection, void *dest
 /// </summary>
 /// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
 /// <param name="item">The item to remove.</param>
-/// <param name="equals">An <see cref="EqualityPredicate"/> that is used to check elements for equality.</param>
 /// <returns>
 /// <see cref="true"/> if <paramref name="item"/> was successfully removed; otherwise <see cref="false"/>.
 /// </returns>
-typedef bool (*ICollection_RemoveFunc)(ICollection *collection, const void *item, EqualityPredicate equals);
+typedef bool (*ICollection_RemoveFunc)(ICollection *collection, const void *item);
 
 /// <summary>
 /// A virtual method table for the <see cref="ICollection"/> class.
@@ -233,9 +231,8 @@ void ICollection_Clear(ICollection *collection);
 /// </summary>
 /// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
 /// <param name="item">The item to find.</param>
-/// <param name="equals">An <see cref="EqualityPredicate"/> that is used to check elements for equality.</param>
 /// <returns><see cref="true"/> if <paramref name="item"/> was found; otherwise <see cref="false"/>.</returns>
-bool ICollection_Contains(const ICollection *collection, const void *item, EqualityPredicate equals);
+bool ICollection_Contains(const ICollection *collection, const void *item);
 
 /// <summary>
 /// Copies the elements of an <see cref="ICollection"/> to the given array.
@@ -252,10 +249,9 @@ void ICollection_CopyTo(const ICollection *collection, void *destination, uintsi
 /// </summary>
 /// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
 /// <param name="item">The item to remove.</param>
-/// <param name="equals">An <see cref="EqualityPredicate"/> that is used to check elements for equality.</param>
 /// <returns>
 /// <see cref="true"/> if <paramref name="item"/> was successfully removed; otherwise <see cref="false"/>.
 /// </returns>
-bool ICollection_Remove(ICollection *collection, const void *item, EqualityPredicate equals);
+bool ICollection_Remove(ICollection *collection, const void *item);
 
 #endif

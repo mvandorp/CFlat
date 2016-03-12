@@ -50,10 +50,12 @@ typedef struct List List;
 ///
 /// The lifetime of the <see cref="List"/> should be managed with Object_Aquire() and Object_Release().
 /// </summary>
-/// <param name="list">Pointer to an uninitialized <see cref="List"/>.</param>
 /// <param name="elementSize">The size in bytes of each element.</param>
+/// <param name="equals">
+/// An <see cref="EqualityPredicate"/> that is used to check elements for equality, or <see cref="null"/>.
+/// </param>
 /// <returns>Pointer to the newly allocated <see cref="List"/>.</returns>
-List *List_New(uintsize elementSize);
+List *List_New(uintsize elementSize, EqualityPredicate equals);
 
 /// <summary>
 /// Allocates and initializes a <see cref="List"/> with the given capacity.
@@ -61,62 +63,89 @@ List *List_New(uintsize elementSize);
 /// The lifetime of the <see cref="List"/> should be managed with Object_Aquire() and Object_Release().
 /// </summary>
 /// <param name="elementSize">The size in bytes of each element.</param>
+/// <param name="equals">
+/// An <see cref="EqualityPredicate"/> that is used to check elements for equality, or <see cref="null"/>.
+/// </param>
 /// <param name="capacity">The initial capacity of the <see cref="List"/>.</param>
 /// <returns>Pointer to the newly allocated <see cref="List"/>.</returns>
-List *List_New_WithCapacity(uintsize elementSize, int capacity);
+List *List_New_WithCapacity(uintsize elementSize, EqualityPredicate equals, int capacity);
 
 /// <summary>
 /// Allocates and initializes a <see cref="List"/> that contains the elements copied from the given collection.
 ///
 /// The lifetime of the <see cref="List"/> should be managed with Object_Aquire() and Object_Release().
 /// </summary>
-/// <param name="list">Pointer to an uninitialized <see cref="List"/>.</param>
 /// <param name="elementSize">The size in bytes of each element.</param>
+/// <param name="equals">
+/// An <see cref="EqualityPredicate"/> that is used to check elements for equality, or <see cref="null"/>.
+/// </param>
 /// <param name="collection">Pointer to an <see cref="IEnumerable"/> whose elements are copied.</param>
 /// <returns>Pointer to the newly allocated <see cref="List"/>.</returns>
-List *List_New_FromEnumerable(uintsize elementSize, const IEnumerable *enumerable);
+List *List_New_FromEnumerable(uintsize elementSize, EqualityPredicate equals, const IEnumerable *collection);
 
 /// <summary>
 /// Allocates and initializes a <see cref="List"/> that contains the elements copied from the given collection.
 ///
 /// The lifetime of the <see cref="List"/> should be managed with Object_Aquire() and Object_Release().
 /// </summary>
-/// <param name="list">Pointer to an uninitialized <see cref="List"/>.</param>
 /// <param name="elementSize">The size in bytes of each element.</param>
+/// <param name="equals">
+/// An <see cref="EqualityPredicate"/> that is used to check elements for equality, or <see cref="null"/>.
+/// </param>
 /// <param name="collection">Pointer to an <see cref="ICollection"/> whose elements are copied.</param>
 /// <returns>Pointer to the newly allocated <see cref="List"/>.</returns>
-List *List_New_FromCollection(uintsize elementSize, const ICollection *collection);
+List *List_New_FromCollection(uintsize elementSize, EqualityPredicate equals, const ICollection *collection);
 
 /// <summary>
 /// Initializes a <see cref="List"/>.
 /// </summary>
 /// <param name="list">Pointer to an uninitialized <see cref="List"/>.</param>
 /// <param name="elementSize">The size in bytes of each element.</param>
-void List_Constructor(List *list, uintsize elementSize);
+/// <param name="equals">
+/// An <see cref="EqualityPredicate"/> that is used to check elements for equality, or <see cref="null"/>.
+/// </param>
+void List_Constructor(List *list, uintsize elementSize, EqualityPredicate equals);
 
 /// <summary>
 /// Initializes a <see cref="List"/> with the given capacity.
 /// </summary>
 /// <param name="list">Pointer to an uninitialized <see cref="List"/>.</param>
 /// <param name="elementSize">The size in bytes of each element.</param>
+/// <param name="equals">
+/// An <see cref="EqualityPredicate"/> that is used to check elements for equality, or <see cref="null"/>.
+/// </param>
 /// <param name="capacity">The initial capacity of the <see cref="List"/>.</param>
-void List_Constructor_WithCapacity(List *list, uintsize elementSize, int capacity);
+void List_Constructor_WithCapacity(List *list, uintsize elementSize, EqualityPredicate equals, int capacity);
 
 /// <summary>
 /// Initializes a <see cref="List"/> that contains the elements copied from the given collection.
 /// </summary>
 /// <param name="list">Pointer to an uninitialized <see cref="List"/>.</param>
 /// <param name="elementSize">The size in bytes of each element.</param>
+/// <param name="equals">
+/// An <see cref="EqualityPredicate"/> that is used to check elements for equality, or <see cref="null"/>.
+/// </param>
 /// <param name="collection">Pointer to an <see cref="IEnumerable"/> whose elements are copied.</param>
-void List_Constructor_FromEnumerable(List *list, uintsize elementSize, const IEnumerable *collection);
+void List_Constructor_FromEnumerable(
+    List *list,
+    uintsize elementSize,
+    EqualityPredicate equals,
+    const IEnumerable *collection);
 
 /// <summary>
 /// Initializes a <see cref="List"/> that contains the elements copied from the given collection.
 /// </summary>
 /// <param name="list">Pointer to an uninitialized <see cref="List"/>.</param>
 /// <param name="elementSize">The size in bytes of each element.</param>
+/// <param name="equals">
+/// An <see cref="EqualityPredicate"/> that is used to check elements for equality, or <see cref="null"/>.
+/// </param>
 /// <param name="collection">Pointer to an <see cref="ICollection"/> whose elements are copied.</param>
-void List_Constructor_FromCollection(List *list, uintsize elementSize, const ICollection *collection);
+void List_Constructor_FromCollection(
+    List *list,
+    uintsize elementSize,
+    EqualityPredicate equals,
+    const ICollection *collection);
 
 /// <summary>
 /// Destroys a <see cref="List"/>.
@@ -212,19 +241,17 @@ void List_Clear(List *list);
 /// Determines whether a <see cref="List"/> contains the given value.
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
-/// <param name="item">The item to find.</param>
-/// <param name="equals">An <see cref="EqualityPredicate"/> that is used to check elements for equality.</param>
+/// <param name="item">The item to find, must be an lvalue.</param>
 /// <returns><see cref="true"/> if <paramref name="item"/> was found; otherwise <see cref="false"/>.</returns>
-#define List_Contains(list, item, equals) List_ContainsRef(list, &item, equals)
+#define List_Contains(list, item) List_ContainsRef(list, &item)
 
 /// <summary>
 /// Determines whether a <see cref="List"/> contains the given value.
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
 /// <param name="item">The item to find.</param>
-/// <param name="equals">An <see cref="EqualityPredicate"/> that is used to check elements for equality.</param>
 /// <returns><see cref="true"/> if <paramref name="item"/> was found; otherwise <see cref="false"/>.</returns>
-bool List_ContainsRef(const List *list, const void *item, EqualityPredicate equals);
+bool List_ContainsRef(const List *list, const void *item);
 
 /// <summary>
 /// Copies the elements of a <see cref="List"/> to the given array.
@@ -240,23 +267,21 @@ void List_CopyTo(const List *list, void *destination, uintsize destinationSize);
 /// Removes the first occurance of the given item from a <see cref="List"/>.
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
-/// <param name="item">The item to remove.</param>
-/// <param name="equals">An <see cref="EqualityPredicate"/> that is used to check elements for equality.</param>
+/// <param name="item">The item to remove, must be an lvalue.</param>
 /// <returns>
 /// <see cref="true"/> if <paramref name="item"/> was successfully removed; otherwise <see cref="false"/>.
 /// </returns>
-#define List_Remove(list, item, equals) List_RemoveRef(list, &item, equals)
+#define List_Remove(list, item) List_RemoveRef(list, &item)
 
 /// <summary>
 /// Removes the first occurance of the given item from a <see cref="List"/>.
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
 /// <param name="item">The item to remove.</param>
-/// <param name="equals">An <see cref="EqualityPredicate"/> that is used to check elements for equality.</param>
 /// <returns>
 /// <see cref="true"/> if <paramref name="item"/> was successfully removed; otherwise <see cref="false"/>.
 /// </returns>
-bool List_RemoveRef(List *list, const void *item, EqualityPredicate equals);
+bool List_RemoveRef(List *list, const void *item);
 
 /* IList */
 /// <summary>
@@ -264,6 +289,7 @@ bool List_RemoveRef(List *list, const void *item, EqualityPredicate equals);
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
 /// <param name="index">The index of the element to retrieve.</param>
+/// <param name="type">The type of the element.</param>
 /// <returns>The item at the given index of the <see cref="List"/>.</returns>
 #define List_GetItem(list, index, type) (*(type*)List_GetItemRef(list, index))
 
@@ -280,7 +306,7 @@ void *List_GetItemRef(const List *list, int index);
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
 /// <param name="index">The index of the element to replace.</param>
-/// <param name="item">The new value for the element at the given index.</param>
+/// <param name="item">The new value for the element at the given index, must be an lvalue.</param>
 #define List_SetItem(list, index, item) List_SetItemRef(list, index, &item)
 
 /// <summary>
@@ -295,26 +321,24 @@ void List_SetItemRef(List *list, int index, const void *item);
 /// Determines the index of the given item in a <see cref="List"/>.
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
-/// <param name="item">The item to find.</param>
-/// <param name="equals">An <see cref="EqualityPredicate"/> that is used to check elements for equality.</param>
+/// <param name="item">The item to find, must be an lvalue.</param>
 /// <returns>The index of <paramref name="item"/> if found; otherwise -1.</returns>
-#define List_IndexOf(list, item, equals) List_IndexOfRef(list, &item, equals)
+#define List_IndexOf(list, item) List_IndexOfRef(list, &item)
 
 /// <summary>
 /// Determines the index of the given item in a <see cref="List"/>.
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
 /// <param name="item">The item to find.</param>
-/// <param name="equals">An <see cref="EqualityPredicate"/> that is used to check elements for equality.</param>
 /// <returns>The index of <paramref name="item"/> if found; otherwise -1.</returns>
-int List_IndexOfRef(const List *list, const void *item, EqualityPredicate equals);
+int List_IndexOfRef(const List *list, const void *item);
 
 /// <summary>
 /// Inserts an item into a <see cref="List"/> at the given index.
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
 /// <param name="index">The index at which <paramref name="item"/> should be inserted.</param>
-/// <param name="item">The item to insert.</param>
+/// <param name="item">The item to insert, must be an lvalue.</param>
 #define List_Insert(list, index, item) List_InsertRef(list, index, &item)
 
 /// <summary>

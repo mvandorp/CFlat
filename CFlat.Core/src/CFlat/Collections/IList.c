@@ -52,9 +52,9 @@ public void IList_Clear(IList *list)
     ICollection_Clear((ICollection*)list);
 }
 
-public bool IList_Contains(const IList *list, const void *item, EqualityPredicate equals)
+public bool IList_Contains(const IList *list, const void *item)
 {
-    return ICollection_Contains((const ICollection*)list, item, equals);
+    return ICollection_Contains((const ICollection*)list, item);
 }
 
 public void IList_CopyTo(const IList *list, void *destination, uintsize destinationSize)
@@ -62,9 +62,9 @@ public void IList_CopyTo(const IList *list, void *destination, uintsize destinat
     ICollection_CopyTo((const ICollection*)list, destination, destinationSize);
 }
 
-public bool IList_Remove(IList *list, const void *item, EqualityPredicate equals)
+public bool IList_Remove(IList *list, const void *item)
 {
-    return ICollection_Remove((ICollection*)list, item, equals);
+    return ICollection_Remove((ICollection*)list, item);
 }
 
 /* IList */
@@ -78,9 +78,9 @@ public void IList_SetItem(IList *list, int index, const void *value)
     GetVTable(list)->SetItem(list, index, value);
 }
 
-public int IList_IndexOf(const IList *list, const void *item, EqualityPredicate equals)
+public int IList_IndexOf(const IList *list, const void *item)
 {
-    return GetVTable(list)->IndexOf(list, item, equals);
+    return GetVTable(list)->IndexOf(list, item);
 }
 
 public void IList_Insert(IList *list, int index, const void *value)

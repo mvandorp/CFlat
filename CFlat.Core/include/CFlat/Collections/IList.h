@@ -27,7 +27,7 @@
 #include "CFlat/Collections/ICollection.h"
 #include "CFlat/Collections/IEnumerable.h"
 #include "CFlat/Language/Bool.h"
-#include "CFlat/Language/Functions.h"
+#include "CFlat/Language/Integer.h"
 
 /* Forward declarations */
 typedef struct IEnumerator IEnumerator;
@@ -115,9 +115,8 @@ typedef void (*IList_SetItemFunc)(IList *list, int index, const void *item);
 /// </summary>
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <param name="item">The item to find.</param>
-/// <param name="equals">An <see cref="EqualityPredicate"/> that is used to check elements for equality.</param>
 /// <returns>The index of <paramref name="item"/> if found; otherwise -1.</returns>
-typedef int (*IList_IndexOfFunc)(const IList *list, const void *item, EqualityPredicate equals);
+typedef int (*IList_IndexOfFunc)(const IList *list, const void *item);
 
 /// <summary>
 /// A function that inserts an item into an <see cref="IList"/> at the given index.
@@ -222,9 +221,8 @@ void IList_Clear(IList *list);
 /// </summary>
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <param name="item">The item to find.</param>
-/// <param name="equals">An <see cref="EqualityPredicate"/> that is used to check elements for equality.</param>
 /// <returns><see cref="true"/> if <paramref name="item"/> was found; otherwise <see cref="false"/>.</returns>
-bool IList_Contains(const IList *list, const void *item, EqualityPredicate equals);
+bool IList_Contains(const IList *list, const void *item);
 
 /// <summary>
 /// Copies the elements of an <see cref="IList"/> to the given array.
@@ -241,11 +239,10 @@ void IList_CopyTo(const IList *list, void *destination, uintsize destinationSize
 /// </summary>
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <param name="item">The item to remove.</param>
-/// <param name="equals">An <see cref="EqualityPredicate"/> that is used to check elements for equality.</param>
 /// <returns>
 /// <see cref="true"/> if <paramref name="item"/> was successfully removed; otherwise <see cref="false"/>.
 /// </returns>
-bool IList_Remove(IList *list, const void *item, EqualityPredicate equals);
+bool IList_Remove(IList *list, const void *item);
 
 /* IList */
 /// <summary>
@@ -269,9 +266,8 @@ void IList_SetItem(IList *list, int index, const void *item);
 /// </summary>
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <param name="item">The item to find.</param>
-/// <param name="equals">An <see cref="EqualityPredicate"/> that is used to check elements for equality.</param>
 /// <returns>The index of <paramref name="item"/> if found; otherwise -1.</returns>
-int IList_IndexOf(const IList *list, const void *item, EqualityPredicate equals);
+int IList_IndexOf(const IList *list, const void *item);
 
 /// <summary>
 /// Inserts an item into an <see cref="IList"/> at the given index.
