@@ -24,9 +24,11 @@
 #ifndef CFLAT_CORE_COLLECTIONS_LIST_H
 #define CFLAT_CORE_COLLECTIONS_LIST_H
 
+#include "CFlat/Language/Functions.h"
 #include "CFlat/Language/Integer.h"
 
 /* Forward declarations */
+typedef struct ICollection ICollection;
 typedef struct IEnumerable IEnumerable;
 typedef struct IEnumerator IEnumerator;
 
@@ -38,22 +40,23 @@ typedef struct IEnumerator IEnumerator;
 
 /* Types */
 /// <summary>
-/// Represents a dynamically sized list of objects. Implements <see cref="IEnumerable"/>.
+/// Represents a dynamically sized list of objects. Implements <see cref="IList"/>.
 /// </summary>
 typedef struct List List;
 
 /* Functions */
 /// <summary>
-/// Allocates and initializes a new <see cref="List"/>.
+/// Allocates and initializes a <see cref="List"/>.
 ///
 /// The lifetime of the <see cref="List"/> should be managed with Object_Aquire() and Object_Release().
 /// </summary>
+/// <param name="list">Pointer to an uninitialized <see cref="List"/>.</param>
 /// <param name="elementSize">The size in bytes of each element.</param>
 /// <returns>Pointer to the newly allocated <see cref="List"/>.</returns>
 List *List_New(uintsize elementSize);
 
 /// <summary>
-/// Allocates and initializes a new <see cref="List"/> using the given capacity.
+/// Allocates and initializes a <see cref="List"/> with the given capacity.
 ///
 /// The lifetime of the <see cref="List"/> should be managed with Object_Aquire() and Object_Release().
 /// </summary>
@@ -63,14 +66,36 @@ List *List_New(uintsize elementSize);
 List *List_New_WithCapacity(uintsize elementSize, int capacity);
 
 /// <summary>
-/// Initializes the given <see cref="List"/>.
+/// Allocates and initializes a <see cref="List"/> that contains the elements copied from the given collection.
+///
+/// The lifetime of the <see cref="List"/> should be managed with Object_Aquire() and Object_Release().
+/// </summary>
+/// <param name="list">Pointer to an uninitialized <see cref="List"/>.</param>
+/// <param name="elementSize">The size in bytes of each element.</param>
+/// <param name="collection">Pointer to an <see cref="IEnumerable"/> whose elements are copied.</param>
+/// <returns>Pointer to the newly allocated <see cref="List"/>.</returns>
+List *List_New_FromEnumerable(uintsize elementSize, const IEnumerable *enumerable);
+
+/// <summary>
+/// Allocates and initializes a <see cref="List"/> that contains the elements copied from the given collection.
+///
+/// The lifetime of the <see cref="List"/> should be managed with Object_Aquire() and Object_Release().
+/// </summary>
+/// <param name="list">Pointer to an uninitialized <see cref="List"/>.</param>
+/// <param name="elementSize">The size in bytes of each element.</param>
+/// <param name="collection">Pointer to an <see cref="ICollection"/> whose elements are copied.</param>
+/// <returns>Pointer to the newly allocated <see cref="List"/>.</returns>
+List *List_New_FromCollection(uintsize elementSize, const ICollection *collection);
+
+/// <summary>
+/// Initializes a <see cref="List"/>.
 /// </summary>
 /// <param name="list">Pointer to an uninitialized <see cref="List"/>.</param>
 /// <param name="elementSize">The size in bytes of each element.</param>
 void List_Constructor(List *list, uintsize elementSize);
 
 /// <summary>
-/// Initializes the given <see cref="List"/> using the given capacity.
+/// Initializes a <see cref="List"/> with the given capacity.
 /// </summary>
 /// <param name="list">Pointer to an uninitialized <see cref="List"/>.</param>
 /// <param name="elementSize">The size in bytes of each element.</param>
@@ -78,130 +103,234 @@ void List_Constructor(List *list, uintsize elementSize);
 void List_Constructor_WithCapacity(List *list, uintsize elementSize, int capacity);
 
 /// <summary>
-/// Destroys the given <see cref="List"/>.
+/// Initializes a <see cref="List"/> that contains the elements copied from the given collection.
+/// </summary>
+/// <param name="list">Pointer to an uninitialized <see cref="List"/>.</param>
+/// <param name="elementSize">The size in bytes of each element.</param>
+/// <param name="collection">Pointer to an <see cref="IEnumerable"/> whose elements are copied.</param>
+void List_Constructor_FromEnumerable(List *list, uintsize elementSize, const IEnumerable *collection);
+
+/// <summary>
+/// Initializes a <see cref="List"/> that contains the elements copied from the given collection.
+/// </summary>
+/// <param name="list">Pointer to an uninitialized <see cref="List"/>.</param>
+/// <param name="elementSize">The size in bytes of each element.</param>
+/// <param name="collection">Pointer to an <see cref="ICollection"/> whose elements are copied.</param>
+void List_Constructor_FromCollection(List *list, uintsize elementSize, const ICollection *collection);
+
+/// <summary>
+/// Destroys a <see cref="List"/>.
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
 void List_Destructor(List *list);
 
 /// <summary>
-/// Gets the capacity of the given <see cref="List"/>.
+/// Gets the capacity of a <see cref="List"/>.
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
 /// <returns>The capacity of the <see cref="List"/>.</returns>
 int List_GetCapacity(const List *list);
 
 /// <summary>
-/// Sets the capacity of the given <see cref="List"/>.
+/// Sets the capacity of a <see cref="List"/>.
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
 /// <param name="capacity">The new capacity of the <see cref="List"/>.</param>
 void List_SetCapacity(List *list, int capacity);
 
 /// <summary>
-/// Gets the number of elements in the given <see cref="List"/>.
+/// Gets the size in bytes of each element in a <see cref="List"/>.
+/// </summary>
+/// <param name="list">Pointer to a <see cref="List"/>.</param>
+/// <returns>Tthe size in bytes of each element in the <see cref="List"/>.</returns>
+uintsize List_GetElementSize(const List *list);
+
+/// <summary>
+/// Adds the elements of the given collection to the end of a <see cref="List"/>.
+/// </summary>
+/// <param name="list">Pointer to a <see cref="List"/>.</param>
+/// <param name="enumerable">
+/// Pointer to an <see cref="IEnumerable"/> whose elements should be added to the end of the <see cref="List"/>.
+/// </param>
+void List_AddRange(List *list, const IEnumerable *enumerable);
+
+/// <summary>
+/// Inserts the elements of the given collection into a <see cref="List"/> at the given index.
+/// </summary>
+/// <param name="list">Pointer to a <see cref="List"/>.</param>
+/// <param name="index">The position where the new elements should be inserted.</param>
+/// <param name="enumerable">
+/// Pointer to an <see cref="IEnumerable"/> whose elements should be inserted into the <see cref="List"/>.
+/// </param>
+void List_InsertRange(List *list, int index, const IEnumerable *enumerable);
+
+/// <summary>
+/// Removes the given range of elements from the a <see cref="List"/>.
+/// </summary>
+/// <param name="list">Pointer to a <see cref="List"/>.</param>
+/// <param name="startIndex">The position where to start removing elements.</param>
+/// <param name="count">The number of elements to remove.</param>
+void List_RemoveRange(List *list, int startIndex, int count);
+
+/* IEnumerable */
+/// <summary>
+/// Returns a pointer to an <see cref="IEnumerator"/> that iterates through the given <see cref="List"/>.
+/// </summary>
+/// <param name="list">Pointer to a <see cref="List"/>.</param>
+/// <returns>An <see cref="IEnumerator"/> that iterates through a <see cref="List"/>.</returns>
+IEnumerator *List_GetEnumerator(const List *list);
+
+/* ICollection */
+/// <summary>
+/// Gets the number of elements in a <see cref="List"/>.
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
 /// <returns>The number of elements in the <see cref="List"/>.</returns>
 int List_GetCount(const List *list);
 
 /// <summary>
-/// Gets the size in bytes of each element in the given <see cref="List"/>.
+/// Adds an item to a <see cref="List"/>.
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
-/// <returns>Tthe size in bytes of each element in the given <see cref="List"/>.</returns>
-uintsize List_GetElementSize(const List *list);
+/// <param name="item">The item to add.</param>
+#define List_Add(list, item) List_AddRef(list, &item)
 
 /// <summary>
-/// Adds the given element to the end of the given <see cref="List"/>.
+/// Adds an item to a <see cref="List"/>.
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
-/// <param name="lvalue">The value to append, must be an lvalue.</param>
-#define List_Add(list, lvalue) List_AddRef(list, &lvalue)
+/// <param name="item">The item to add.</param>
+void List_AddRef(List *list, const void *item);
 
 /// <summary>
-/// Adds the given element to the end of the given <see cref="List"/>.
-/// </summary>
-/// <param name="list">Pointer to a <see cref="List"/>.</param>
-/// <param name="value">Pointer to the value to append.</param>
-void List_AddRef(List *list, const void *value);
-
-/// <summary>
-/// Adds the elements of the given collection to the end of the given <see cref="List"/>.
-/// </summary>
-/// <param name="list">Pointer to a <see cref="List"/>.</param>
-/// <param name="enumerable">
-/// Pointer to an <see cref="IEnumerable"/> whose elements should be added to the end of the <see cref="List"/>.
-/// </param>
-void List_AddRange(List *list, IEnumerable *enumerable);
-
-/// <summary>
-/// Removes all elements from the specified <see cref="List"/>.
+/// Removes all elements from a <see cref="List"/>.
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
 void List_Clear(List *list);
 
 /// <summary>
-/// Returns a <see cref="ListEnumerator"/> that iterates through the given <see cref="List"/>.
+/// Determines whether a <see cref="List"/> contains the given value.
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
-/// <returns>A <see cref="ListEnumerator"/> that iterates through the given <see cref="List"/>.</returns>
-IEnumerator *List_GetEnumerator(const List *list);
+/// <param name="item">The item to find.</param>
+/// <param name="equals">An <see cref="EqualityPredicate"/> that is used to check elements for equality.</param>
+/// <returns><see cref="true"/> if <paramref name="item"/> was found; otherwise <see cref="false"/>.</returns>
+#define List_Contains(list, item, equals) List_ContainsRef(list, &item, equals)
 
 /// <summary>
-/// Returns the element at the given index of the given <see cref="List"/>.
+/// Determines whether a <see cref="List"/> contains the given value.
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
-/// <param name="index">The index of the element to return.</param>
-/// <param name="type">The type of the element.</param>
-#define List_Index(list, index, type) (*(type*)List_IndexRef(list, index))
+/// <param name="item">The item to find.</param>
+/// <param name="equals">An <see cref="EqualityPredicate"/> that is used to check elements for equality.</param>
+/// <returns><see cref="true"/> if <paramref name="item"/> was found; otherwise <see cref="false"/>.</returns>
+bool List_ContainsRef(const List *list, const void *item, EqualityPredicate equals);
 
 /// <summary>
-/// Returns a pointer to the element at the given index of the given <see cref="List"/>.
+/// Copies the elements of a <see cref="List"/> to the given array.
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
-/// <param name="index">The index of the element to return.</param>
-void *List_IndexRef(const List *list, int index);
-
-/// <summary>
-/// Inserts the given element into the given <see cref="List"/> at the given index.
-/// </summary>
-/// <param name="list">Pointer to a <see cref="List"/>.</param>
-/// <param name="index">The position where to insert <paramref name="value"/>.</param>
-/// <param name="value">The value to append, must be an lvalue.</param>
-#define List_Insert(list, index, value) List_InsertRef(list, index, &value)
-
-/// <summary>
-/// Inserts the given element into the given <see cref="List"/> at the given index.
-/// </summary>
-/// <param name="list">Pointer to a <see cref="List"/>.</param>
-/// <param name="index">The position where to insert <paramref name="value"/>.</param>
-/// <param name="value">Pointer to the value to append.</param>
-void List_InsertRef(List *list, int index, const void *value);
-
-/// <summary>
-/// Inserts the elements of the given collection into the given <see cref="List"/> at the given index.
-/// </summary>
-/// <param name="list">Pointer to a <see cref="List"/>.</param>
-/// <param name="index">The position where the new elements should be inserted.</param>
-/// <param name="enumerable">
-/// Pointer to an <see cref="IEnumerable"/> whose elements should be added to the end of the <see cref="List"/>.
+/// <param name="destination">
+/// The array that is the destination of the elements copied from the <see cref="IList"/>.
 /// </param>
-void List_InsertRange(List *list, int index, IEnumerable *enumerable);
+/// <param name="destinationSize">The size in bytes of the array.</param>
+void List_CopyTo(const List *list, void *destination, uintsize destinationSize);
 
 /// <summary>
-/// Removes the element at the given index of the given <see cref="List"/>.
+/// Removes the first occurance of the given item from a <see cref="List"/>.
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
-/// <param name="index">Index of the element to remove.</param>
+/// <param name="item">The item to remove.</param>
+/// <param name="equals">An <see cref="EqualityPredicate"/> that is used to check elements for equality.</param>
+/// <returns>
+/// <see cref="true"/> if <paramref name="item"/> was successfully removed; otherwise <see cref="false"/>.
+/// </returns>
+#define List_Remove(list, item, equals) List_RemoveRef(list, &item, equals)
+
+/// <summary>
+/// Removes the first occurance of the given item from a <see cref="List"/>.
+/// </summary>
+/// <param name="list">Pointer to a <see cref="List"/>.</param>
+/// <param name="item">The item to remove.</param>
+/// <param name="equals">An <see cref="EqualityPredicate"/> that is used to check elements for equality.</param>
+/// <returns>
+/// <see cref="true"/> if <paramref name="item"/> was successfully removed; otherwise <see cref="false"/>.
+/// </returns>
+bool List_RemoveRef(List *list, const void *item, EqualityPredicate equals);
+
+/* IList */
+/// <summary>
+/// Gets the item at the given index of a <see cref="List"/>.
+/// </summary>
+/// <param name="list">Pointer to a <see cref="List"/>.</param>
+/// <param name="index">The index of the element to retrieve.</param>
+/// <returns>The item at the given index of the <see cref="List"/>.</returns>
+#define List_GetItem(list, index, type) (*(type*)List_GetItemRef(list, index))
+
+/// <summary>
+/// Gets the item at the given index of a <see cref="List"/>.
+/// </summary>
+/// <param name="list">Pointer to a <see cref="List"/>.</param>
+/// <param name="index">The index of the element to retrieve.</param>
+/// <returns>The item at the given index of the <see cref="List"/>.</returns>
+void *List_GetItemRef(const List *list, int index);
+
+/// <summary>
+/// Replaces the item at the given index of a <see cref="List"/>.
+/// </summary>
+/// <param name="list">Pointer to a <see cref="List"/>.</param>
+/// <param name="index">The index of the element to replace.</param>
+/// <param name="item">The new value for the element at the given index.</param>
+#define List_SetItem(list, index, item) List_SetItemRef(list, index, &item)
+
+/// <summary>
+/// Replaces the item at the given index of a <see cref="List"/>.
+/// </summary>
+/// <param name="list">Pointer to a <see cref="List"/>.</param>
+/// <param name="index">The index of the element to replace.</param>
+/// <param name="item">The new value for the element at the given index.</param>
+void List_SetItemRef(List *list, int index, const void *item);
+
+/// <summary>
+/// Determines the index of the given item in a <see cref="List"/>.
+/// </summary>
+/// <param name="list">Pointer to a <see cref="List"/>.</param>
+/// <param name="item">The item to find.</param>
+/// <param name="equals">An <see cref="EqualityPredicate"/> that is used to check elements for equality.</param>
+/// <returns>The index of <paramref name="item"/> if found; otherwise -1.</returns>
+#define List_IndexOf(list, item, equals) List_IndexOfRef(list, &item, equals)
+
+/// <summary>
+/// Determines the index of the given item in a <see cref="List"/>.
+/// </summary>
+/// <param name="list">Pointer to a <see cref="List"/>.</param>
+/// <param name="item">The item to find.</param>
+/// <param name="equals">An <see cref="EqualityPredicate"/> that is used to check elements for equality.</param>
+/// <returns>The index of <paramref name="item"/> if found; otherwise -1.</returns>
+int List_IndexOfRef(const List *list, const void *item, EqualityPredicate equals);
+
+/// <summary>
+/// Inserts an item into a <see cref="List"/> at the given index.
+/// </summary>
+/// <param name="list">Pointer to a <see cref="List"/>.</param>
+/// <param name="index">The index at which <paramref name="item"/> should be inserted.</param>
+/// <param name="item">The item to insert.</param>
+#define List_Insert(list, index, item) List_InsertRef(list, index, &item)
+
+/// <summary>
+/// Inserts an item into a <see cref="List"/> at the given index.
+/// </summary>
+/// <param name="list">Pointer to a <see cref="List"/>.</param>
+/// <param name="index">The index at which <paramref name="item"/> should be inserted.</param>
+/// <param name="item">The item to insert.</param>
+void List_InsertRef(List *list, int index, const void *item);
+
+/// <summary>
+/// Removes the element at the given index of a <see cref="List"/>.
+/// </summary>
+/// <param name="list">Pointer to a <see cref="List"/>.</param>
+/// <param name="index">The index of the element to remove.</param>
 void List_RemoveAt(List *list, int index);
-
-/// <summary>
-/// Removes the given range of elements from the given <see cref="List"/>.
-/// </summary>
-/// <param name="list">Pointer to a <see cref="List"/>.</param>
-/// <param name="startIndex">The position where to start removing elements.</param>
-/// <param name="count">The number of elements to remove.</param>
-void List_RemoveRange(List *list, int startIndex, int count);
 
 #ifdef CFLAT_CORE_INTERNAL
  #include "CFlat/Collections/List.internal.h"

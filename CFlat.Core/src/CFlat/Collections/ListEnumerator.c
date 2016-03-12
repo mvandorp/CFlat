@@ -9,7 +9,7 @@
 /* Types */
 typedef struct ListEnumerator {
     IEnumerator Base;
-    List *List;
+    const List *List;
     void *Current;
     int Index;
     uintsize Version;
@@ -94,7 +94,7 @@ private bool MoveNext(ListEnumerator *enumerator)
     if (enumerator->Version == List_GetVersion(enumerator->List) &&
         enumerator->Index < List_GetCount(enumerator->List)) {
 
-        enumerator->Current = List_IndexRef(enumerator->List, enumerator->Index);
+        enumerator->Current = List_GetItemRef(enumerator->List, enumerator->Index);
         enumerator->Index++;
 
         return true;

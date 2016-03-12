@@ -3,8 +3,10 @@
 #include "CFlat.h"
 #include "CFlat/Memory.h"
 #include "CFlat/Validate.h"
+#include "CFlat/Collections/ICollection.h"
 #include "CFlat/Collections/IEnumerable.h"
 #include "CFlat/Collections/IEnumerator.h"
+#include "CFlat/Collections/IList.h"
 #include "CFlat/Collections/ListEnumerator.h"
 
 /* Private constants */
@@ -12,11 +14,24 @@ private const int DefaultCapacity = 4;
 
 /* Private functions */
 private void EnsureCapacity(List *list, int capacity);
+private bool IsReadOnly(const List *list);
 
 /* Private constants */
-private const IEnumerableVTable VTable = IEnumerableVTable_Initializer(
+private const IListVTable VTable = IListVTable_Initializer(
     (DestructorFunc)List_Destructor,
-    (IEnumerable_GetEnumeratorFunc)List_GetEnumerator);
+    (IEnumerable_GetEnumeratorFunc)List_GetEnumerator,
+    (ICollection_GetCountFunc)List_GetCount,
+    (ICollection_IsReadOnlyFunc)IsReadOnly,
+    (ICollection_AddFunc)List_AddRef,
+    (ICollection_ClearFunc)List_Clear,
+    (ICollection_ContainsFunc)List_ContainsRef,
+    (ICollection_CopyToFunc)List_CopyTo,
+    (ICollection_RemoveFunc)List_RemoveRef,
+    (IList_GetItemFunc)List_GetItemRef,
+    (IList_SetItemFunc)List_SetItemRef,
+    (IList_IndexOfFunc)List_IndexOfRef,
+    (IList_InsertFunc)List_InsertRef,
+    (IList_RemoveAtFunc)List_RemoveAt);
 
 /**************************************/
 /* Public function definitions        */
@@ -46,15 +61,67 @@ public List *List_New_WithCapacity(uintsize elementSize, int capacity)
     return list;
 }
 
+public List *List_New_FromEnumerable(uintsize elementSize, const IEnumerable *enumerable)
+{
+    List *list = Memory_Allocate(sizeof(List));
+
+    try {
+        List_Constructor_FromEnumerable(list, elementSize, enumerable);
+
+        Object_SetDeallocator(list, Memory_Deallocate);
+    }
+    catch (Exception) {
+        Memory_Deallocate(list);
+        throw;
+    }
+    endtry;
+
+    return list;
+}
+
+public List *List_New_FromCollection(uintsize elementSize, const ICollection *collection)
+{
+    List *list = Memory_Allocate(sizeof(List));
+
+    try {
+        List_Constructor_FromCollection(list, elementSize, collection);
+
+        Object_SetDeallocator(list, Memory_Deallocate);
+    }
+    catch (Exception) {
+        Memory_Deallocate(list);
+        throw;
+    }
+    endtry;
+
+    return list;
+}
+
 /* Constructors */
 public void List_Constructor(List *list, uintsize elementSize)
 {
-    List_Constructor_Full(list, &VTable, elementSize, DefaultCapacity);
+    List_Constructor_WithCapacity(list, elementSize, DefaultCapacity);
 }
 
 public void List_Constructor_WithCapacity(List *list, uintsize elementSize, int capacity)
 {
     List_Constructor_Full(list, &VTable, elementSize, capacity);
+}
+
+public void List_Constructor_FromEnumerable(List *list, uintsize elementSize, const IEnumerable *enumerable)
+{
+    Validate_NotNull(enumerable);
+
+    List_Constructor(list, elementSize);
+    List_AddRange(list, enumerable);
+}
+
+public void List_Constructor_FromCollection(List *list, uintsize elementSize, const ICollection *collection)
+{
+    Validate_NotNull(collection);
+
+    List_Constructor_WithCapacity(list, elementSize, ICollection_GetCount(collection));
+    List_AddRange(list, (const IEnumerable*)collection);
 }
 
 /* Destructor */
@@ -87,13 +154,6 @@ public void List_SetCapacity(List *list, int capacity)
     }
 }
 
-public int List_GetCount(const List *list)
-{
-    Validate_NotNull(list);
-
-    return list->Count;
-}
-
 public uintsize List_GetElementSize(const List *list)
 {
     Validate_NotNull(list);
@@ -102,15 +162,7 @@ public uintsize List_GetElementSize(const List *list)
 }
 
 /* Methods */
-public void List_AddRef(List *list, const void *value)
-{
-    Validate_NotNull(list);
-    Validate_NotNull(value);
-
-    List_InsertRef(list, list->Count, value);
-}
-
-public void List_AddRange(List *list, IEnumerable *enumerable)
+public void List_AddRange(List *list, const IEnumerable *enumerable)
 {
     Validate_NotNull(list);
     Validate_NotNull(enumerable);
@@ -118,60 +170,7 @@ public void List_AddRange(List *list, IEnumerable *enumerable)
     List_InsertRange(list, list->Count, enumerable);
 }
 
-public void List_Clear(List *list)
-{
-    Validate_NotNull(list);
-
-    list->Count = 0;
-    list->Version++;
-}
-
-public IEnumerator *List_GetEnumerator(const List *list)
-{
-    return ListEnumerator_New(list);
-}
-
-public void *List_IndexRef(const List *list, int index)
-{
-    Validate_NotNull(list);
-    Validate_IsTrue(
-        index >= 0 && index <= list->Count,
-        ArgumentOutOfRangeException,
-        "Index must be within the bounds of the List.");
-
-    byte *array = list->Array;
-
-    return &array[index * list->ElementSize];
-}
-
-public void List_InsertRef(List *list, int index, const void *value)
-{
-    Validate_NotNull(list);
-    Validate_IsTrue(
-        index >= 0 && index <= list->Count,
-        ArgumentOutOfRangeException,
-        "Index must be within the bounds of the List.");
-
-    EnsureCapacity(list, list->Count + 1);
-
-    uintsize size = list->ElementSize;
-
-    if (index < list->Count) {
-        // Move the contents of the array after index forward by 1 index.
-        Memory_CopyOffset(
-            list->Array, index * size,
-            list->Array, (index + 1) * size,
-            (list->Count - index) * size);
-    }
-
-    // Insert the value.
-    Memory_CopyOffset(value, 0, list->Array, index * size, size);
-
-    list->Count++;
-    list->Version++;
-}
-
-public void List_InsertRange(List *list, int index, IEnumerable *enumerable)
+public void List_InsertRange(List *list, int index, const IEnumerable *enumerable)
 {
     Validate_NotNull(list);
     Validate_NotNull(enumerable);
@@ -191,11 +190,6 @@ public void List_InsertRange(List *list, int index, IEnumerable *enumerable)
         Object_Release(enumerator);
     }
     endtry;
-}
-
-public void List_RemoveAt(List *list, int index)
-{
-    List_RemoveRange(list, index, 1);
 }
 
 public void List_RemoveRange(List *list, int startIndex, int count)
@@ -222,20 +216,157 @@ public void List_RemoveRange(List *list, int startIndex, int count)
     list->Version++;
 }
 
+/* IEnumerable */
+public IEnumerator *List_GetEnumerator(const List *list)
+{
+    return ListEnumerator_New(list);
+}
+
+/* ICollection */
+public int List_GetCount(const List *list)
+{
+    Validate_NotNull(list);
+
+    return list->Count;
+}
+
+public void List_AddRef(List *list, const void *item)
+{
+    Validate_NotNull(list);
+    Validate_NotNull(item);
+
+    List_InsertRef(list, list->Count, item);
+}
+
+public void List_Clear(List *list)
+{
+    Validate_NotNull(list);
+
+    list->Count = 0;
+    list->Version++;
+}
+
+public bool List_ContainsRef(const List *list, const void *item, EqualityPredicate equals)
+{
+    return List_IndexOfRef(list, item, equals) >= 0;
+}
+
+public void List_CopyTo(const List *list, void *destination, uintsize destinationSize)
+{
+    Validate_NotNull(list);
+    Validate_NotNull(destination);
+    Validate_IsTrue(
+        destinationSize >= (uintsize)list->Count * list->ElementSize,
+        ArgumentException,
+        "The number of elements in the list is greater than the number of elements that the destination array can "
+        "contain.");
+
+    Memory_Copy(list->Array, destination, list->Count * list->ElementSize);
+}
+
+public bool List_RemoveRef(List *list, const void *item, EqualityPredicate equals)
+{
+    int index = List_IndexOfRef(list, item, equals);
+
+    if (index >= 0) {
+        List_RemoveAt(list, index);
+    }
+
+    return index >= 0;
+}
+
+/* IList */
+public void *List_GetItemRef(const List *list, int index)
+{
+    Validate_NotNull(list);
+    Validate_IsTrue(
+        index >= 0 && index <= list->Count,
+        ArgumentOutOfRangeException,
+        "Index must be within the bounds of the List.");
+
+    byte *array = list->Array;
+    uintsize size = list->ElementSize;
+
+    return &array[index * size];
+}
+
+public void List_SetItemRef(List *list, int index, const void *item)
+{
+    Validate_NotNull(list);
+    Validate_NotNull(item);
+
+    Memory_Copy(item, List_GetItemRef(list, index), list->ElementSize);
+
+    list->Version++;
+}
+
+public int List_IndexOfRef(const List *list, const void *item, EqualityPredicate equals)
+{
+    Validate_NotNull(list);
+    Validate_NotNull(item);
+    Validate_NotNull(equals);
+
+    byte *array = list->Array;
+    uintsize size = list->ElementSize;
+    int count = list->Count;
+
+    for (int i = 0; i < count; i++) {
+        if (equals(&array[i * size], item)) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+public void List_InsertRef(List *list, int index, const void *item)
+{
+    Validate_NotNull(list);
+    Validate_NotNull(item);
+    Validate_IsTrue(
+        index >= 0 && index <= list->Count,
+        ArgumentOutOfRangeException,
+        "Index must be within the bounds of the List.");
+
+    EnsureCapacity(list, list->Count + 1);
+
+    byte *array = list->Array;
+    uintsize size = list->ElementSize;
+
+    if (index < list->Count) {
+        // Move the contents of the array after index forward by 1 index.
+        Memory_Copy(
+            &array[index * size],
+            &array[(index + 1) * size],
+            (list->Count - index) * size);
+    }
+
+    // Insert the item.
+    Memory_Copy(item, &array[index * size], size);
+
+    list->Count++;
+    list->Version++;
+}
+
+public void List_RemoveAt(List *list, int index)
+{
+    List_RemoveRange(list, index, 1);
+}
+
 /**************************************/
 /* Internal function definitions      */
 /**************************************/
 
 internal void List_Constructor_Full(
     List *list,
-    const IEnumerableVTable *vtable,
+    const IListVTable *vtable,
     uintsize elementSize,
     int capacity)
 {
     Validate_IsTrue(capacity >= 0, ArgumentOutOfRangeException, "Capacity cannot be negative.");
     Validate_IsTrue(elementSize > 0, ArgumentOutOfRangeException, "Element size cannot be zero.");
 
-    IEnumerable_Constructor((IEnumerable*)list, vtable);
+    IList_Constructor((IList*)list, vtable);
 
     list->Array = null;
     list->Capacity = 0;
@@ -273,4 +404,11 @@ private void EnsureCapacity(List *list, int minCapacity)
 
         List_SetCapacity(list, capacity);
     }
+}
+
+private bool IsReadOnly(const List *list)
+{
+    Validate_NotNull(list);
+
+    return false;
 }

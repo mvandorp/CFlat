@@ -21,23 +21,23 @@
 #define CFLAT_CORE_COLLECTIONS_LIST_INTERNAL_H
 
 #include "CFlat/Object.h"
-#include "CFlat/Collections/IEnumerable.h"
+#include "CFlat/Collections/IList.h"
 #include "CFlat/Language/Integer.h"
 #include "CFlat/Language/Keywords.h"
 
 /* Types */
-typedef struct List {
-    IEnumerable Base;
+struct List {
+    IList Base;
     int Capacity;
     int Count;
-    int ElementSize;
-    int Version;
+    uintsize ElementSize;
+    uintsize Version;
     byte *Array;
-} List;
+};
 
  /* Functions */
 /// <summary>
-/// Initializes the given <see cref="List"/> using the given capacity.
+/// Initializes a <see cref="List"/> with the given capacity.
 /// </summary>
 /// <param name="list">Pointer to an uninitialized <see cref="List"/>.</param>
 /// <param name="table">Pointer to a virtual method table.</param>
@@ -45,15 +45,15 @@ typedef struct List {
 /// <param name="capacity">The initial capacity of the <see cref="List"/>.</param>
 internal void List_Constructor_Full(
     List *list,
-    const IEnumerableVTable *vtable,
+    const IListVTable *vtable,
     uintsize elementSize,
     int capacity);
 
 /// <summary>
-/// Gets the version of the given <see cref="List"/>. This value changes after every mutation to the list.
+/// Gets the version of a <see cref="List"/>. The version changes after every mutation to the list.
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
-/// <returns>The version of the given <see cref="List"/>.</returns>
+/// <returns>The version of the <see cref="List"/>.</returns>
 internal uintsize List_GetVersion(const List *list);
 
 #endif
