@@ -23,7 +23,10 @@
 #include "CFlat/Memory.h"
 #include "CFlat/Validate.h"
 
-/* Private functions */
+/**************************************/
+/* Private functions                  */
+/**************************************/
+
 private void Delete(const void *obj);
 
 /**************************************/
@@ -109,6 +112,14 @@ public bool Object_Release(const void *obj)
 /* Private function definitions       */
 /**************************************/
 
+/// <summary>
+/// Deletes an <see cref="Object"/>.
+/// </summary>
+/// <remarks>
+///     Deleting an object is performed by first calling the destructor of the object, and then deallocating the memory
+///     reserved for the object.
+/// </remarks>
+/// <param name="obj">Pointer to an <see cref="Object"/>.</param>
 private void Delete(const void *obj)
 {
     assert(obj != null);

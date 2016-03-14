@@ -17,11 +17,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * @file Validate.h
- *
- * Provides convenience functions for validating parameters and the state of objects.
- */
+//! @file Validate.h
+/// <summary>
+/// Provides convenience functions for validating parameters and the state of objects.
+/// </summary>
 
 #ifndef CFLAT_CORE_ARGUMENT_H
 #define CFLAT_CORE_ARGUMENT_H
@@ -35,8 +34,8 @@
 /// <param name="condition">The condition to check.</param>
 /// <param name="exception">The <see cref="ExceptionType"/> to throw.</param>
 /// <param name="message">
-/// Pointer to a null-terminated string describing the exception, or <see cref="null"/> to use the default
-/// exception message.
+///     Pointer to a null-terminated string describing the exception, or <see cref="null"/> to use the default
+///     exception message.
 /// </param>
 #define Validate_IsTrue(condition, exception, message) \
     ((void)((condition) ? 0 : (throw_new(exception, message), 0)))
@@ -46,6 +45,7 @@
 /// <see cref="ArgumentNullException"/>.
 /// </summary>
 /// <param name="param">The object to check, this should be a parameter.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="param"/> is <see cref="null"/>.</exception>
 #define Validate_NotNull(param) \
     Validate_IsTrue((param) != null, ArgumentNullException, "Parameter '" #param "' cannot be null.")
 
@@ -55,9 +55,10 @@
 /// </summary>
 /// <param name="condition">The condition to check.</param>
 /// <param name="message">
-/// Pointer to a null-terminated string describing the exception, or <see cref="null"/> to use the default
-/// exception message.
+///     Pointer to a null-terminated string describing the exception, or <see cref="null"/> to use the default
+///     exception message.
 /// </param>
+/// <exception cref="::InvalidOperationException"><paramref name="condition"/> is <see cref="false"/>.</exception>
 #define Validate_State(condition, message) \
     Validate_IsTrue((condition), InvalidOperationException, message)
 

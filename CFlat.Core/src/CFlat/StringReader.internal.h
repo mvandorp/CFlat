@@ -20,8 +20,8 @@
 #ifndef CFLAT_CORE_STRINGREADER_INTERNAL_H
 #define CFLAT_CORE_STRINGREADER_INTERNAL_H
 
-#include "CFlat/Language/Integer.h"
 #include "CFlat/Object.h"
+#include "CFlat/Language/Integer.h"
 
 /* Forward declarations */
 typedef struct String String;

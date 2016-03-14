@@ -20,9 +20,9 @@
 #ifndef CFLAT_CORE_STRINGBUILDER_INTERNAL_H
 #define CFLAT_CORE_STRINGBUILDER_INTERNAL_H
 
+#include "CFlat/Object.h"
 #include "CFlat/Language/Integer.h"
 #include "CFlat/Language/Keywords.h"
-#include "CFlat/Object.h"
 
 /* Forward declarations */
 typedef struct String String;
@@ -42,8 +42,9 @@ typedef struct StringBuilder {
 /// </summary>
 /// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
 /// <returns>
-/// A pointer to a null-terminated string with the same value as the given <see cref="StringBuilder"/>.
+///     A pointer to a null-terminated string with the same value as the given <see cref="StringBuilder"/>.
 /// </returns>
+/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
 internal const char *StringBuilder_GetBuffer(const StringBuilder *sb);
 
 #endif

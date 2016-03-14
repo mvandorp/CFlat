@@ -17,9 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * @file VarArgs.h
- */
+//! @file VarArgs.h
 
 #ifndef CFLAT_CORE_LANGUAGE_VARARGS_H
 #define CFLAT_CORE_LANGUAGE_VARARGS_H
@@ -32,10 +30,10 @@
 ///
 /// A function that invokes <see cref="VarArgs_Start"/> must also invoke <see cref="VarArgs_End"/> before it returns.
 /// </summary>
-/// <param name="args">Uninitialized object of type <see cref="VarArgs"/>.</param>
+/// <param name="args">An uninitialized <see cref="VarArgs"/> object.</param>
 /// <param name="lastArg">
-/// Name of the last named parameter in the function definition. The arguments extracted by subsequent calls to
-/// <see cref="VarArg"/> are those after <paramref name="lastArg"/>.
+///     Name of the last named parameter in the function definition. The arguments extracted by subsequent calls to
+///     <see cref="VarArg"/> are those after <paramref name="lastArg"/>.
 /// </param>
 #define VarArgs_Start(args, lastArg) va_start((args).List, lastArg)
 

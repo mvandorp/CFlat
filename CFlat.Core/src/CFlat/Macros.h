@@ -20,7 +20,14 @@
 #ifndef CFLAT_CORE_MACROS_H
 #define CFLAT_CORE_MACROS_H
 
+/// <summary>
+/// Returns the larger of two numbers. Beware of multiple evaluation.
+/// </summary>
 #define MAX(x, y) (((x) > (y)) ? (x) : (y))
+
+/// <summary>
+/// Returns the smaller of two numbers. Beware of multiple evaluation.
+/// </summary>
 #define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
 #endif

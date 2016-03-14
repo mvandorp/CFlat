@@ -17,9 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * @file Functions.h
- */
+//! @file Functions.h
 
 #ifndef CFLAT_CORE_LANGUAGE_FUNCTIONS_H
 #define CFLAT_CORE_LANGUAGE_FUNCTIONS_H
@@ -31,7 +29,7 @@
 /// </summary>
 /// <param name="x">The first object to compare.</param>
 /// <param name="x">The second object to compare.</param>
-/// <returns><see cref="true"/> if the objects compare equal; otherwise <see cref="false"/>.</returns>
+/// <returns><see cref="true"/> if the objects compare equal; otherwise, <see cref="false"/>.</returns>
 typedef bool (*EqualityPredicate)(const void *x, const void *y);
 
 #endif

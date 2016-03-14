@@ -17,9 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * @file ICollection.h
- */
+//! @file ICollection.h
 
 #ifndef CFLAT_CORE_COLLECTIONS_ICOLLECTION_H
 #define CFLAT_CORE_COLLECTIONS_ICOLLECTION_H
@@ -88,7 +86,7 @@ typedef int (*ICollection_GetCountFunc)(const ICollection *collection);
 /// </summary>
 /// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
 /// <returns>
-/// <see cref="true"/> if the <see cref="ICollection"/> is read-only; otherwise <see cref="false"/>.
+///     <see cref="true"/> if the <see cref="ICollection"/> is read-only; otherwise, <see cref="false"/>.
 /// </returns>
 typedef bool (*ICollection_IsReadOnlyFunc)(const ICollection *collection);
 
@@ -110,7 +108,7 @@ typedef void (*ICollection_ClearFunc)(ICollection *collection);
 /// </summary>
 /// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
 /// <param name="item">The item to find.</param>
-/// <returns><see cref="true"/> if <paramref name="item"/> was found; otherwise <see cref="false"/>.</returns>
+/// <returns><see cref="true"/> if <paramref name="item"/> was found; otherwise, <see cref="false"/>.</returns>
 typedef bool (*ICollection_ContainsFunc)(const ICollection *collection, const void *item);
 
 /// <summary>
@@ -118,7 +116,7 @@ typedef bool (*ICollection_ContainsFunc)(const ICollection *collection, const vo
 /// </summary>
 /// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
 /// <param name="destination">
-/// The array that is the destination of the elements copied from the <see cref="ICollection"/>.
+///     The array that is the destination of the elements copied from the <see cref="ICollection"/>.
 /// </param>
 /// <param name="destinationSize">The size in bytes of the array.</param>
 typedef void (*ICollection_CopyToFunc)(const ICollection *collection, void *destination, uintsize destinationSize);
@@ -129,7 +127,7 @@ typedef void (*ICollection_CopyToFunc)(const ICollection *collection, void *dest
 /// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
 /// <param name="item">The item to remove.</param>
 /// <returns>
-/// <see cref="true"/> if <paramref name="item"/> was successfully removed; otherwise <see cref="false"/>.
+///     <see cref="true"/> if <paramref name="item"/> was successfully removed; otherwise, <see cref="false"/>.
 /// </returns>
 typedef bool (*ICollection_RemoveFunc)(ICollection *collection, const void *item);
 
@@ -184,6 +182,11 @@ typedef struct ICollectionVTable {
 /// </summary>
 /// <param name="collection">Pointer to an uninitialized <see cref="ICollection"/>.</param>
 /// <param name="vtable">Pointer to a virtual method table.</param>
+/// <exception cref="::ArgumentNullException">
+///     <paramref name="collection"/> is <see cref="null"/> <b>-or-</b>
+///     <paramref name="vtable"/> is <see cref="null"/> <b>-or-</b>
+///     <paramref name="vtable"/> contains a <see cref="null"/> pointer.
+/// </exception>
 void ICollection_Constructor(
     ICollection *collection,
     const ICollectionVTable *vtable);
@@ -194,6 +197,7 @@ void ICollection_Constructor(
 /// </summary>
 /// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
 /// <returns>An <see cref="IEnumerator"/> that iterates through an <see cref="ICollection"/>.</returns>
+/// <exception cref="::ArgumentNullException"><paramref name="collection"/> is <see cref="null"/>.</exception>
 IEnumerator *ICollection_GetEnumerator(const ICollection *collection);
 
 /* ICollection */
@@ -202,6 +206,7 @@ IEnumerator *ICollection_GetEnumerator(const ICollection *collection);
 /// </summary>
 /// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
 /// <returns>The number of elements in the <see cref="ICollection"/>.</returns>
+/// <exception cref="::ArgumentNullException"><paramref name="collection"/> is <see cref="null"/>.</exception>
 int ICollection_GetCount(const ICollection *collection);
 
 /// <summary>
@@ -209,8 +214,9 @@ int ICollection_GetCount(const ICollection *collection);
 /// </summary>
 /// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
 /// <returns>
-/// <see cref="true"/> if the <see cref="ICollection"/> is read-only; otherwise <see cref="false"/>.
+///     <see cref="true"/> if the <see cref="ICollection"/> is read-only; otherwise, <see cref="false"/>.
 /// </returns>
+/// <exception cref="::ArgumentNullException"><paramref name="collection"/> is <see cref="null"/>.</exception>
 bool ICollection_IsReadOnly(const ICollection *collection);
 
 /// <summary>
@@ -218,12 +224,14 @@ bool ICollection_IsReadOnly(const ICollection *collection);
 /// </summary>
 /// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
 /// <param name="item">The item to add.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="collection"/> is <see cref="null"/>.</exception>
 void ICollection_Add(ICollection *collection, const void *item);
 
 /// <summary>
 /// Removes all elements from an <see cref="ICollection"/>.
 /// </summary>
 /// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="collection"/> is <see cref="null"/>.</exception>
 void ICollection_Clear(ICollection *collection);
 
 /// <summary>
@@ -231,7 +239,8 @@ void ICollection_Clear(ICollection *collection);
 /// </summary>
 /// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
 /// <param name="item">The item to find.</param>
-/// <returns><see cref="true"/> if <paramref name="item"/> was found; otherwise <see cref="false"/>.</returns>
+/// <returns><see cref="true"/> if <paramref name="item"/> was found; otherwise, <see cref="false"/>.</returns>
+/// <exception cref="::ArgumentNullException"><paramref name="collection"/> is <see cref="null"/>.</exception>
 bool ICollection_Contains(const ICollection *collection, const void *item);
 
 /// <summary>
@@ -239,9 +248,17 @@ bool ICollection_Contains(const ICollection *collection, const void *item);
 /// </summary>
 /// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
 /// <param name="destination">
-/// The array that is the destination of the elements copied from the <see cref="ICollection"/>.
+///     The array that is the destination of the elements copied from the <see cref="ICollection"/>.
 /// </param>
 /// <param name="destinationSize">The size in bytes of the array.</param>
+/// <exception cref="::ArgumentNullException">
+///     <paramref name="collection"/> is <see cref="null"/> <b>-or-</b>
+///     <paramref name="destination"/> is <see cref="null"/>.
+/// </exception>
+/// <exception cref="::ArgumentException">
+///     The number of elements in the list is greater than the number of elements that the destination array can
+///     contain.
+/// </exception>
 void ICollection_CopyTo(const ICollection *collection, void *destination, uintsize destinationSize);
 
 /// <summary>
@@ -250,8 +267,9 @@ void ICollection_CopyTo(const ICollection *collection, void *destination, uintsi
 /// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
 /// <param name="item">The item to remove.</param>
 /// <returns>
-/// <see cref="true"/> if <paramref name="item"/> was successfully removed; otherwise <see cref="false"/>.
+///     <see cref="true"/> if <paramref name="item"/> was successfully removed; otherwise, <see cref="false"/>.
 /// </returns>
+/// <exception cref="::ArgumentNullException"><paramref name="collection"/> is <see cref="null"/>.</exception>
 bool ICollection_Remove(ICollection *collection, const void *item);
 
 #endif

@@ -3,35 +3,43 @@
 #include "CFlat.h"
 #include "CFlat/Validate.h"
 
-/* Private functions */
-private const IEnumerableVTable *GetVTable(const IEnumerable *enumerable);
+/**************************************/
+/* Private functions                  */
+/**************************************/
+
+private const IEnumerableVTable *GetVTable(const IEnumerable *collection);
 
 /**************************************/
 /* Public function definitions        */
 /**************************************/
 
 public void IEnumerable_Constructor(
-    IEnumerable *enumerable,
+    IEnumerable *collection,
     const IEnumerableVTable *vtable)
 {
     Validate_NotNull(vtable);
     Validate_NotNull(vtable->GetEnumerator);
 
-    Object_Constructor(enumerable, (const ObjectVTable*)vtable);
+    Object_Constructor(collection, (const ObjectVTable*)vtable);
 }
 
-public IEnumerator *IEnumerable_GetEnumerator(const IEnumerable *enumerable)
+public IEnumerator *IEnumerable_GetEnumerator(const IEnumerable *collection)
 {
-    return GetVTable(enumerable)->GetEnumerator(enumerable);
+    return GetVTable(collection)->GetEnumerator(collection);
 }
 
 /**************************************/
 /* Private function definitions       */
 /**************************************/
 
-private const IEnumerableVTable *GetVTable(const IEnumerable *enumerable)
+/// <summary>
+/// Gets the virtual method table of an <see cref="IEnumerable"/>.
+/// </summary>
+/// <param name="collection">Pointer to an <see cref="IEnumerable"/>.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="collection"/> is <see cref="null"/>.</exception>
+private const IEnumerableVTable *GetVTable(const IEnumerable *collection)
 {
-    Validate_NotNull(enumerable);
+    Validate_NotNull(collection);
 
-    return (const IEnumerableVTable*)((const Object*)enumerable)->VTable;
+    return (const IEnumerableVTable*)((const Object*)collection)->VTable;
 }

@@ -3,7 +3,10 @@
 #include "CFlat.h"
 #include "CFlat/Validate.h"
 
-/* Private functions */
+/**************************************/
+/* Private functions                  */
+/**************************************/
+
 private const IListVTable *GetVTable(const IList *list);
 
 /**************************************/
@@ -97,6 +100,11 @@ public void IList_RemoveAt(IList *list, int index)
 /* Private function definitions       */
 /**************************************/
 
+/// <summary>
+/// Gets the virtual method table of an <see cref="IList"/>.
+/// </summary>
+/// <param name="list">Pointer to an <see cref="IList"/>.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 private const IListVTable *GetVTable(const IList *list)
 {
     Validate_NotNull(list);

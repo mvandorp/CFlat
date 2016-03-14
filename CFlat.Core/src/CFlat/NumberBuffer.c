@@ -8,20 +8,20 @@
 #include "CFlat/String.h"
 #include "CFlat/StringBuilder.h"
 
-/* Private functions */
-private void NumberBuffer_Constructor(NumberBuffer *number);
+/**************************************/
+/* Private functions                  */
+/**************************************/
 
+private void NumberBuffer_Constructor(NumberBuffer *number);
 private void NumberBuffer_FormatFloat(NumberBuffer *number, int precision, bool shiftIntegersBehindDecimalPoint);
 private void NumberBuffer_FormatCustomExponential(NumberBuffer *number, int integerDigits, int precision);
 
 private uintmax GetIntegerValue(const NumberBuffer *number);
 private double GetFloatValue(const NumberBuffer *number, int *numSignificants, int *maxExponent);
-
 private int Exponent(const NumberBuffer *number);
 private int FloatExponent(double x);
 private int IntegerExponent(uintmax x);
 private double Normalize(double x, int numSignificantDigits, int maxExponent, int *exponent);
-
 private bool HasAllZeroDigits(const NumberBuffer *number);
 private void ReverseDigits(NumberBuffer *number);
 private void RoundToPrecision(NumberBuffer *number, int precision);

@@ -872,10 +872,13 @@ EXCLUDE_PATTERNS       =
 # exclude all test directories use the pattern */test/*
 
 EXCLUDE_SYMBOLS        =                    \
+    __CFLAT_*                               \
     CFLAT_BOOL                              \
     CFLAT_EXCEPTIONTYPE_BASE_BITS           \
     CFLAT_EXCEPTIONTYPE_BASE_VALUE          \
-    CFLAT_EXCEPTIONTYPE_VALUE
+    CFLAT_EXCEPTIONTYPE_VALUE               \
+    CFLAT_INT*                              \
+    CFLAT_UINT*
 
 # The EXAMPLE_PATH tag can be used to specify one or more files or directories
 # that contain example code fragments that are included (see the \include
@@ -2054,7 +2057,15 @@ INCLUDE_FILE_PATTERNS  =
 # recursively expanded use the := operator instead of the = operator.
 # This tag requires that the tag ENABLE_PREPROCESSING is set to YES.
 
-PREDEFINED             = 
+PREDEFINED             =                    \
+    DOXYGEN_SHOULD_SKIP_THIS                \
+    CFLAT_INT8 CFLAT_UINT8                  \
+    CFLAT_INT16 CFLAT_UINT16                \
+    CFLAT_INT32 CFLAT_UINT32                \
+    CFLAT_INT64 CFLAT_UINT64                \
+    CFLAT_INT64_FAST CFLAT_UINT64_FAST      \
+    CFLAT_INT64_LEAST CFLAT_UINT64_LEAST    \
+    CFLAT_INTPTR CFLAT_UINTPTR
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then this
 # tag can be used to specify a list of macro names that should be expanded. The

@@ -17,26 +17,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * @file Keywords.h
- */
+//! @file Keywords.h
 
 #ifndef CFLAT_CORE_LANGUAGE_KEYWORDS_H
 #define CFLAT_CORE_LANGUAGE_KEYWORDS_H
 
- /// <summary>
- /// Indicates that a function or variable is public and uses external linkage.
- /// </summary>
+/// <summary>
+/// Indicates that a function or variable is public and uses external linkage.
+/// </summary>
 #define public
 
- /// <summary>
- /// Indicates that a function or variable is internal and uses external linkage.
- /// </summary>
+/// <summary>
+/// Indicates that a function or variable is internal and uses external linkage.
+/// </summary>
 #define internal
 
- /// <summary>
- /// Indicates that a function or variable is private and uses internal linkage.
- /// </summary>
+/// <summary>
+/// Indicates that a function or variable is private and uses internal linkage.
+/// </summary>
 #define private static
 
 #endif

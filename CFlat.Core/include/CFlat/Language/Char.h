@@ -17,9 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * @file Char.h
- */
+//! @file Char.h
 
 #ifndef CFLAT_CORE_LANGUAGE_CHAR_H
 #define CFLAT_CORE_LANGUAGE_CHAR_H
@@ -41,119 +39,122 @@ typedef struct String String;
 
 /* Functions */
 /// <summary>
-/// Returns whether the given character is catagorized as a binary digit.
+/// Determines whether a character is catagorized as a binary digit.
 /// </summary>
 /// <param name="c">The character to check.</param>
-/// <returns><see cref="true"/> if the character is a binary digit; otherwise <see cref="false"/>.</returns>
+/// <returns><see cref="true"/> if the character is a binary digit; otherwise, <see cref="false"/>.</returns>
 bool char_IsBinaryDigit(int c);
 
 /// <summary>
-/// Returns whether the given character is catagorized as a control character.
+/// Determines whether a character is catagorized as a control character.
 /// </summary>
 /// <param name="c">The character to check.</param>
-/// <returns><see cref="true"/> if the character is a control character; otherwise <see cref="false"/>.</returns>
+/// <returns><see cref="true"/> if the character is a control character; otherwise, <see cref="false"/>.</returns>
 bool char_IsControl(int c);
 
 /// <summary>
-/// Returns whether the given character is catagorized as a decimal digit.
+/// Determines whether a character is catagorized as a decimal digit.
 /// </summary>
 /// <param name="c">The character to check.</param>
-/// <returns><see cref="true"/> if the character is a decimal digit; otherwise <see cref="false"/>.</returns>
+/// <returns><see cref="true"/> if the character is a decimal digit; otherwise, <see cref="false"/>.</returns>
 bool char_IsDigit(int c);
 
 /// <summary>
-/// Returns whether the given character is catagorized as a graphical character.
+/// Determines whether a character is catagorized as a graphical character.
 /// </summary>
 /// <param name="c">The character to check.</param>
-/// <returns><see cref="true"/> if the character is a graphical character; otherwise <see cref="false"/>.</returns>
+/// <returns><see cref="true"/> if the character is a graphical character; otherwise, <see cref="false"/>.</returns>
 bool char_IsGraphic(int c);
 
 /// <summary>
-/// Returns whether the given character is catagorized as a hexadecimal digit.
+/// Determines whether a character is catagorized as a hexadecimal digit.
 /// </summary>
 /// <param name="c">The character to check.</param>
-/// <returns><see cref="true"/> if the character is a hexadecimal digit; otherwise <see cref="false"/>.</returns>
+/// <returns><see cref="true"/> if the character is a hexadecimal digit; otherwise, <see cref="false"/>.</returns>
 bool char_IsHexadecimalDigit(int c);
 
 /// <summary>
-/// Returns whether the given character is catagorized as a letter.
+/// Determines whether a character is catagorized as a letter.
 /// </summary>
 /// <param name="c">The character to check.</param>
-/// <returns><see cref="true"/> if the character is a letter; otherwise <see cref="false"/>.</returns>
+/// <returns><see cref="true"/> if the character is a letter; otherwise, <see cref="false"/>.</returns>
 bool char_IsLetter(int c);
 
 /// <summary>
-/// Returns whether the given character is catagorized as a letter or decimal digit.
+/// Determines whether a character is catagorized as a letter or decimal digit.
 /// </summary>
 /// <param name="c">The character to check.</param>
-/// <returns><see cref="true"/> if the character is a letter or decimal digit; otherwise <see cref="false"/>.</returns>
+/// <returns><see cref="true"/> if the character is a letter or decimal digit; otherwise, <see cref="false"/>.</returns>
 bool char_IsLetterOrDigit(int c);
 
 /// <summary>
-/// Returns whether the given character is catagorized as a lowercase letter.
+/// Determines whether a character is catagorized as a lowercase letter.
 /// </summary>
 /// <param name="c">The character to check.</param>
-/// <returns><see cref="true"/> if the character is a lowercase letter; otherwise <see cref="false"/>.</returns>
+/// <returns><see cref="true"/> if the character is a lowercase letter; otherwise, <see cref="false"/>.</returns>
 bool char_IsLower(int c);
 
 /// <summary>
-/// Returns whether the given character is catagorized as a printable character.
+/// Determines whether a character is catagorized as a printable character.
 /// </summary>
 /// <param name="c">The character to check.</param>
-/// <returns><see cref="true"/> if the character is a printable character; otherwise <see cref="false"/>.</returns>
+/// <returns><see cref="true"/> if the character is a printable character; otherwise, <see cref="false"/>.</returns>
 bool char_IsPrintable(int c);
 
 /// <summary>
-/// Returns whether the given character is catagorized as punctation.
+/// Determines whether a character is catagorized as punctation.
 /// </summary>
 /// <param name="c">The character to check.</param>
-/// <returns><see cref="true"/> if the character is punctation; otherwise <see cref="false"/>.</returns>
+/// <returns><see cref="true"/> if the character is punctation; otherwise, <see cref="false"/>.</returns>
 bool char_IsPunctation(int c);
 
 /// <summary>
-/// Returns whether the given character is catagorized as a separator character.
+/// Determines whether a character is catagorized as a separator character.
 /// </summary>
 /// <param name="c">The character to check.</param>
-/// <returns><see cref="true"/> if the character is a separator character; otherwise <see cref="false"/>.</returns>
+/// <returns><see cref="true"/> if the character is a separator character; otherwise, <see cref="false"/>.</returns>
 bool char_IsSeparator(int c);
 
 /// <summary>
-/// Returns whether the given character is catagorized as an uppercase letter.
+/// Determines whether a character is catagorized as an uppercase letter.
 /// </summary>
 /// <param name="c">The character to check.</param>
-/// <returns><see cref="true"/> if the character is an uppercase letter; otherwise <see cref="false"/>.</returns>
+/// <returns><see cref="true"/> if the character is an uppercase letter; otherwise, <see cref="false"/>.</returns>
 bool char_IsUpper(int c);
 
 /// <summary>
-/// Returns whether the given character is catagorized as white space.
+/// Determines whether a character is catagorized as white space.
 /// </summary>
 /// <param name="c">The character to check.</param>
-/// <returns><see cref="true"/> if the character is white space; otherwise <see cref="false"/>.</returns>
+/// <returns><see cref="true"/> if the character is white space; otherwise, <see cref="false"/>.</returns>
 bool char_IsWhiteSpace(int c);
 
 /// <summary>
-/// Converts the given character to its lowercase equivalent.
+/// Converts a character to its lowercase equivalent.
 /// </summary>
 /// <param name="c">The character to convert.</param>
 /// <returns>
-/// The lowercase equivalent of <c>c</c> if <c>c</c> is an uppercase letter; otherwise returns <c>c</c>.
+///     The lowercase equivalent of <paramref name="c"/> if <paramref name="c"/> is an uppercase letter;
+///     otherwise, returns <paramref name="c"/>.
 /// </returns>
 int char_ToLower(int c);
 
 /// <summary>
-/// Converts the given character to its upercase equivalent.
+/// Converts a character to its upercase equivalent.
 /// </summary>
 /// <param name="c">The character to convert.</param>
 /// <returns>
-/// The uppercase equivalent of <c>c</c> if <c>c</c> is a lowercase letter; otherwise returns <c>c</c>.
+///     The uppercase equivalent of <paramref name="c"/> if <paramref name="c"/> is a lowercase letter;
+///     otherwise, returns <paramref name="c"/>.
 /// </returns>
 int char_ToUpper(int c);
 
 /// <summary>
-/// Converts the given character to a string representation.
+/// Converts a character to a string representation.
 /// </summary>
 /// <param name="c">The value to be converted to a string.</param>
-/// <returns>The string representation of the given character.</returns>
+/// <returns>The string representation of the character.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *char_ToString(char c);
 
 #endif

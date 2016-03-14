@@ -3,7 +3,10 @@
 #include "CFlat.h"
 #include "CFlat/Validate.h"
 
-/* Private functions */
+/**************************************/
+/* Private functions                  */
+/**************************************/
+
 private const IEnumeratorVTable *GetVTable(const IEnumerator *enumerator);
 
 /**************************************/
@@ -41,6 +44,11 @@ public void IEnumerator_Reset(IEnumerator *enumerator)
 /* Private function definitions       */
 /**************************************/
 
+/// <summary>
+/// Gets the virtual method table of an <see cref="IEnumerator"/>.
+/// </summary>
+/// <param name="enumerator">Pointer to an <see cref="IEnumerator"/>.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="enumerator"/> is <see cref="null"/>.</exception>
 private const IEnumeratorVTable *GetVTable(const IEnumerator *enumerator)
 {
     Validate_NotNull(enumerator);

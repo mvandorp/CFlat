@@ -9,12 +9,16 @@
 #include "CFlat/StringReader.h"
 
 /* Types */
+
 typedef struct Number {
     NumberValue Value;
     NumberType Type;
 } Number;
 
-/* Private functions */
+/**************************************/
+/* Private functions                  */
+/**************************************/
+
 private String *FormatNumber(NumberBuffer *value, const String *format);
 private void FormatNumberBuffered(StringBuilder *sb, NumberBuffer *value, const String *format);
 private void FormatStandardNumber(
@@ -23,7 +27,6 @@ private void FormatStandardNumber(
     char formatSpecifier,
     int precisionSpecifier);
 private void FormatCustomNumber(StringBuilder *sb, NumberBuffer *value, StringReader *reader);
-
 private bool SkipFormatSection(StringReader *reader);
 private void ParseFormatSection(
     StringReader *reader,
@@ -35,7 +38,6 @@ private void SkipString(StringReader *reader, uintsize *offset);
 private void ReadEscapeCharacter(StringBuilder *sb, StringReader *reader);
 private void SkipEscapeCharacter(StringReader *reader, uintsize *offset);
 private bool IsEscapedCharacter(int ch);
-
 private bool ProcessStandardFormatString(StringReader *reader, char *formatSpecifier, int *precisionSpecifier);
 private void ProcessCustomFormatString(
     StringReader *reader,
@@ -46,7 +48,6 @@ private void ProcessCustomFormatString(
     bool *printSign);
 private void PrintDecimalSeparator(StringBuilder *sb, uintsize *decimalSeparatorIndex);
 private void PrintLeadingZeros(StringBuilder *sb, int *numLeadingZeros);
-
 private bool IsExponent(StringReader *reader, uintsize offset);
 private void SkipExponent(StringReader *reader, uintsize *offset, int *exponentDigits);
 private void PrintExponent(StringBuilder *sb, StringReader *reader, int exponent);
@@ -150,6 +151,7 @@ internal bool Number_IsNonDecimalFormat(const String *format)
 /// <summary>
 /// Formats a number according to the given format string.
 /// </summary>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 private String *FormatNumber(NumberBuffer *value, const String *format)
 {
     assert(value != null);
@@ -165,6 +167,7 @@ private String *FormatNumber(NumberBuffer *value, const String *format)
 /// <summary>
 /// Formats a number according to the given format string.
 /// </summary>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 private void FormatNumberBuffered(StringBuilder *sb, NumberBuffer *value, const String *format)
 {
     assert(sb != null);
@@ -195,6 +198,7 @@ private void FormatNumberBuffered(StringBuilder *sb, NumberBuffer *value, const 
 /// <summary>
 /// Formats a number according to a standard format string.
 /// </summary>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 private void FormatStandardNumber(StringBuilder *sb, NumberBuffer *value, char formatSpecifier, int precisionSpecifier)
 {
     if (formatSpecifier == 'b' || formatSpecifier == 'B') {
@@ -225,6 +229,7 @@ private void FormatStandardNumber(StringBuilder *sb, NumberBuffer *value, char f
 /// <summary>
 /// Formats a number according to a custom format string.
 /// </summary>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 private void FormatCustomNumber(StringBuilder *sb, NumberBuffer *value, StringReader *reader)
 {
     assert(sb != null);
@@ -401,6 +406,7 @@ private bool ProcessStandardFormatString(StringReader *reader, char *formatSpeci
 /// <summary>
 /// Processes a custom format string and determines the properties.
 /// </summary>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 private void ProcessCustomFormatString(
     StringReader *reader,
     NumberBuffer *value,
@@ -560,6 +566,7 @@ private void ParseFormatSection(
 /// <summary>
 /// Processes and prints a string in a custom format string.
 /// </summary>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 private void ReadString(StringBuilder *sb, StringReader *reader)
 {
     assert(sb != null);
@@ -601,6 +608,7 @@ private void SkipString(StringReader *reader, uintsize *offset)
 /// <summary>
 /// Processes and prints an escape character in a custom format string.
 /// </summary>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 private void ReadEscapeCharacter(StringBuilder *sb, StringReader *reader)
 {
     assert(sb != null);
@@ -659,6 +667,7 @@ private bool IsEscapedCharacter(int ch)
 /// <summary>
 /// Prints the decimal separator if needed.
 /// </summary>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 private void PrintDecimalSeparator(StringBuilder *sb, uintsize *decimalSeparatorIndex)
 {
     assert(sb != null);
@@ -673,6 +682,7 @@ private void PrintDecimalSeparator(StringBuilder *sb, uintsize *decimalSeparator
 /// <summary>
 /// Prints any  leading zeros if needed.
 /// </summary>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 private void PrintLeadingZeros(StringBuilder *sb, int *numLeadingZeros)
 {
     assert(sb != null);
@@ -734,6 +744,7 @@ private void SkipExponent(StringReader *reader, uintsize *offset, int *exponentD
 /// <summary>
 /// Processes and prints the exponent in a custom format string.
 /// </summary>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 private void PrintExponent(StringBuilder *sb, StringReader *reader, int exponent)
 {
     assert(sb != null);

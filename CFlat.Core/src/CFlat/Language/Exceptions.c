@@ -27,11 +27,26 @@ typedef struct __CFLAT_EXCEPTION CFlatException;
 public jmp_buf JumpBuffer;
 
 /* Private variables */
+/// <summary>
+/// A handle to the exception that is currently being handled, or <see cref="null"/> if there is no exception right now.
+/// </summary>
 private ExceptionHandle CurrentException = null;
+
+/// <summary>
+/// Indicates whether the current exception has already been handled by a catch clause.
+/// </summary>
 private bool ExceptionHandled = true;
+
+/// <summary>
+/// The size of the exception state stack. A stack size greater than zero indicates that the program is currently inside
+/// a try block.
+/// </summary>
 private int StackSize = 0;
 
-/* Private function declarations */
+/**************************************/
+/* Private functions                  */
+/**************************************/
+
 private ExceptionHandle Exception_New(ExceptionType type, const String *userMessage, const char *file, int line);
 private void Exception_Constructor(
     ExceptionHandle ex,
@@ -188,8 +203,9 @@ public ExceptionType Exception_GetType(const ExceptionHandle ex)
 /**************************************/
 
 /// <summary>
-/// Allocates and initializes a new CFlatException and returns an ExceptionHandle.
+/// Allocates and initializes a new <see cref="CFlatException"/> and returns its <see cref="ExceptionHandle"/>.
 /// </summary>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 private ExceptionHandle Exception_New(ExceptionType type, const String *userMessage, const char *file, int line)
 {
     ExceptionHandle ex = Memory_Allocate(sizeof(CFlatException));
@@ -209,8 +225,9 @@ private ExceptionHandle Exception_New(ExceptionType type, const String *userMess
 }
 
 /// <summary>
-/// Initializes the CFlatException referenced by the given ExceptionHandle.
+/// Initializes the <see cref="CFlatException"/> referenced by the given <see cref="ExceptionHandle"/>.
 /// </summary>
+/// <exception cref="::ArgumentNullException"><paramref name="ex"/> is <see cref="null"/>.</exception>
 private void Exception_Constructor(
     ExceptionHandle ex,
     ExceptionType type,
@@ -227,8 +244,9 @@ private void Exception_Constructor(
 }
 
 /// <summary>
-/// Destroys the CFlatException referenced by the given ExceptionHandle.
+/// Destroys the <see cref="CFlatException"/> referenced by the given <see cref="ExceptionHandle"/>.
 /// </summary>
+/// <exception cref="::ArgumentNullException"><paramref name="ex"/> is <see cref="null"/>.</exception>
 private void Exception_Destructor(ExceptionHandle ex)
 {
     Validate_NotNull(ex);
@@ -278,6 +296,7 @@ private void RestoreJumpBuffer(ExceptionState *state)
 /// <summary>
 /// Generates the error text for a given exception.
 /// </summary>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 private String *GenerateExceptionText(const ExceptionHandle ex)
 {
     assert(ex != null);
@@ -310,7 +329,7 @@ private String *GenerateExceptionText(const ExceptionHandle ex)
 }
 
 /// <summary>
-/// Prints an exception message based on the given exception type and message, and then aborts the program.
+/// Prints a message based on the current exception, and then aborts the program.
 /// </summary>
 private void UnhandledException(void)
 {
@@ -327,9 +346,9 @@ private void UnhandledException(void)
 }
 
 /// <summary>
-/// Tests whether the program is currently inside a try block.
+/// Determines whether the program is currently inside a try block.
 /// </summary>
-/// <returns><see cref="true"/> if the program is inside a try block; otherwise <see cref="false"/>.</returns>
+/// <returns><see cref="true"/> if the program is inside a try block; otherwise, <see cref="false"/>.</returns>
 private bool IsInsideTryBlock(void)
 {
     // If we are inside a try block, the stack size must be greater than zero.

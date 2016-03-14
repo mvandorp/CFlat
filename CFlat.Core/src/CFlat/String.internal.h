@@ -28,11 +28,11 @@
 /// <summary>
 /// Evaluates to the size of the given string literal.
 /// </summary>
-/// <param name="value">A string literal.</param>
 /// <remarks>
-/// <paramref name="value"/> must be an actual string literal. Passing <see cref="null"/> will yield an incorrect
-/// result.
+///     <paramref name="value"/> must be an actual string literal. Passing <see cref="null"/> will yield an incorrect
+///     result.
 /// </remarks>
+/// <param name="value">A string literal.</param>
 #define CFLAT_STRING_LITERAL_LENGTH(value) (sizeof(value) - 1)
 
 /// <summary>
@@ -46,18 +46,8 @@
     value                                                       \
 }
 
-/// <summary>
-/// The virtual method table for <see cref="String"/>.
-/// </summary>
-internal extern const ObjectVTable String_VTable;
-
-/// <summary>
-/// The virtual method table for <see cref="String"/>, without the destructor set.
-/// </summary>
-internal extern const ObjectVTable String_VTableNoDestructor;
-
 /* Types */
-struct String {
+typedef struct String {
     /// <summary>
     /// The base class of the string.
     /// </summary>
@@ -70,7 +60,19 @@ struct String {
     /// Pointer to the null-terminated string that represents the value of the string.
     /// </summary>
     const char* Value;
-};
+} String;
+
+/* Constants */
+/// <summary>
+/// The virtual method table for the <see cref="String"/> class.
+/// </summary>
+internal extern const ObjectVTable String_VTable;
+
+/// <summary>
+/// The virtual method table for the <see cref="String"/> class, without a destructor set so that the internal
+/// null-terminated string is not automatically destroyed.
+/// </summary>
+internal extern const ObjectVTable String_VTableNoDestructor;
 
 /* Functions */
 /// <summary>
@@ -78,11 +80,11 @@ struct String {
 /// </summary>
 /// <param name="value">Pointer to a null-terminated string.</param>
 /// <param name="bufer">
-/// Pointer to a buffer capable of storing a <see cref="String"/>, this value cannot be <see cref="null"/>.
+///     Pointer to a buffer capable of storing a <see cref="String"/>, this value cannot be <see cref="null"/>.
 /// </param>
 /// <returns>
-/// A pointer to a <see cref="String"/> wrapper for the given null-terminated string, or <see cref="null"/> if
-/// <paramref name="value"/> is <see cref="null"/>.
+///     A pointer to a <see cref="String"/> wrapper for the given null-terminated string, or <see cref="null"/> if
+///     <paramref name="value"/> is <see cref="null"/>.
 /// </returns>
 internal String *String_WrapCString(const char *value, String *buffer);
 

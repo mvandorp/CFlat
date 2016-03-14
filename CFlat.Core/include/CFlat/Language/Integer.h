@@ -17,9 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * @file Integer.h
- */
+//! @file Integer.h
 
 #ifndef CFLAT_CORE_LANGUAGE_INTEGER_H
 #define CFLAT_CORE_LANGUAGE_INTEGER_H
@@ -31,10 +29,8 @@
 typedef struct String String;
 
 /* Special integer types */
-/**
- * @name Special integer types
- * @{
- */
+//! @name Special integer types
+//! @{
 
 #if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) || (_MSC_VER >= 1700)
     #include <stdint.h>
@@ -103,11 +99,10 @@ typedef size_t uintsize;
 #define uintsize_MaxValue ((uintsize)-1)
 
 /* Standard integer types */
-/**
- * @}
- * @name Standard integer types
- * @{
- */
+//! @}
+//! @name Standard integer types
+//! @{
+
 /// <summary>
 /// Represents the smallest signed integer with a width of at least 8 bits.
 /// </summary>
@@ -218,11 +213,9 @@ typedef unsigned long ulong;
 #define ulong_MaxValue ((ulong)ULONG_MAX)
 
 /* Max-width integer types */
-/**
- * @}
- * @{
- * @name Max-width integer types
- */
+//! @}
+//! @name Max-width integer types
+//! @{
 
 #if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) || (_MSC_VER >= 1700)
     #include <stdint.h>
@@ -274,11 +267,10 @@ typedef CFLAT_UINTMAX uintmax;
 #define uintmax_MaxValue CFLAT_UINTMAX_MAX
 
 /* Exact-width integer types */
-/**
- * @}
- * @{
- * @name Exact-width integer types
- */
+//! @}
+//! @name Exact-width integer types
+//! @{
+
 #if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) || (_MSC_VER >= 1700)
     #include <stdint.h>
 
@@ -503,11 +495,10 @@ typedef CFLAT_UINTMAX uintmax;
 #endif
 
 /* Least-width integer types */
-/**
- * @}
- * @{
- * @name Least-width integer types
- */
+//! @}
+//! @name Least-width integer types
+//! @{
+
 #if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) || (defined(_MSC_VER) && _MSC_VER >= 1700)
     #include <stdint.h>
 
@@ -564,6 +555,7 @@ typedef CFLAT_UINTMAX uintmax;
         #define CFLAT_INT16_LEAST_MIN   SHRT_MIN
         #define CFLAT_INT16_LEAST_MAX   SHRT_MAX
     #endif
+
     #ifdef CFLAT_UINT16
         #define CFLAT_UINT16_LEAST      CFLAT_UINT16
         #define CFLAT_UINT16_LEAST_MAX  0xFFFF
@@ -787,11 +779,10 @@ typedef CFLAT_UINT32_LEAST uint32_least;
 #endif
 
 /* Fast integer types */
-/**
- * @}
- * @{
- * @name Fast integer types
- */
+//! @}
+//! @name Fast integer types
+//! @{
+
 #if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) || (defined(_MSC_VER) && _MSC_VER >= 1700)
     #include <stdint.h>
 
@@ -1007,13 +998,9 @@ typedef CFLAT_UINT32_FAST uint32_fast;
     #define uint64_fast_MaxValue ((uint64_fast)CFLAT_UINT64_FAST_MAX)
 #endif
 
-/* Functions */
-/**
- * @}
- * @{
- * @name Functions
- */
+//! @}
 
+/* Functions */
 /// <summary>
 /// Returns the larger of two numbers.
 /// </summary>
@@ -1035,6 +1022,7 @@ uintsize uintsize_Min(uintsize x, uintsize y);
 /// </summary>
 /// <param name="value">The value to be converted to a string.</param>
 /// <returns>The string representation of the given number.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *uintsize_ToString(uintsize value);
 
 /// <summary>
@@ -1043,6 +1031,7 @@ String *uintsize_ToString(uintsize value);
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *uintsize_ToStringFormat(uintsize value, const String *format);
 
 /// <summary>
@@ -1051,6 +1040,7 @@ String *uintsize_ToStringFormat(uintsize value, const String *format);
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *uintsize_ToStringFormatC(uintsize value, const char *format);
 
 #ifdef CFLAT_INTPTR
@@ -1059,6 +1049,7 @@ String *uintsize_ToStringFormatC(uintsize value, const char *format);
 /// </summary>
 /// <param name="value">The value to be converted to a string.</param>
 /// <returns>The string representation of the given number.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *intptr_ToString(intptr value);
 
 /// <summary>
@@ -1067,6 +1058,7 @@ String *intptr_ToString(intptr value);
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *intptr_ToStringFormat(intptr value, const String *format);
 
 /// <summary>
@@ -1075,6 +1067,7 @@ String *intptr_ToStringFormat(intptr value, const String *format);
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *intptr_ToStringFormatC(intptr value, const char *format);
 #endif
 
@@ -1084,6 +1077,7 @@ String *intptr_ToStringFormatC(intptr value, const char *format);
 /// </summary>
 /// <param name="value">The value to be converted to a string.</param>
 /// <returns>The string representation of the given number.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *uintptr_ToString(uintptr value);
 
 /// <summary>
@@ -1092,6 +1086,7 @@ String *uintptr_ToString(uintptr value);
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *uintptr_ToStringFormat(uintptr value, const String *format);
 
 /// <summary>
@@ -1100,6 +1095,7 @@ String *uintptr_ToStringFormat(uintptr value, const String *format);
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *uintptr_ToStringFormatC(uintptr value, const char *format);
 #endif
 
@@ -1124,6 +1120,7 @@ sbyte sbyte_Min(sbyte x, sbyte y);
 /// </summary>
 /// <param name="value">The value to be converted to a string.</param>
 /// <returns>The string representation of the given number.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *sbyte_ToString(sbyte value);
 
 /// <summary>
@@ -1132,6 +1129,7 @@ String *sbyte_ToString(sbyte value);
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *sbyte_ToStringFormat(sbyte value, const String *format);
 
 /// <summary>
@@ -1140,6 +1138,7 @@ String *sbyte_ToStringFormat(sbyte value, const String *format);
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *sbyte_ToStringFormatC(sbyte value, const char *format);
 
 /// <summary>
@@ -1163,6 +1162,7 @@ byte byte_Min(byte x, byte y);
 /// </summary>
 /// <param name="value">The value to be converted to a string.</param>
 /// <returns>The string representation of the given number.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *byte_ToString(byte value);
 
 /// <summary>
@@ -1171,6 +1171,7 @@ String *byte_ToString(byte value);
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *byte_ToStringFormat(byte value, const String *format);
 
 /// <summary>
@@ -1179,6 +1180,7 @@ String *byte_ToStringFormat(byte value, const String *format);
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *byte_ToStringFormatC(byte value, const char *format);
 
 /// <summary>
@@ -1202,6 +1204,7 @@ short short_Min(short x, short y);
 /// </summary>
 /// <param name="value">The value to be converted to a string.</param>
 /// <returns>The string representation of the given number.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *short_ToString(short value);
 
 /// <summary>
@@ -1210,6 +1213,7 @@ String *short_ToString(short value);
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *short_ToStringFormat(short value, const String *format);
 
 /// <summary>
@@ -1218,6 +1222,7 @@ String *short_ToStringFormat(short value, const String *format);
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *short_ToStringFormatC(short value, const char *format);
 
 /// <summary>
@@ -1241,6 +1246,7 @@ ushort ushort_Min(ushort x, ushort y);
 /// </summary>
 /// <param name="value">The value to be converted to a string.</param>
 /// <returns>The string representation of the given number.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *ushort_ToString(ushort value);
 
 /// <summary>
@@ -1249,6 +1255,7 @@ String *ushort_ToString(ushort value);
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *ushort_ToStringFormat(ushort value, const String *format);
 
 /// <summary>
@@ -1257,6 +1264,7 @@ String *ushort_ToStringFormat(ushort value, const String *format);
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *ushort_ToStringFormatC(ushort value, const char *format);
 
 /// <summary>
@@ -1280,6 +1288,7 @@ int int_Min(int x, int y);
 /// </summary>
 /// <param name="value">The value to be converted to a string.</param>
 /// <returns>The string representation of the given number.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *int_ToString(int value);
 
 /// <summary>
@@ -1288,6 +1297,7 @@ String *int_ToString(int value);
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *int_ToStringFormat(int value, const String *format);
 
 /// <summary>
@@ -1296,6 +1306,7 @@ String *int_ToStringFormat(int value, const String *format);
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *int_ToStringFormatC(int value, const char *format);
 
 /// <summary>
@@ -1319,6 +1330,7 @@ uint uint_Min(uint x, uint y);
 /// </summary>
 /// <param name="value">The value to be converted to a string.</param>
 /// <returns>The string representation of the given number.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *uint_ToString(uint value);
 
 /// <summary>
@@ -1327,6 +1339,7 @@ String *uint_ToString(uint value);
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *uint_ToStringFormat(uint value, const String *format);
 
 /// <summary>
@@ -1335,6 +1348,7 @@ String *uint_ToStringFormat(uint value, const String *format);
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *uint_ToStringFormatC(uint value, const char *format);
 
 /// <summary>
@@ -1358,6 +1372,7 @@ long long_Min(long x, long y);
 /// </summary>
 /// <param name="value">The value to be converted to a string.</param>
 /// <returns>The string representation of the given number.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *long_ToString(long value);
 
 /// <summary>
@@ -1366,6 +1381,7 @@ String *long_ToString(long value);
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *long_ToStringFormat(long value, const String *format);
 
 /// <summary>
@@ -1374,6 +1390,7 @@ String *long_ToStringFormat(long value, const String *format);
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *long_ToStringFormatC(long value, const char *format);
 
 /// <summary>
@@ -1397,6 +1414,7 @@ ulong ulong_Min(ulong x, ulong y);
 /// </summary>
 /// <param name="value">The value to be converted to a string.</param>
 /// <returns>The string representation of the given number.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *ulong_ToString(ulong value);
 
 /// <summary>
@@ -1405,6 +1423,7 @@ String *ulong_ToString(ulong value);
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *ulong_ToStringFormat(ulong value, const String *format);
 
 /// <summary>
@@ -1413,6 +1432,7 @@ String *ulong_ToStringFormat(ulong value, const String *format);
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *ulong_ToStringFormatC(ulong value, const char *format);
 
 /// <summary>
@@ -1436,6 +1456,7 @@ intmax intmax_Min(intmax x, intmax y);
 /// </summary>
 /// <param name="value">The value to be converted to a string.</param>
 /// <returns>The string representation of the given number.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *intmax_ToString(intmax value);
 
 /// <summary>
@@ -1444,6 +1465,7 @@ String *intmax_ToString(intmax value);
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *intmax_ToStringFormat(intmax value, const String *format);
 
 /// <summary>
@@ -1452,6 +1474,7 @@ String *intmax_ToStringFormat(intmax value, const String *format);
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *intmax_ToStringFormatC(intmax value, const char *format);
 
 /// <summary>
@@ -1475,6 +1498,7 @@ uintmax uintmax_Min(uintmax x, uintmax y);
 /// </summary>
 /// <param name="value">The value to be converted to a string.</param>
 /// <returns>The string representation of the given number.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *uintmax_ToString(uintmax value);
 
 /// <summary>
@@ -1483,6 +1507,7 @@ String *uintmax_ToString(uintmax value);
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *uintmax_ToStringFormat(uintmax value, const String *format);
 
 /// <summary>
@@ -1491,11 +1516,8 @@ String *uintmax_ToStringFormat(uintmax value, const String *format);
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *uintmax_ToStringFormatC(uintmax value, const char *format);
-
-/**
- * @}
- */
 
 #ifdef CFLAT_CORE_INTERNAL
  #include "CFlat/Language/Integer.internal.h"

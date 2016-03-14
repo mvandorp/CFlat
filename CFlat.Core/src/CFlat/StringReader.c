@@ -27,6 +27,9 @@
 #include "CFlat/Validate.h"
 
 /* Private constants */
+/// <summary>
+/// The virtual method table for the <see cref="StringReader"/> class.
+/// </summary>
 private const ObjectVTable VTable = ObjectVTable_Initializer((DestructorFunc)StringReader_Destructor);
 
 /**************************************/

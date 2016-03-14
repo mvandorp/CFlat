@@ -17,9 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * @file IList.h
- */
+//! @file IList.h
 
 #ifndef CFLAT_CORE_COLLECTIONS_ILIST_H
 #define CFLAT_CORE_COLLECTIONS_ILIST_H
@@ -174,6 +172,11 @@ typedef struct IListVTable {
 /// </summary>
 /// <param name="list">Pointer to an uninitialized <see cref="IList"/>.</param>
 /// <param name="vtable">Pointer to a virtual method table.</param>
+/// <exception cref="::ArgumentNullException">
+///     <paramref name="list"/> is <see cref="null"/> <b>-or-</b>
+///     <paramref name="vtable"/> is <see cref="null"/> <b>-or-</b>
+///     <paramref name="vtable"/> contains a <see cref="null"/> pointer.
+/// </exception>
 void IList_Constructor(
     IList *list,
     const IListVTable *vtable);
@@ -184,6 +187,7 @@ void IList_Constructor(
 /// </summary>
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <returns>An <see cref="IEnumerator"/> that iterates through an <see cref="IList"/>.</returns>
+/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 IEnumerator *IList_GetEnumerator(const IList *list);
 
 /* ICollection */
@@ -192,6 +196,7 @@ IEnumerator *IList_GetEnumerator(const IList *list);
 /// </summary>
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <returns>The number of elements in the <see cref="IList"/>.</returns>
+/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 int IList_GetCount(const IList *list);
 
 /// <summary>
@@ -199,8 +204,9 @@ int IList_GetCount(const IList *list);
 /// </summary>
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <returns>
-/// <see cref="true"/> if the <see cref="IList"/> is read-only; otherwise <see cref="false"/>.
+///     <see cref="true"/> if the <see cref="IList"/> is read-only; otherwise, <see cref="false"/>.
 /// </returns>
+/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 bool IList_IsReadOnly(const IList *list);
 
 /// <summary>
@@ -208,12 +214,14 @@ bool IList_IsReadOnly(const IList *list);
 /// </summary>
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <param name="item">The item to add.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 void IList_Add(IList *list, const void *item);
 
 /// <summary>
 /// Removes all elements from an <see cref="IList"/>.
 /// </summary>
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 void IList_Clear(IList *list);
 
 /// <summary>
@@ -221,7 +229,8 @@ void IList_Clear(IList *list);
 /// </summary>
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <param name="item">The item to find.</param>
-/// <returns><see cref="true"/> if <paramref name="item"/> was found; otherwise <see cref="false"/>.</returns>
+/// <returns><see cref="true"/> if <paramref name="item"/> was found; otherwise, <see cref="false"/>.</returns>
+/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 bool IList_Contains(const IList *list, const void *item);
 
 /// <summary>
@@ -229,9 +238,17 @@ bool IList_Contains(const IList *list, const void *item);
 /// </summary>
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <param name="destination">
-/// The array that is the destination of the elements copied from the <see cref="IList"/>.
+///     The array that is the destination of the elements copied from the <see cref="IList"/>.
 /// </param>
 /// <param name="destinationSize">The size in bytes of the array.</param>
+/// <exception cref="::ArgumentNullException">
+///     <paramref name="list"/> is <see cref="null"/> <b>-or-</b>
+///     <paramref name="destination"/> is <see cref="null"/>.
+/// </exception>
+/// <exception cref="::ArgumentException">
+///     The number of elements in the list is greater than the number of elements that the destination array can
+///     contain.
+/// </exception>
 void IList_CopyTo(const IList *list, void *destination, uintsize destinationSize);
 
 /// <summary>
@@ -240,8 +257,9 @@ void IList_CopyTo(const IList *list, void *destination, uintsize destinationSize
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <param name="item">The item to remove.</param>
 /// <returns>
-/// <see cref="true"/> if <paramref name="item"/> was successfully removed; otherwise <see cref="false"/>.
+///     <see cref="true"/> if <paramref name="item"/> was successfully removed; otherwise, <see cref="false"/>.
 /// </returns>
+/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 bool IList_Remove(IList *list, const void *item);
 
 /* IList */
@@ -251,6 +269,11 @@ bool IList_Remove(IList *list, const void *item);
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <param name="index">The index of the element to retrieve.</param>
 /// <returns>The item at the given index of the <see cref="IList"/>.</returns>
+/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
+/// <exception cref="::ArgumentOutOfRangeException">
+///     <paramref name="index"/> is less than 0 <b>-or-</b>
+///     <paramref name="index"/> is equal to or greater than the number of elements in <paramref name="list"/>.
+/// </exception>
 void *IList_GetItem(const IList *list, int index);
 
 /// <summary>
@@ -259,6 +282,11 @@ void *IList_GetItem(const IList *list, int index);
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <param name="index">The index of the element to replace.</param>
 /// <param name="item">The new value for the element at the given index.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
+/// <exception cref="::ArgumentOutOfRangeException">
+///     <paramref name="index"/> is less than 0 <b>-or-</b>
+///     <paramref name="index"/> is equal to or greater than the number of elements in <paramref name="list"/>.
+/// </exception>
 void IList_SetItem(IList *list, int index, const void *item);
 
 /// <summary>
@@ -267,6 +295,7 @@ void IList_SetItem(IList *list, int index, const void *item);
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <param name="item">The item to find.</param>
 /// <returns>The index of <paramref name="item"/> if found; otherwise -1.</returns>
+/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 int IList_IndexOf(const IList *list, const void *item);
 
 /// <summary>
@@ -275,6 +304,11 @@ int IList_IndexOf(const IList *list, const void *item);
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <param name="index">The index at which <paramref name="item"/> should be inserted.</param>
 /// <param name="item">The item to insert.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
+/// <exception cref="::ArgumentOutOfRangeException">
+///     <paramref name="index"/> is less than 0 <b>-or-</b>
+///     <paramref name="index"/> is greater than the number of elements in <paramref name="list"/>.
+/// </exception>
 void IList_Insert(IList *list, int index, const void *item);
 
 /// <summary>
@@ -282,6 +316,11 @@ void IList_Insert(IList *list, int index, const void *item);
 /// </summary>
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <param name="index">The index of the element to remove.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
+/// <exception cref="::ArgumentOutOfRangeException">
+///     <paramref name="index"/> is less than 0 <b>-or-</b>
+///     <paramref name="index"/> is equal to or greater than the number of elements in <paramref name="list"/>.
+/// </exception>
 void IList_RemoveAt(IList *list, int index);
 
 #endif

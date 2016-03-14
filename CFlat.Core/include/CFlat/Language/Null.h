@@ -17,9 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * @file Null.h
- */
+//! @file Null.h
 
 #ifndef CFLAT_CORE_LANGUAGE_NULL_H
 #define CFLAT_CORE_LANGUAGE_NULL_H

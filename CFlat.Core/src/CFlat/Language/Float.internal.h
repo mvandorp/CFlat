@@ -33,6 +33,8 @@ typedef struct StringBuilder StringBuilder;
 /// <param name="sb">The <see cref="StringBuilder"/> onto which to append the resulting string.</param>
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 internal void float_ToStringBuffered(StringBuilder *sb, float value, const String *format);
 
 #endif

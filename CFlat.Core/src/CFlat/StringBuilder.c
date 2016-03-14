@@ -28,8 +28,20 @@
 #include "CFlat/Validate.h"
 
 /* Private constants */
+/// <summary>
+/// The default capacity for an empty <see cref="StringBuilder"/>.
+/// </summary>
 private const uintsize DefaultCapacity = 16;
+
+/// <summary>
+/// The virtual method table for the <see cref="StringBuilder"/> class.
+/// </summary>
 private const ObjectVTable VTable = ObjectVTable_Initializer((DestructorFunc)StringBuilder_Destructor);
+
+/// <summary>
+/// The virtual method table for the <see cref="StringBuilder"/> class, without a destructor set so that the internal
+/// null-terminated string is not automatically destroyed.
+/// </summary>
 private const ObjectVTable VTableNoDestructor = ObjectVTable_Initializer(null);
 
 /**************************************/

@@ -17,16 +17,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * @file Exceptions.h
- */
+//! @file Exceptions.h
 
 #ifndef CFLAT_CORE_LANGUAGE_EXCEPTIONS_H
 #define CFLAT_CORE_LANGUAGE_EXCEPTIONS_H
 
 #include "CFlat/ExceptionType.h"
-#include "CFlat/Language/Bool.h"
 #include "CFlat/Object.h"
+#include "CFlat/Language/Bool.h"
 
 #include <setjmp.h>
 
@@ -83,6 +81,7 @@ typedef struct String String;
 /// Re-throws an exception that was caught earlier.
 /// </summary>
 /// <param name="exceptionHandle">The <see cref="ExceptionHandle"/> of the exception to throw.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="exceptionHandle"/> is <see cref="null"/>.</exception>
 #define throw_again(exceptionHandle) __CFLAT_EXCEPTION_THROW_AGAIN(exceptionHandle)
 
 /// <summary>
@@ -90,23 +89,28 @@ typedef struct String String;
 /// </summary>
 /// <param name="exception">The type of exception thrown.</param>
 /// <param name="message">
-/// Pointer to a null-terminated string that describes the exception, or <see cref="null"/> to use the default
-/// exception message.
+///     Pointer to a null-terminated string that describes the exception, or <see cref="null"/> to use the default
+///     exception message.
 /// </param>
 #define throw_new(exception, message) __CFLAT_EXCEPTION_THROW_NEW(exception, message, __FILE__, __LINE__)
 
 /// <summary>
 /// Re-throws the last exception that occured.
 /// </summary>
+/// <exception cref="::InvalidOperationException"><see cref="throw"/> was used outside of a catch clause.</exception>
 #define throw __CFLAT_EXCEPTION_THROW()
 
 /* Types */
 /// <summary>
+/// Represents an abstraction for an exception, so that information about an exception can be obtained through its
+/// handle.
+/// </summary>
+typedef struct __CFLAT_EXCEPTION *ExceptionHandle;
+
+/// <summary>
 /// Holds information about the exception that occured.
 /// </summary>
-/// <remarks>
-/// This struct is intended for internal use only.
-/// </remarks>
+/// <remarks>This struct is intended for internal use only.</remarks>
 struct __CFLAT_EXCEPTION {
     /// <summary>
     /// The base class of the exception.
@@ -131,17 +135,9 @@ struct __CFLAT_EXCEPTION {
 };
 
 /// <summary>
-/// Represents an abstraction for an exception, so that information about an exception can be obtained through its
-/// handle.
-/// </summary>
-typedef struct __CFLAT_EXCEPTION *ExceptionHandle;
-
-/// <summary>
 /// Holds state information required for exception handling.
 /// </summary>
-/// <remarks>
-/// This struct is intended for internal use only.
-/// </remarks>
+/// <remarks>This struct is intended for internal use only.</remarks>
 struct __CFLAT_EXCEPTION_STATE {
     /// <summary>
     /// The jump buffer of the parent try scope, if any.
@@ -151,10 +147,11 @@ struct __CFLAT_EXCEPTION_STATE {
     /// Indicates whether or not the previous jump buffer still needs to be popped off the stack.
     /// </summary>
     /// <remarks>
-    /// This exists because we should actually be popping the jump buffer off the stack directly after the try block.
-    /// The way to do so without introducing another keyword is by doing it in the first catch or finally block.
-    /// Since the stack should only be popped once, we have a flag 'shouldPopStack' that indicates whether the jump
-    /// buffer should still be popped off the stack.
+    ///     The jump buffer should be popped off the stack directly after a <c>try</c> block. This is achieved through
+    ///     popping it at the first <c>catch</c> or <c>finally</c> clause following the <c>try</c> block.
+    ///     <see cref="ShouldPopStack"/> keeps track of whether the jump buffer still needs to be popped off the stack
+    ///     so that only the first <c>catch</c> or <c>finally</c> clause causes the jump buffer to be popped off the
+    ///     stack.
     /// </remarks>
     bool ShouldPopStack;
     /// <summary>
@@ -172,80 +169,89 @@ extern jmp_buf __CFLAT_EXCEPTION_BUFFER;
 
 /* Functions */
 /// <summary>
-/// Checks if the exception pointed to by the given <see cref="ExceptionHandle"/> is of the given type.
+/// Determines whether the exception pointed to by the given <see cref="ExceptionHandle"/> is of the given type.
 /// </summary>
 /// <param name="ex">The <see cref="ExceptionHandle"/> of the exception.</param>
 /// <param name="type">The exception type to compare with.</param>
-/// <returns><see cref="true"/> if the exception is of the given type; otherwise <see cref="false"/>.</returns>
+/// <returns><see cref="true"/> if the exception is of the given type; otherwise, <see cref="false"/>.</returns>
+/// <exception cref="::ArgumentNullException"><paramref name="exceptionHandle"/> is <see cref="null"/>.</exception>
 bool Exception_IsInstanceOf(const ExceptionHandle ex, ExceptionType type);
 
 /// <summary>
 /// Gets the message describing the exception pointed to by the given <see cref="ExceptionHandle"/>.
 /// </summary>
 /// <param name="ex">The <see cref="ExceptionHandle"/> of the exception.</param>
+/// <returns>The message describing the exception pointed to by the given <see cref="ExceptionHandle"/>.</returns>
+/// <exception cref="::ArgumentNullException"><paramref name="exceptionHandle"/> is <see cref="null"/>.</exception>
 const String *Exception_GetMessage(const ExceptionHandle ex);
 
 /// <summary>
 /// Gets the name of the exception pointed to by the given <see cref="ExceptionHandle"/>.
 /// </summary>
 /// <param name="ex">The <see cref="ExceptionHandle"/> of the exception.</param>
+/// <returns>The name of the exception pointed to by the given <see cref="ExceptionHandle"/>.</returns>
+/// <exception cref="::ArgumentNullException"><paramref name="exceptionHandle"/> is <see cref="null"/>.</exception>
 const String *Exception_GetName(const ExceptionHandle ex);
 
 /// <summary>
-/// Gets the type of the exception pointed to by the given <see cref="ExceptionHandle"/>.
+/// Gets the <see cref="ExceptionType"/> of the exception pointed to by the given <see cref="ExceptionHandle"/>.
 /// </summary>
 /// <param name="ex">The <see cref="ExceptionHandle"/> of the exception.</param>
+/// <returns>
+///     The <see cref="ExceptionType"/> of the exception pointed to by the given <see cref="ExceptionHandle"/>.
+/// </returns>
+/// <exception cref="::ArgumentNullException"><paramref name="exceptionHandle"/> is <see cref="null"/>.</exception>
 ExceptionType Exception_GetType(const ExceptionHandle ex);
 
 /* 'Hidden / obfuscated' functions */
 /// <summary>
 /// Prepares the given <see cref="__CFLAT_EXCEPTION_STATE"/>.
 /// </summary>
-/// <param name="state">Pointer to a <see cref="__CFLAT_EXCEPTION_STATE"/>.</param>
 /// <remarks>This function is intended for internal use only.</remarks>
+/// <param name="state">Pointer to a <see cref="__CFLAT_EXCEPTION_STATE"/>.</param>
 void __CFLAT_EXCEPTION_BEGINTRY(struct __CFLAT_EXCEPTION_STATE *state);
 
 /// <summary>
 /// Catches the exception if it matches the given exception type and returns whether the exception should be caught.
 /// </summary>
+/// <remarks>This function is intended for internal use only.</remarks>
 /// <param name="state">Pointer to a <see cref="__CFLAT_EXCEPTION_STATE"/>.</param>
 /// <param name="exception">The type of exception to catch.</param>
-/// <returns><see cref="true"/> if the exception should be handled; otherwise <see cref="false"/>.</returns>
-/// <remarks>This function is intended for internal use only.</remarks>
+/// <returns><see cref="true"/> if the exception should be handled; otherwise, <see cref="false"/>.</returns>
 bool __CFLAT_EXCEPTION_CATCH(struct __CFLAT_EXCEPTION_STATE *state, ExceptionType exception);
 
 /// <summary>
 /// Marks the beginning of the finally block.
 /// </summary>
-/// <param name="state">Pointer to a <see cref="__CFLAT_EXCEPTION_STATE"/>.</param>
 /// <remarks>This function is intended for internal use only.</remarks>
+/// <param name="state">Pointer to a <see cref="__CFLAT_EXCEPTION_STATE"/>.</param>
 void __CFLAT_EXCEPTION_FINALLY(struct __CFLAT_EXCEPTION_STATE *state);
 
 /// <summary>
 /// Ends a try-catch-finally block. If there is an unhandled exception at this point it will be passed to the parent
 /// try scope if there is any, otherwise an exception message is printed and the program is aborted.
 /// </summary>
-/// <param name="state">Pointer to a <see cref="__CFLAT_EXCEPTION_STATE"/>.</param>
 /// <remarks>This function is intended for internal use only.</remarks>
+/// <param name="state">Pointer to a <see cref="__CFLAT_EXCEPTION_STATE"/>.</param>
 void __CFLAT_EXCEPTION_ENDTRY(struct __CFLAT_EXCEPTION_STATE *state);
 
 /// <summary>
 /// Re-throws an exception that was caught earlier.
 /// </summary>
-/// <param name="ex">The <see cref="ExceptionHandle"/> of the exception to throw.</param>
 /// <remarks>This function is intended for internal use only.</remarks>
+/// <param name="ex">The <see cref="ExceptionHandle"/> of the exception to throw.</param>
 void __CFLAT_EXCEPTION_THROW_AGAIN(const ExceptionHandle ex);
 
 /// <summary>
 /// Throws an exception of the given type.
 /// </summary>
+/// <remarks>This function is intended for internal use only.</remarks>
 /// <param name="type">The type of exception thrown.</param>
 /// <param name="message">
-/// Pointer to a string that describes the exception, or <see cref="null"/> to use the default exception message.
+///     Pointer to a string that describes the exception, or <see cref="null"/> to use the default exception message.
 /// </param>
 /// <param name="file">Pointer to a string that contains the filename where the exception occured.</param>
 /// <param name="line">The line number where the exception occured.</param>
-/// <remarks>This function is intended for internal use only.</remarks>
 void __CFLAT_EXCEPTION_THROW_NEW(ExceptionType type, const char *message, const char *file, int line);
 
 /// <summary>

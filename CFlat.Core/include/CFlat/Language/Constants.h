@@ -17,9 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * @file Constants.h
- */
+//! @file Constants.h
 
 #ifndef CFLAT_CORE_LANGUAGE_CONSTANTS_H
 #define CFLAT_CORE_LANGUAGE_CONSTANTS_H

@@ -35,6 +35,8 @@ typedef struct StringBuilder StringBuilder;
 /// <param name="sb">The <see cref="StringBuilder"/> onto which to append the resulting string.</param>
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 internal void intptr_ToStringBuffered(StringBuilder *sb, intptr value, const String *format);
 #endif
 
@@ -45,6 +47,8 @@ internal void intptr_ToStringBuffered(StringBuilder *sb, intptr value, const Str
 /// <param name="sb">The <see cref="StringBuilder"/> onto which to append the resulting string.</param>
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 internal void uintptr_ToStringBuffered(StringBuilder *sb, uintptr value, const String *format);
 #endif
 
@@ -54,6 +58,8 @@ internal void uintptr_ToStringBuffered(StringBuilder *sb, uintptr value, const S
 /// <param name="sb">The <see cref="StringBuilder"/> onto which to append the resulting string.</param>
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 internal void uintsize_ToStringBuffered(StringBuilder *sb, uintsize value, const String *format);
 
 /// <summary>
@@ -62,6 +68,8 @@ internal void uintsize_ToStringBuffered(StringBuilder *sb, uintsize value, const
 /// <param name="sb">The <see cref="StringBuilder"/> onto which to append the resulting string.</param>
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 internal void sbyte_ToStringBuffered(StringBuilder *sb, sbyte value, const String *format);
 
 /// <summary>
@@ -70,6 +78,8 @@ internal void sbyte_ToStringBuffered(StringBuilder *sb, sbyte value, const Strin
 /// <param name="sb">The <see cref="StringBuilder"/> onto which to append the resulting string.</param>
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 internal void byte_ToStringBuffered(StringBuilder *sb, byte value, const String *format);
 
 /// <summary>
@@ -78,6 +88,8 @@ internal void byte_ToStringBuffered(StringBuilder *sb, byte value, const String 
 /// <param name="sb">The <see cref="StringBuilder"/> onto which to append the resulting string.</param>
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 internal void short_ToStringBuffered(StringBuilder *sb, short value, const String *format);
 
 /// <summary>
@@ -86,6 +98,8 @@ internal void short_ToStringBuffered(StringBuilder *sb, short value, const Strin
 /// <param name="sb">The <see cref="StringBuilder"/> onto which to append the resulting string.</param>
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 internal void ushort_ToStringBuffered(StringBuilder *sb, ushort value, const String *format);
 
 /// <summary>
@@ -94,6 +108,8 @@ internal void ushort_ToStringBuffered(StringBuilder *sb, ushort value, const Str
 /// <param name="sb">The <see cref="StringBuilder"/> onto which to append the resulting string.</param>
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 internal void int_ToStringBuffered(StringBuilder *sb, int value, const String *format);
 
 /// <summary>
@@ -102,6 +118,8 @@ internal void int_ToStringBuffered(StringBuilder *sb, int value, const String *f
 /// <param name="sb">The <see cref="StringBuilder"/> onto which to append the resulting string.</param>
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 internal void uint_ToStringBuffered(StringBuilder *sb, uint value, const String *format);
 
 /// <summary>
@@ -110,6 +128,8 @@ internal void uint_ToStringBuffered(StringBuilder *sb, uint value, const String 
 /// <param name="sb">The <see cref="StringBuilder"/> onto which to append the resulting string.</param>
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 internal void long_ToStringBuffered(StringBuilder *sb, long value, const String *format);
 
 /// <summary>
@@ -118,6 +138,8 @@ internal void long_ToStringBuffered(StringBuilder *sb, long value, const String 
 /// <param name="sb">The <see cref="StringBuilder"/> onto which to append the resulting string.</param>
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 internal void ulong_ToStringBuffered(StringBuilder *sb, ulong value, const String *format);
 
 /// <summary>
@@ -126,6 +148,8 @@ internal void ulong_ToStringBuffered(StringBuilder *sb, ulong value, const Strin
 /// <param name="sb">The <see cref="StringBuilder"/> onto which to append the resulting string.</param>
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 internal void intmax_ToStringBuffered(StringBuilder *sb, intmax value, const String *format);
 
 /// <summary>
@@ -134,6 +158,8 @@ internal void intmax_ToStringBuffered(StringBuilder *sb, intmax value, const Str
 /// <param name="sb">The <see cref="StringBuilder"/> onto which to append the resulting string.</param>
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 internal void uintmax_ToStringBuffered(StringBuilder *sb, uintmax value, const String *format);
 
 #endif

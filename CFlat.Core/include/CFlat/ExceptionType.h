@@ -17,9 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * @file ExceptionType.h
- */
+//! @file ExceptionType.h
 
 #ifndef CFLAT_CORE_EXCEPTIONTYPE_H
 #define CFLAT_CORE_EXCEPTIONTYPE_H
@@ -112,38 +110,40 @@ typedef enum ExceptionType {
 
 /* Functions */
 /// <summary>
-/// Checks whether an instance of the second type can be assigned to an instance of the first type.
+/// Determines whether an instance of the second type can be assigned to an instance of the first type.
 /// </summary>
-/// <param name="type1">A type.</param>
-/// <param name="type2">The type to compare with.</param>
+/// <param name="type1">An <see cref="ExceptionType"/>.</param>
+/// <param name="type2">The <see cref="ExceptionType"/> to compare with.</param>
 /// <returns>
-/// <see cref="true"/> if one of the following coniditions is true:
-/// <list type="bullet">
-///     <item>
-///         <description><paramref name="type2"/> and <paramref name="type1"/> represent the same type.</description>
-///     </item>
-///     <item>
-///         <description>
-///             <paramref name="type2"/> is derived either directly or indirectly from <paramref name="type1"/>.
-///         </description>
-///     </item>
-/// </list>
-/// otherwise <see cref="false"/>.
+///     <see cref="true"/> if one of the following coniditions is true:
+///     <list type="bullet">
+///         <item>
+///             <description>
+///                 <paramref name="type2"/> and <paramref name="type1"/> represent the same type.
+///             </description>
+///         </item>
+///         <item>
+///             <description>
+///                 <paramref name="type2"/> is derived either directly or indirectly from <paramref name="type1"/>.
+///             </description>
+///         </item>
+///     </list>
+///     <see cref="false"/> if none of these conditions are true.
 /// </returns>
 bool ExceptionType_IsAssignableFrom(ExceptionType type1, ExceptionType type2);
 
 /// <summary>
-/// Gets a pointer to a <see cref="String"/> representing the name of the given exception type.
+/// Gets the name of the given <see cref="ExceptionType"/>.
 /// </summary>
-/// <param name="type">The type of which to get the name.</param>
-/// <returns>A pointer to a <see cref="String"/> representing the name of the given exception type.</returns>
+/// <param name="type">An <see cref="ExceptionType"/>.</param>
+/// <returns>The name of the given <see cref="ExceptionType"/>.</returns>
 const String *ExceptionType_GetName(ExceptionType type);
 
 /// <summary>
-/// Gets a pointer to a <see cref="String"/> describing an exception of the given type.
+/// Gets a message describing an exception of the given <see cref="ExceptionType"/>.
 /// </summary>
-/// <param name="type">The type for which to get the default message.</param>
-/// <returns>A pointer to a <see cref="String"/> describing an exception of the given type.</returns>
+/// <param name="type">An <see cref="ExceptionType"/>.</param>
+/// <returns>A message describing an exception of the given <see cref="ExceptionType"/>.</returns>
 const String *ExceptionType_GetDefaultMessage(ExceptionType type);
 
 #endif

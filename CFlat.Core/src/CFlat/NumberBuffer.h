@@ -20,14 +20,14 @@
 #ifndef CFLAT_CORE_NUMBERBUFFER_H
 #define CFLAT_CORE_NUMBERBUFFER_H
 
+#include "CFlat/Macros.h"
 #include "CFlat/Language/Bool.h"
 #include "CFlat/Language/Double.h"
 #include "CFlat/Language/Integer.h"
 #include "CFlat/Language/Keywords.h"
-#include "CFlat/Macros.h"
 
 /* Forward declarations */
-typedef struct StringBuilder StringBuilder;
+struct StringBuilder;
 
 /* Macros */
 #define MAX_INTEGER_BITS (sizeof(uintmax) * 8)
@@ -152,6 +152,7 @@ internal void NumberBuffer_FormatCustomNumber(
 /// </summary>
 /// <param name="number">Pointer to a <see cref="NumberBuffer"/>.</param>
 /// <param name="sb">The <see cref="StringBuilder"/> onto which to append the resulting string.</param>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 internal void NumberBuffer_ToString(const NumberBuffer *number, StringBuilder *sb);
 
 /// <summary>
@@ -195,14 +196,14 @@ internal char NumberBuffer_GetDecimalDigit(const NumberBuffer *number, int index
 /// Determines whether the given <see cref="NumberBuffer"/> is negative.
 /// </summary>
 /// <param name="value">Pointer to a <see cref="NumberBuffer"/>.</param>
-/// <returns><see cref="true"/> if <paramref name="value"/> is negative; otherwise <see cref="false"/>.</returns>
+/// <returns><see cref="true"/> if <paramref name="value"/> is negative; otherwise, <see cref="false"/>.</returns>
 internal bool NumberBuffer_IsNegative(const NumberBuffer *value);
 
 /// <summary>
 /// Determines whether the given <see cref="NumberBuffer"/> represents zero after formatting the number.
 /// </summary>
 /// <param name="value">Pointer to a <see cref="NumberBuffer"/>.</param>
-/// <returns><see cref="true"/> if <paramref name="value"/> represents zero; otherwise <see cref="false"/>.</returns>
+/// <returns><see cref="true"/> if <paramref name="value"/> represents zero; otherwise, <see cref="false"/>.</returns>
 internal bool NumberBuffer_IsZero(const NumberBuffer *value);
 
 #endif

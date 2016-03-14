@@ -18,11 +18,25 @@
 #define CHAR_GRAPHIC            (CHAR_LETTER_OR_DIGIT | CHAR_PUNCTATION)
 #define CHAR_PRINTABLE          (CHAR_GRAPHIC | CHAR_SEPARATOR)
 
+/// <summary>
+/// The bitmask for valid ASCII characters.
+/// </summary>
 #define ASCII_MASK              0x7F
+
+/// <summary>
+/// Determines whether a character is a valid ASCII characters.
+/// </summary>
 #define IS_ASCII(c)             !((c) & ~ASCII_MASK)
+
+/// <summary>
+/// Determines whether a character belongs to the given character class.
+/// </summary>
 #define CHAR_IS(c, group)       ((LookupTable[(c) & ASCII_MASK] & (group)) && IS_ASCII(c))
 
 /* Private constants */
+/// <summary>
+/// A lookup table that maps ASCII characters to a bitmask representing their character classes.
+/// </summary>
 private const int LookupTable[128] =
 {
     /* 0x00 .. 0x08 */

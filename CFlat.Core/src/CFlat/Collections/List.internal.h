@@ -44,9 +44,19 @@ struct List {
 /// <param name="vtable">Pointer to a virtual method table.</param>
 /// <param name="elementSize">The size in bytes of each element.</param>
 /// <param name="equals">
-/// An <see cref="EqualityPredicate"/> that is used to check elements for equality, or <see cref="null"/>.
+///     An <see cref="EqualityPredicate"/> that is used to check elements for equality, or <see cref="null"/>.
 /// </param>
 /// <param name="capacity">The initial capacity of the <see cref="List"/>.</param>
+/// <exception cref="::ArgumentNullException">
+///     <paramref name="list"/> is <see cref="null"/> <b>-or-</b>
+///     <paramref name="vtable"/> is <see cref="null"/> <b>-or-</b>
+///     <paramref name="vtable"/> contains a <see cref="null"/> pointer.
+/// </exception>
+/// <exception cref="::ArgumentOutOfRangeException">
+///     <paramref name="elementSize"/> is 0 <b>-or-</b>
+///     <paramref name="capacity"/> is less than 0.
+/// </exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 internal void List_Constructor_Full(
     List *list,
     const IListVTable *vtable,
@@ -59,6 +69,7 @@ internal void List_Constructor_Full(
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
 /// <returns>The version of the <see cref="List"/>.</returns>
+/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 internal uintsize List_GetVersion(const List *list);
 
 #endif

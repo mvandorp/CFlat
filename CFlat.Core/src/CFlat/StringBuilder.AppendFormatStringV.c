@@ -51,7 +51,10 @@ typedef enum ArgumentType {
     ArgumentType_Double
 } ArgumentType;
 
-/* Private functions */
+/**************************************/
+/* Private functions                  */
+/**************************************/
+
 private void ProcessFormatItem(StringBuilder *sb, StringReader *reader, StringBuilder *buffer, VarArgs *args);
 private ArgumentType ReadFormatItem(StringReader *reader, char **formatString, StringBuilder *formatBuffer);
 private ArgumentType ParseFormatItem(char *formatItem, char **formatString);
@@ -109,6 +112,8 @@ public void StringBuilder_AppendFormatStringV(StringBuilder *sb, const String *f
 /// Processes the format item that the given <see cref="StringReader"/> is reading and appends the resulting string
 /// to the given  <see cref="StringReader"/>.
 /// </summary>
+/// <exception cref="::FormatException"><paramref name="reader"/> does not contain a valid format item.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 private void ProcessFormatItem(StringBuilder *sb, StringReader *reader, StringBuilder *buffer, VarArgs *args)
 {
     assert(sb != null);
@@ -224,6 +229,8 @@ private void ProcessFormatItem(StringBuilder *sb, StringReader *reader, StringBu
 /// <summary>
 /// Reads the format item that the given <see cref="StringReader"/> is reading and returns the type and format string.
 /// </summary>
+/// <exception cref="::FormatException"><paramref name="reader"/> does not contain a valid format item.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 private ArgumentType ReadFormatItem(StringReader *reader, char **formatString, StringBuilder *formatBuffer)
 {
     assert(reader != null);
@@ -276,6 +283,7 @@ private ArgumentType ReadFormatItem(StringReader *reader, char **formatString, S
 /// <summary>
 /// Parses the format item into the type and format string..
 /// </summary>
+/// <exception cref="::FormatException"><paramref name="formatItem"/> does not contain a known type.</exception>
 private ArgumentType ParseFormatItem(char *formatItem, char **formatString)
 {
     assert(formatItem != null);
@@ -298,6 +306,7 @@ private ArgumentType ParseFormatItem(char *formatItem, char **formatString)
 /// <summary>
 /// Finds the <see cref="ArgumentType"/> for the given string representation of a type.
 /// </summary>
+/// <exception cref="::FormatException"><paramref name="type"/> does not represent a known type.</exception>
 private ArgumentType ToArgumentType(const char *type)
 {
     // TODO: Use a hashmap for lookup.

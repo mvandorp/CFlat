@@ -3,7 +3,10 @@
 #include "CFlat.h"
 #include "CFlat/Validate.h"
 
-/* Private functions */
+/**************************************/
+/* Private functions                  */
+/**************************************/
+
 private const ICollectionVTable *GetVTable(const ICollection *collection);
 
 /**************************************/
@@ -74,6 +77,11 @@ public bool ICollection_Remove(ICollection *collection, const void *item)
 /* Private function definitions       */
 /**************************************/
 
+/// <summary>
+/// Gets the virtual method table of an <see cref="ICollection"/>.
+/// </summary>
+/// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="collection"/> is <see cref="null"/>.</exception>
 private const ICollectionVTable *GetVTable(const ICollection *collection)
 {
     Validate_NotNull(collection);

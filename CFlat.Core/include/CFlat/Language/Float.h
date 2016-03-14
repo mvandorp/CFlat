@@ -17,9 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * @file Float.h
- */
+//! @file Float.h
 
 #ifndef CFLAT_CORE_LANGUAGE_FLOAT_H
 #define CFLAT_CORE_LANGUAGE_FLOAT_H
@@ -31,9 +29,9 @@
 typedef struct String String;
 
 /* Macros */
- /// <summary>
- /// The radix used for the <see cref="float"/> type.
- /// </summary>
+/// <summary>
+/// The radix used for the <see cref="float"/> type.
+/// </summary>
 #define float_Radix ((int)FLT_RADIX)
 
 /// <summary>
@@ -56,7 +54,7 @@ typedef struct String String;
 /// </summary>
 #define float_MaxBase10Exponent ((int)FLT_MAX_10_EXP)
 
- /// <summary>
+/// <summary>
 /// Represents the smallest possible value of <see cref="float"/>.
 /// </summary>
 #define float_MinValue ((float)FLT_MIN)
@@ -78,36 +76,39 @@ typedef struct String String;
 
 /* Functions */
 /// <summary>
-/// Returns whether the given number is not a number (<c>NaN</c>).
-/// </summary>
-/// <param name="value">The number to check.</param>
-/// <returns><see cref="true"/> if the <paramref name="value"/> is <c>NaN</c>; otherwise <see cref="false"/>.</returns>
-bool float_IsNaN(float value);
-
-/// <summary>
-/// Returns whether the given number is negative or positive infinity.
+/// Determines whether the given number is not a number (<c>NaN</c>).
 /// </summary>
 /// <param name="value">The number to check.</param>
 /// <returns>
-/// <see cref="true"/> if the <paramref name="value"/> is negative or positive infinity; otherwise <see cref="false"/>.
+///     <see cref="true"/> if the <paramref name="value"/> is <c>NaN</c>; otherwise, <see cref="false"/>.
+/// </returns>
+bool float_IsNaN(float value);
+
+/// <summary>
+/// Determines whether the given number is negative or positive infinity.
+/// </summary>
+/// <param name="value">The number to check.</param>
+/// <returns>
+///     <see cref="true"/> if the <paramref name="value"/> is negative or positive infinity;
+///     otherwise, <see cref="false"/>.
 /// </returns>
 bool float_IsInfinity(float value);
 
 /// <summary>
-/// Returns whether the given number is negative infinity.
+/// Determines whether the given number is negative infinity.
 /// </summary>
 /// <param name="value">The number to check.</param>
 /// <returns>
-/// <see cref="true"/> if the <paramref name="value"/> is negative infinity; otherwise <see cref="false"/>.
+///     <see cref="true"/> if the <paramref name="value"/> is negative infinity; otherwise, <see cref="false"/>.
 /// </returns>
 bool float_IsNegativeInfinity(float value);
 
 /// <summary>
-/// Returns whether the given number is positive infinity.
+/// Determines whether the given number is positive infinity.
 /// </summary>
 /// <param name="value">The number to check.</param>
 /// <returns>
-/// <see cref="true"/> if the <paramref name="value"/> is positive infinity; otherwise <see cref="false"/>.
+///     <see cref="true"/> if the <paramref name="value"/> is positive infinity; otherwise, <see cref="false"/>.
 /// </returns>
 bool float_IsPositiveInfinity(float value);
 
@@ -132,6 +133,7 @@ float float_Min(float x, float y);
 /// </summary>
 /// <param name="value">The value to be converted to a string.</param>
 /// <returns>The string representation of the given number.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *float_ToString(float value);
 
 /// <summary>
@@ -140,6 +142,7 @@ String *float_ToString(float value);
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *float_ToStringFormat(float value, const String *format);
 
 /// <summary>
@@ -148,6 +151,7 @@ String *float_ToStringFormat(float value, const String *format);
 /// <param name="value">The value to be converted to a string.</param>
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *float_ToStringFormatC(float value, const char *format);
 
 #ifdef CFLAT_CORE_INTERNAL

@@ -17,9 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * @file Assert.h
- */
+//! @file Assert.h
 
 #ifndef CFLAT_CORE_LANGUAGE_ASSERT_H
 #define CFLAT_CORE_LANGUAGE_ASSERT_H
@@ -34,21 +32,21 @@
     #define assert(condition) ((void)0)
 #else
     /// <summary>
-    /// Prints an assertion failed message and aborts the program.
-    /// </summary>
-    /// <param name="condition">Pointer to a string representation of the condition.</param>
-    /// <param name="file">Pointer to a string that contains the name of the file where the assertion failed.</param>
-    /// <param name="line">The line number where the assertion failed.</param>
-    /// <remarks>This function is intended for internal use only.</remarks>
-    void __CFLAT_ASSERT_FAIL(const char *condition, const char *file, int line);
-
-    /// <summary>
     /// Checks for a condition; if the condition is <see cref="false"/>, prints a message and aborts the program.
     /// If the macro NDEBUG is defined before the inclusion of Assert.h, assertions are disabled and the conditions
     /// will not be evaluated.
     /// </summary>
     /// <param name="condition">The condition to evaluate.</param>
     #define assert(condition) ((void)(!!(condition) || (__CFLAT_ASSERT_FAIL(#condition, __FILE__, __LINE__), 0)))
+
+    /// <summary>
+    /// Prints an assertion failed message and aborts the program.
+    /// </summary>
+    /// <remarks>This function is intended for internal use only.</remarks>
+    /// <param name="condition">Pointer to a string representation of the condition.</param>
+    /// <param name="file">Pointer to a string that contains the name of the file where the assertion failed.</param>
+    /// <param name="line">The line number where the assertion failed.</param>
+    void __CFLAT_ASSERT_FAIL(const char *condition, const char *file, int line);
 #endif
 
 #endif

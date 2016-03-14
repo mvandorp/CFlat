@@ -17,9 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * @file CFlat.h
- */
+//! @file CFlat.h
 
 #ifndef CFLAT_CORE_CFLAT_H
 #define CFLAT_CORE_CFLAT_H

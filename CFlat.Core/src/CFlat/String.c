@@ -27,14 +27,27 @@
 #include "CFlat/Validate.h"
 
 /* Private constants */
+/// <summary>
+/// Represents an empty string.
+/// </summary>
 private const String Empty = CFLAT_STRING_LITERAL("");
 
 /* Public constants */
+/// <summary>
+/// Represents an empty string.
+/// </summary>
 public const String * const String_Empty = &Empty;
 
 /* Internal constants */
+/// <summary>
+/// The virtual method table for the <see cref="String"/> class.
+/// </summary>
 internal const ObjectVTable String_VTable = ObjectVTable_Initializer((DestructorFunc)String_Destructor);
 
+/// <summary>
+/// The virtual method table for the <see cref="String"/> class, without a destructor set so that the internal
+/// null-terminated string is not automatically destroyed.
+/// </summary>
 internal const ObjectVTable String_VTableNoDestructor = ObjectVTable_Initializer(null);
 
 /**************************************/

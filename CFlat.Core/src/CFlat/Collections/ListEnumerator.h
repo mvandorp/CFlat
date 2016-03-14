@@ -33,7 +33,9 @@ typedef struct IEnumerator IEnumerator;
 /// The lifetime of the <see cref="IEnumerator"/> should be managed with Object_Aquire() and Object_Release().
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
-/// <returns>Pointer to the newly allocated <see cref="IEnumerator"/>.</returns>
+/// <returns>A pointer to the newly allocated <see cref="IEnumerator"/>.</returns>
+/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 internal IEnumerator *ListEnumerator_New(const List *list);
 
 #endif

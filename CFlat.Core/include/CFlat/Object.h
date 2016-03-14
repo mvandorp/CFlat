@@ -17,9 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * @file Object.h
- */
+//! @file Object.h
 
 #ifndef CFLAT_CORE_OBJECT_H
 #define CFLAT_CORE_OBJECT_H
@@ -44,22 +42,22 @@
 /// Initializer for an <see cref="ObjectVTable"/>.
 /// </summary>
 /// <param name="destructor">
-/// A <see cref="DestructorFunc"/> that is called when the object needs to be destroyed, or <see cref="null"/> if the
-/// object should not automatically be destroyed.
+///     A <see cref="DestructorFunc"/> that is called when an <see cref="Object"/> needs to be destroyed, or
+///     <see cref="null"/> if the <see cref="Object"/> should not automatically be destroyed.
 /// </param>
 #define ObjectVTable_Initializer(destructor) { destructor }
 
 /* Types */
 /// <summary>
-/// A function to perform clean up of the given object before it gets deallocated.
+/// A function that performs clean up of an object before it gets deallocated.
 /// </summary>
-/// <param name="obj">The object to clean up.</param>
+/// <param name="obj">Pointer to the object to clean up.</param>
 typedef void(*DestructorFunc)(void *obj);
 
 /// <summary>
-/// A function to deallocate the given object.
+/// A function that deallocates an object.
 /// </summary>
-/// <param name="obj">The object to deallocate.</param>
+/// <param name="obj">Pointer to the object to deallocate.</param>
 typedef void(*DeallocatorFunc)(void *obj);
 
 /// <summary>
@@ -67,9 +65,9 @@ typedef void(*DeallocatorFunc)(void *obj);
 /// </summary>
 typedef struct ObjectVTable {
     /// <summary>
-    /// The <see cref="DestructorFunc"/> of the object.
+    /// A <see cref="DestructorFunc"/> that is called when an <see cref="Object"/> needs to be destroyed, or
+    /// <see cref="null"/> if the <see cref="Object"/> should not automatically be destroyed.
     /// </summary>
-    /// <remarks>This member is intended for internal use only and should not be modified directly.</remarks>
     DestructorFunc Destructor;
 } ObjectVTable;
 
@@ -84,7 +82,8 @@ typedef struct Object {
     /// <remarks>This member is intended for internal use only and should not be modified directly.</remarks>
     uintsize RefCount;
     /// <summary>
-    /// The <see cref="DeallocatorFunc"/> of the object.
+    /// A <see cref="DeallocatorFunc"/> that is called when the <see cref="Object"/> needs to be deallocated, or
+    /// <see cref="null"/> if the <see cref="Object"/> should not automatically be deallocated.
     /// </summary>
     /// <remarks>This member is intended for internal use only and should not be modified directly.</remarks>
     DeallocatorFunc Deallocator;
@@ -97,37 +96,47 @@ typedef struct Object {
 
 /* Functions */
 /// <summary>
-/// Initializes the given <see cref="Object"/> and sets the vtable.
+/// Initializes the an <see cref="Object"/> and sets the virtual method table.
 /// </summary>
 /// <param name="obj">Pointer to an uninitialized <see cref="Object"/>.</param>
 /// <param name="vtable">Pointer to a virtual method table.</param>
+/// <exception cref="::ArgumentNullException">
+///     <paramref name="obj"/> is <see cref="null"/> <b>-or-</b>
+///     <paramref name="vtable"/> is <see cref="null"/>.
+/// </exception>
 void Object_Constructor(void *obj, const ObjectVTable *vtable);
 
 /// <summary>
-/// Sets the deallocator of the given <see cref="Object"/>.
+/// Sets the deallocator of an <see cref="Object"/>.
 /// </summary>
 /// <param name="obj">Pointer to an <see cref="Object"/>.</param>
 /// <param name="deallocator">
-/// A <see cref="DeallocatorFunc"/> that is called when the <paramref name="obj"/> needs to be deallocated, or
-/// <see cref="null"/> if <paramref name="obj"/> should not automatically be deallocated.
+///     A <see cref="DeallocatorFunc"/> that is called when <paramref name="obj"/> needs to be deallocated, or
+///     <see cref="null"/> if <paramref name="obj"/> should not automatically be deallocated.
 /// </param>
+/// <exception cref="::ArgumentNullException"><paramref name="obj"/> is <see cref="null"/>.</exception>
 void Object_SetDeallocator(void *obj, DeallocatorFunc deallocator);
 
 /// <summary>
-/// Sets the virtual method table of the given <see cref="Object"/>.
+/// Sets the virtual method table of an <see cref="Object"/>.
 /// </summary>
 /// <param name="obj">Pointer to an <see cref="Object"/>.</param>
 /// <param name="vtable">Pointer to a virtual method table.</param>
+/// <exception cref="::ArgumentNullException">
+///     <paramref name="obj"/> is <see cref="null"/> <b>-or-</b>
+///     <paramref name="vtable"/> is <see cref="null"/>.
+/// </exception>
 void Object_SetVTable(void *obj, const ObjectVTable *vtable);
 
 /// <summary>
 /// Increments the reference count of an <see cref="Object"/>.
-///
-/// If <paramref name="obj"/> is <see cref="null"/>, the function does nothing.
-///
-/// The behaviour is undefined if <paramref name="obj"/> has already been deleted as the result of a call to
-/// Object_Release().
 /// </summary>
+/// <remarks>
+///     If <paramref name="obj"/> is <see cref="null"/>, the function does nothing.
+///
+///     The behaviour is undefined if <paramref name="obj"/> has already been deleted as the result of a call to
+///     Object_Release().
+/// </remarks>
 /// <param name="obj">Pointer to an <see cref="Object"/>.</param>
 /// <returns><paramref name="obj"/>.</returns>
 /// <seealso cref="Object_Release()"/>
@@ -135,19 +144,20 @@ void *Object_Aquire(const void *obj);
 
 /// <summary>
 /// Decrements the reference count of an <see cref="Object"/>.
-///
-/// If <paramref name="obj"/> is <see cref="null"/>, the function does nothing and returns <see cref="false"/>.
-///
-/// If the reference count reaches zero, the object is deleted by first calling the destructor of the object, and then
-/// deallocating the memory reserved for the object.
-///
-/// The behaviour is undefined if <paramref name="obj"/> has already been deleted as the result of a previous call to
-/// Object_Release().
 /// </summary>
+/// <remarks>
+///     If <paramref name="obj"/> is <see cref="null"/>, the function does nothing and returns <see cref="false"/>.
+///
+///     If the reference count reaches zero, the object is deleted by first calling the destructor of the object, and
+///     then deallocating the memory reserved for the object.
+///
+///     The behaviour is undefined if <paramref name="obj"/> has already been deleted as the result of a previous call
+///     to Object_Release().
+/// </remarks>
 /// <param name="obj">Pointer to an <see cref="Object"/>.</param>
 /// <returns>
-/// <see cref="true"/> if the reference count reached zero and <paramref name="obj"/> was deleted; otherwise
-/// <see cref="false"/>.
+///     <see cref="true"/> if the reference count reached zero and <paramref name="obj"/> was deleted;
+///     otherwise, <see cref="false"/>.
 /// </returns>
 /// <seealso cref="Object_Aquire()"/>
 bool Object_Release(const void *obj);

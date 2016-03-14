@@ -10,13 +10,22 @@
 #include "CFlat/Collections/ListEnumerator.h"
 
 /* Private constants */
+/// <summary>
+/// The default capacity for a list that is not empty.
+/// </summary>
 private const int DefaultCapacity = 4;
 
-/* Private functions */
+/**************************************/
+/* Private functions                  */
+/**************************************/
+
 private void EnsureCapacity(List *list, int capacity);
 private bool IsReadOnly(const List *list);
 
 /* Private constants */
+/// <summary>
+/// The virtual method table for the <see cref="List"/> class.
+/// </summary>
 private const IListVTable VTable = IListVTable_Initializer(
     (DestructorFunc)List_Destructor,
     (IEnumerable_GetEnumeratorFunc)List_GetEnumerator,
@@ -170,24 +179,24 @@ public uintsize List_GetElementSize(const List *list)
 }
 
 /* Methods */
-public void List_AddRange(List *list, const IEnumerable *enumerable)
+public void List_AddRange(List *list, const IEnumerable *collection)
 {
     Validate_NotNull(list);
-    Validate_NotNull(enumerable);
+    Validate_NotNull(collection);
 
-    List_InsertRange(list, list->Count, enumerable);
+    List_InsertRange(list, list->Count, collection);
 }
 
-public void List_InsertRange(List *list, int index, const IEnumerable *enumerable)
+public void List_InsertRange(List *list, int index, const IEnumerable *collection)
 {
     Validate_NotNull(list);
-    Validate_NotNull(enumerable);
+    Validate_NotNull(collection);
     Validate_IsTrue(
         index >= 0 && index <= list->Count,
         ArgumentOutOfRangeException,
         "Index must be within the bounds of the List.");
 
-    IEnumerator *enumerator = IEnumerable_GetEnumerator(enumerable);
+    IEnumerator *enumerator = IEnumerable_GetEnumerator(collection);
 
     try {
         while (IEnumerator_MoveNext(enumerator)) {

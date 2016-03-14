@@ -17,9 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * @file Math.h
- */
+//! @file Math.h
 
 #ifndef CFLAT_CORE_MATH_H
 #define CFLAT_CORE_MATH_H

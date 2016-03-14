@@ -17,9 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * @file IEnumerable.h
- */
+//! @file IEnumerable.h
 
 #ifndef CFLAT_CORE_COLLECTIONS_IENUMERABLE_H
 #define CFLAT_CORE_COLLECTIONS_IENUMERABLE_H
@@ -33,16 +31,13 @@ typedef struct IEnumerator IEnumerator;
 /// <summary>
 /// Initializer for an <see cref="IEnumerableVTable"/>.
 /// </summary>
-/// <param name="destructor">
-/// A <see cref="DestructorFunc"/> that is called when the object needs to be destroyed, or <see cref="null"/> if the
-/// object should not automatically be destroyed.
-/// </param>
+/// <param name="destructor">A <see cref="DestructorFunc"/>.</param>
 /// <param name="getEnumerator">An <see cref="IEnumerable_GetEnumeratorFunc"/>.</param>
 #define IEnumerableVTable_Initializer(destructor, getEnumerator) { ObjectVTable_Initializer(destructor), getEnumerator }
 
 /* Types */
 /// <summary>
-/// Exposes the enumerator, which supports a simple iteration over a collection of elements.
+/// Base class that exposes an enumerator, which supports a simple iteration over a collection of elements.
 /// </summary>
 typedef struct IEnumerable {
     /// <summary>
@@ -52,40 +47,47 @@ typedef struct IEnumerable {
 } IEnumerable;
 
 /// <summary>
-/// A function that returns a pointer to an <see cref="IEnumerator"/> that iterates through a given
+/// A function that returns a pointer to an <see cref="IEnumerator"/> that iterates through an
 /// <see cref="IEnumerable"/>.
 /// </summary>
-/// <param name="enumerable">Pointer to an <see cref="IEnumerable"/>.</param>
-typedef IEnumerator *(*IEnumerable_GetEnumeratorFunc)(const IEnumerable *enumerable);
+/// <param name="collection">Pointer to an <see cref="IEnumerable"/>.</param>
+typedef IEnumerator *(*IEnumerable_GetEnumeratorFunc)(const IEnumerable *collection);
 
 /// <summary>
 /// A virtual method table for the <see cref="IEnumerable"/> class.
 /// </summary>
 typedef struct IEnumerableVTable {
     /// <summary>
-    /// The base class of <see cref="IEnumerableVTable"/>.
+    /// The virtual method table of the base class of <see cref="IEnumerable"/>.
     /// </summary>
     ObjectVTable Base;
 
     /// <summary>
-    /// A function that returns an <see cref="IEnumerator"/> for this <see cref="IEnumerable"/>.
+    /// A function that returns a pointer to an <see cref="IEnumerator"/> that iterates through an
+    /// <see cref="IEnumerable"/>.
     /// </summary>
     IEnumerable_GetEnumeratorFunc GetEnumerator;
 } IEnumerableVTable;
 
 /* Functions */
 /// <summary>
-/// Initializes the given <see cref="IEnumerable"/>.
+/// Initializes an <see cref="IEnumerable"/>.
 /// </summary>
-/// <param name="enumerable">Pointer to an uninitialized <see cref="IEnumerable"/>.</param>
+/// <param name="collection">Pointer to an uninitialized <see cref="IEnumerable"/>.</param>
 /// <param name="vtable">Pointer to a virtual method table.</param>
-void IEnumerable_Constructor(IEnumerable *enumerable, const IEnumerableVTable *vtable);
+/// <exception cref="::ArgumentNullException">
+///     <paramref name="collection"/> is <see cref="null"/> <b>-or-</b>
+///     <paramref name="vtable"/> is <see cref="null"/> <b>-or-</b>
+///     <paramref name="vtable"/> contains a <see cref="null"/> pointer.
+/// </exception>
+void IEnumerable_Constructor(IEnumerable *collection, const IEnumerableVTable *vtable);
 
 /// <summary>
-/// Returns a pointer to an <see cref="IEnumerator"/> that iterates through the given <see cref="IEnumerable"/>.
+/// Returns a pointer to an <see cref="IEnumerator"/> that iterates through an <see cref="IEnumerable"/>.
 /// </summary>
-/// <param name="enumerable">Pointer to an <see cref="IEnumerable"/>.</param>
-/// <returns>An <see cref="IEnumerator"/> that iterates through an <see cref="IEnumerable"/>.</returns>
-IEnumerator *IEnumerable_GetEnumerator(const IEnumerable *enumerable);
+/// <param name="collection">Pointer to an <see cref="IEnumerable"/>.</param>
+/// <returns>An <see cref="IEnumerator"/> that iterates through the <see cref="IEnumerable"/>.</returns>
+/// <exception cref="::ArgumentNullException"><paramref name="collection"/> is <see cref="null"/>.</exception>
+IEnumerator *IEnumerable_GetEnumerator(const IEnumerable *collection);
 
 #endif

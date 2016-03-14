@@ -15,13 +15,20 @@ typedef struct ListEnumerator {
     uintsize Version;
 } ListEnumerator;
 
-/* Private functions */
+/**************************************/
+/* Private functions                  */
+/**************************************/
+
 private void Constructor(ListEnumerator *enumerator, const List *list);
 private void Destructor(ListEnumerator *enumerator);
 private void *GetCurrent(const ListEnumerator *enumerator);
 private bool MoveNext(ListEnumerator *enumerator);
 private void Reset(ListEnumerator *enumerator);
 
+/* Private constants */
+/// <summary>
+/// The virtual method table for the <see cref="ListEnumerator"/> class.
+/// </summary>
 private const IEnumeratorVTable VTable = IEnumeratorVTable_Initializer(
     (DestructorFunc)Destructor,
     (IEnumerator_GetCurrentFunc)GetCurrent,
