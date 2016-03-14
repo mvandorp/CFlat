@@ -57,9 +57,14 @@ else ifndef MODE
 
     # Build statistics
     evalnum         = $(shell echo "$$(($1))"; )
+    ErrorCounter    := 0
+    WarningCounter  := 0
     ActiveCounter   := 0
     BuiltCounter    := 0
     FailedCounter   := 0
+    BuildFailed     = $(call evalnum,($(ErrorCount) + $(FailedCount)) > 0)
+    ErrorCount      = $(call evalnum,$(ErrorCounter))
+    WarningCount    = $(call evalnum,$(WarningCounter))
     ActiveCount     = $(call evalnum,$(ActiveCounter))
     BuiltCount      = $(call evalnum,$(BuiltCounter))
     FailedCount     = $(call evalnum,$(FailedCounter))
@@ -165,7 +170,8 @@ else ifndef MODE
 
     .PHONY: build
     build: $(Projects)
-		@echo $(BuildReport)
+		@echo $(BuildReport);
+		@exit $(BuildFailed);
 
     .PHONY: rebuild
     rebuild: | build
@@ -403,7 +409,7 @@ else ifeq ($(MODE),LOAD_PROJECT)
         $(Target): $(ObjectFiles) $(PrerequisiteTargets) $(Makefiles) | $(OutputDirectory)
 			$(eval LogFile := $(shell rm -f $@; mktemp))
 			$(eval ExitCode := $(shell $(.link) > $(LogFile) 2>&1; echo $$?; ))
-			$(eval HasWarnings := $(shell test -s $(LogFile); ))
+			$(eval HasWarnings := $(shell test -s $(LogFile); echo $$?; ))
 			$(eval $(call ifzero, $(ExitCode), BuiltCounter := $(BuiltCounter)+1, FailedCounter := $(FailedCounter)+1))
 			$(eval $(call ifzero, $(ExitCode),                                      \
 				$(call ifzero, $(HasWarnings),                                      \
@@ -417,18 +423,20 @@ else ifeq ($(MODE),LOAD_PROJECT)
         $(BuildDirectory)/%.o: .CPPFLAGS        :=$(CPPFLAGS)
         $(BuildDirectory)/%.o: .BuildDirectory  :=$(BuildDirectory)
         $(BuildDirectory)/%.o: $(RelativeProjectDir)%.c $(Makefiles) | $(BuildDirectories)
-			@rm -f $@;                                  \
-			LOG=$$($(COMPILE) 2>&1);                    \
-			if [ $$? -eq 0 ]; then                      \
-				$(GENERATE_DEPENDENCIES);               \
-				if [ "$$LOG" = "" ]; then               \
-					echo "$(OK_STRING) $<";             \
-				else                                    \
-					echo "$(WARN_STRING) $<\n$$LOG";    \
-				fi;                                     \
-			else                                        \
-				echo "$(ERROR_STRING) $<\n$$LOG";       \
-			fi;
+			$(eval LogFile := $(shell rm -f $@; mktemp))
+			$(eval ExitCode := $(shell $(COMPILE) > $(LogFile) 2>&1; echo $$?; ))
+			$(eval HasWarnings := $(shell test -s $(LogFile); echo $$?; ))
+			$(eval $(call ifzero, $(ExitCode), $(shell $(GENERATE_DEPENDENCIES)),))
+			$(eval $(call ifzero, $(ExitCode),                  \
+				$(call ifzero, $(HasWarnings),                  \
+					$$(call build_warning,$<),                  \
+					$$(call build_ok,$<)),                      \
+				$$(call build_error,$<)))
+			$(eval $(call ifzero, $(ExitCode),                  \
+				$(call ifzero, $(HasWarnings),                  \
+					WarningCounter := $(WarningCounter)+1,),    \
+				ErrorCounter := $(ErrorCounter)+1))
+			@cat $(LogFile); rm -f $(LogFile)
 
         .PHONY: rebuild_$(ProjectName)
         rebuild_$(ProjectName): | .fastclean_$(ProjectName) $(ProjectName) .postbuild
