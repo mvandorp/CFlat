@@ -20,6 +20,10 @@
 #ifndef CFLAT_CORE_LANGUAGE_FLOAT_INTERNAL_H
 #define CFLAT_CORE_LANGUAGE_FLOAT_INTERNAL_H
 
+#ifndef CFLAT_CORE_LANGUAGE_FLOAT_H
+ #error Float.internal.h should not be included directly.
+#endif
+
 #include "CFlat/Language/Keywords.h"
 
 /* Types */

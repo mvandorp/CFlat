@@ -246,18 +246,18 @@ void List_InsertRange(List *list, int index, const IEnumerable *collection);
 /// Removes the given range of elements from the a <see cref="List"/>.
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
-/// <param name="startIndex">The position where to start removing elements.</param>
+/// <param name="index">The position where to start removing elements.</param>
 /// <param name="count">The number of elements to remove.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 /// <exception cref="::ArgumentOutOfRangeException">
-///     <paramref name="startIndex"/> is less than 0 <b>-or-</b>
+///     <paramref name="index"/> is less than 0 <b>-or-</b>
 ///     <paramref name="count"/> is less than 0.
 /// </exception>
 /// <exception cref="::ArgumentException">
 ///     <paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in
 ///     <paramref name="list"/>.
 /// </exception>
-void List_RemoveRange(List *list, int startIndex, int count);
+void List_RemoveRange(List *list, int index, int count);
 
 /* IEnumerable */
 /// <summary>

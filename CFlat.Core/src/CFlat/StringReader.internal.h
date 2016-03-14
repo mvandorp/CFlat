@@ -20,6 +20,10 @@
 #ifndef CFLAT_CORE_STRINGREADER_INTERNAL_H
 #define CFLAT_CORE_STRINGREADER_INTERNAL_H
 
+#ifndef CFLAT_CORE_STRINGREADER_H
+ #error StringReader.internal.h should not be included directly.
+#endif
+
 #include "CFlat/Object.h"
 #include "CFlat/Language/Integer.h"
 
@@ -27,10 +31,10 @@
 typedef struct String String;
 
 /* Types */
-struct StringReader {
+typedef struct StringReader {
     Object Base;
     const String *Value;
     uintsize Position;
-};
+} StringReader;
 
 #endif

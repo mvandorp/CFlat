@@ -17,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CFLAT_CORE_NUMBERBUFFER_H
-#define CFLAT_CORE_NUMBERBUFFER_H
+#ifndef CFLAT_CORE_NUMBER_NUMBERBUFFER_H
+#define CFLAT_CORE_NUMBER_NUMBERBUFFER_H
 
 #include "CFlat/Macros.h"
 #include "CFlat/Language/Bool.h"
@@ -27,7 +27,7 @@
 #include "CFlat/Language/Keywords.h"
 
 /* Forward declarations */
-struct StringBuilder;
+typedef struct StringBuilder StringBuilder;
 
 /* Macros */
 #define MAX_INTEGER_BITS (sizeof(uintmax) * 8)

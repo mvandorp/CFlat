@@ -20,6 +20,10 @@
 #ifndef CFLAT_CORE_LANGUAGE_INTEGER_INTERNAL_H
 #define CFLAT_CORE_LANGUAGE_INTEGER_INTERNAL_H
 
+#ifndef CFLAT_CORE_LANGUAGE_INTEGER_H
+ #error Integer.internal.h should not be included directly.
+#endif
+
 #include "CFlat/Language/Integer.h"
 #include "CFlat/Language/Keywords.h"
 

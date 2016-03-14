@@ -50,11 +50,6 @@ public char *CString_Copy(const char *str)
     char *start = Memory_Allocate(length);
     char *copy = start;
 
-    // If the allocation failed, return null.
-    if (start == null) {
-        return null;
-    }
-
     // Copy all bytes in the string, including the terminating null character.
     while (length-- > 0) {
         *copy++ = *str++;

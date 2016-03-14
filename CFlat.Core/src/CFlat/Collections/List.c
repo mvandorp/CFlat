@@ -109,7 +109,7 @@ public List *List_New_FromCollection(uintsize elementSize, EqualityPredicate equ
 /* Constructors */
 public void List_Constructor(List *list, uintsize elementSize, EqualityPredicate equals)
 {
-    List_Constructor_WithCapacity(list, elementSize, equals, DefaultCapacity);
+    List_Constructor_WithCapacity(list, elementSize, equals, 0);
 }
 
 public void List_Constructor_WithCapacity(List *list, uintsize elementSize, EqualityPredicate equals, int capacity)
@@ -209,25 +209,24 @@ public void List_InsertRange(List *list, int index, const IEnumerable *collectio
     endtry;
 }
 
-public void List_RemoveRange(List *list, int startIndex, int count)
+public void List_RemoveRange(List *list, int index, int count)
 {
     Validate_NotNull(list);
+    Validate_IsTrue(index >= 0, ArgumentOutOfRangeException, "Index cannot be negative.");
+    Validate_IsTrue(count >= 0, ArgumentOutOfRangeException, "Count cannot be negative.");
     Validate_IsTrue(
-        startIndex >= 0 && startIndex <= list->Count,
-        ArgumentOutOfRangeException,
-        "Index must be within the bounds of the List.");
-    Validate_IsTrue(
-        count >= 0 && startIndex + count <= list->Count,
-        ArgumentOutOfRangeException,
-        "Count must be positive and refer to a location within the list.");
+        list->Count < index + count,
+        ArgumentException,
+        "Index and count were out of bounds for the list or count is greater than the number of elements from index to "
+        "the end of the list.");
 
     uintsize size = list->ElementSize;
 
     // Copy the contents of the buffer backward after index forward by length bytes.
     Memory_CopyOffset(
-        list->Array, (startIndex + count) * size,
-        list->Array, startIndex * size,
-        (list->Count - (startIndex + count)) * size);
+        list->Array, (index + count) * size,
+        list->Array, index * size,
+        (list->Count - (index + count)) * size);
 
     list->Count -= count;
     list->Version++;
@@ -386,8 +385,8 @@ internal void List_Constructor_Full(
     EqualityPredicate equals,
     int capacity)
 {
-    Validate_IsTrue(capacity >= 0, ArgumentOutOfRangeException, "Capacity cannot be negative.");
     Validate_IsTrue(elementSize > 0, ArgumentOutOfRangeException, "Element size cannot be zero.");
+    Validate_IsTrue(capacity >= 0, ArgumentOutOfRangeException, "Capacity cannot be negative.");
 
     IList_Constructor((IList*)list, vtable);
 
@@ -415,6 +414,7 @@ internal uintsize List_GetVersion(const List *list)
 private void EnsureCapacity(List *list, int minCapacity)
 {
     assert(list != null);
+    assert(minCapacity >= 0);
 
     if (list->Capacity < minCapacity) {
         if (minCapacity > List_MaxCapacity) {

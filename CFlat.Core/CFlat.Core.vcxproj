@@ -45,7 +45,7 @@
     <ClInclude Include="src\CFlat\Language\Integer.internal.h" />
     <ClInclude Include="src\CFlat\Macros.h" />
     <ClInclude Include="src\CFlat\Number.h" />
-    <ClInclude Include="src\CFlat\NumberBuffer.h" />
+    <ClInclude Include="src\CFlat\Number.NumberBuffer.h" />
     <ClInclude Include="src\CFlat\String.internal.h" />
     <ClInclude Include="src\CFlat\StringBuilder.internal.h" />
     <ClInclude Include="src\CFlat\StringReader.internal.h" />
@@ -66,7 +66,7 @@
     <ClCompile Include="src\CFlat\Language\Integer.c" />
     <ClCompile Include="src\CFlat\Math.c" />
     <ClCompile Include="src\CFlat\Number.c" />
-    <ClCompile Include="src\CFlat\NumberBuffer.c" />
+    <ClCompile Include="src\CFlat\Number.NumberBuffer.c" />
     <ClCompile Include="src\CFlat\StringBuilder.AppendFormatStringV.c" />
     <ClCompile Include="src\CFlat\StringBuilder.c" />
     <ClCompile Include="src\CFlat\CString.c" />

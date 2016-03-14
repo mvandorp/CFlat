@@ -20,6 +20,10 @@
 #ifndef CFLAT_CORE_STRING_INTERNAL_H
 #define CFLAT_CORE_STRING_INTERNAL_H
 
+#ifndef CFLAT_CORE_STRING_H
+ #error String.internal.h should not be included directly.
+#endif
+
 #include "CFlat.h"
 #include "CFlat/Object.h"
 #include "CFlat/Language/Integer.h"

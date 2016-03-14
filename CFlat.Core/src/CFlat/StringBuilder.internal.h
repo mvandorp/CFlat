@@ -20,6 +20,10 @@
 #ifndef CFLAT_CORE_STRINGBUILDER_INTERNAL_H
 #define CFLAT_CORE_STRINGBUILDER_INTERNAL_H
 
+#ifndef CFLAT_CORE_STRINGBUILDER_H
+ #error StringBuilder.internal.h should not be included directly.
+#endif
+
 #include "CFlat/Object.h"
 #include "CFlat/Language/Integer.h"
 #include "CFlat/Language/Keywords.h"

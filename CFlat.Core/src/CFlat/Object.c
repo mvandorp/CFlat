@@ -27,7 +27,7 @@
 /* Private functions                  */
 /**************************************/
 
-private void Delete(const void *obj);
+private void Delete(Object *obj);
 
 /**************************************/
 /* Public function definitions        */
@@ -120,17 +120,15 @@ public bool Object_Release(const void *obj)
 ///     reserved for the object.
 /// </remarks>
 /// <param name="obj">Pointer to an <see cref="Object"/>.</param>
-private void Delete(const void *obj)
+private void Delete(Object *obj)
 {
     assert(obj != null);
 
-    Object *object = (Object*)obj;
-
-    if (object->VTable->Destructor != null) {
-        object->VTable->Destructor(object);
+    if (obj->VTable->Destructor != null) {
+        obj->VTable->Destructor(obj);
     }
 
-    if (object->Deallocator != null) {
-        object->Deallocator(object);
+    if (obj->Deallocator != null) {
+        obj->Deallocator(obj);
     }
 }

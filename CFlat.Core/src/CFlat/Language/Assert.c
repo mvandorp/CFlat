@@ -12,15 +12,19 @@ public void __CFLAT_ASSERT_FAIL(const char *condition, const char *file, int lin
     assert(file != null);
     assert(line > 0);
 
-    String *message = String_FormatCString(
-        "Assertion failed: {cstring}\n   at {cstring}:{int}\n",
-        condition,
-        file,
-        line);
+    try {
+        String *message = String_FormatCString(
+            "Assertion failed: {cstring}\n   at {cstring}:{int}\n",
+            condition,
+            file,
+            line);
 
-    fprintf(stderr, "%s", String_GetCString(message));
+        fprintf(stderr, "%s", String_GetCString(message));
 
-    Object_Release(message);
+        Object_Release(message);
+    }
+    catch (Exception);
+    endtry;
 
     abort();
 }

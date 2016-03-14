@@ -23,14 +23,11 @@
 #define CFLAT_CORE_LANGUAGE_BOOL_H
 
 #if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) || (defined(_MSC_VER) && (_MSC_VER >= 1800))
-    // The compiler supports C99 or later, use the C99 _Bool type
+    // The compiler supports C99 or later, use the C99 _Bool type.
     #define CFLAT_BOOL _Bool
-#elif defined(_MSC_VER)
-    // Visual Studio 2012 or earlier, use the int type
-    #define CFLAT_BOOL int
 #else
-    // Otherwise use the char type
-    #define CFLAT_BOOL char
+    // Otherwise use the int type.
+    #define CFLAT_BOOL int
 #endif
 
 /* Macros */

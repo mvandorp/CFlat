@@ -622,7 +622,7 @@ typedef CFLAT_UINTMAX uintmax;
         #define CFLAT_INT64_LEAST       int
         #define CFLAT_INT64_LEAST_MIN   INT_MIN
         #define CFLAT_INT64_LEAST_MAX   INT_MAX
-    #else
+    #else LONG_MAX >= 0x7FFFFFFFFFFFFFFF
         #define CFLAT_INT64_LEAST       long
         #define CFLAT_INT64_LEAST_MIN   LONG_MIN
         #define CFLAT_INT64_LEAST_MAX   LONG_MAX
@@ -640,7 +640,7 @@ typedef CFLAT_UINTMAX uintmax;
     #elif UINT_MAX >= 0xFFFFFFFFFFFFFFFF
         #define CFLAT_UINT64_LEAST      unsigned int
         #define CFLAT_UINT64_LEAST_MAX  UINT_MAX
-    #else
+    #else ULONG_MAX >= 0xFFFFFFFFFFFFFFFF
         #define CFLAT_UINT64_LEAST      unsigned long
         #define CFLAT_UINT64_LEAST_MAX  ULONG_MAX
     #endif

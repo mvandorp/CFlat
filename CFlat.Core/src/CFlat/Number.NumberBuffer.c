@@ -1,11 +1,8 @@
-#include "CFlat/NumberBuffer.h"
+#include "CFlat/Number.NumberBuffer.h"
 
 #include "CFlat.h"
 #include "CFlat/Math.h"
 #include "CFlat/Memory.h"
-#include "CFlat/Number.h"
-#include "CFlat/Object.h"
-#include "CFlat/String.h"
 #include "CFlat/StringBuilder.h"
 
 /**************************************/
@@ -513,7 +510,7 @@ private double Normalize(double x, int numSignificantDigits, int maxExponent, in
     assert(numSignificantDigits >= 0);
     assert(maxExponent >= 0);
 
-    // Calculate the exponent and negate it to scale it the number to normal range
+    // Calculate the exponent and negate it to scale it the number to normal range.
     int exp = FloatExponent(x);
 
     *exponent = exp;

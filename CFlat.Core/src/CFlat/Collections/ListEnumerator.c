@@ -87,6 +87,9 @@ private void *GetCurrent(const ListEnumerator *enumerator)
 {
     Validate_NotNull(enumerator);
     Validate_State(
+        enumerator->Version == List_GetVersion(enumerator->List),
+        "Collection was modified; enumeration operation may not execute.");
+    Validate_State(
         enumerator->Index > 0 &&
         enumerator->Index <= List_GetCount(enumerator->List),
         "Enumeration has either not started or has already finished.");
@@ -97,20 +100,17 @@ private void *GetCurrent(const ListEnumerator *enumerator)
 private bool MoveNext(ListEnumerator *enumerator)
 {
     Validate_NotNull(enumerator);
+    Validate_State(
+        enumerator->Version == List_GetVersion(enumerator->List),
+        "Collection was modified; enumeration operation may not execute.");
 
-    if (enumerator->Version == List_GetVersion(enumerator->List) &&
-        enumerator->Index < List_GetCount(enumerator->List)) {
-
+    if (enumerator->Index < List_GetCount(enumerator->List)) {
         enumerator->Current = List_GetItemRef(enumerator->List, enumerator->Index);
         enumerator->Index++;
 
         return true;
     }
     else {
-        if (enumerator->Version != List_GetVersion(enumerator->List)) {
-            throw_new(InvalidOperationException, "Collection was modified; enumeration operation may not execute.");
-        }
-
         enumerator->Current = null;
         enumerator->Index = List_GetCount(enumerator->List) + 1;
 
@@ -121,10 +121,9 @@ private bool MoveNext(ListEnumerator *enumerator)
 private void Reset(ListEnumerator *enumerator)
 {
     Validate_NotNull(enumerator);
-
-    if (enumerator->Version != List_GetVersion(enumerator->List)) {
-        throw_new(InvalidOperationException, "Collection was modified; enumeration operation may not execute.");
-    }
+    Validate_State(
+        enumerator->Version == List_GetVersion(enumerator->List),
+        "Collection was modified; enumeration operation may not execute.");
 
     enumerator->Index = 0;
     enumerator->Current = null;

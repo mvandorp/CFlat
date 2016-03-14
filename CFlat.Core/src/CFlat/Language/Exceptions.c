@@ -10,21 +10,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/* Aliases for the 'hidden / obfuscated' symbols */
-#define BeginTry            __CFLAT_EXCEPTION_BEGINTRY
-#define Catch               __CFLAT_EXCEPTION_CATCH
-#define Finally             __CFLAT_EXCEPTION_FINALLY
-#define EndTry              __CFLAT_EXCEPTION_ENDTRY
-#define Throw               __CFLAT_EXCEPTION_THROW
-#define ThrowAgain          __CFLAT_EXCEPTION_THROW_AGAIN
-#define ThrowNew            __CFLAT_EXCEPTION_THROW_NEW
-#define JumpBuffer          __CFLAT_EXCEPTION_BUFFER
-
+/* Types */
 typedef struct __CFLAT_EXCEPTION_STATE ExceptionState;
 typedef struct __CFLAT_EXCEPTION CFlatException;
 
 /* Public variables */
-public jmp_buf JumpBuffer;
+public jmp_buf __CFLAT_EXCEPTION_BUFFER;
 
 /* Private variables */
 /// <summary>
@@ -70,7 +61,7 @@ private const ObjectVTable Exception_VTable = ObjectVTable_Initializer((Destruct
 /* Public function definitions        */
 /**************************************/
 
-public void BeginTry(ExceptionState *state)
+public void __CFLAT_EXCEPTION_BEGINTRY(ExceptionState *state)
 {
     assert(state != null);
 
@@ -83,7 +74,7 @@ public void BeginTry(ExceptionState *state)
     ExceptionHandled = true;
 }
 
-public bool Catch(ExceptionState *state, ExceptionType ex)
+public bool __CFLAT_EXCEPTION_CATCH(ExceptionState *state, ExceptionType ex)
 {
     assert(state != null);
 
@@ -103,18 +94,18 @@ public bool Catch(ExceptionState *state, ExceptionType ex)
     }
 }
 
-public void Finally(ExceptionState *state)
+public void __CFLAT_EXCEPTION_FINALLY(ExceptionState *state)
 {
     RestoreJumpBuffer(state);
 }
 
-public void EndTry(ExceptionState *state)
+public void __CFLAT_EXCEPTION_ENDTRY(ExceptionState *state)
 {
     RestoreJumpBuffer(state);
 
     // If the exception flag is still set at this point, throw the exception.
     if (!ExceptionHandled) {
-        Throw();
+        __CFLAT_EXCEPTION_THROW();
     }
 
     // If there was an exception but it was handled, clean up the exception.
@@ -125,7 +116,7 @@ public void EndTry(ExceptionState *state)
     }
 }
 
-public void ThrowAgain(const ExceptionHandle ex)
+public void __CFLAT_EXCEPTION_THROW_AGAIN(const ExceptionHandle ex)
 {
     Validate_NotNull(ex);
 
@@ -133,10 +124,10 @@ public void ThrowAgain(const ExceptionHandle ex)
     CurrentException = ex;
 
     // Throw an exception with the set information.
-    Throw();
+    __CFLAT_EXCEPTION_THROW();
 }
 
-public void ThrowNew(ExceptionType type, const char *message, const char *file, int line)
+public void __CFLAT_EXCEPTION_THROW_NEW(ExceptionType type, const char *message, const char *file, int line)
 {
     assert(file != null);
     assert(line > 0);
@@ -145,10 +136,10 @@ public void ThrowNew(ExceptionType type, const char *message, const char *file, 
     CurrentException = Exception_New(type, String_New(message), file, line);
 
     // Throw an exception with the set information.
-    Throw();
+    __CFLAT_EXCEPTION_THROW();
 }
 
-public void Throw(void)
+public void __CFLAT_EXCEPTION_THROW(void)
 {
     Validate_State(CurrentException != null,
         "A throw statement with no arguments is not allowed outside of a catch clause.");
@@ -159,7 +150,7 @@ public void Throw(void)
     // Test whether the exception occured within a try block.
     if (IsInsideTryBlock()) {
         // If so, jump to the corresponding catch/finally blocks.
-        longjmp(JumpBuffer, true);
+        longjmp(__CFLAT_EXCEPTION_BUFFER, true);
     }
     else {
         // Otherwise, print an exception message and abort the program.
@@ -235,6 +226,10 @@ private void Exception_Constructor(
     const char *file,
     int line)
 {
+    assert(ex != null);
+    assert(file != null);
+    assert(line > 0);
+
     Object_Constructor(ex, &Exception_VTable);
 
     ex->Type = type;
@@ -259,7 +254,7 @@ private void Exception_Destructor(ExceptionHandle ex)
 /// </summary>
 private void PushJumpBuffer(jmp_buf stack)
 {
-    Memory_Copy(JumpBuffer, stack, sizeof(jmp_buf));
+    Memory_Copy(__CFLAT_EXCEPTION_BUFFER, stack, sizeof(jmp_buf));
 
     StackSize++;
 }
@@ -269,7 +264,7 @@ private void PushJumpBuffer(jmp_buf stack)
 /// </summary>
 private void PopJumpBuffer(jmp_buf stack)
 {
-    Memory_Copy(stack, JumpBuffer, sizeof(jmp_buf));
+    Memory_Copy(stack, __CFLAT_EXCEPTION_BUFFER, sizeof(jmp_buf));
 
     StackSize--;
 }
@@ -335,13 +330,17 @@ private void UnhandledException(void)
 {
     assert(CurrentException != null);
 
-    String *message = GenerateExceptionText(CurrentException);
+    try {
+        String *message = GenerateExceptionText(CurrentException);
 
-    fprintf(stderr, "%s", String_GetCString(message));
+        fprintf(stderr, "%s", String_GetCString(message));
 
-    Object_Release(message);
+        Object_Release(message);
+    }
+    catch (Exception);
+    endtry;
+
     Object_Release(CurrentException);
-
     abort();
 }
 

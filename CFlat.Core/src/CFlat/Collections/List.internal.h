@@ -20,13 +20,17 @@
 #ifndef CFLAT_CORE_COLLECTIONS_LIST_INTERNAL_H
 #define CFLAT_CORE_COLLECTIONS_LIST_INTERNAL_H
 
+#ifndef CFLAT_CORE_COLLECTIONS_LIST_H
+ #error List.internal.h should not be included directly.
+#endif
+
 #include "CFlat/Collections/IList.h"
 #include "CFlat/Language/Functions.h"
 #include "CFlat/Language/Integer.h"
 #include "CFlat/Language/Keywords.h"
 
 /* Types */
-struct List {
+typedef struct List {
     IList Base;
     int Capacity;
     int Count;
@@ -34,7 +38,7 @@ struct List {
     uintsize Version;
     byte *Array;
     EqualityPredicate Equals;
-};
+} List;
 
  /* Functions */
 /// <summary>

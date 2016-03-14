@@ -84,9 +84,6 @@
     <ClInclude Include="include\CFlat\Language\Keywords.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\CFlat\NumberBuffer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\CFlat\Number.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -127,6 +124,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\CFlat\Language\Functions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CFlat\Number.NumberBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -173,13 +173,7 @@
     <ClCompile Include="src\CFlat\Number.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\CFlat\NumberBuffer.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\CFlat\Language\Assert.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CFlat\StringBuilder.AppendFormatStringV.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CFlat\Collections\IEnumerable.c">
@@ -198,6 +192,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CFlat\Collections\IList.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\Number.NumberBuffer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\StringBuilder.AppendFormatStringV.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

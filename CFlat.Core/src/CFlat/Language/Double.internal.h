@@ -20,6 +20,10 @@
 #ifndef CFLAT_CORE_LANGUAGE_DOUBLE_INTERNAL_H
 #define CFLAT_CORE_LANGUAGE_DOUBLE_INTERNAL_H
 
+#ifndef CFLAT_CORE_LANGUAGE_DOUBLE_H
+ #error Double.internal.h should not be included directly.
+#endif
+
 #include "CFlat/Language/Keywords.h"
 
 /* Types */

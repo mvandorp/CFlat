@@ -1,19 +1,13 @@
 #include "CFlat/Number.h"
+#include "CFlat/Number.NumberBuffer.h"
 
 #include "CFlat.h"
 #include "CFlat/Math.h"
-#include "CFlat/NumberBuffer.h"
 #include "CFlat/Object.h"
 #include "CFlat/String.h"
 #include "CFlat/StringBuilder.h"
 #include "CFlat/StringReader.h"
-
-/* Types */
-
-typedef struct Number {
-    NumberValue Value;
-    NumberType Type;
-} Number;
+#include "CFlat/Validate.h"
 
 /**************************************/
 /* Private functions                  */
@@ -27,17 +21,6 @@ private void FormatStandardNumber(
     char formatSpecifier,
     int precisionSpecifier);
 private void FormatCustomNumber(StringBuilder *sb, NumberBuffer *value, StringReader *reader);
-private bool SkipFormatSection(StringReader *reader);
-private void ParseFormatSection(
-    StringReader *reader,
-    int *integerDigits,
-    int *decimalDigits,
-    int *exponentDigits);
-private void ReadString(StringBuilder *sb, StringReader *reader);
-private void SkipString(StringReader *reader, uintsize *offset);
-private void ReadEscapeCharacter(StringBuilder *sb, StringReader *reader);
-private void SkipEscapeCharacter(StringReader *reader, uintsize *offset);
-private bool IsEscapedCharacter(int ch);
 private bool ProcessStandardFormatString(StringReader *reader, char *formatSpecifier, int *precisionSpecifier);
 private void ProcessCustomFormatString(
     StringReader *reader,
@@ -46,11 +29,22 @@ private void ProcessCustomFormatString(
     int *decimalDigits,
     int *exponentDigits,
     bool *printSign);
-private void PrintDecimalSeparator(StringBuilder *sb, uintsize *decimalSeparatorIndex);
-private void PrintLeadingZeros(StringBuilder *sb, int *numLeadingZeros);
+private bool SkipFormatSection(StringReader *reader);
+private void ParseFormatSection(
+    StringReader *reader,
+    int *integerDigits,
+    int *decimalDigits,
+    int *exponentDigits);
+private void ReadString(StringBuilder *sb, StringReader *reader);
+private void SkipString(StringReader *reader, uintsize *offset);
+private void ReadEscapeSequence(StringBuilder *sb, StringReader *reader);
+private void SkipEscapeSequence(StringReader *reader, uintsize *offset);
+private bool IsEscapedCharacter(int ch);
 private bool IsExponent(StringReader *reader, uintsize offset);
 private void SkipExponent(StringReader *reader, uintsize *offset, int *exponentDigits);
 private void PrintExponent(StringBuilder *sb, StringReader *reader, int exponent);
+private void PrintDecimalSeparator(StringBuilder *sb, uintsize *decimalSeparatorIndex);
+private void PrintLeadingZeros(StringBuilder *sb, int *numLeadingZeros);
 
 /**************************************/
 /* Internal function definitions      */
@@ -90,6 +84,8 @@ internal String *Number_FormatDouble(double value, const String *format)
 
 internal void Number_FormatIntMaxBuffered(StringBuilder *sb, intmax value, const String *format)
 {
+    Validate_NotNull(sb);
+
     NumberBuffer number;
     NumberBuffer_FromIntMax(&number, value);
 
@@ -98,6 +94,8 @@ internal void Number_FormatIntMaxBuffered(StringBuilder *sb, intmax value, const
 
 internal void Number_FormatUIntMaxBuffered(StringBuilder *sb, uintmax value, const String *format)
 {
+    Validate_NotNull(sb);
+
     NumberBuffer number;
     NumberBuffer_FromUIntMax(&number, value);
 
@@ -106,6 +104,8 @@ internal void Number_FormatUIntMaxBuffered(StringBuilder *sb, uintmax value, con
 
 internal void Number_FormatSingleBuffered(StringBuilder *sb, float value, const String *format)
 {
+    Validate_NotNull(sb);
+
     NumberBuffer number;
     NumberBuffer_FromSingle(&number, value);
 
@@ -114,6 +114,8 @@ internal void Number_FormatSingleBuffered(StringBuilder *sb, float value, const 
 
 internal void Number_FormatDoubleBuffered(StringBuilder *sb, double value, const String *format)
 {
+    Validate_NotNull(sb);
+
     NumberBuffer number;
     NumberBuffer_FromDouble(&number, value);
 
@@ -201,6 +203,10 @@ private void FormatNumberBuffered(StringBuilder *sb, NumberBuffer *value, const 
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 private void FormatStandardNumber(StringBuilder *sb, NumberBuffer *value, char formatSpecifier, int precisionSpecifier)
 {
+    assert(sb != null);
+    assert(value != null);
+    assert(precisionSpecifier >= 0);
+
     if (formatSpecifier == 'b' || formatSpecifier == 'B') {
         NumberBuffer_FormatInteger(value, precisionSpecifier, 2, false);
     }
@@ -221,6 +227,10 @@ private void FormatStandardNumber(StringBuilder *sb, NumberBuffer *value, char f
     }
     else if (formatSpecifier == 'g' || formatSpecifier == 'G') {
         NumberBuffer_FormatGeneral(value, precisionSpecifier);
+    }
+    else {
+        // Invalid format specifier.
+        assert(false);
     }
 
     NumberBuffer_ToString(value, sb);
@@ -276,7 +286,7 @@ private void FormatCustomNumber(StringBuilder *sb, NumberBuffer *value, StringRe
                 ReadString(sb, reader);
                 break;
             case '\\':
-                ReadEscapeCharacter(sb, reader);
+                ReadEscapeSequence(sb, reader);
                 break;
             case 'e':
             case 'E':
@@ -371,7 +381,7 @@ private bool ProcessStandardFormatString(StringReader *reader, char *formatSpeci
         return false;
     }
 
-    // Check if the format specifier is valid
+    // Check if the format specifier is valid.
     if (ch != 'b' && ch != 'd' && ch != 'e' && ch != 'f' && ch != 'g' && ch != 'x') {
         return false;
     }
@@ -481,7 +491,7 @@ private bool SkipFormatSection(StringReader *reader)
                 SkipString(reader, &length);
                 break;
             case '\\':
-                SkipEscapeCharacter(reader, &length);
+                SkipEscapeSequence(reader, &length);
                 break;
             case ';':
                 length++;
@@ -528,7 +538,7 @@ private void ParseFormatSection(
                 SkipString(reader, &length);
                 break;
             case '\\':
-                SkipEscapeCharacter(reader, &length);
+                SkipEscapeSequence(reader, &length);
                 break;
             case '.':
                 length++;
@@ -564,7 +574,7 @@ private void ParseFormatSection(
 }
 
 /// <summary>
-/// Processes and prints a string in a custom format string.
+/// Reads and prints a string literal in a custom format string.
 /// </summary>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 private void ReadString(StringBuilder *sb, StringReader *reader)
@@ -584,7 +594,7 @@ private void ReadString(StringBuilder *sb, StringReader *reader)
 }
 
 /// <summary>
-/// Skips a string in a custom format string.
+/// Skips a string literal in a custom format string.
 /// </summary>
 private void SkipString(StringReader *reader, uintsize *offset)
 {
@@ -606,10 +616,10 @@ private void SkipString(StringReader *reader, uintsize *offset)
 }
 
 /// <summary>
-/// Processes and prints an escape character in a custom format string.
+/// Reads and prints an escape sequence in a custom format string.
 /// </summary>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-private void ReadEscapeCharacter(StringBuilder *sb, StringReader *reader)
+private void ReadEscapeSequence(StringBuilder *sb, StringReader *reader)
 {
     assert(sb != null);
     assert(reader != null);
@@ -627,9 +637,9 @@ private void ReadEscapeCharacter(StringBuilder *sb, StringReader *reader)
 }
 
 /// <summary>
-/// Skips an escape character in a custom format string.
+/// Skips an escape sequence in a custom format string.
 /// </summary>
-private void SkipEscapeCharacter(StringReader *reader, uintsize *offset)
+private void SkipEscapeSequence(StringReader *reader, uintsize *offset)
 {
     assert(reader != null);
     assert(offset != null);
@@ -662,39 +672,6 @@ private bool IsEscapedCharacter(int ch)
         default:
             return false;
     }
-}
-
-/// <summary>
-/// Prints the decimal separator if needed.
-/// </summary>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-private void PrintDecimalSeparator(StringBuilder *sb, uintsize *decimalSeparatorIndex)
-{
-    assert(sb != null);
-    assert(decimalSeparatorIndex != null);
-
-    if (*decimalSeparatorIndex != InvalidIndex) {
-        StringBuilder_Insert(sb, *decimalSeparatorIndex, '.');
-        *decimalSeparatorIndex = InvalidIndex;
-    }
-}
-
-/// <summary>
-/// Prints any  leading zeros if needed.
-/// </summary>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-private void PrintLeadingZeros(StringBuilder *sb, int *numLeadingZeros)
-{
-    assert(sb != null);
-    assert(numLeadingZeros != null);
-
-    int length = *numLeadingZeros;
-
-    for (int i = 0; i < length; i++) {
-        StringBuilder_Append(sb, '0');
-    }
-
-    *numLeadingZeros = 0;
 }
 
 /// <summary>
@@ -781,4 +758,37 @@ private void PrintExponent(StringBuilder *sb, StringReader *reader, int exponent
     NumberBuffer_FromIntMax(&exponentBuffer, exponent);
     NumberBuffer_FormatInteger(&exponentBuffer, exponentDigits, 10, false);
     NumberBuffer_ToString(&exponentBuffer, sb);
+}
+
+/// <summary>
+/// Prints the decimal separator if needed.
+/// </summary>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+private void PrintDecimalSeparator(StringBuilder *sb, uintsize *decimalSeparatorIndex)
+{
+    assert(sb != null);
+    assert(decimalSeparatorIndex != null);
+
+    if (*decimalSeparatorIndex != InvalidIndex) {
+        StringBuilder_Insert(sb, *decimalSeparatorIndex, '.');
+        *decimalSeparatorIndex = InvalidIndex;
+    }
+}
+
+/// <summary>
+/// Prints any  leading zeros if needed.
+/// </summary>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+private void PrintLeadingZeros(StringBuilder *sb, int *numLeadingZeros)
+{
+    assert(sb != null);
+    assert(numLeadingZeros != null);
+
+    int length = *numLeadingZeros;
+
+    for (int i = 0; i < length; i++) {
+        StringBuilder_Append(sb, '0');
+    }
+
+    *numLeadingZeros = 0;
 }
