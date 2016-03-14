@@ -26,7 +26,7 @@
 #include "CFlat/Language/Integer.h"
 
 /* Forward declarations */
-typedef struct String String;
+struct String;
 
 /* Functions */
 /// <summary>
@@ -228,7 +228,7 @@ uintsize CString_IndexOfCString_Substring(const char *str, const char *value, ui
 ///     <paramref name="str"/> is <see cref="null"/> <b>-or-</b>
 ///     <paramref name="value"/> is <see cref="null"/>.
 /// </exception>
-uintsize CString_IndexOfString(const char *str, const String *value);
+uintsize CString_IndexOfString(const char *str, const struct String *value);
 
 /// <summary>
 /// Returns the index of the first occurance of the specified string in a null-terminated string.
@@ -247,7 +247,7 @@ uintsize CString_IndexOfString(const char *str, const String *value);
 /// <exception cref="::ArgumentOutOfRangeException">
 ///     <paramref name="startIndex"/> is greater than the length of <paramref name="str"/>.
 /// </exception>
-uintsize CString_IndexOfString_Offset(const char *str, const String *value, uintsize startIndex);
+uintsize CString_IndexOfString_Offset(const char *str, const struct String *value, uintsize startIndex);
 
 /// <summary>
 /// Returns the index of the first occurance of the specified string in a null-terminated string.
@@ -269,7 +269,11 @@ uintsize CString_IndexOfString_Offset(const char *str, const String *value, uint
 ///     <paramref name="count"/> is greater than the length of <paramref name="str"/> minus
 ///     <paramref name="startIndex"/>.
 /// </exception>
-uintsize CString_IndexOfString_Substring(const char *str, const String *value, uintsize startIndex, uintsize count);
+uintsize CString_IndexOfString_Substring(
+    const char *str,
+    const struct String *value,
+    uintsize startIndex,
+    uintsize count);
 
 /// <summary>
 /// Returns the index of the last occurance of the specified character in a null-terminated string.
@@ -448,7 +452,7 @@ uintsize CString_LastIndexOfCString_Substring(const char *str, const char *value
 ///     <paramref name="str"/> is <see cref="null"/> <b>-or-</b>
 ///     <paramref name="value"/> is <see cref="null"/>.
 /// </exception>
-uintsize CString_LastIndexOfString(const char *str, const String *value);
+uintsize CString_LastIndexOfString(const char *str, const struct String *value);
 
 /// <summary>
 /// Returns the index of the last occurance of the specified string in a null-terminated string.
@@ -468,7 +472,7 @@ uintsize CString_LastIndexOfString(const char *str, const String *value);
 ///     <paramref name="str"/> is not empty, and <paramref name="startIndex"/> is greater than or equal to the length
 ///     of <paramref name="str"/>.
 /// </exception>
-uintsize CString_LastIndexOfString_Offset(const char *str, const String *value, uintsize startIndex);
+uintsize CString_LastIndexOfString_Offset(const char *str, const struct String *value, uintsize startIndex);
 
 /// <summary>
 /// Returns the index of the last occurance of the specified string in a null-terminated string.
@@ -494,7 +498,7 @@ uintsize CString_LastIndexOfString_Offset(const char *str, const String *value, 
 /// </exception>
 uintsize CString_LastIndexOfString_Substring(
     const char *str,
-    const String *value,
+    const struct String *value,
     uintsize startIndex,
     uintsize count);
 

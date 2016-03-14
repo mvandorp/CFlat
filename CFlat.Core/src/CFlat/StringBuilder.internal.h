@@ -28,16 +28,13 @@
 #include "CFlat/Language/Integer.h"
 #include "CFlat/Language/Keywords.h"
 
-/* Forward declarations */
-typedef struct String String;
-
 /* Types */
-typedef struct StringBuilder {
+struct StringBuilder {
     Object Base;
     char *Value;
     uintsize Length;
     uintsize Capacity;
-} StringBuilder;
+};
 
 /* Functions */
 /// <summary>
@@ -49,6 +46,6 @@ typedef struct StringBuilder {
 ///     A pointer to a null-terminated string with the same value as the given <see cref="StringBuilder"/>.
 /// </returns>
 /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-internal const char *StringBuilder_GetBuffer(const StringBuilder *sb);
+internal const char *StringBuilder_GetBuffer(const struct StringBuilder *sb);
 
 #endif

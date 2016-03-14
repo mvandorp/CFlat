@@ -28,8 +28,8 @@
 #include "CFlat/Language/Keywords.h"
 
 /* Types */
-typedef struct String String;
-typedef struct StringBuilder StringBuilder;
+struct String;
+struct StringBuilder;
 
 /* Functions */
 #ifdef CFLAT_INTPTR
@@ -41,7 +41,7 @@ typedef struct StringBuilder StringBuilder;
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal void intptr_ToStringBuffered(StringBuilder *sb, intptr value, const String *format);
+internal void intptr_ToStringBuffered(struct StringBuilder *sb, intptr value, const struct String *format);
 #endif
 
 #ifdef CFLAT_UINTPTR
@@ -53,7 +53,7 @@ internal void intptr_ToStringBuffered(StringBuilder *sb, intptr value, const Str
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal void uintptr_ToStringBuffered(StringBuilder *sb, uintptr value, const String *format);
+internal void uintptr_ToStringBuffered(struct StringBuilder *sb, uintptr value, const struct String *format);
 #endif
 
 /// <summary>
@@ -64,7 +64,7 @@ internal void uintptr_ToStringBuffered(StringBuilder *sb, uintptr value, const S
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal void uintsize_ToStringBuffered(StringBuilder *sb, uintsize value, const String *format);
+internal void uintsize_ToStringBuffered(struct StringBuilder *sb, uintsize value, const struct String *format);
 
 /// <summary>
 /// Converts the given number to a string representation, using the specified format.
@@ -74,7 +74,7 @@ internal void uintsize_ToStringBuffered(StringBuilder *sb, uintsize value, const
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal void sbyte_ToStringBuffered(StringBuilder *sb, sbyte value, const String *format);
+internal void sbyte_ToStringBuffered(struct StringBuilder *sb, sbyte value, const struct String *format);
 
 /// <summary>
 /// Converts the given number to a string representation, using the specified format.
@@ -84,7 +84,7 @@ internal void sbyte_ToStringBuffered(StringBuilder *sb, sbyte value, const Strin
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal void byte_ToStringBuffered(StringBuilder *sb, byte value, const String *format);
+internal void byte_ToStringBuffered(struct StringBuilder *sb, byte value, const struct String *format);
 
 /// <summary>
 /// Converts the given number to a string representation, using the specified format.
@@ -94,7 +94,7 @@ internal void byte_ToStringBuffered(StringBuilder *sb, byte value, const String 
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal void short_ToStringBuffered(StringBuilder *sb, short value, const String *format);
+internal void short_ToStringBuffered(struct StringBuilder *sb, short value, const struct String *format);
 
 /// <summary>
 /// Converts the given number to a string representation, using the specified format.
@@ -104,7 +104,7 @@ internal void short_ToStringBuffered(StringBuilder *sb, short value, const Strin
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal void ushort_ToStringBuffered(StringBuilder *sb, ushort value, const String *format);
+internal void ushort_ToStringBuffered(struct StringBuilder *sb, ushort value, const struct String *format);
 
 /// <summary>
 /// Converts the given number to a string representation, using the specified format.
@@ -114,7 +114,7 @@ internal void ushort_ToStringBuffered(StringBuilder *sb, ushort value, const Str
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal void int_ToStringBuffered(StringBuilder *sb, int value, const String *format);
+internal void int_ToStringBuffered(struct StringBuilder *sb, int value, const struct String *format);
 
 /// <summary>
 /// Converts the given number to a string representation, using the specified format.
@@ -124,7 +124,7 @@ internal void int_ToStringBuffered(StringBuilder *sb, int value, const String *f
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal void uint_ToStringBuffered(StringBuilder *sb, uint value, const String *format);
+internal void uint_ToStringBuffered(struct StringBuilder *sb, uint value, const struct String *format);
 
 /// <summary>
 /// Converts the given number to a string representation, using the specified format.
@@ -134,7 +134,7 @@ internal void uint_ToStringBuffered(StringBuilder *sb, uint value, const String 
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal void long_ToStringBuffered(StringBuilder *sb, long value, const String *format);
+internal void long_ToStringBuffered(struct StringBuilder *sb, long value, const struct String *format);
 
 /// <summary>
 /// Converts the given number to a string representation, using the specified format.
@@ -144,7 +144,7 @@ internal void long_ToStringBuffered(StringBuilder *sb, long value, const String 
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal void ulong_ToStringBuffered(StringBuilder *sb, ulong value, const String *format);
+internal void ulong_ToStringBuffered(struct StringBuilder *sb, ulong value, const struct String *format);
 
 /// <summary>
 /// Converts the given number to a string representation, using the specified format.
@@ -154,7 +154,7 @@ internal void ulong_ToStringBuffered(StringBuilder *sb, ulong value, const Strin
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal void intmax_ToStringBuffered(StringBuilder *sb, intmax value, const String *format);
+internal void intmax_ToStringBuffered(struct StringBuilder *sb, intmax value, const struct String *format);
 
 /// <summary>
 /// Converts the given number to a string representation, using the specified format.
@@ -164,6 +164,6 @@ internal void intmax_ToStringBuffered(StringBuilder *sb, intmax value, const Str
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal void uintmax_ToStringBuffered(StringBuilder *sb, uintmax value, const String *format);
+internal void uintmax_ToStringBuffered(struct StringBuilder *sb, uintmax value, const struct String *format);
 
 #endif

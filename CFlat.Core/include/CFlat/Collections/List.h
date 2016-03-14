@@ -26,9 +26,9 @@
 #include "CFlat/Language/Integer.h"
 
 /* Forward declarations */
-typedef struct ICollection ICollection;
-typedef struct IEnumerable IEnumerable;
-typedef struct IEnumerator IEnumerator;
+struct ICollection;
+struct IEnumerable;
+struct IEnumerator;
 
 /* Macros */
 /// <summary>
@@ -91,7 +91,7 @@ List *List_New_WithCapacity(uintsize elementSize, EqualityPredicate equals, int 
 /// <returns>A pointer to the newly allocated <see cref="List"/>.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="collection"/> is <see cref="null"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-List *List_New_FromEnumerable(uintsize elementSize, EqualityPredicate equals, const IEnumerable *collection);
+List *List_New_FromEnumerable(uintsize elementSize, EqualityPredicate equals, const struct IEnumerable *collection);
 
 /// <summary>
 /// Allocates and initializes a <see cref="List"/> that contains the elements copied from the given collection.
@@ -107,7 +107,7 @@ List *List_New_FromEnumerable(uintsize elementSize, EqualityPredicate equals, co
 /// <returns>A pointer to the newly allocated <see cref="List"/>.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="collection"/> is <see cref="null"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-List *List_New_FromCollection(uintsize elementSize, EqualityPredicate equals, const ICollection *collection);
+List *List_New_FromCollection(uintsize elementSize, EqualityPredicate equals, const struct ICollection *collection);
 
 /// <summary>
 /// Initializes a <see cref="List"/>.
@@ -156,7 +156,7 @@ void List_Constructor_FromEnumerable(
     List *list,
     uintsize elementSize,
     EqualityPredicate equals,
-    const IEnumerable *collection);
+    const struct IEnumerable *collection);
 
 /// <summary>
 /// Initializes a <see cref="List"/> that contains the elements copied from the given collection.
@@ -176,7 +176,7 @@ void List_Constructor_FromCollection(
     List *list,
     uintsize elementSize,
     EqualityPredicate equals,
-    const ICollection *collection);
+    const struct ICollection *collection);
 
 /// <summary>
 /// Destroys a <see cref="List"/>.
@@ -225,7 +225,7 @@ uintsize List_GetElementSize(const List *list);
 ///     <paramref name="collection"/> is <see cref="null"/>.
 /// </exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void List_AddRange(List *list, const IEnumerable *collection);
+void List_AddRange(List *list, const struct IEnumerable *collection);
 
 /// <summary>
 /// Inserts the elements of the given collection into a <see cref="List"/> at the given index.
@@ -240,7 +240,7 @@ void List_AddRange(List *list, const IEnumerable *collection);
 ///     <paramref name="collection"/> is <see cref="null"/>.
 /// </exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void List_InsertRange(List *list, int index, const IEnumerable *collection);
+void List_InsertRange(List *list, int index, const struct IEnumerable *collection);
 
 /// <summary>
 /// Removes the given range of elements from the a <see cref="List"/>.
@@ -266,7 +266,7 @@ void List_RemoveRange(List *list, int index, int count);
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
 /// <returns>An <see cref="IEnumerator"/> that iterates through a <see cref="List"/>.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
-IEnumerator *List_GetEnumerator(const List *list);
+struct IEnumerator *List_GetEnumerator(const List *list);
 
 /* ICollection */
 /// <summary>

@@ -25,7 +25,7 @@
 #include "CFlat/Language/Bool.h"
 
 /* Forward declarations */
-typedef struct String String;
+struct String;
 
 /* Macros */
 #define CFLAT_EXCEPTIONTYPE_BASE_BITS 4
@@ -137,13 +137,13 @@ bool ExceptionType_IsAssignableFrom(ExceptionType type1, ExceptionType type2);
 /// </summary>
 /// <param name="type">An <see cref="ExceptionType"/>.</param>
 /// <returns>The name of the given <see cref="ExceptionType"/>.</returns>
-const String *ExceptionType_GetName(ExceptionType type);
+const struct String *ExceptionType_GetName(ExceptionType type);
 
 /// <summary>
 /// Gets a message describing an exception of the given <see cref="ExceptionType"/>.
 /// </summary>
 /// <param name="type">An <see cref="ExceptionType"/>.</param>
 /// <returns>A message describing an exception of the given <see cref="ExceptionType"/>.</returns>
-const String *ExceptionType_GetDefaultMessage(ExceptionType type);
+const struct String *ExceptionType_GetDefaultMessage(ExceptionType type);
 
 #endif

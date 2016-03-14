@@ -25,8 +25,8 @@
 #include "CFlat/Language/Keywords.h"
 
 /* Forward declarations */
-typedef struct String String;
-typedef struct StringBuilder StringBuilder;
+struct String;
+struct StringBuilder;
 
 /* Functions */
 /// <summary>
@@ -36,7 +36,7 @@ typedef struct StringBuilder StringBuilder;
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal String *Number_FormatIntMax(intmax value, const String *format);
+internal struct String *Number_FormatIntMax(intmax value, const struct String *format);
 
 /// <summary>
 /// Converts the given number to a string representation, using the specified format.
@@ -45,7 +45,7 @@ internal String *Number_FormatIntMax(intmax value, const String *format);
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal String *Number_FormatUIntMax(uintmax value, const String *format);
+internal struct String *Number_FormatUIntMax(uintmax value, const struct String *format);
 
 /// <summary>
 /// Converts the given number to a string representation, using the specified format.
@@ -54,7 +54,7 @@ internal String *Number_FormatUIntMax(uintmax value, const String *format);
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal String *Number_FormatSingle(float value, const String *format);
+internal struct String *Number_FormatSingle(float value, const struct String *format);
 
 /// <summary>
 /// Converts the given number to a string representation, using the specified format.
@@ -63,7 +63,7 @@ internal String *Number_FormatSingle(float value, const String *format);
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal String *Number_FormatDouble(double value, const String *format);
+internal struct String *Number_FormatDouble(double value, const struct String *format);
 
 /// <summary>
 /// Converts the given number to a string representation, using the specified format.
@@ -73,7 +73,7 @@ internal String *Number_FormatDouble(double value, const String *format);
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal void Number_FormatIntMaxBuffered(StringBuilder *sb, intmax value, const String *format);
+internal void Number_FormatIntMaxBuffered(struct StringBuilder *sb, intmax value, const struct String *format);
 
 /// <summary>
 /// Converts the given number to a string representation, using the specified format.
@@ -83,7 +83,7 @@ internal void Number_FormatIntMaxBuffered(StringBuilder *sb, intmax value, const
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal void Number_FormatUIntMaxBuffered(StringBuilder *sb, uintmax value, const String *format);
+internal void Number_FormatUIntMaxBuffered(struct StringBuilder *sb, uintmax value, const struct String *format);
 
 /// <summary>
 /// Converts the given number to a string representation, using the specified format.
@@ -93,7 +93,7 @@ internal void Number_FormatUIntMaxBuffered(StringBuilder *sb, uintmax value, con
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal void Number_FormatSingleBuffered(StringBuilder *sb, float value, const String *format);
+internal void Number_FormatSingleBuffered(struct StringBuilder *sb, float value, const struct String *format);
 
 /// <summary>
 /// Converts the given number to a string representation, using the specified format.
@@ -103,7 +103,7 @@ internal void Number_FormatSingleBuffered(StringBuilder *sb, float value, const 
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal void Number_FormatDoubleBuffered(StringBuilder *sb, double value, const String *format);
+internal void Number_FormatDoubleBuffered(struct StringBuilder *sb, double value, const struct String *format);
 
 /// <summary>
 /// Determines whether the given number format will cause the number to be formatted in a numeral system other than
@@ -113,6 +113,6 @@ internal void Number_FormatDoubleBuffered(StringBuilder *sb, double value, const
 /// <returns>
 ///     <see cref="true"/> if <paramref name="value"/> is a non-decimal format; otherwise, <see cref="false"/>.
 /// </returns>
-internal bool Number_IsNonDecimalFormat(const String *format);
+internal bool Number_IsNonDecimalFormat(const struct String *format);
 
 #endif

@@ -26,7 +26,7 @@
 #include "CFlat/Language/VarArgs.h"
 
 /* Forward declarations */
-typedef struct String String;
+struct String;
 
 /* Types */
 /// <summary>
@@ -88,7 +88,7 @@ StringBuilder *StringBuilder_New_WithInitialCStringValueAndCapacity(const char *
 /// <param name="value">Pointer to a <see cref="String"/> used as the initial value.</param>
 /// <returns>A pointer to the newly allocated <see cref="StringBuilder"/>.</returns>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-StringBuilder *StringBuilder_New_WithInitialStringValue(const String *value);
+StringBuilder *StringBuilder_New_WithInitialStringValue(const struct String *value);
 
 /// <summary>
 /// Allocates and initializes a new <see cref="StringBuilder"/> with the given initial value and capacity.
@@ -100,7 +100,7 @@ StringBuilder *StringBuilder_New_WithInitialStringValue(const String *value);
 /// <param name="capacity">The initial capacity of the <see cref="StringBuilder"/>.</param>
 /// <returns>A pointer to the newly allocated <see cref="StringBuilder"/>.</returns>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-StringBuilder *StringBuilder_New_WithInitialStringValueAndCapacity(const String *value, uintsize capacity);
+StringBuilder *StringBuilder_New_WithInitialStringValueAndCapacity(const struct String *value, uintsize capacity);
 
 /// <summary>
 /// Initializes a <see cref="StringBuilder"/>.
@@ -148,7 +148,7 @@ void StringBuilder_Constructor_WithInitialCStringValueAndCapacity(
 /// <param name="value">Pointer to a <see cref="String"/> used as the initial value.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_Constructor_WithInitialStringValue(StringBuilder *sb, const String *value);
+void StringBuilder_Constructor_WithInitialStringValue(StringBuilder *sb, const struct String *value);
 
 /// <summary>
 /// Initializes a <see cref="StringBuilder"/> with the given initial value and capacity.
@@ -160,7 +160,7 @@ void StringBuilder_Constructor_WithInitialStringValue(StringBuilder *sb, const S
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 void StringBuilder_Constructor_WithInitialStringValueAndCapacity(
     StringBuilder *sb,
-    const String *value,
+    const struct String *value,
     uintsize capacity);
 
 /// <summary>
@@ -223,7 +223,7 @@ void StringBuilder_AppendCString(StringBuilder *sb, const char *value);
 /// <param name="value">Pointer to the string to append.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_AppendString(StringBuilder *sb, const String *value);
+void StringBuilder_AppendString(StringBuilder *sb, const struct String *value);
 
 /// <summary>
 /// Appends a string that is formatted according to the given format string, to a <see cref="StringBuilder"/>.
@@ -271,7 +271,7 @@ void StringBuilder_AppendFormatCStringV(StringBuilder *sb, const char *format, V
 /// </exception>
 /// <exception cref="::FormatException"><paramref name="format"/> is invalid.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_AppendFormatString(StringBuilder *sb, const String *format, ...);
+void StringBuilder_AppendFormatString(StringBuilder *sb, const struct String *format, ...);
 
 /// <summary>
 /// Appends a string that is formatted according to the given format string, to a <see cref="StringBuilder"/>.
@@ -289,7 +289,7 @@ void StringBuilder_AppendFormatString(StringBuilder *sb, const String *format, .
 /// </exception>
 /// <exception cref="::FormatException"><paramref name="format"/> is invalid.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_AppendFormatStringV(StringBuilder *sb, const String *format, VarArgs args);
+void StringBuilder_AppendFormatStringV(StringBuilder *sb, const struct String *format, VarArgs args);
 
 /// <summary>
 /// Appends a new line to a <see cref="StringBuilder"/>.
@@ -315,7 +315,7 @@ void StringBuilder_AppendLineCString(StringBuilder *sb, const char *value);
 /// <param name="value">Pointer to the string to append.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_AppendLineString(StringBuilder *sb, const String *value);
+void StringBuilder_AppendLineString(StringBuilder *sb, const struct String *value);
 
 /// <summary>
 /// Removes all characters from the specified <see cref="StringBuilder"/>.
@@ -334,7 +334,7 @@ void StringBuilder_Clear(StringBuilder *sb);
 /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
 /// <exception cref="::InvalidOperationException">There are still references to <paramref name="sb"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-String *StringBuilder_DeleteAndToString(StringBuilder *sb);
+struct String *StringBuilder_DeleteAndToString(StringBuilder *sb);
 
 /// <summary>
 /// Deletes a <see cref="StringBuilder"/> and returns its value as a null-terminated string.
@@ -384,7 +384,7 @@ void StringBuilder_InsertCString(StringBuilder *sb, uintsize index, const char *
 ///     <paramref name="index"/> is greater than the length of <paramref name="sb"/>.
 /// </exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_InsertString(StringBuilder *sb, uintsize index, const String *value);
+void StringBuilder_InsertString(StringBuilder *sb, uintsize index, const struct String *value);
 
 /// <summary>
 /// Removes the given range of characters from a <see cref="StringBuilder"/>.
@@ -407,7 +407,7 @@ void StringBuilder_Remove(StringBuilder *sb, uintsize startIndex, uintsize count
 /// </returns>
 /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-String *StringBuilder_ToString(const StringBuilder *sb);
+struct String *StringBuilder_ToString(const StringBuilder *sb);
 
 /// <summary>
 /// Converts the value of a <see cref="StringBuilder"/> to a null-terminated string.

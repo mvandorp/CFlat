@@ -27,7 +27,7 @@
 #include "CFlat/Language/Keywords.h"
 
 /* Forward declarations */
-typedef struct StringBuilder StringBuilder;
+struct StringBuilder;
 
 /* Macros */
 #define MAX_INTEGER_BITS (sizeof(uintmax) * 8)
@@ -153,7 +153,7 @@ internal void NumberBuffer_FormatCustomNumber(
 /// <param name="number">Pointer to a <see cref="NumberBuffer"/>.</param>
 /// <param name="sb">The <see cref="StringBuilder"/> onto which to append the resulting string.</param>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal void NumberBuffer_ToString(const NumberBuffer *number, StringBuilder *sb);
+internal void NumberBuffer_ToString(const NumberBuffer *number, struct StringBuilder *sb);
 
 /// <summary>
 /// Gets the exponent of the given <see cref="NumberBuffer"/>.

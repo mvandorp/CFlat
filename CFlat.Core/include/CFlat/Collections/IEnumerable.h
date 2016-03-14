@@ -25,7 +25,7 @@
 #include "CFlat/Object.h"
 
 /* Forward declarations */
-typedef struct IEnumerator IEnumerator;
+struct IEnumerator;
 
 /* Macros */
 /// <summary>
@@ -51,7 +51,7 @@ typedef struct IEnumerable {
 /// <see cref="IEnumerable"/>.
 /// </summary>
 /// <param name="collection">Pointer to an <see cref="IEnumerable"/>.</param>
-typedef IEnumerator *(*IEnumerable_GetEnumeratorFunc)(const IEnumerable *collection);
+typedef struct IEnumerator *(*IEnumerable_GetEnumeratorFunc)(const IEnumerable *collection);
 
 /// <summary>
 /// A virtual method table for the <see cref="IEnumerable"/> class.
@@ -88,6 +88,6 @@ void IEnumerable_Constructor(IEnumerable *collection, const IEnumerableVTable *v
 /// <param name="collection">Pointer to an <see cref="IEnumerable"/>.</param>
 /// <returns>An <see cref="IEnumerator"/> that iterates through the <see cref="IEnumerable"/>.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="collection"/> is <see cref="null"/>.</exception>
-IEnumerator *IEnumerable_GetEnumerator(const IEnumerable *collection);
+struct IEnumerator *IEnumerable_GetEnumerator(const IEnumerable *collection);
 
 #endif

@@ -23,12 +23,11 @@
 #define CFLAT_CORE_COLLECTIONS_ILIST_H
 
 #include "CFlat/Collections/ICollection.h"
-#include "CFlat/Collections/IEnumerable.h"
 #include "CFlat/Language/Bool.h"
 #include "CFlat/Language/Integer.h"
 
 /* Forward declarations */
-typedef struct IEnumerator IEnumerator;
+struct IEnumerator;
 
 /* Macros */
 /// <summary>
@@ -188,7 +187,7 @@ void IList_Constructor(
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <returns>An <see cref="IEnumerator"/> that iterates through an <see cref="IList"/>.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
-IEnumerator *IList_GetEnumerator(const IList *list);
+struct IEnumerator *IList_GetEnumerator(const IList *list);
 
 /* ICollection */
 /// <summary>

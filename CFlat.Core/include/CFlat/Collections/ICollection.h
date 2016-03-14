@@ -27,7 +27,7 @@
 #include "CFlat/Language/Integer.h"
 
 /* Forward declarations */
-typedef struct IEnumerator IEnumerator;
+struct IEnumerator;
 
 /* Macros */
 /// <summary>
@@ -198,7 +198,7 @@ void ICollection_Constructor(
 /// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
 /// <returns>An <see cref="IEnumerator"/> that iterates through an <see cref="ICollection"/>.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="collection"/> is <see cref="null"/>.</exception>
-IEnumerator *ICollection_GetEnumerator(const ICollection *collection);
+struct IEnumerator *ICollection_GetEnumerator(const ICollection *collection);
 
 /* ICollection */
 /// <summary>

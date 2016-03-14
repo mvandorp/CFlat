@@ -28,13 +28,13 @@
 #include "CFlat/Language/Integer.h"
 
 /* Forward declarations */
-typedef struct String String;
+struct String;
 
 /* Types */
-typedef struct StringReader {
+struct StringReader {
     Object Base;
-    const String *Value;
+    const struct String *Value;
     uintsize Position;
-} StringReader;
+};
 
 #endif

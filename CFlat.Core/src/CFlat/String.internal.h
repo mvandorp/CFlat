@@ -51,7 +51,7 @@
 }
 
 /* Types */
-typedef struct String {
+struct String {
     /// <summary>
     /// The base class of the string.
     /// </summary>
@@ -64,7 +64,7 @@ typedef struct String {
     /// Pointer to the null-terminated string that represents the value of the string.
     /// </summary>
     const char* Value;
-} String;
+};
 
 /* Constants */
 /// <summary>
@@ -90,6 +90,6 @@ internal extern const ObjectVTable String_VTableNoDestructor;
 ///     A pointer to a <see cref="String"/> wrapper for the given null-terminated string, or <see cref="null"/> if
 ///     <paramref name="value"/> is <see cref="null"/>.
 /// </returns>
-internal String *String_WrapCString(const char *value, String *buffer);
+internal struct String *String_WrapCString(const char *value, struct String *buffer);
 
 #endif

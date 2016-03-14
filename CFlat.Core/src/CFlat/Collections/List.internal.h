@@ -30,7 +30,7 @@
 #include "CFlat/Language/Keywords.h"
 
 /* Types */
-typedef struct List {
+struct List {
     IList Base;
     int Capacity;
     int Count;
@@ -38,7 +38,7 @@ typedef struct List {
     uintsize Version;
     byte *Array;
     EqualityPredicate Equals;
-} List;
+};
 
  /* Functions */
 /// <summary>

@@ -27,8 +27,8 @@
 #include "CFlat/Language/Keywords.h"
 
 /* Types */
-typedef struct String String;
-typedef struct StringBuilder StringBuilder;
+struct String;
+struct StringBuilder;
 
 /* Functions */
 /// <summary>
@@ -39,6 +39,6 @@ typedef struct StringBuilder StringBuilder;
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal void float_ToStringBuffered(StringBuilder *sb, float value, const String *format);
+internal void float_ToStringBuffered(struct StringBuilder *sb, float value, const struct String *format);
 
 #endif

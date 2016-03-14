@@ -4,6 +4,7 @@
 #include "CFlat/Macros.h"
 #include "CFlat/Number.h"
 #include "CFlat/String.h"
+#include "CFlat/StringBuilder.h"
 
 /**************************************/
 /* Public function definitions        */

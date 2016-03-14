@@ -2,6 +2,7 @@
 
 #include "CFlat.h"
 #include "CFlat/Validate.h"
+#include "CFlat/Collections/IEnumerator.h"
 
 /**************************************/
 /* Private functions                  */

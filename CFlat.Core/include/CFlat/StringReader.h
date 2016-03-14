@@ -25,7 +25,7 @@
 #include "CFlat/Language/Integer.h"
 
 /* Forward declarations */
-typedef struct String String;
+struct String;
 
 /* Types */
 /// <summary>
@@ -44,7 +44,7 @@ typedef struct StringReader StringReader;
 /// <returns>A pointer to the newly allocated <see cref="StringReader"/>.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="str"/> is <see cref="null"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-StringReader *StringReader_New(const String *str);
+StringReader *StringReader_New(const struct String *str);
 
 /// <summary>
 /// Initializes a <see cref="StringReader"/> so that reads from the given <see cref="String"/>.
@@ -55,7 +55,7 @@ StringReader *StringReader_New(const String *str);
 ///     <paramref name="reader"/> is <see cref="null"/> <b>-or-</b>
 ///     <paramref name="str"/> is <see cref="null"/>.
 /// </exception>
-void StringReader_Constructor(StringReader *reader, const String *str);
+void StringReader_Constructor(StringReader *reader, const struct String *str);
 
 /// <summary>
 /// Destroys a <see cref="StringReader"/>.

@@ -29,7 +29,7 @@
 #include <setjmp.h>
 
 /* Forward declarations */
-typedef struct String String;
+struct String;
 
 /* Macros */
 /// <summary>
@@ -119,7 +119,7 @@ struct __CFLAT_EXCEPTION {
     /// <summary>
     /// Pointer to a string supplied by the user that describes the exception that occured.
     /// </summary>
-    const String *UserMessage;
+    const struct String *UserMessage;
     /// <summary>
     /// Pointer to a string representing the file where the exception occured.
     /// </summary>
@@ -183,7 +183,7 @@ bool Exception_IsInstanceOf(const ExceptionHandle ex, ExceptionType type);
 /// <param name="ex">The <see cref="ExceptionHandle"/> of the exception.</param>
 /// <returns>The message describing the exception pointed to by the given <see cref="ExceptionHandle"/>.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="exceptionHandle"/> is <see cref="null"/>.</exception>
-const String *Exception_GetMessage(const ExceptionHandle ex);
+const struct String *Exception_GetMessage(const ExceptionHandle ex);
 
 /// <summary>
 /// Gets the name of the exception pointed to by the given <see cref="ExceptionHandle"/>.
@@ -191,7 +191,7 @@ const String *Exception_GetMessage(const ExceptionHandle ex);
 /// <param name="ex">The <see cref="ExceptionHandle"/> of the exception.</param>
 /// <returns>The name of the exception pointed to by the given <see cref="ExceptionHandle"/>.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="exceptionHandle"/> is <see cref="null"/>.</exception>
-const String *Exception_GetName(const ExceptionHandle ex);
+const struct String *Exception_GetName(const ExceptionHandle ex);
 
 /// <summary>
 /// Gets the <see cref="ExceptionType"/> of the exception pointed to by the given <see cref="ExceptionHandle"/>.

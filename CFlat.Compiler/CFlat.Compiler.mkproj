@@ -29,7 +29,7 @@ LibraryDirectories      := $(SolutionDir)CFlat.Core/bin
 Libraries               := cb m
 
 # Advanced Options
-CFLAGS                  := -std=c99 -Wall -Wextra
+CFLAGS                  := -std=c99 -Wall -Wextra -pedantic
 CPPFLAGS                :=
 LDFLAGS                 :=
 LDLIBS                  :=

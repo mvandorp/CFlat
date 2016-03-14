@@ -26,7 +26,7 @@
 
 #include <float.h>
 
-typedef struct String String;
+struct String;
 
 /* Macros */
 /// <summary>
@@ -134,7 +134,7 @@ double double_Min(double x, double y);
 /// <param name="value">The value to be converted to a string.</param>
 /// <returns>The string representation of the given number.</returns>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-String *double_ToString(double value);
+struct String *double_ToString(double value);
 
 /// <summary>
 /// Converts the given number to a string representation, using the specified format.
@@ -143,7 +143,7 @@ String *double_ToString(double value);
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-String *double_ToStringFormat(double value, const String *format);
+struct String *double_ToStringFormat(double value, const struct String *format);
 
 /// <summary>
 /// Converts the given number to a string representation, using the specified format.
@@ -152,7 +152,7 @@ String *double_ToStringFormat(double value, const String *format);
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-String *double_ToStringFormatC(double value, const char *format);
+struct String *double_ToStringFormatC(double value, const char *format);
 
 #ifdef CFLAT_CORE_INTERNAL
  #include "CFlat/Language/Double.internal.h"

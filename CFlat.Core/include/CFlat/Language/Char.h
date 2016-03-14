@@ -24,7 +24,7 @@
 
 #include "CFlat/Language/Bool.h"
 
-typedef struct String String;
+struct String;
 
 /* Macros */
 /// <summary>
@@ -155,6 +155,6 @@ int char_ToUpper(int c);
 /// <param name="c">The value to be converted to a string.</param>
 /// <returns>The string representation of the character.</returns>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-String *char_ToString(char c);
+struct String *char_ToString(char c);
 
 #endif

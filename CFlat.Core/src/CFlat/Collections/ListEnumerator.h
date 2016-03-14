@@ -23,8 +23,8 @@
 #include "CFlat/Language/Keywords.h"
 
 /* Forward declarations */
-typedef struct List List;
-typedef struct IEnumerator IEnumerator;
+struct List;
+struct IEnumerator;
 
 /* Functions */
 /// <summary>
@@ -36,6 +36,6 @@ typedef struct IEnumerator IEnumerator;
 /// <returns>A pointer to the newly allocated <see cref="IEnumerator"/>.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal IEnumerator *ListEnumerator_New(const List *list);
+internal struct IEnumerator *ListEnumerator_New(const struct List *list);
 
 #endif

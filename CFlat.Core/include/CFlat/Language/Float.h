@@ -26,7 +26,7 @@
 
 #include <float.h>
 
-typedef struct String String;
+struct String;
 
 /* Macros */
 /// <summary>
@@ -134,7 +134,7 @@ float float_Min(float x, float y);
 /// <param name="value">The value to be converted to a string.</param>
 /// <returns>The string representation of the given number.</returns>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-String *float_ToString(float value);
+struct String *float_ToString(float value);
 
 /// <summary>
 /// Converts the given number to a string representation, using the specified format.
@@ -143,7 +143,7 @@ String *float_ToString(float value);
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-String *float_ToStringFormat(float value, const String *format);
+struct String *float_ToStringFormat(float value, const struct String *format);
 
 /// <summary>
 /// Converts the given number to a string representation, using the specified format.
@@ -152,7 +152,7 @@ String *float_ToStringFormat(float value, const String *format);
 /// <param name="format">A standard or custom numeric format string.</param>
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-String *float_ToStringFormatC(float value, const char *format);
+struct String *float_ToStringFormatC(float value, const char *format);
 
 #ifdef CFLAT_CORE_INTERNAL
  #include "CFlat/Language/Float.internal.h"
