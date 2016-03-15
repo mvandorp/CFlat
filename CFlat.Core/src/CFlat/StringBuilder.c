@@ -378,7 +378,7 @@ public void StringBuilder_InsertCString(StringBuilder *sb, uintsize index, const
 public void StringBuilder_InsertString(StringBuilder *sb, uintsize index, const String *value)
 {
     Validate_NotNull(sb);
-    // TODO: Validate index!!!
+    Validate_IsTrue(index <= sb->Length, ArgumentOutOfRangeException, "Index must be within the bounds of the string.");
 
     if (value == null) {
         return;

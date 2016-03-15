@@ -251,9 +251,7 @@ void List_InsertRange(List *list, int index, const struct IEnumerable *collectio
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 /// <exception cref="::ArgumentOutOfRangeException">
 ///     <paramref name="index"/> is less than 0 <b>-or-</b>
-///     <paramref name="count"/> is less than 0.
-/// </exception>
-/// <exception cref="::ArgumentException">
+///     <paramref name="count"/> is less than 0 <b>-or-</b>
 ///     <paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in
 ///     <paramref name="list"/>.
 /// </exception>
