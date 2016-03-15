@@ -30,8 +30,15 @@
 #include <stdlib.h>
 
 /* Types */
+struct CFlatException {
+    Object Base;
+    const struct String *UserMessage;
+    const char *File;
+    int Line;
+    ExceptionType Type;
+};
+
 typedef struct __CFLAT_EXCEPTION_STATE ExceptionState;
-typedef struct __CFLAT_EXCEPTION CFlatException;
 
 /* Public variables */
 public jmp_buf __CFLAT_EXCEPTION_BUFFER;
@@ -40,7 +47,7 @@ public jmp_buf __CFLAT_EXCEPTION_BUFFER;
 /// <summary>
 /// A handle to the exception that is currently being handled, or <see cref="null"/> if there is no exception right now.
 /// </summary>
-private ExceptionHandle CurrentException = null;
+private const CFlatException *CurrentException = null;
 
 /// <summary>
 /// Indicates whether the current exception has already been handled by a catch clause.
@@ -57,19 +64,19 @@ private int StackSize = 0;
 /* Private functions                  */
 /**************************************/
 
-private ExceptionHandle Exception_New(ExceptionType type, const String *userMessage, const char *file, int line);
+private CFlatException *Exception_New(ExceptionType type, const String *userMessage, const char *file, int line);
 private void Exception_Constructor(
-    ExceptionHandle ex,
+    CFlatException *ex,
     ExceptionType type,
     const String *userMessage,
     const char *file,
     int line);
-private void Exception_Destructor(ExceptionHandle ex);
+private void Exception_Destructor(CFlatException *ex);
 
 private void PushJumpBuffer(jmp_buf stack);
 private void PopJumpBuffer(jmp_buf stack);
 private void RestoreJumpBuffer(ExceptionState *state);
-private String *GenerateExceptionText(const ExceptionHandle ex);
+private String *GenerateExceptionText(const CFlatException *ex);
 private void UnhandledException(void);
 private bool IsInsideTryBlock(void);
 
@@ -135,7 +142,26 @@ public void __CFLAT_EXCEPTION_ENDTRY(ExceptionState *state)
     }
 }
 
-public void __CFLAT_EXCEPTION_THROW_AGAIN(const ExceptionHandle ex)
+public void __CFLAT_EXCEPTION_THROW(void)
+{
+    Validate_State(CurrentException != null,
+        "A throw statement with no arguments is not allowed outside of a catch clause.");
+
+    // Set the exception flag.
+    ExceptionHandled = false;
+
+    // Test whether the exception occured within a try block.
+    if (IsInsideTryBlock()) {
+        // If so, jump to the corresponding catch/finally blocks.
+        longjmp(__CFLAT_EXCEPTION_BUFFER, true);
+    }
+    else {
+        // Otherwise, print an exception message and abort the program.
+        UnhandledException();
+    }
+}
+
+public void __CFLAT_EXCEPTION_THROW_AGAIN(const CFlatException *ex)
 {
     Validate_NotNull(ex);
 
@@ -158,33 +184,14 @@ public void __CFLAT_EXCEPTION_THROW_NEW(ExceptionType type, const char *message,
     __CFLAT_EXCEPTION_THROW();
 }
 
-public void __CFLAT_EXCEPTION_THROW(void)
-{
-    Validate_State(CurrentException != null,
-        "A throw statement with no arguments is not allowed outside of a catch clause.");
-
-    // Set the exception flag.
-    ExceptionHandled = false;
-
-    // Test whether the exception occured within a try block.
-    if (IsInsideTryBlock()) {
-        // If so, jump to the corresponding catch/finally blocks.
-        longjmp(__CFLAT_EXCEPTION_BUFFER, true);
-    }
-    else {
-        // Otherwise, print an exception message and abort the program.
-        UnhandledException();
-    }
-}
-
-public bool Exception_IsInstanceOf(const ExceptionHandle ex, ExceptionType type)
+public bool Exception_IsInstanceOf(const CFlatException *ex, ExceptionType type)
 {
     Validate_NotNull(ex);
 
     return ExceptionType_IsAssignableFrom(type, ex->Type);
 }
 
-public const String *Exception_GetMessage(const ExceptionHandle ex)
+public const String *Exception_GetMessage(const CFlatException *ex)
 {
     Validate_NotNull(ex);
 
@@ -196,12 +203,12 @@ public const String *Exception_GetMessage(const ExceptionHandle ex)
     }
 }
 
-public const String *Exception_GetName(const ExceptionHandle ex)
+public const String *Exception_GetName(const CFlatException *ex)
 {
     return ExceptionType_GetName(Exception_GetType(ex));
 }
 
-public ExceptionType Exception_GetType(const ExceptionHandle ex)
+public ExceptionType Exception_GetType(const CFlatException *ex)
 {
     Validate_NotNull(ex);
 
@@ -213,12 +220,12 @@ public ExceptionType Exception_GetType(const ExceptionHandle ex)
 /**************************************/
 
 /// <summary>
-/// Allocates and initializes a new <see cref="CFlatException"/> and returns its <see cref="ExceptionHandle"/>.
+/// Allocates and initializes a new <see cref="CFlatException"/>.
 /// </summary>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-private ExceptionHandle Exception_New(ExceptionType type, const String *userMessage, const char *file, int line)
+private CFlatException *Exception_New(ExceptionType type, const String *userMessage, const char *file, int line)
 {
-    ExceptionHandle ex = Memory_Allocate(sizeof(CFlatException));
+    CFlatException *ex = Memory_Allocate(sizeof(CFlatException));
 
     try {
         Exception_Constructor(ex, type, userMessage, file, line);
@@ -235,11 +242,11 @@ private ExceptionHandle Exception_New(ExceptionType type, const String *userMess
 }
 
 /// <summary>
-/// Initializes the <see cref="CFlatException"/> referenced by the given <see cref="ExceptionHandle"/>.
+/// Initializes the <see cref="CFlatException"/> referenced by the given <see cref="CFlatException"/>.
 /// </summary>
 /// <exception cref="::ArgumentNullException"><paramref name="ex"/> is <see cref="null"/>.</exception>
 private void Exception_Constructor(
-    ExceptionHandle ex,
+    CFlatException *ex,
     ExceptionType type,
     const String *userMessage,
     const char *file,
@@ -258,10 +265,10 @@ private void Exception_Constructor(
 }
 
 /// <summary>
-/// Destroys the <see cref="CFlatException"/> referenced by the given <see cref="ExceptionHandle"/>.
+/// Destroys the <see cref="CFlatException"/> referenced by the given <see cref="CFlatExceptionf"/>.
 /// </summary>
 /// <exception cref="::ArgumentNullException"><paramref name="ex"/> is <see cref="null"/>.</exception>
-private void Exception_Destructor(ExceptionHandle ex)
+private void Exception_Destructor(CFlatException *ex)
 {
     Validate_NotNull(ex);
 
@@ -311,7 +318,7 @@ private void RestoreJumpBuffer(ExceptionState *state)
 /// Generates the error text for a given exception.
 /// </summary>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-private String *GenerateExceptionText(const ExceptionHandle ex)
+private String *GenerateExceptionText(const CFlatException *ex)
 {
     assert(ex != null);
 
