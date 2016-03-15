@@ -25,6 +25,7 @@
 #include "CFlat/ExceptionType.h"
 #include "CFlat/Object.h"
 #include "CFlat/Language/Bool.h"
+#include "CFlat/Language/Null.h"
 
 #include <setjmp.h>
 
@@ -98,7 +99,22 @@ struct String;
 ///     Pointer to a null-terminated string that describes the exception, or <see cref="null"/> to use the default
 ///     exception message.
 /// </param>
-#define throw_new(type, message) __CFLAT_EXCEPTION_THROW_NEW(type, message, __FILE__, __LINE__)
+#define throw_new(type, message) __CFLAT_EXCEPTION_THROW_NEW(type, message, __FILE__, __LINE__, null)
+
+/// <summary>
+/// Throws an exception of the given type with the given inner exception.
+/// </summary>
+/// <param name="type">The type of exception thrown.</param>
+/// <param name="message">
+///     Pointer to a null-terminated string that describes the exception, or <see cref="null"/> to use the default
+///     exception message.
+/// </param>
+/// <param name="innerException">
+///     Pointer to the <see cref="CFlatException"/> that caused the current exception, or <see cref="null"/> if no
+///     inner exception is specified.
+/// </param>
+#define throw_new_with_inner(type, message, innerException) \
+    __CFLAT_EXCEPTION_THROW_NEW(type, message, __FILE__, __LINE__, innerException)
 
 /* Types */
 /// <summary>
@@ -148,6 +164,17 @@ extern jmp_buf __CFLAT_EXCEPTION_BUFFER;
 /// <returns><see cref="true"/> if the exception is of the given type; otherwise, <see cref="false"/>.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="ex"/> is <see cref="null"/>.</exception>
 bool Exception_IsInstanceOf(const CFlatException *ex, ExceptionType type);
+
+/// <summary>
+/// Gets the <see cref="CFlatException"/> that caused the given <see cref="CFlatException"/>.
+/// </summary>
+/// <param name="ex">Pointer to a <see cref="CFlatException"/>.</param>
+/// <returns>
+///     A pointer to the <see cref="CFlatException"/> that caused the given <see cref="CFlatException"/>, or
+///     <see cref="null"/> if no inner exception was specified.
+/// </returns>
+/// <exception cref="::ArgumentNullException"><paramref name="ex"/> is <see cref="null"/>.</exception>
+const CFlatException *Exception_GetInnerException(const CFlatException *ex);
 
 /// <summary>
 /// Gets the message describing a given <see cref="CFlatException"/>.
@@ -228,6 +255,15 @@ void __CFLAT_EXCEPTION_THROW_AGAIN(const CFlatException *ex);
 /// </param>
 /// <param name="file">Pointer to a string that contains the filename where the exception occured.</param>
 /// <param name="line">The line number where the exception occured.</param>
-void __CFLAT_EXCEPTION_THROW_NEW(ExceptionType type, const char *message, const char *file, int line);
+/// <param name="innerException">
+///     Pointer to the <see cref="CFlatException"/> that caused the current exception, or <see cref="null"/> if no
+///     inner exception is specified.
+/// </param>
+void __CFLAT_EXCEPTION_THROW_NEW(
+    ExceptionType type,
+    const char *message,
+    const char *file,
+    int line,
+    const CFlatException *innerException);
 
 #endif

@@ -36,6 +36,7 @@ struct CFlatException {
     const char *File;
     int Line;
     ExceptionType Type;
+    const CFlatException *InnerException;
 };
 
 typedef struct __CFLAT_EXCEPTION_STATE ExceptionState;
@@ -64,13 +65,19 @@ private int StackSize = 0;
 /* Private functions                  */
 /**************************************/
 
-private CFlatException *Exception_New(ExceptionType type, const String *userMessage, const char *file, int line);
+private CFlatException *Exception_New(
+    ExceptionType type,
+    const String *userMessage,
+    const char *file,
+    int line,
+    const CFlatException *innerException);
 private void Exception_Constructor(
     CFlatException *ex,
     ExceptionType type,
     const String *userMessage,
     const char *file,
-    int line);
+    int line,
+    const CFlatException *innerException);
 private void Exception_Destructor(CFlatException *ex);
 
 private void PushJumpBuffer(jmp_buf stack);
@@ -172,13 +179,18 @@ public void __CFLAT_EXCEPTION_THROW_AGAIN(const CFlatException *ex)
     __CFLAT_EXCEPTION_THROW();
 }
 
-public void __CFLAT_EXCEPTION_THROW_NEW(ExceptionType type, const char *message, const char *file, int line)
+public void __CFLAT_EXCEPTION_THROW_NEW(
+    ExceptionType type,
+    const char *message,
+    const char *file,
+    int line,
+    const CFlatException *innerException)
 {
     assert(file != null);
     assert(line > 0);
 
     // Set exception information.
-    CurrentException = Exception_New(type, String_New(message), file, line);
+    CurrentException = Exception_New(type, String_New(message), file, line, innerException);
 
     // Throw an exception with the set information.
     __CFLAT_EXCEPTION_THROW();
@@ -191,6 +203,13 @@ public bool Exception_IsInstanceOf(const CFlatException *ex, ExceptionType type)
     return ExceptionType_IsAssignableFrom(type, ex->Type);
 }
 
+public const CFlatException *Exception_GetInnerException(const CFlatException *ex)
+{
+    Validate_NotNull(ex);
+
+    return ex->InnerException;
+}
+
 public const String *Exception_GetMessage(const CFlatException *ex)
 {
     Validate_NotNull(ex);
@@ -199,7 +218,7 @@ public const String *Exception_GetMessage(const CFlatException *ex)
         return ExceptionType_GetDefaultMessage(ex->Type);
     }
     else {
-        return Object_Aquire(ex->UserMessage);
+        return ex->UserMessage;
     }
 }
 
@@ -223,12 +242,17 @@ public ExceptionType Exception_GetType(const CFlatException *ex)
 /// Allocates and initializes a new <see cref="CFlatException"/>.
 /// </summary>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-private CFlatException *Exception_New(ExceptionType type, const String *userMessage, const char *file, int line)
+private CFlatException *Exception_New(
+    ExceptionType type,
+    const String *userMessage,
+    const char *file,
+    int line,
+    const CFlatException *innerException)
 {
     CFlatException *ex = Memory_Allocate(sizeof(CFlatException));
 
     try {
-        Exception_Constructor(ex, type, userMessage, file, line);
+        Exception_Constructor(ex, type, userMessage, file, line, innerException);
 
         Object_SetDeallocator(ex, Memory_Deallocate);
     }
@@ -250,7 +274,8 @@ private void Exception_Constructor(
     ExceptionType type,
     const String *userMessage,
     const char *file,
-    int line)
+    int line,
+    const CFlatException *innerException)
 {
     assert(ex != null);
     assert(file != null);
@@ -262,6 +287,7 @@ private void Exception_Constructor(
     ex->UserMessage = userMessage;
     ex->File = file;
     ex->Line = line;
+    ex->InnerException = Object_Aquire(innerException);
 }
 
 /// <summary>
@@ -273,6 +299,7 @@ private void Exception_Destructor(CFlatException *ex)
     Validate_NotNull(ex);
 
     Object_Release(ex->UserMessage);
+    Object_Release(ex->InnerException);
 }
 
 /// <summary>
@@ -322,8 +349,8 @@ private String *GenerateExceptionText(const CFlatException *ex)
 {
     assert(ex != null);
 
-    const String *name = ExceptionType_GetName(ex->Type);
-    const String *message = Exception_GetMessage(ex);
+    const String *name = Object_Aquire(ExceptionType_GetName(ex->Type));
+    const String *message = Object_Aquire(Exception_GetMessage(ex));
     String *result;
 
     if (message == null || String_GetLength(message) == 0) {
