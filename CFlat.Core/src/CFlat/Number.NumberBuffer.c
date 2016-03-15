@@ -595,7 +595,7 @@ private void RoundToPrecision(NumberBuffer *number, int precision)
 
     // Compute the carry from the decimals that will be rounded off.
     for (i = lastDecimal; i >= lastDecimalAfterRounding; i--) {
-        if (number->Digits[i] + carry >= '5') {
+        if (number->Digits[i] == '5' || number->Digits[i] + carry > '5') {
             carry = 1;
         }
         else {
@@ -611,6 +611,8 @@ private void RoundToPrecision(NumberBuffer *number, int precision)
             carry = 1;
         }
         else {
+            number->Digits[i] = (char)(number->Digits[i] + 1);
+
             carry = 0;
         }
 
