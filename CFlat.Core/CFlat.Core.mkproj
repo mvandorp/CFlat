@@ -29,7 +29,37 @@ LibraryDirectories      :=
 Libraries               := m
 
 # Advanced Options
-CFLAGS                  := -std=c99 -Wall -Wextra -pedantic
+CFLAGS                  :=                  \
+    -O2 -std=c99 -pedantic                  \
+    -Wall -Wextra -Werror                   \
+    -Wdouble-promotion                      \
+    -Wformat=2                              \
+    -Winit-self                             \
+    -Wmissing-include-dirs                  \
+    -Wswitch-default                        \
+    -Wswitch-enum                           \
+    -Wfloat-equal                           \
+    -Wundef                                 \
+    -Wshadow                                \
+    -Wpointer-arith                         \
+    -Wcast-qual                             \
+    -Wcast-align                            \
+    -Wwrite-strings                         \
+    -Wconversion                            \
+    -Wjump-misses-init                      \
+    -Wlogical-op                            \
+    -Waggregate-return                      \
+    -Wstrict-prototypes                     \
+    -Wold-style-declaration                 \
+    -Wold-style-definition                  \
+    -Wmissing-parameter-type                \
+    -Wmissing-prototypes                    \
+    -Wmissing-declarations                  \
+    -Wredundant-decls                       \
+    -Wnested-externs                        \
+    -Winline                                \
+    -Wvariadic-macros                       \
+    -Wvla
 CPPFLAGS                :=
 LDFLAGS                 :=
 LDLIBS                  :=
