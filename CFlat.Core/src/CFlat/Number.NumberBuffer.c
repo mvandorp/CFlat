@@ -193,7 +193,7 @@ internal void NumberBuffer_FormatInteger(NumberBuffer *number, int minNumDigits,
         last = value % ubase;
         value = value / ubase;
 
-        char digit = (char)last;
+        int digit = (int)last;
 
         if (digit < 10) {
             digit = '0' + digit;
@@ -206,7 +206,7 @@ internal void NumberBuffer_FormatInteger(NumberBuffer *number, int minNumDigits,
         }
 
         // Add the digit to the string.
-        number->Digits[number->DigitCount++] = digit;
+        number->Digits[number->DigitCount++] = (char)digit;
     }
 
     // Reverse the digits so that they are in normal order.
@@ -356,7 +356,7 @@ private void NumberBuffer_FormatFloat(NumberBuffer *number,  int numDecimals, bo
         value = Math_Round(value * Math_Pow(10.0, -numSignificantDigits + numDigits));
 
         // Account for the result of rounding if the digits start directly behind the last decimal.
-        if (numDigits == 0 && value == 1.0) {
+        if (numDigits == 0 && value >= 1.0) {
             number->Digits[number->DigitCount++] = '1';
             exponent++;
         }
@@ -372,7 +372,7 @@ private void NumberBuffer_FormatFloat(NumberBuffer *number,  int numDecimals, bo
             value = value / 10.0;
 
             // Add the digit to the string.
-            number->Digits[number->DigitCount++] = '0' + (char)digit;
+            number->Digits[number->DigitCount++] = (char)('0' + (int)digit);
         }
 
         // Reverse the digits so that they are in normal order.
@@ -474,12 +474,12 @@ private int Exponent(const NumberBuffer *number)
 /// </summary>
 private int FloatExponent(double x)
 {
-    if (x == 0.0) {
-        return 0;
-    }
-
     if (x < 0.0) {
         x = -x;
+    }
+
+    if (x < double_Epsilon) {
+        return 0;
     }
 
     return (int)Math_Floor(Math_Log10(x)) + 1;
@@ -600,7 +600,7 @@ private void RoundToPrecision(NumberBuffer *number, int precision)
 
     // If the addition results in a carry out, shift the number right to prepend a 1.
     if (carry && i < 0) {
-        Memory_Copy(&number->Digits[0], &number->Digits[1], number->DigitCount - 1);
+        Memory_Copy(&number->Digits[0], &number->Digits[1], (uintsize)(number->DigitCount - 1));
 
         number->Digits[0] = '1';
 

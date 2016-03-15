@@ -274,7 +274,7 @@ private ArgumentType ReadFormatItem(StringReader *reader, char **formatString, S
     // Skip the '}' character.
     StringReader_Read(reader);
 
-    char *buffer = (char*)StringBuilder_GetBuffer(formatBuffer);
+    char *buffer = StringBuilder_GetBuffer(formatBuffer);
 
     // Prase the format item to find the type and format string.
     return ParseFormatItem(buffer, formatString);

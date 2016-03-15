@@ -25,6 +25,13 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* Internal functions */
+internal void *const_cast(const void *ptr);
+
+/**************************************/
+/* Public function definitions        */
+/**************************************/
+
 public void *Memory_Allocate(uintsize size)
 {
     if (size == 0) {
@@ -53,9 +60,9 @@ public void *Memory_AllocateZeroed(uintsize size)
     return memory;
 }
 
-public void Memory_Deallocate(void *memory)
+public void Memory_Deallocate(const void *memory)
 {
-    free(memory);
+    free(const_cast(memory));
 }
 
 public void *Memory_Reallocate(void *memory, uintsize newSize)
@@ -72,6 +79,11 @@ public void *Memory_Reallocate(void *memory, uintsize newSize)
     Validate_IsTrue(memory != null, OutOfMemoryException, null);
 
     return memory;
+}
+
+public const void *Memory_ReallocateConst(const void *memory, uintsize newSize)
+{
+    return Memory_Reallocate(const_cast(memory), newSize);
 }
 
 public void Memory_Copy(const void *source, void *destination, uintsize length)

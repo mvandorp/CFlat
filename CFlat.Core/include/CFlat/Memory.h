@@ -71,7 +71,7 @@ void *Memory_AllocateZeroed(uintsize size);
 /// <seealso cref="Memory_Allocate()"/>
 /// <seealso cref="Memory_AllocateZeroed()"/>
 /// <seealso cref="Memory_Reallocate()"/>
-void Memory_Deallocate(void *memory);
+void Memory_Deallocate(const void *memory);
 
 /// <summary>
 /// Reallocates memory previously allocated by Memory_Allocate(), Memory_AllocateZeroed() or Memory_Reallocate() so
@@ -122,6 +122,16 @@ void Memory_Deallocate(void *memory);
 /// <seealso cref="Memory_AllocateZeroed()"/>
 /// <seealso cref="Memory_Deallocate()"/>
 void *Memory_Reallocate(void* memory, uintsize newSize);
+
+/// <summary>
+/// Reallocates memory previously allocated by Memory_Allocate(), Memory_AllocateZeroed() or Memory_Reallocate() so
+/// that it is <paramref name="newSize"/> bytes long.
+/// </summary>
+/// <param name="memory">Pointer to the memory to reallocate.</param>
+/// <param name="newSize">The new number of bytes of memory to allocate.</param>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+/// <seealso cref="Memory_Reallocate()"/>
+const void *Memory_ReallocateConst(const void* memory, uintsize newSize);
 
 /// <summary>
 /// Copies <paramref name="length"/> bytes from the memory block pointed to by the <paramref name="source"/> pointer to

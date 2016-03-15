@@ -23,6 +23,9 @@
 #include "CFlat/Memory.h"
 #include "CFlat/Validate.h"
 
+/* Internal functions */
+internal void *const_cast(const void *ptr);
+
 /**************************************/
 /* Private functions                  */
 /**************************************/
@@ -38,7 +41,7 @@ public void Object_Constructor(void *obj, const ObjectVTable *vtable)
     Validate_NotNull(obj);
     Validate_NotNull(vtable);
 
-    Object *object = (Object*)obj;
+    Object *object = obj;
 
     object->RefCount = 1;
     object->Deallocator = null;
@@ -49,7 +52,7 @@ public void Object_SetDeallocator(void *obj, DeallocatorFunc dealloc)
 {
     Validate_NotNull(obj);
 
-    Object *object = (Object*)obj;
+    Object *object = obj;
 
     // Prevent modifying a constant object.
     if (object->RefCount != uintsize_MaxValue) {
@@ -62,7 +65,7 @@ public void Object_SetVTable(void *obj, const ObjectVTable *vtable)
     Validate_NotNull(obj);
     Validate_NotNull(vtable);
 
-    Object *object = (Object*)obj;
+    Object *object = obj;
 
     // Prevent modifying a constant object.
     if (object->RefCount != uintsize_MaxValue) {
@@ -76,14 +79,19 @@ public void *Object_Aquire(const void *obj)
         return null;
     }
 
-    Object *object = (Object*)obj;
+    Object *object = const_cast(obj);
 
     // Prevent overflow and prevent modifying a constant object.
     if (object->RefCount != uintsize_MaxValue) {
         object->RefCount++;
     }
 
-    return (void*)obj;
+    return object;
+}
+
+public const void *Object_AquireConst(const void *obj)
+{
+    return Object_Aquire(obj);
 }
 
 public bool Object_Release(const void *obj)
@@ -92,7 +100,7 @@ public bool Object_Release(const void *obj)
         return false;
     }
 
-    Object *object = (Object*)obj;
+    Object *object = const_cast(obj);
 
     // Prevent modifying a constant object.
     if (object->RefCount != uintsize_MaxValue) {

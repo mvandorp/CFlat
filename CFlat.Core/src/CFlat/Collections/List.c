@@ -166,7 +166,7 @@ public void List_SetCapacity(List *list, int capacity)
         "Capacity cannot be smaller than the current length.");
 
     if (capacity != list->Capacity) {
-        list->Array = Memory_Reallocate(list->Array, capacity * list->ElementSize);
+        list->Array = Memory_Reallocate(list->Array, (uintsize)capacity * list->ElementSize);
         list->Capacity = capacity;
     }
 }
@@ -199,8 +199,10 @@ public void List_InsertRange(List *list, int index, const IEnumerable *collectio
     IEnumerator *enumerator = IEnumerable_GetEnumerator(collection);
 
     try {
+        int i = index;
+
         while (IEnumerator_MoveNext(enumerator)) {
-            List_InsertRef(list, index++, IEnumerator_GetCurrent(enumerator));
+            List_InsertRef(list, i++, IEnumerator_GetCurrent(enumerator));
         }
     }
     finally{
@@ -224,9 +226,9 @@ public void List_RemoveRange(List *list, int index, int count)
 
     // Copy the contents of the buffer backward after index forward by length bytes.
     Memory_CopyOffset(
-        list->Array, (index + count) * size,
-        list->Array, index * size,
-        (list->Count - (index + count)) * size);
+        list->Array, (uintsize)(index + count) * size,
+        list->Array, (uintsize)count * size,
+        (uintsize)(list->Count - (index + count)) * size);
 
     list->Count -= count;
     list->Version++;
@@ -277,7 +279,7 @@ public void List_CopyTo(const List *list, void *destination, uintsize destinatio
         "The number of elements in the list is greater than the number of elements that the destination array can "
         "contain.");
 
-    Memory_Copy(list->Array, destination, list->Count * list->ElementSize);
+    Memory_Copy(list->Array, destination, (uintsize)list->Count * list->ElementSize);
 }
 
 public bool List_RemoveRef(List *list, const void *item)
@@ -302,8 +304,9 @@ public void *List_GetItemRef(const List *list, int index)
 
     byte *array = list->Array;
     uintsize size = list->ElementSize;
+    uintsize i = (uintsize)index;
 
-    return &array[index * size];
+    return &array[i * size];
 }
 
 public void List_SetItemRef(List *list, int index, const void *item)
@@ -329,11 +332,11 @@ public int List_IndexOfRef(const List *list, const void *item)
 
     byte *array = list->Array;
     uintsize size = list->ElementSize;
-    int count = list->Count;
+    uintsize count = (uintsize)list->Count;
 
-    for (int i = 0; i < count; i++) {
+    for (uintsize i = 0; i < count; i++) {
         if (list->Equals(&array[i * size], item)) {
-            return i;
+            return (int)i;
         }
     }
 
@@ -353,17 +356,19 @@ public void List_InsertRef(List *list, int index, const void *item)
 
     byte *array = list->Array;
     uintsize size = list->ElementSize;
+    uintsize i = (uintsize)index;
+    uintsize length = (uintsize)list->Count;
 
-    if (index < list->Count) {
+    if (i < length) {
         // Move the contents of the array after index forward by 1 index.
         Memory_Copy(
-            &array[index * size],
-            &array[(index + 1) * size],
-            (list->Count - index) * size);
+            &array[i * size],
+            &array[(i + 1) * size],
+            (length - i) * size);
     }
 
     // Insert the item.
-    Memory_Copy(item, &array[index * size], size);
+    Memory_Copy(item, &array[i * size], size);
 
     list->Count++;
     list->Version++;
@@ -421,12 +426,14 @@ private void EnsureCapacity(List *list, int minCapacity)
             throw_new(OutOfMemoryException, "Capacity exceeded the maximum capacity of a List.");
         }
 
+        int finalCapacity;
         uint capacity;
-        capacity = uint_Max(minCapacity, list->Count * 2);
-        capacity = uint_Max(capacity, DefaultCapacity);
-        capacity = uint_Min(capacity, List_MaxCapacity);
+        capacity = uint_Max((uint)minCapacity, (uint)list->Count * 2);
+        capacity = uint_Max(capacity, (uint)DefaultCapacity);
+        capacity = uint_Min(capacity, (uint)List_MaxCapacity);
+        finalCapacity = (int)uint_Min(capacity, int_MaxValue);
 
-        List_SetCapacity(list, capacity);
+        List_SetCapacity(list, finalCapacity);
     }
 }
 

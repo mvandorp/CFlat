@@ -220,7 +220,7 @@ public bool char_IsGraphic(int c)
     return CHAR_IS(c, CHAR_GRAPHIC);
 }
 
-public bool char_IsHexDigit(int c)
+public bool char_IsHexadecimalDigit(int c)
 {
     return CHAR_IS(c, CHAR_HEX);
 }

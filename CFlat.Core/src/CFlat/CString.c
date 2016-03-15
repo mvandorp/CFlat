@@ -28,15 +28,15 @@ public uintsize CString_Length(const char *str)
 {
     Validate_NotNull(str);
 
-    const char *start = str;
+    uintsize length = 0;
 
     // Walk to the end of the string, indicated by a terminating null character.
     while (*str) {
         str++;
+        length++;
     }
 
-    // The length is equal to the difference between the start and end of the string.
-    return str - start;
+    return length;
 }
 
 public char *CString_Copy(const char *str)

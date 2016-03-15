@@ -236,7 +236,7 @@ public void StringBuilder_AppendString(StringBuilder *sb, const String *value)
 
     // Increase the capacity if needed.
     if (sb->Length + length > sb->Capacity) {
-        StringBuilder_SetCapacity(sb, int_Max(sb->Capacity * 2, sb->Capacity + length));
+        StringBuilder_SetCapacity(sb, uintsize_Max(sb->Capacity * 2, sb->Capacity + length));
     }
 
     // Copy the string to the end of the buffer.
@@ -330,7 +330,7 @@ public String *StringBuilder_DeleteAndToString(StringBuilder *sb)
 
 public char *StringBuilder_DeleteAndToCString(StringBuilder *sb)
 {
-    char *buffer = (char*)StringBuilder_GetBuffer(sb);
+    char *buffer = StringBuilder_GetBuffer(sb);
 
     // Prevent the destructor from being invoked so that the buffer remains valid.
     Object_SetVTable(sb, &VTableNoDestructor);
@@ -378,6 +378,7 @@ public void StringBuilder_InsertCString(StringBuilder *sb, uintsize index, const
 public void StringBuilder_InsertString(StringBuilder *sb, uintsize index, const String *value)
 {
     Validate_NotNull(sb);
+    // TODO: Validate index!!!
 
     if (value == null) {
         return;
@@ -387,7 +388,7 @@ public void StringBuilder_InsertString(StringBuilder *sb, uintsize index, const 
 
     // Increase the capacity if needed.
     if (sb->Length + length > sb->Capacity) {
-        StringBuilder_SetCapacity(sb, int_Max(sb->Capacity * 2, sb->Capacity + length));
+        StringBuilder_SetCapacity(sb, uintsize_Max(sb->Capacity * 2, sb->Capacity + length));
     }
 
     // Copy the contents of the buffer after index forward by length bytes.
@@ -427,7 +428,7 @@ public char *StringBuilder_ToCString(const StringBuilder *sb)
 /* Internal function definitions      */
 /**************************************/
 
-internal const char *StringBuilder_GetBuffer(const StringBuilder *sb)
+internal char *StringBuilder_GetBuffer(const StringBuilder *sb)
 {
     Validate_NotNull(sb);
 

@@ -92,7 +92,7 @@ public void String_Destructor(String *str)
 {
     Validate_NotNull(str);
 
-    Memory_Deallocate((void*)str->Value);
+    Memory_Deallocate(str->Value);
 }
 
 public char String_GetCharAt(const String *str, uintsize index)

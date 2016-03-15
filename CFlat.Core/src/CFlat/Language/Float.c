@@ -6,29 +6,50 @@
 #include "CFlat/String.h"
 #include "CFlat/StringBuilder.h"
 
+#if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) || (_MSC_VER >= 1700)
+ #include <math.h>
+ #define C99_math
+#endif
+
 /**************************************/
 /* Public function definitions        */
 /**************************************/
 
 public bool float_IsNaN(float value)
 {
+#ifdef C99_math
+    return isnan(value);
+#else
     // HACK: Works only with IEEE-754 floating-point numbers.
     return value != value;
+#endif
 }
 
 public bool float_IsInfinity(float value)
 {
+#ifdef C99_math
+    return isinf(value);
+#else
     return (value - value) != 0.0f && !float_IsNaN(value);
+#endif
 }
 
 public bool float_IsNegativeInfinity(float value)
 {
+#ifdef C99_math
+    return isinf(value) && value < 0.0f;
+#else
     return value < 0.0f && float_IsInfinity(value);
+#endif
 }
 
 public bool float_IsPositiveInfinity(float value)
 {
+#ifdef C99_math
+    return isinf(value) && value > 0.0f;
+#else
     return value > 0.0f && float_IsInfinity(value);
+#endif
 }
 
 public float float_Max(float x, float y) {

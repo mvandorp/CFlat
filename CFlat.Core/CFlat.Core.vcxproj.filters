@@ -200,5 +200,8 @@
     <ClCompile Include="src\CFlat\StringBuilder.AppendFormatStringV.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\CFlat\const_cast.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

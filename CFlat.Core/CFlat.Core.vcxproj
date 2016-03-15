@@ -57,6 +57,7 @@
     <ClCompile Include="src\CFlat\Collections\IList.c" />
     <ClCompile Include="src\CFlat\Collections\List.c" />
     <ClCompile Include="src\CFlat\Collections\ListEnumerator.c" />
+    <ClCompile Include="src\CFlat\const_cast.c" />
     <ClCompile Include="src\CFlat\Language\Assert.c" />
     <ClCompile Include="src\CFlat\Language\Char.c" />
     <ClCompile Include="src\CFlat\ExceptionType.c" />

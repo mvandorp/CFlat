@@ -46,6 +46,6 @@ struct StringBuilder {
 ///     A pointer to a null-terminated string with the same value as the given <see cref="StringBuilder"/>.
 /// </returns>
 /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-internal const char *StringBuilder_GetBuffer(const struct StringBuilder *sb);
+internal char *StringBuilder_GetBuffer(const struct StringBuilder *sb);
 
 #endif

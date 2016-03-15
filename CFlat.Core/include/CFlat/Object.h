@@ -58,7 +58,7 @@ typedef void(*DestructorFunc)(void *obj);
 /// A function that deallocates an object.
 /// </summary>
 /// <param name="obj">Pointer to the object to deallocate.</param>
-typedef void(*DeallocatorFunc)(void *obj);
+typedef void(*DeallocatorFunc)(const void *obj);
 
 /// <summary>
 /// A virtual method table for the <see cref="Object"/> class.
@@ -141,6 +141,14 @@ void Object_SetVTable(void *obj, const ObjectVTable *vtable);
 /// <returns><paramref name="obj"/>.</returns>
 /// <seealso cref="Object_Release()"/>
 void *Object_Aquire(const void *obj);
+
+/// <summary>
+/// Increments the reference count of an <see cref="Object"/>.
+/// </summary>
+/// <param name="obj">Pointer to an <see cref="Object"/>.</param>
+/// <returns><paramref name="obj"/>.</returns>
+/// <seealso cref="Object_Aquire()"/>
+const void *Object_AquireConst(const void *obj);
 
 /// <summary>
 /// Decrements the reference count of an <see cref="Object"/>.
