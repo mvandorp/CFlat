@@ -43,7 +43,7 @@ extern const String * const String_Empty;
 /// Allocates and initializes a new <see cref="String"/> to the value represented by the given null-terminated string.
 /// </summary>
 /// <remarks>
-///     The lifetime of the <see cref="String"/> should be managed with Object_Aquire() and Object_Release().
+///     The lifetime of the <see cref="String"/> should be managed with retain() and release().
 /// </remarks>
 /// <param name="value">Pointer to a null-terminated string.</param>
 /// <returns>A pointer to the newly allocated string.</returns>

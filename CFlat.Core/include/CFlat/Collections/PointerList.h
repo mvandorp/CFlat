@@ -48,7 +48,7 @@ typedef struct PointerList PointerList;
 /// Allocates and initializes a <see cref="PointerList"/>.
 /// </summary>
 /// <remarks>
-///     The lifetime of the <see cref="PointerList"/> should be managed with Object_Aquire() and Object_Release().
+///     The lifetime of the <see cref="PointerList"/> should be managed with retain() and release().
 /// </remarks>
 /// <param name="elementDestructor">
 ///     Pointer to a <see cref="DestructorFunc"/> to call when an element needs to be destroyed, or <see cref="null"/>
@@ -62,7 +62,7 @@ PointerList *PointerList_New(DestructorFunc elementDestructor);
 /// Allocates and initializes a <see cref="PointerList"/> with the given capacity.
 /// </summary>
 /// <remarks>
-///     The lifetime of the <see cref="PointerList"/> should be managed with Object_Aquire() and Object_Release().
+///     The lifetime of the <see cref="PointerList"/> should be managed with retain() and release().
 /// </remarks>
 /// <param name="elementDestructor">
 ///     Pointer to a <see cref="DestructorFunc"/> to call when an element needs to be destroyed, or <see cref="null"/>
@@ -78,7 +78,7 @@ PointerList *PointerList_New_WithCapacity(DestructorFunc elementDestructor, int 
 /// Allocates and initializes a <see cref="PointerList"/> that contains the elements copied from the given collection.
 /// </summary>
 /// <remarks>
-///     The lifetime of the <see cref="PointerList"/> should be managed with Object_Aquire() and Object_Release().
+///     The lifetime of the <see cref="PointerList"/> should be managed with retain() and release().
 /// </remarks>
 /// <param name="elementDestructor">
 ///     Pointer to a <see cref="DestructorFunc"/> to call when an element needs to be destroyed, or <see cref="null"/>
@@ -94,7 +94,7 @@ PointerList *PointerList_New_FromEnumerable(DestructorFunc elementDestructor, co
 /// Allocates and initializes a <see cref="PointerList"/> that contains the elements copied from the given collection.
 /// </summary>
 /// <remarks>
-///     The lifetime of the <see cref="PointerList"/> should be managed with Object_Aquire() and Object_Release().
+///     The lifetime of the <see cref="PointerList"/> should be managed with retain() and release().
 /// </remarks>
 /// <param name="elementDestructor">
 ///     Pointer to a <see cref="DestructorFunc"/> to call when an element needs to be destroyed, or <see cref="null"/>

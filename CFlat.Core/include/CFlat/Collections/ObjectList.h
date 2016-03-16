@@ -48,7 +48,7 @@ typedef struct ObjectList ObjectList;
 /// Allocates and initializes a <see cref="ObjectList"/>.
 /// </summary>
 /// <remarks>
-///     The lifetime of the <see cref="ObjectList"/> should be managed with Object_Aquire() and Object_Release().
+///     The lifetime of the <see cref="ObjectList"/> should be managed with retain() and release().
 /// </remarks>
 /// <returns>A pointer to the newly allocated <see cref="ObjectList"/>.</returns>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
@@ -58,7 +58,7 @@ ObjectList *ObjectList_New(void);
 /// Allocates and initializes a <see cref="ObjectList"/> with the given capacity.
 /// </summary>
 /// <remarks>
-///     The lifetime of the <see cref="ObjectList"/> should be managed with Object_Aquire() and Object_Release().
+///     The lifetime of the <see cref="ObjectList"/> should be managed with retain() and release().
 /// </remarks>
 /// <param name="capacity">The initial capacity of the <see cref="ObjectList"/>.</param>
 /// <returns>A pointer to the newly allocated <see cref="ObjectList"/>.</returns>
@@ -70,7 +70,7 @@ ObjectList *ObjectList_New_WithCapacity(int capacity);
 /// Allocates and initializes a <see cref="ObjectList"/> that contains the elements copied from the given collection.
 /// </summary>
 /// <remarks>
-///     The lifetime of the <see cref="ObjectList"/> should be managed with Object_Aquire() and Object_Release().
+///     The lifetime of the <see cref="ObjectList"/> should be managed with retain() and release().
 /// </remarks>
 /// <param name="collection">Pointer to an <see cref="IEnumerable"/> whose elements are copied.</param>
 /// <returns>A pointer to the newly allocated <see cref="ObjectList"/>.</returns>
@@ -82,7 +82,7 @@ ObjectList *ObjectList_New_FromEnumerable(const struct IEnumerable *collection);
 /// Allocates and initializes a <see cref="ObjectList"/> that contains the elements copied from the given collection.
 /// </summary>
 /// <remarks>
-///     The lifetime of the <see cref="ObjectList"/> should be managed with Object_Aquire() and Object_Release().
+///     The lifetime of the <see cref="ObjectList"/> should be managed with retain() and release().
 /// </remarks>
 /// <param name="collection">Pointer to an <see cref="ICollection"/> whose elements are copied.</param>
 /// <returns>A pointer to the newly allocated <see cref="ObjectList"/>.</returns>

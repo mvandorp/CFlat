@@ -89,8 +89,8 @@ public void StringBuilder_AppendFormatStringV(StringBuilder *sb, const String *f
         }
         // Found random closing brace.
         else if (ch == '}' && StringReader_Peek(reader) != '}') {
-            Object_Release(reader);
-            Object_Release(buffer);
+            release(reader);
+            release(buffer);
 
             throw_new(FormatException, "Invalid format string.");
         }
@@ -100,8 +100,8 @@ public void StringBuilder_AppendFormatStringV(StringBuilder *sb, const String *f
         }
     }
 
-    Object_Release(reader);
-    Object_Release(buffer);
+    release(reader);
+    release(buffer);
 }
 
 /**************************************/

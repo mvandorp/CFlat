@@ -38,7 +38,7 @@ typedef struct StringReader StringReader;
 /// Allocates and initializes a new <see cref="StringReader"/> that reads from the given <see cref="String"/>.
 /// </summary>
 /// <remarks>
-///     The lifetime of the <see cref="StringReader"/> should be managed with Object_Aquire() and Object_Release().
+///     The lifetime of the <see cref="StringReader"/> should be managed with retain() and release().
 /// </remarks>
 /// <param name="str">Pointer to a string.</param>
 /// <returns>A pointer to the newly allocated <see cref="StringReader"/>.</returns>

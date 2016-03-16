@@ -143,7 +143,7 @@ public void __CFLAT_EXCEPTION_ENDTRY(ExceptionState *state)
 
     // If there was an exception but it was handled, clean up the exception.
     if (CurrentException != null) {
-        Object_Release(CurrentException);
+        release(CurrentException);
 
         CurrentException = null;
     }
@@ -287,7 +287,7 @@ private void Exception_Constructor(
     ex->UserMessage = userMessage;
     ex->File = file;
     ex->Line = line;
-    ex->InnerException = Object_Aquire(innerException);
+    ex->InnerException = retain_const(innerException);
 }
 
 /// <summary>
@@ -298,8 +298,8 @@ private void Exception_Destructor(CFlatException *ex)
 {
     Validate_NotNull(ex);
 
-    Object_Release(ex->UserMessage);
-    Object_Release(ex->InnerException);
+    release(ex->UserMessage);
+    release(ex->InnerException);
 }
 
 /// <summary>
@@ -349,8 +349,8 @@ private String *GenerateExceptionText(const CFlatException *ex)
 {
     assert(ex != null);
 
-    const String *name = Object_Aquire(ExceptionType_GetName(ex->Type));
-    const String *message = Object_Aquire(Exception_GetMessage(ex));
+    const String *name = retain_const(ExceptionType_GetName(ex->Type));
+    const String *message = retain_const(Exception_GetMessage(ex));
     String *result;
 
     if (message == null || String_GetLength(message) == 0) {
@@ -370,8 +370,8 @@ private String *GenerateExceptionText(const CFlatException *ex)
             message);
     }
 
-    Object_Release(name);
-    Object_Release(message);
+    release(name);
+    release(message);
 
     return result;
 }
@@ -388,12 +388,12 @@ private void UnhandledException(void)
 
         fprintf(stderr, "%s", String_GetCString(message));
 
-        Object_Release(message);
+        release(message);
     }
     catch (Exception);
     endtry;
 
-    Object_Release(CurrentException);
+    release(CurrentException);
     abort();
 }
 

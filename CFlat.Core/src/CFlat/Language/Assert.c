@@ -40,7 +40,7 @@ public void __CFLAT_ASSERT_FAIL(const char *condition, const char *file, int lin
 
         fprintf(stderr, "%s", String_GetCString(message));
 
-        Object_Release(message);
+        release(message);
     }
     catch (Exception);
     endtry;

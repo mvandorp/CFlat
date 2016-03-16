@@ -62,7 +62,7 @@ public void StringReader_Constructor(StringReader *reader, const String *str)
 
     Object_Constructor(reader, &VTable);
 
-    reader->Value = Object_Aquire(str);
+    reader->Value = retain_const(str);
     reader->Position = 0;
 }
 
@@ -70,7 +70,7 @@ public void StringReader_Destructor(StringReader *reader)
 {
     Validate_NotNull(reader);
 
-    Object_Release(reader->Value);
+    release(reader->Value);
 }
 
 public int StringReader_Peek(const StringReader *reader)

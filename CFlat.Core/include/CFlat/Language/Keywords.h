@@ -22,6 +22,8 @@
 #ifndef CFLAT_CORE_LANGUAGE_KEYWORDS_H
 #define CFLAT_CORE_LANGUAGE_KEYWORDS_H
 
+#include "CFlat/Language/Bool.h"
+
 /// <summary>
 /// Indicates that a function or variable is public and uses external linkage.
 /// </summary>
@@ -36,5 +38,48 @@
 /// Indicates that a function or variable is private and uses internal linkage.
 /// </summary>
 #define private static
+
+/* Object.c */
+/// <summary>
+/// Increments the reference count of an <see cref="Object"/>.
+/// </summary>
+/// <remarks>
+///     If <paramref name="obj"/> is <see cref="null"/>, the function does nothing.
+///
+///     The behaviour is undefined if <paramref name="obj"/> has already been deleted as the result of a call to
+///     release().
+/// </remarks>
+/// <param name="obj">Pointer to an <see cref="Object"/>.</param>
+/// <returns><paramref name="obj"/>.</returns>
+/// <seealso cref="release()"/>
+void *retain(void *obj);
+
+/// <summary>
+/// Increments the reference count of an <see cref="Object"/>.
+/// </summary>
+/// <param name="obj">Pointer to an <see cref="Object"/>.</param>
+/// <returns><paramref name="obj"/>.</returns>
+/// <seealso cref="retain()"/>
+const void *retain_const(const void *obj);
+
+/// <summary>
+/// Decrements the reference count of an <see cref="Object"/>.
+/// </summary>
+/// <remarks>
+///     If <paramref name="obj"/> is <see cref="null"/>, the function does nothing and returns <see cref="false"/>.
+///
+///     If the reference count reaches zero, the object is deleted by first calling the destructor of the object, and
+///     then deallocating the memory reserved for the object.
+///
+///     The behaviour is undefined if <paramref name="obj"/> has already been deleted as the result of a previous call
+///     to release().
+/// </remarks>
+/// <param name="obj">Pointer to an <see cref="Object"/>.</param>
+/// <returns>
+///     <see cref="true"/> if the reference count reached zero and <paramref name="obj"/> was deleted;
+///     otherwise, <see cref="false"/>.
+/// </returns>
+/// <seealso cref="retain()"/>
+bool release(const void *obj);
 
 #endif

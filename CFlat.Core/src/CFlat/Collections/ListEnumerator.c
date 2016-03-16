@@ -89,7 +89,7 @@ private void Constructor(ListEnumerator *enumerator, const IList *list, ListEnum
 
     IEnumerator_Constructor((IEnumerator*)enumerator, &VTable);
 
-    enumerator->List = Object_Aquire(list);
+    enumerator->List = retain_const(list);
     enumerator->Index = 0;
     enumerator->Current = null;
     enumerator->Version = getVersion(list);
@@ -100,7 +100,7 @@ private void Destructor(ListEnumerator *enumerator)
 {
     Validate_NotNull(enumerator);
 
-    Object_Release(((ListEnumerator*)enumerator)->List);
+    release(((ListEnumerator*)enumerator)->List);
 }
 
 private void *GetCurrent(const ListEnumerator *enumerator)

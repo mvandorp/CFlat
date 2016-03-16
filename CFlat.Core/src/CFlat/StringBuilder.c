@@ -335,10 +335,10 @@ public char *StringBuilder_DeleteAndToCString(StringBuilder *sb)
     // Prevent the destructor from being invoked so that the buffer remains valid.
     Object_SetVTable(sb, &VTableNoDestructor);
 
-    // If the StringBuilder was not deleted as a result of Object_Release(), throw an InvalidOperationException.
-    if (!Object_Release(sb)) {
+    // If the StringBuilder was not deleted as a result of release(), throw an InvalidOperationException.
+    if (!release(sb)) {
         Object_SetVTable(sb, &VTable);
-        Object_Aquire(sb);
+        retain(sb);
 
         throw_new(
             InvalidOperationException,

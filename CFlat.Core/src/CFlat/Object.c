@@ -73,28 +73,31 @@ public void Object_SetVTable(void *obj, const ObjectVTable *vtable)
     }
 }
 
-public void *Object_Aquire(const void *obj)
+/* Declared in Keywords.h */
+public void *retain(void *obj)
 {
     if (obj == null) {
         return null;
     }
 
-    Object *object = const_cast(obj);
+    Object *object = obj;
 
     // Prevent overflow and prevent modifying a constant object.
     if (object->RefCount != uintsize_MaxValue) {
         object->RefCount++;
     }
 
-    return object;
+    return obj;
 }
 
-public const void *Object_AquireConst(const void *obj)
+public const void *retain_const(const void *obj)
 {
-    return Object_Aquire(obj);
+    retain(const_cast(obj));
+
+    return obj;
 }
 
-public bool Object_Release(const void *obj)
+public bool release(const void *obj)
 {
     if (obj == null) {
         return false;

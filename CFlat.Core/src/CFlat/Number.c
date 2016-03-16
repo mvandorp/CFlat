@@ -160,7 +160,7 @@ internal bool Number_IsNonDecimalFormat(const String *format)
         }
     }
 
-    Object_Release(&reader);
+    release(&reader);
 
     return isNonDecimalFormat;
 }
@@ -213,7 +213,7 @@ private void FormatNumberBuffered(StringBuilder *sb, NumberBuffer *value, const 
         FormatCustomNumber(sb, value, &reader);
     }
 
-    Object_Release(&reader);
+    release(&reader);
 }
 
 /// <summary>

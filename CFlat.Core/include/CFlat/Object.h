@@ -73,7 +73,7 @@ typedef struct ObjectVTable {
 
 /// <summary>
 /// Base struct for reference counted objects. Every struct that is intended to be used with Object_Constructor(),
-/// Object_Aquire() and Object_Release() should have a member of type Object as its first member.
+/// retain() and release() should have a member of type Object as its first member.
 /// </summary>
 typedef struct Object {
     /// <summary>
@@ -127,47 +127,5 @@ void Object_SetDeallocator(void *obj, DeallocatorFunc deallocator);
 ///     <paramref name="vtable"/> is <see cref="null"/>.
 /// </exception>
 void Object_SetVTable(void *obj, const ObjectVTable *vtable);
-
-/// <summary>
-/// Increments the reference count of an <see cref="Object"/>.
-/// </summary>
-/// <remarks>
-///     If <paramref name="obj"/> is <see cref="null"/>, the function does nothing.
-///
-///     The behaviour is undefined if <paramref name="obj"/> has already been deleted as the result of a call to
-///     Object_Release().
-/// </remarks>
-/// <param name="obj">Pointer to an <see cref="Object"/>.</param>
-/// <returns><paramref name="obj"/>.</returns>
-/// <seealso cref="Object_Release()"/>
-void *Object_Aquire(const void *obj);
-
-/// <summary>
-/// Increments the reference count of an <see cref="Object"/>.
-/// </summary>
-/// <param name="obj">Pointer to an <see cref="Object"/>.</param>
-/// <returns><paramref name="obj"/>.</returns>
-/// <seealso cref="Object_Aquire()"/>
-const void *Object_AquireConst(const void *obj);
-
-/// <summary>
-/// Decrements the reference count of an <see cref="Object"/>.
-/// </summary>
-/// <remarks>
-///     If <paramref name="obj"/> is <see cref="null"/>, the function does nothing and returns <see cref="false"/>.
-///
-///     If the reference count reaches zero, the object is deleted by first calling the destructor of the object, and
-///     then deallocating the memory reserved for the object.
-///
-///     The behaviour is undefined if <paramref name="obj"/> has already been deleted as the result of a previous call
-///     to Object_Release().
-/// </remarks>
-/// <param name="obj">Pointer to an <see cref="Object"/>.</param>
-/// <returns>
-///     <see cref="true"/> if the reference count reached zero and <paramref name="obj"/> was deleted;
-///     otherwise, <see cref="false"/>.
-/// </returns>
-/// <seealso cref="Object_Aquire()"/>
-bool Object_Release(const void *obj);
 
 #endif

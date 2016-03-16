@@ -40,7 +40,7 @@ typedef uintsize (*ListEnumerator_GetVersionFunc)(const struct IList *list);
 /// <summary>
 /// Allocates and initializes a new <see cref="IEnumerator"/> that can iterate over the given <see cref="IList"/>.
 ///
-/// The lifetime of the <see cref="IEnumerator"/> should be managed with Object_Aquire() and Object_Release().
+/// The lifetime of the <see cref="IEnumerator"/> should be managed with retain() and release().
 /// </summary>
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <returns>A pointer to the newly allocated <see cref="IEnumerator"/>.</returns>

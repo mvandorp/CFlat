@@ -28,8 +28,8 @@
 /* Private functions                  */
 /**************************************/
 
-private void ElementDestructor(void *obj);
 private bool IsReadOnly(const ObjectList *list);
+private void ReleaseElement(void *obj);
 
 /* Private constants */
 /// <summary>
@@ -188,7 +188,7 @@ public void ObjectList_InsertRange(ObjectList *list, int index, const IEnumerabl
         }
     }
     finally{
-        Object_Release(enumerator);
+        release(enumerator);
     }
     endtry;
 }
@@ -213,7 +213,7 @@ public int ObjectList_GetCount(const ObjectList *list)
 public void ObjectList_Add(ObjectList *list, void *item)
 {
     PointerList_Add((PointerList*)list, item);
-    Object_Aquire(item);
+    retain(item);
 }
 
 public void ObjectList_Clear(ObjectList *list)
@@ -234,11 +234,11 @@ public void ObjectList_CopyTo(const ObjectList *list, void *destination, uintsiz
 
     try {
         while (IEnumerator_MoveNext(enumerator)) {
-            Object_Aquire(IEnumerator_GetCurrent(enumerator));
+            retain(IEnumerator_GetCurrent(enumerator));
         }
     }
     finally{
-        Object_Release(enumerator);
+        release(enumerator);
     }
     endtry;
 }
@@ -261,7 +261,7 @@ public void ObjectList_SetItem(ObjectList *list, int index, const void *item)
     }
 
     PointerList_SetItem((PointerList*)list, index, item);
-    Object_Aquire(item);
+    retain_const(item);
 }
 
 public int ObjectList_IndexOf(const ObjectList *list, const void *item)
@@ -272,7 +272,7 @@ public int ObjectList_IndexOf(const ObjectList *list, const void *item)
 public void ObjectList_Insert(ObjectList *list, int index, void *item)
 {
     PointerList_Insert((PointerList*)list, index, item);
-    Object_Aquire(item);
+    retain(item);
 }
 
 public void ObjectList_RemoveAt(ObjectList *list, int index)
@@ -288,7 +288,7 @@ internal void ObjectList_Constructor_Full(
     const IListVTable *vtable,
     int capacity)
 {
-    PointerList_Constructor_Full((PointerList*)list, vtable, ElementDestructor, capacity);
+    PointerList_Constructor_Full((PointerList*)list, vtable, ReleaseElement, capacity);
 }
 
 internal uintsize ObjectList_GetVersion(const ObjectList *list)
@@ -300,14 +300,14 @@ internal uintsize ObjectList_GetVersion(const ObjectList *list)
 /* Private function definitions       */
 /**************************************/
 
-private void ElementDestructor(void *obj)
-{
-    Object_Release(obj);
-}
-
 private bool IsReadOnly(const ObjectList *list)
 {
     Validate_NotNull(list);
 
     return false;
+}
+
+private void ReleaseElement(void *obj)
+{
+    release(obj);
 }

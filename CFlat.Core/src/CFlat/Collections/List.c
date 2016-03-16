@@ -225,7 +225,7 @@ public void List_InsertRange(List *list, int index, const IEnumerable *collectio
         }
     }
     finally{
-        Object_Release(enumerator);
+        release(enumerator);
     }
     endtry;
 }

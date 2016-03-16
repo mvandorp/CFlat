@@ -39,7 +39,7 @@ typedef struct StringBuilder StringBuilder;
 /// Allocates and initializes a new <see cref="StringBuilder"/>.
 /// </summary>
 /// <remarks>
-///     The lifetime of the <see cref="StringBuilder"/> should be managed with Object_Aquire() and Object_Release().
+///     The lifetime of the <see cref="StringBuilder"/> should be managed with retain() and release().
 /// </remarks>
 /// <returns>A pointer to the newly allocated <see cref="StringBuilder"/>.</returns>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
@@ -49,7 +49,7 @@ StringBuilder *StringBuilder_New(void);
 /// Allocates and initializes a new <see cref="StringBuilder"/> with the given capacity.
 /// </summary>
 /// <remarks>
-///     The lifetime of the <see cref="StringBuilder"/> should be managed with Object_Aquire() and Object_Release().
+///     The lifetime of the <see cref="StringBuilder"/> should be managed with retain() and release().
 /// </remarks>
 /// <param name="capacity">The initial capacity of the <see cref="StringBuilder"/>.</param>
 /// <returns>A pointer to the newly allocated <see cref="StringBuilder"/>.</returns>
@@ -60,7 +60,7 @@ StringBuilder *StringBuilder_New_WithCapacity(uintsize capacity);
 /// Allocates and initializes a new <see cref="StringBuilder"/> with the given initial value.
 /// </summary>
 /// <remarks>
-///     The lifetime of the <see cref="StringBuilder"/> should be managed with Object_Aquire() and Object_Release().
+///     The lifetime of the <see cref="StringBuilder"/> should be managed with retain() and release().
 /// </remarks>
 /// <param name="value">Pointer to a null-terminated string used as the initial value.</param>
 /// <returns>A pointer to the newly allocated <see cref="StringBuilder"/>.</returns>
@@ -71,7 +71,7 @@ StringBuilder *StringBuilder_New_WithInitialCStringValue(const char *value);
 /// Allocates and initializes a new <see cref="StringBuilder"/> with the given initial value and capacity.
 /// </summary>
 /// <remarks>
-///     The lifetime of the <see cref="StringBuilder"/> should be managed with Object_Aquire() and Object_Release().
+///     The lifetime of the <see cref="StringBuilder"/> should be managed with retain() and release().
 /// </remarks>
 /// <param name="value">Pointer to a null-terminated string used as the initial value.</param>
 /// <param name="capacity">The initial capacity of the <see cref="StringBuilder"/>.</param>
@@ -83,7 +83,7 @@ StringBuilder *StringBuilder_New_WithInitialCStringValueAndCapacity(const char *
 /// Allocates and initializes a new <see cref="StringBuilder"/> with the given initial value.
 /// </summary>
 /// <remarks>
-///     The lifetime of the <see cref="StringBuilder"/> should be managed with Object_Aquire() and Object_Release().
+///     The lifetime of the <see cref="StringBuilder"/> should be managed with retain() and release().
 /// </remarks>
 /// <param name="value">Pointer to a <see cref="String"/> used as the initial value.</param>
 /// <returns>A pointer to the newly allocated <see cref="StringBuilder"/>.</returns>
@@ -94,7 +94,7 @@ StringBuilder *StringBuilder_New_WithInitialStringValue(const struct String *val
 /// Allocates and initializes a new <see cref="StringBuilder"/> with the given initial value and capacity.
 /// </summary>
 /// <remarks>
-///     The lifetime of the <see cref="StringBuilder"/> should be managed with Object_Aquire() and Object_Release().
+///     The lifetime of the <see cref="StringBuilder"/> should be managed with retain() and release().
 /// </remarks>
 /// <param name="value">Pointer to a <see cref="String"/> used as the initial value.</param>
 /// <param name="capacity">The initial capacity of the <see cref="StringBuilder"/>.</param>

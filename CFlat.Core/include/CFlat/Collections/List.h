@@ -47,7 +47,7 @@ typedef struct List List;
 /// Allocates and initializes a <see cref="List"/>.
 /// </summary>
 /// <remarks>
-///     The lifetime of the <see cref="List"/> should be managed with Object_Aquire() and Object_Release().
+///     The lifetime of the <see cref="List"/> should be managed with retain() and release().
 /// </remarks>
 /// <param name="elementSize">The size in bytes of each element.</param>
 /// <param name="equals">
@@ -62,7 +62,7 @@ List *List_New(uintsize elementSize, EqualityPredicate equals);
 /// Allocates and initializes a <see cref="List"/> with the given capacity.
 /// </summary>
 /// <remarks>
-///     The lifetime of the <see cref="List"/> should be managed with Object_Aquire() and Object_Release().
+///     The lifetime of the <see cref="List"/> should be managed with retain() and release().
 /// </remarks>
 /// <param name="elementSize">The size in bytes of each element.</param>
 /// <param name="equals">
@@ -81,7 +81,7 @@ List *List_New_WithCapacity(uintsize elementSize, EqualityPredicate equals, int 
 /// Allocates and initializes a <see cref="List"/> that contains the elements copied from the given collection.
 /// </summary>
 /// <remarks>
-///     The lifetime of the <see cref="List"/> should be managed with Object_Aquire() and Object_Release().
+///     The lifetime of the <see cref="List"/> should be managed with retain() and release().
 /// </remarks>
 /// <param name="elementSize">The size in bytes of each element.</param>
 /// <param name="equals">
@@ -98,7 +98,7 @@ List *List_New_FromEnumerable(uintsize elementSize, EqualityPredicate equals, co
 /// Allocates and initializes a <see cref="List"/> that contains the elements copied from the given collection.
 /// </summary>
 /// <remarks>
-///     The lifetime of the <see cref="List"/> should be managed with Object_Aquire() and Object_Release().
+///     The lifetime of the <see cref="List"/> should be managed with retain() and release().
 /// </remarks>
 /// <param name="elementSize">The size in bytes of each element.</param>
 /// <param name="equals">
