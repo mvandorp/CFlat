@@ -69,39 +69,42 @@ public void StringBuilder_AppendFormatStringV(StringBuilder *sb, const String *f
     Validate_NotNull(sb);
     Validate_NotNull(format);
 
-    StringReader *reader = StringReader_New(format);
-    StringBuilder *buffer = StringBuilder_New();
+    StringBuilder buffer;
+    StringReader reader;
+    StringBuilder_Constructor(&buffer);
+    StringReader_Constructor(&reader, format);
 
-    while (StringReader_Peek(reader) != -1) {
-        int ch = StringReader_Peek(reader);
+    try {
+        while (StringReader_Peek(&reader) != -1) {
+            int ch = StringReader_Peek(&reader);
 
-        // Found opening brace.
-        if (ch == '{') {
-            // Parse '{{'.
-            if (StringReader_PeekOffset(reader, 1) == '{') {
-                StringReader_Skip(reader, 2);
-                StringBuilder_Append(sb, '{');
+            // Found opening brace.
+            if (ch == '{') {
+                // Parse '{{'.
+                if (StringReader_PeekOffset(&reader, 1) == '{') {
+                    StringReader_Skip(&reader, 2);
+                    StringBuilder_Append(sb, '{');
+                }
+                // Parse format item.
+                else {
+                    ProcessFormatItem(sb, &reader, &buffer, &args);
+                }
             }
-            // Parse format item.
+            // Found random closing brace.
+            else if (ch == '}' && StringReader_Peek(&reader) != '}') {
+                throw_new(FormatException, "Invalid format string.");
+            }
+            // Otherwise add character.
             else {
-                ProcessFormatItem(sb, reader, buffer, &args);
+                StringBuilder_Append(sb, (char)StringReader_Read(&reader));
             }
-        }
-        // Found random closing brace.
-        else if (ch == '}' && StringReader_Peek(reader) != '}') {
-            release(reader);
-            release(buffer);
-
-            throw_new(FormatException, "Invalid format string.");
-        }
-        // Otherwise add character.
-        else {
-            StringBuilder_Append(sb, (char)StringReader_Read(reader));
         }
     }
-
-    release(reader);
-    release(buffer);
+    finally {
+        release(&buffer);
+        release(&reader);
+    }
+    endtry;
 }
 
 /**************************************/
