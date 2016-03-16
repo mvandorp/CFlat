@@ -256,7 +256,7 @@ public void List_RemoveRange(List *list, int index, int count)
 /* IEnumerable */
 public IEnumerator *List_GetEnumerator(const List *list)
 {
-    return ListEnumerator_New(list);
+    return ListEnumerator_New((const IList*)list, (ListEnumerator_GetVersionFunc)List_GetVersion);
 }
 
 /* ICollection */

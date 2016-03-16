@@ -20,22 +20,35 @@
 #ifndef CFLAT_CORE_COLLECTIONS_LISTENUMERATOR_H
 #define CFLAT_CORE_COLLECTIONS_LISTENUMERATOR_H
 
+#include "CFlat/Language/Integer.h"
 #include "CFlat/Language/Keywords.h"
 
 /* Forward declarations */
-struct List;
+struct IList;
 struct IEnumerator;
+
+/* Types */
+/// <summary>
+/// A function that returns the version of an <see cref="IList"/>. The version changes after every mutation to the list.
+/// </summary>
+/// <param name="list">Pointer to an <see cref="IList"/>.</param>
+/// <returns>The version of the <see cref="IList"/>.</returns>
+/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
+typedef uintsize (*ListEnumerator_GetVersionFunc)(const struct IList *list);
 
 /* Functions */
 /// <summary>
-/// Allocates and initializes a new <see cref="IEnumerator"/> that can iterate over the given <see cref="List"/>.
+/// Allocates and initializes a new <see cref="IEnumerator"/> that can iterate over the given <see cref="IList"/>.
 ///
 /// The lifetime of the <see cref="IEnumerator"/> should be managed with Object_Aquire() and Object_Release().
 /// </summary>
-/// <param name="list">Pointer to a <see cref="List"/>.</param>
+/// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <returns>A pointer to the newly allocated <see cref="IEnumerator"/>.</returns>
-/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
+/// <exception cref="::ArgumentNullException">
+///     <paramref name="list"/> is <see cref="null"/> <b>-or-</b>
+///     <paramref name="getVersion"/> is <see cref="null"/>.
+/// </exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal struct IEnumerator *ListEnumerator_New(const struct List *list);
+internal struct IEnumerator *ListEnumerator_New(const struct IList *list, ListEnumerator_GetVersionFunc getVersion);
 
 #endif

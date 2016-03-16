@@ -23,22 +23,23 @@
 #include "CFlat/Memory.h"
 #include "CFlat/Validate.h"
 #include "CFlat/Collections/IEnumerator.h"
-#include "CFlat/Collections/List.h"
+#include "CFlat/Collections/IList.h"
 
 /* Types */
 typedef struct ListEnumerator {
     IEnumerator Base;
-    const List *List;
+    const IList *List;
     void *Current;
     int Index;
     uintsize Version;
+    ListEnumerator_GetVersionFunc GetVersion;
 } ListEnumerator;
 
 /**************************************/
 /* Private functions                  */
 /**************************************/
 
-private void Constructor(ListEnumerator *enumerator, const List *list);
+private void Constructor(ListEnumerator *enumerator, const IList *list, ListEnumerator_GetVersionFunc getVersion);
 private void Destructor(ListEnumerator *enumerator);
 private void *GetCurrent(const ListEnumerator *enumerator);
 private bool MoveNext(ListEnumerator *enumerator);
@@ -58,14 +59,12 @@ private const IEnumeratorVTable VTable = IEnumeratorVTable_Initializer(
 /* Internal function definitions      */
 /**************************************/
 
-internal IEnumerator *ListEnumerator_New(const List *list)
+internal IEnumerator *ListEnumerator_New(const IList *list, ListEnumerator_GetVersionFunc getVersion)
 {
-    Validate_NotNull(list);
-
     ListEnumerator *enumerator = Memory_Allocate(sizeof(ListEnumerator));
 
     try {
-        Constructor(enumerator, list);
+        Constructor(enumerator, list, getVersion);
 
         Object_SetDeallocator(enumerator, Memory_Deallocate);
     }
@@ -82,17 +81,19 @@ internal IEnumerator *ListEnumerator_New(const List *list)
 /* Private function definitions       */
 /**************************************/
 
-private void Constructor(ListEnumerator *enumerator, const List *list)
+private void Constructor(ListEnumerator *enumerator, const IList *list, ListEnumerator_GetVersionFunc getVersion)
 {
     Validate_NotNull(enumerator);
     Validate_NotNull(list);
+    Validate_NotNull(getVersion);
 
     IEnumerator_Constructor((IEnumerator*)enumerator, &VTable);
 
     enumerator->List = Object_Aquire(list);
     enumerator->Index = 0;
     enumerator->Current = null;
-    enumerator->Version = List_GetVersion(list);
+    enumerator->Version = getVersion(list);
+    enumerator->GetVersion = getVersion;
 }
 
 private void Destructor(ListEnumerator *enumerator)
@@ -106,11 +107,11 @@ private void *GetCurrent(const ListEnumerator *enumerator)
 {
     Validate_NotNull(enumerator);
     Validate_State(
-        enumerator->Version == List_GetVersion(enumerator->List),
+        enumerator->Version == enumerator->GetVersion(enumerator->List),
         "Collection was modified; enumeration operation may not execute.");
     Validate_State(
         enumerator->Index > 0 &&
-        enumerator->Index <= List_GetCount(enumerator->List),
+        enumerator->Index <= IList_GetCount(enumerator->List),
         "Enumeration has either not started or has already finished.");
 
     return enumerator->Current;
@@ -120,18 +121,18 @@ private bool MoveNext(ListEnumerator *enumerator)
 {
     Validate_NotNull(enumerator);
     Validate_State(
-        enumerator->Version == List_GetVersion(enumerator->List),
+        enumerator->Version == enumerator->GetVersion(enumerator->List),
         "Collection was modified; enumeration operation may not execute.");
 
-    if (enumerator->Index < List_GetCount(enumerator->List)) {
-        enumerator->Current = List_GetItemRef(enumerator->List, enumerator->Index);
+    if (enumerator->Index < IList_GetCount(enumerator->List)) {
+        enumerator->Current = IList_GetItem(enumerator->List, enumerator->Index);
         enumerator->Index++;
 
         return true;
     }
     else {
         enumerator->Current = null;
-        enumerator->Index = List_GetCount(enumerator->List) + 1;
+        enumerator->Index = IList_GetCount(enumerator->List) + 1;
 
         return false;
     }
@@ -141,7 +142,7 @@ private void Reset(ListEnumerator *enumerator)
 {
     Validate_NotNull(enumerator);
     Validate_State(
-        enumerator->Version == List_GetVersion(enumerator->List),
+        enumerator->Version == enumerator->GetVersion(enumerator->List),
         "Collection was modified; enumeration operation may not execute.");
 
     enumerator->Index = 0;
