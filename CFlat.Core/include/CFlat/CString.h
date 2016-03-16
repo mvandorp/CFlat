@@ -49,6 +49,45 @@ uintsize CString_Length(const char *str);
 char *CString_Copy(const char *str);
 
 /// <summary>
+/// Determines whether a null-terminated string contains the specified character.
+/// </summary>
+/// <param name="str">Pointer to a null-terminated string.</param>
+/// <param name="value">The character to seek.</param>
+/// <returns>
+///     <see cref="true"/> if the string contains <paramref name="value"/>; otherwise, <see cref="false"/>.
+/// </returns>
+/// <exception cref="::ArgumentNullException"><paramref name="str"/> is <see cref="null"/>.</exception>
+bool CString_Contains(const char *str, char value);
+
+/// <summary>
+/// Determines whether a null-terminated string contains the specified string.
+/// </summary>
+/// <param name="str">Pointer to a null-terminated string.</param>
+/// <param name="value">The string to seek.</param>
+/// <returns>
+///     <see cref="true"/> if the string contains <paramref name="value"/>; otherwise, <see cref="false"/>.
+/// </returns>
+/// <exception cref="::ArgumentNullException">
+///     <paramref name="str"/> is <see cref="null"/> <b>-or-</b>
+///     <paramref name="value"/> is <see cref="null"/>.
+/// </exception>
+bool CString_ContainsCString(const char *str, const char *value);
+
+/// <summary>
+/// Determines whether a null-terminated string contains the specified string.
+/// </summary>
+/// <param name="str">Pointer to a null-terminated string.</param>
+/// <param name="value">The string to seek.</param>
+/// <returns>
+///     <see cref="true"/> if the string contains <paramref name="value"/>; otherwise, <see cref="false"/>.
+/// </returns>
+/// <exception cref="::ArgumentNullException">
+///     <paramref name="str"/> is <see cref="null"/> <b>-or-</b>
+///     <paramref name="value"/> is <see cref="null"/>.
+/// </exception>
+bool CString_ContainsString(const char *str, const struct String *value);
+
+/// <summary>
 /// Determines whether the two given strings have the same value.
 /// </summary>
 /// <param name="str1">Pointer to the first string, or <see cref="null"/>.</param>
@@ -101,8 +140,7 @@ uintsize CString_IndexOf_Offset(const char *str, char value, uintsize startIndex
 /// <exception cref="::ArgumentNullException"><paramref name="str"/> is <see cref="null"/>.</exception>
 /// <exception cref="::ArgumentOutOfRangeException">
 ///     <paramref name="startIndex"/> is greater than the length of <paramref name="str"/> <b>-or-</b>
-///     <paramref name="count"/> is greater than the length of <paramref name="str"/> minus
-///     <paramref name="startIndex"/>.
+///     <paramref name="startIndex"/> + <paramref name="count"/> is greater than the length of <paramref name="str"/>.
 /// </exception>
 uintsize CString_IndexOf_Substring(const char *str, char value, uintsize startIndex, uintsize count);
 
@@ -156,8 +194,7 @@ uintsize CString_IndexOfAny_Offset(const char *str, const char *anyOf, uintsize 
 /// </exception>
 /// <exception cref="::ArgumentOutOfRangeException">
 ///     <paramref name="startIndex"/> is greater than the length of <paramref name="str"/> <b>-or-</b>
-///     <paramref name="count"/> is greater than the length of <paramref name="str"/> minus
-///     <paramref name="startIndex"/>.
+///     <paramref name="startIndex"/> + <paramref name="count"/> is greater than the length of <paramref name="str"/>.
 /// </exception>
 uintsize CString_IndexOfAny_Substring(const char *str, const char *anyOf, uintsize startIndex, uintsize count);
 
@@ -211,8 +248,7 @@ uintsize CString_IndexOfCString_Offset(const char *str, const char *value, uints
 /// </exception>
 /// <exception cref="::ArgumentOutOfRangeException">
 ///     <paramref name="startIndex"/> is greater than the length of <paramref name="str"/> <b>-or-</b>
-///     <paramref name="count"/> is greater than the length of <paramref name="str"/> minus
-///     <paramref name="startIndex"/>.
+///     <paramref name="startIndex"/> + <paramref name="count"/> is greater than the length of <paramref name="str"/>.
 /// </exception>
 uintsize CString_IndexOfCString_Substring(const char *str, const char *value, uintsize startIndex, uintsize count);
 
@@ -266,8 +302,7 @@ uintsize CString_IndexOfString_Offset(const char *str, const struct String *valu
 /// </exception>
 /// <exception cref="::ArgumentOutOfRangeException">
 ///     <paramref name="startIndex"/> is greater than the length of <paramref name="str"/> <b>-or-</b>
-///     <paramref name="count"/> is greater than the length of <paramref name="str"/> minus
-///     <paramref name="startIndex"/>.
+///     <paramref name="startIndex"/> + <paramref name="count"/> is greater than the length of <paramref name="str"/>.
 /// </exception>
 uintsize CString_IndexOfString_Substring(
     const char *str,
@@ -501,5 +536,33 @@ uintsize CString_LastIndexOfString_Substring(
     const struct String *value,
     uintsize startIndex,
     uintsize count);
+
+/// <summary>
+/// Determines whether a null-terminated string starts with the specified string.
+/// </summary>
+/// <param name="str">Pointer to a null-terminated string.</param>
+/// <param name="value">The string to seek.</param>
+/// <returns>
+///     <see cref="true"/> if the string starts with <paramref name="value"/>; otherwise, <see cref="false"/>.
+/// </returns>
+/// <exception cref="::ArgumentNullException">
+///     <paramref name="str"/> is <see cref="null"/> <b>-or-</b>
+///     <paramref name="value"/> is <see cref="null"/>.
+/// </exception>
+bool CString_StartsWithCString(const char *str, const char *value);
+
+/// <summary>
+/// Determines whether a null-terminated string starts with the specified string.
+/// </summary>
+/// <param name="str">Pointer to a null-terminated string.</param>
+/// <param name="value">The string to seek.</param>
+/// <returns>
+///     <see cref="true"/> if the string starts with <paramref name="value"/>; otherwise, <see cref="false"/>.
+/// </returns>
+/// <exception cref="::ArgumentNullException">
+///     <paramref name="str"/> is <see cref="null"/> <b>-or-</b>
+///     <paramref name="value"/> is <see cref="null"/>.
+/// </exception>
+bool CString_StartsWithString(const char *str, const struct String *value);
 
 #endif

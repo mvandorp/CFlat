@@ -95,6 +95,45 @@ const char *String_GetCString(const String *str);
 uintsize String_GetLength(const String *str);
 
 /// <summary>
+/// Determines whether a <see cref="String"/> contains the specified character.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="value">The character to seek.</param>
+/// <returns>
+///     <see cref="true"/> if the string contains <paramref name="value"/>; otherwise, <see cref="false"/>.
+/// </returns>
+/// <exception cref="::ArgumentNullException"><paramref name="str"/> is <see cref="null"/>.</exception>
+bool String_Contains(const String *str, char value);
+
+/// <summary>
+/// Determines whether a <see cref="String"/> contains the specified string.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="value">The string to seek.</param>
+/// <returns>
+///     <see cref="true"/> if the string contains <paramref name="value"/>; otherwise, <see cref="false"/>.
+/// </returns>
+/// <exception cref="::ArgumentNullException">
+///     <paramref name="str"/> is <see cref="null"/> <b>-or-</b>
+///     <paramref name="value"/> is <see cref="null"/>.
+/// </exception>
+bool String_ContainsCString(const String *str, const char *value);
+
+/// <summary>
+/// Determines whether a <see cref="String"/> contains the specified string.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="value">The string to seek.</param>
+/// <returns>
+///     <see cref="true"/> if the string contains <paramref name="value"/>; otherwise, <see cref="false"/>.
+/// </returns>
+/// <exception cref="::ArgumentNullException">
+///     <paramref name="str"/> is <see cref="null"/> <b>-or-</b>
+///     <paramref name="value"/> is <see cref="null"/>.
+/// </exception>
+bool String_ContainsString(const String *str, const String *value);
+
+/// <summary>
 /// Determines whether two given strings have the same value.
 /// </summary>
 /// <param name="str1">Pointer to the first  <see cref="String"/>, or <see cref="null"/>.</param>
@@ -213,8 +252,7 @@ uintsize String_IndexOf_Offset(const String *str, char value, uintsize startInde
 /// <exception cref="::ArgumentNullException"><paramref name="str"/> is <see cref="null"/>.</exception>
 /// <exception cref="::ArgumentOutOfRangeException">
 ///     <paramref name="startIndex"/> is greater than the length of <paramref name="str"/> <b>-or-</b>
-///     <paramref name="count"/> is greater than the length of <paramref name="str"/> minus
-///     <paramref name="startIndex"/>.
+///     <paramref name="startIndex"/> + <paramref name="count"/> is greater than the length of <paramref name="str"/>.
 /// </exception>
 uintsize String_IndexOf_Substring(const String *str, char value, uintsize startIndex, uintsize count);
 
@@ -268,8 +306,7 @@ uintsize String_IndexOfAny_Offset(const String *str, const char *anyOf, uintsize
 /// </exception>
 /// <exception cref="::ArgumentOutOfRangeException">
 ///     <paramref name="startIndex"/> is greater than the length of <paramref name="str"/> <b>-or-</b>
-///     <paramref name="count"/> is greater than the length of <paramref name="str"/> minus
-///     <paramref name="startIndex"/>.
+///     <paramref name="startIndex"/> + <paramref name="count"/> is greater than the length of <paramref name="str"/>.
 /// </exception>
 uintsize String_IndexOfAny_Substring(const String *str, const char *anyOf, uintsize startIndex, uintsize count);
 
@@ -323,8 +360,7 @@ uintsize String_IndexOfCString_Offset(const String *str, const char *value, uint
 /// </exception>
 /// <exception cref="::ArgumentOutOfRangeException">
 ///     <paramref name="startIndex"/> is greater than the length of <paramref name="str"/> <b>-or-</b>
-///     <paramref name="count"/> is greater than the length of <paramref name="str"/> minus
-///     <paramref name="startIndex"/>.
+///     <paramref name="startIndex"/> + <paramref name="count"/> is greater than the length of <paramref name="str"/>.
 /// </exception>
 uintsize String_IndexOfCString_Substring(const String *str, const char *value, uintsize startIndex, uintsize count);
 
@@ -378,8 +414,7 @@ uintsize String_IndexOfString_Offset(const String *str, const String *value, uin
 /// </exception>
 /// <exception cref="::ArgumentOutOfRangeException">
 ///     <paramref name="startIndex"/> is greater than the length of <paramref name="str"/> <b>-or-</b>
-///     <paramref name="count"/> is greater than the length of <paramref name="str"/> minus
-///     <paramref name="startIndex"/>.
+///     <paramref name="startIndex"/> + <paramref name="count"/> is greater than the length of <paramref name="str"/>.
 /// </exception>
 uintsize String_IndexOfString_Substring(const String *str, const String *value, uintsize startIndex, uintsize count);
 
@@ -613,6 +648,34 @@ uintsize String_LastIndexOfString_Substring(
     const String *value,
     uintsize startIndex,
     uintsize count);
+
+/// <summary>
+/// Determines whether a <see cref="String"/> starts with the specified string.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="value">The string to seek.</param>
+/// <returns>
+///     <see cref="true"/> if the string starts with <paramref name="value"/>; otherwise, <see cref="false"/>.
+/// </returns>
+/// <exception cref="::ArgumentNullException">
+///     <paramref name="str"/> is <see cref="null"/> <b>-or-</b>
+///     <paramref name="value"/> is <see cref="null"/>.
+/// </exception>
+bool String_StartsWithCString(const String *str, const char *value);
+
+/// <summary>
+/// Determines whether a <see cref="String"/> starts with the specified string.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <param name="value">The string to seek.</param>
+/// <returns>
+///     <see cref="true"/> if the string starts with <paramref name="value"/>; otherwise, <see cref="false"/>.
+/// </returns>
+/// <exception cref="::ArgumentNullException">
+///     <paramref name="str"/> is <see cref="null"/> <b>-or-</b>
+///     <paramref name="value"/> is <see cref="null"/>.
+/// </exception>
+bool String_StartsWithString(const String *str, const String *value);
 
 /// <summary>
 /// Converts the value of a <see cref="String"/> to a null-terminated string.

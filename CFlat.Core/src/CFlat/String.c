@@ -118,6 +118,21 @@ public uintsize String_GetLength(const String *str)
     return str->Length;
 }
 
+public bool String_Contains(const String *str, char value)
+{
+    return String_IndexOf(str, value) != InvalidIndex;
+}
+
+public bool String_ContainsCString(const String *str, const char *value)
+{
+    return String_IndexOfCString(str, value) != InvalidIndex;
+}
+
+public bool String_ContainsString(const String *str, const String *value)
+{
+    return String_IndexOfString(str, value) != InvalidIndex;
+}
+
 public bool String_Equals(const String *str1, const String *str2)
 {
     return str1 == str2 || (
@@ -242,45 +257,17 @@ public uintsize String_IndexOfAny_Substring(const String *str, const char *anyOf
 
 public uintsize String_IndexOfCString(const String *str, const char *value)
 {
-    String valueBuffer;
-    String *valueWrapper = String_WrapCString(value, &valueBuffer);
-
-    return String_IndexOfString(str, valueWrapper);
+    return String_IndexOfCString_Substring(str, value, 0, String_GetLength(str));
 }
 
 public uintsize String_IndexOfCString_Offset(const String *str, const char *value, uintsize startIndex)
 {
-    String valueBuffer;
-    String *valueWrapper = String_WrapCString(value, &valueBuffer);
-
-    return String_IndexOfString_Offset(str, valueWrapper, startIndex);
+    return String_IndexOfCString_Substring(str, value, startIndex, String_GetLength(str) - startIndex);
 }
 
 public uintsize String_IndexOfCString_Substring(
     const String *str,
     const char *value,
-    uintsize startIndex,
-    uintsize count)
-{
-    String valueBuffer;
-    String *valueWrapper = String_WrapCString(value, &valueBuffer);
-
-    return String_IndexOfString_Substring(str, valueWrapper, startIndex, count);
-}
-
-public uintsize String_IndexOfString(const String *str, const String *value)
-{
-    return String_IndexOfString_Substring(str, value, 0, String_GetLength(str));
-}
-
-public uintsize String_IndexOfString_Offset(const String *str, const String *value, uintsize startIndex)
-{
-    return String_IndexOfString_Substring(str, value, startIndex, String_GetLength(str) - startIndex);
-}
-
-public uintsize String_IndexOfString_Substring(
-    const String *str,
-    const String *value,
     uintsize startIndex,
     uintsize count)
 {
@@ -291,36 +278,40 @@ public uintsize String_IndexOfString_Substring(
     Validate_IsTrue(startIndex + count <= str->Length, ArgumentOutOfRangeException,
         "Count must be positive and count must refer to a location within the string.");
 
-    uintsize length = value->Length;
-    uintsize end = startIndex + count;
-
     // If we are searching for an empty string, report it at the starting index.
-    if (length == 0) {
+    if (*value == '\0') {
         return startIndex;
     }
 
+    uintsize end = startIndex + count;
+
     // Iterate through all of the string's specified characters.
-    for (uintsize i = startIndex; i + length <= end; i++) {
-        const char *str1 = &str->Value[i];
-        const char *str2 = value->Value;
-
-        bool found = true;
-
-        // Iterate through all of the search string's characters.
-        for (uintsize j = 0; j < length; j++) {
-            if (str1[j] != str2[j]) {
-                found = false;
-
-                break;
-            }
-        }
-
-        if (found) {
+    for (uintsize i = startIndex; i < end; i++) {
+        if (CString_StartsWithCString(&str->Value[i], value)) {
             return i;
         }
     }
 
     return InvalidIndex;
+}
+
+public uintsize String_IndexOfString(const String *str, const String *value)
+{
+    return String_IndexOfCString(str, String_GetCString(value));
+}
+
+public uintsize String_IndexOfString_Offset(const String *str, const String *value, uintsize startIndex)
+{
+    return String_IndexOfCString_Offset(str, String_GetCString(value), startIndex);
+}
+
+public uintsize String_IndexOfString_Substring(
+    const String *str,
+    const String *value,
+    uintsize startIndex,
+    uintsize count)
+{
+    return String_IndexOfCString_Substring(str, String_GetCString(value), startIndex, count);
 }
 
 public uintsize String_LastIndexOf(const String *str, char value)
@@ -483,26 +474,22 @@ public uintsize String_LastIndexOfString_Substring(
 
     // Iterate through all of the string's specified characters.
     for (uintsize i = startIndex + 2 - length; i-- > end; ) {
-        const char *str1 = &str->Value[i];
-        const char *str2 = value->Value;
-
-        bool found = true;
-
-        // Iterate through all of the search string's characters.
-        for (uintsize j = 0; j < length; j++) {
-            if (str1[j] != str2[j]) {
-                found = false;
-
-                break;
-            }
-        }
-
-        if (found) {
+        if (CString_StartsWithCString(&str->Value[i], value->Value)) {
             return i;
         }
     }
 
     return InvalidIndex;
+}
+
+public bool String_StartsWithCString(const String *str, const char *value)
+{
+    return CString_StartsWithCString(String_GetCString(str), value);
+}
+
+public bool String_StartsWithString(const String *str, const String *value)
+{
+    return CString_StartsWithCString(String_GetCString(str), String_GetCString(value));
 }
 
 public char *String_ToCString(const String *str)
