@@ -65,7 +65,7 @@ public bool IList_IsReadOnly(const IList *list)
     return ICollection_IsReadOnly((const ICollection*)list);
 }
 
-public void IList_Add(IList *list, const void *item)
+public void IList_Add(IList *list, void *item)
 {
     ICollection_Add((ICollection*)list, item);
 }
@@ -96,7 +96,7 @@ public void *IList_GetItem(const IList *list, int index)
     return GetVTable(list)->GetItem(list, index);
 }
 
-public void IList_SetItem(IList *list, int index, const void *value)
+public void IList_SetItem(IList *list, int index, void *value)
 {
     GetVTable(list)->SetItem(list, index, value);
 }
@@ -106,7 +106,7 @@ public int IList_IndexOf(const IList *list, const void *item)
     return GetVTable(list)->IndexOf(list, item);
 }
 
-public void IList_Insert(IList *list, int index, const void *value)
+public void IList_Insert(IList *list, int index, void *value)
 {
     GetVTable(list)->Insert(list, index, value);
 }

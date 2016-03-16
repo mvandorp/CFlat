@@ -122,6 +122,10 @@ void IEnumerator_Constructor(
 /// <summary>
 /// Returns the element at the current position in the collection of an <see cref="IEnumerator"/>.
 /// </summary>
+/// <remarks>
+///     If the collection contains value types, the returned pointer shall no longer be dereferenced after the first
+///     call to a function that modifies the collection.
+/// </remarks>
 /// <param name="enumerator">Pointer to an <see cref="IEnumerator"/>.</param>
 /// <returns>A pointer to the current element.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="enumerator"/> is <see cref="null"/>.</exception>

@@ -95,7 +95,7 @@ typedef bool (*ICollection_IsReadOnlyFunc)(const ICollection *collection);
 /// </summary>
 /// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
 /// <param name="item">The item to add.</param>
-typedef void (*ICollection_AddFunc)(ICollection *collection, const void *item);
+typedef void (*ICollection_AddFunc)(ICollection *collection, void *item);
 
 /// <summary>
 /// A function that removes all elements from an <see cref="ICollection"/>.
@@ -225,7 +225,7 @@ bool ICollection_IsReadOnly(const ICollection *collection);
 /// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
 /// <param name="item">The item to add.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="collection"/> is <see cref="null"/>.</exception>
-void ICollection_Add(ICollection *collection, const void *item);
+void ICollection_Add(ICollection *collection, void *item);
 
 /// <summary>
 /// Removes all elements from an <see cref="ICollection"/>.

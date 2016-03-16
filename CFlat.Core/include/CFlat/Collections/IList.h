@@ -105,7 +105,7 @@ typedef void *(*IList_GetItemFunc)(const IList *list, int index);
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <param name="index">The index of the element to replace.</param>
 /// <param name="item">The new value for the element at the given index.</param>
-typedef void (*IList_SetItemFunc)(IList *list, int index, const void *item);
+typedef void (*IList_SetItemFunc)(IList *list, int index, void *item);
 
 /// <summary>
 /// A function that determines the index of the given item in an <see cref="IList"/>.
@@ -121,7 +121,7 @@ typedef int (*IList_IndexOfFunc)(const IList *list, const void *item);
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <param name="index">The index at which <paramref name="item"/> should be inserted.</param>
 /// <param name="item">The item to insert.</param>
-typedef void (*IList_InsertFunc)(IList *list, int index, const void *item);
+typedef void (*IList_InsertFunc)(IList *list, int index, void *item);
 
 /// <summary>
 /// A function that removes the element at the given index of an <see cref="IList"/>.
@@ -214,7 +214,7 @@ bool IList_IsReadOnly(const IList *list);
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <param name="item">The item to add.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
-void IList_Add(IList *list, const void *item);
+void IList_Add(IList *list, void *item);
 
 /// <summary>
 /// Removes all elements from an <see cref="IList"/>.
@@ -265,6 +265,10 @@ bool IList_Remove(IList *list, const void *item);
 /// <summary>
 /// Gets the item at the given index of an <see cref="IList"/>.
 /// </summary>
+/// <remarks>
+///     If <paramref name="list"/> contains value types, the returned pointer shall no longer be dereferenced after the
+///     first call to a function that modifies <paramref name="list"/>.
+/// </remarks>
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <param name="index">The index of the element to retrieve.</param>
 /// <returns>The item at the given index of the <see cref="IList"/>.</returns>
@@ -286,7 +290,7 @@ void *IList_GetItem(const IList *list, int index);
 ///     <paramref name="index"/> is less than 0 <b>-or-</b>
 ///     <paramref name="index"/> is equal to or greater than the number of elements in <paramref name="list"/>.
 /// </exception>
-void IList_SetItem(IList *list, int index, const void *item);
+void IList_SetItem(IList *list, int index, void *item);
 
 /// <summary>
 /// Determines the index of the given item in an <see cref="IList"/>.
@@ -308,7 +312,7 @@ int IList_IndexOf(const IList *list, const void *item);
 ///     <paramref name="index"/> is less than 0 <b>-or-</b>
 ///     <paramref name="index"/> is greater than the number of elements in <paramref name="list"/>.
 /// </exception>
-void IList_Insert(IList *list, int index, const void *item);
+void IList_Insert(IList *list, int index, void *item);
 
 /// <summary>
 /// Removes the element at the given index of an <see cref="IList"/>.

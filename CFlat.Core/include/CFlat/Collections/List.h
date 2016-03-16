@@ -89,6 +89,7 @@ List *List_New_WithCapacity(uintsize elementSize, EqualityPredicate equals, int 
 /// </param>
 /// <param name="collection">Pointer to an <see cref="IEnumerable"/> whose elements are copied.</param>
 /// <returns>A pointer to the newly allocated <see cref="List"/>.</returns>
+/// <exception cref="::ArgumentOutOfRangeException"><paramref name="elementSize"/> is 0.</exception>
 /// <exception cref="::ArgumentNullException"><paramref name="collection"/> is <see cref="null"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 List *List_New_FromEnumerable(uintsize elementSize, EqualityPredicate equals, const struct IEnumerable *collection);
@@ -105,6 +106,7 @@ List *List_New_FromEnumerable(uintsize elementSize, EqualityPredicate equals, co
 /// </param>
 /// <param name="collection">Pointer to an <see cref="ICollection"/> whose elements are copied.</param>
 /// <returns>A pointer to the newly allocated <see cref="List"/>.</returns>
+/// <exception cref="::ArgumentOutOfRangeException"><paramref name="elementSize"/> is 0.</exception>
 /// <exception cref="::ArgumentNullException"><paramref name="collection"/> is <see cref="null"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 List *List_New_FromCollection(uintsize elementSize, EqualityPredicate equals, const struct ICollection *collection);
@@ -118,6 +120,7 @@ List *List_New_FromCollection(uintsize elementSize, EqualityPredicate equals, co
 ///     An <see cref="EqualityPredicate"/> that is used to check elements for equality, or <see cref="null"/>.
 /// </param>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
+/// <exception cref="::ArgumentOutOfRangeException"><paramref name="elementSize"/> is 0.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 void List_Constructor(List *list, uintsize elementSize, EqualityPredicate equals);
 
@@ -151,6 +154,7 @@ void List_Constructor_WithCapacity(List *list, uintsize elementSize, EqualityPre
 ///     <paramref name="list"/> is <see cref="null"/> <b>-or-</b>
 ///     <paramref name="collection"/> is <see cref="null"/>.
 /// </exception>
+/// <exception cref="::ArgumentOutOfRangeException"><paramref name="elementSize"/> is 0.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 void List_Constructor_FromEnumerable(
     List *list,
@@ -171,6 +175,7 @@ void List_Constructor_FromEnumerable(
 ///     <paramref name="list"/> is <see cref="null"/> <b>-or-</b>
 ///     <paramref name="collection"/> is <see cref="null"/>.
 /// </exception>
+/// <exception cref="::ArgumentOutOfRangeException"><paramref name="elementSize"/> is 0.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 void List_Constructor_FromCollection(
     List *list,
@@ -335,7 +340,7 @@ bool List_ContainsRef(const List *list, const void *item);
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
 /// <param name="destination">
-///     The array that is the destination of the elements copied from the <see cref="IList"/>.
+///     The array that is the destination of the elements copied from the <see cref="List"/>.
 /// </param>
 /// <param name="destinationSize">The size in bytes of the array.</param>
 /// <exception cref="::ArgumentNullException">
@@ -397,6 +402,10 @@ bool List_RemoveRef(List *list, const void *item);
 /// <summary>
 /// Gets the item at the given index of a <see cref="List"/>.
 /// </summary>
+/// <remarks>
+///     The returned pointer shall no longer be dereferenced after the first call to a function that modifies
+///     <paramref name="list"/>.
+/// </remarks>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
 /// <param name="index">The index of the element to retrieve.</param>
 /// <returns>The item at the given index of the <see cref="List"/>.</returns>

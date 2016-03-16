@@ -68,7 +68,7 @@ public bool ICollection_IsReadOnly(const ICollection *collection)
 }
 
 /* Methods */
-public void ICollection_Add(ICollection *collection, const void *item)
+public void ICollection_Add(ICollection *collection, void *item)
 {
     GetVTable(collection)->Add(collection, item);
 }
