@@ -114,9 +114,6 @@
     <ClInclude Include="src\CFlat\Collections\List.internal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\CFlat\Collections\ListEnumerator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\CFlat\Collections\IList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -133,6 +130,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\CFlat\Collections\PointerList.internal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CFlat\Collections\ListEnumerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CFlat\Collections\ObjectList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CFlat\Collections\ObjectList.internal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -191,9 +197,6 @@
     <ClCompile Include="src\CFlat\Collections\List.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\CFlat\Collections\ListEnumerator.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\CFlat\Collections\ICollection.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -210,6 +213,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CFlat\Collections\PointerList.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\Collections\ListEnumerator.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\Collections\ObjectList.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -17,6 +17,7 @@
     <ClInclude Include="include\CFlat\Collections\IEnumerator.h" />
     <ClInclude Include="include\CFlat\Collections\IList.h" />
     <ClInclude Include="include\CFlat\Collections\List.h" />
+    <ClInclude Include="include\CFlat\Collections\ObjectList.h" />
     <ClInclude Include="include\CFlat\Collections\PointerList.h" />
     <ClInclude Include="include\CFlat\CString.h" />
     <ClInclude Include="include\CFlat\Language\Assert.h" />
@@ -41,6 +42,7 @@
     <ClInclude Include="include\CFlat\Validate.h" />
     <ClInclude Include="src\CFlat\Collections\List.internal.h" />
     <ClInclude Include="src\CFlat\Collections\ListEnumerator.h" />
+    <ClInclude Include="src\CFlat\Collections\ObjectList.internal.h" />
     <ClInclude Include="src\CFlat\Collections\PointerList.internal.h" />
     <ClInclude Include="src\CFlat\Language\Double.internal.h" />
     <ClInclude Include="src\CFlat\Language\Float.internal.h" />
@@ -59,6 +61,7 @@
     <ClCompile Include="src\CFlat\Collections\IList.c" />
     <ClCompile Include="src\CFlat\Collections\List.c" />
     <ClCompile Include="src\CFlat\Collections\ListEnumerator.c" />
+    <ClCompile Include="src\CFlat\Collections\ObjectList.c" />
     <ClCompile Include="src\CFlat\Collections\PointerList.c" />
     <ClCompile Include="src\CFlat\const_cast.c" />
     <ClCompile Include="src\CFlat\Language\Assert.c" />
