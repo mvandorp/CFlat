@@ -152,7 +152,7 @@ public bool String_EqualsCString(const String *str1, const char *str2)
 
 public String *String_FormatCString(const char *format, ...)
 {
-    VarArgs args;
+    VarArgsList args;
     VarArgs_Start(args, format);
 
     String *result = String_FormatCStringV(format, args);
@@ -162,7 +162,7 @@ public String *String_FormatCString(const char *format, ...)
     return result;
 }
 
-public String *String_FormatCStringV(const char *format, VarArgs args)
+public String *String_FormatCStringV(const char *format, VarArgsList args)
 {
     String strBuffer;
     String *str = String_WrapCString(format, &strBuffer);
@@ -172,7 +172,7 @@ public String *String_FormatCStringV(const char *format, VarArgs args)
 
 public String *String_FormatString(const String *format, ...)
 {
-    VarArgs args;
+    VarArgsList args;
     VarArgs_Start(args, format);
 
     String *result = String_FormatStringV(format, args);
@@ -182,7 +182,7 @@ public String *String_FormatString(const String *format, ...)
     return result;
 }
 
-public String *String_FormatStringV(const String *format, VarArgs args)
+public String *String_FormatStringV(const String *format, VarArgsList args)
 {
     Validate_NotNull(format);
 

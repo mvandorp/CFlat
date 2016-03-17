@@ -247,7 +247,7 @@ public void StringBuilder_AppendString(StringBuilder *sb, const String *value)
 
 public void StringBuilder_AppendFormatCString(StringBuilder *sb, const char *format, ...)
 {
-    VarArgs args;
+    VarArgsList args;
     VarArgs_Start(args, format);
 
     StringBuilder_AppendFormatCStringV(sb, format, args);
@@ -255,7 +255,7 @@ public void StringBuilder_AppendFormatCString(StringBuilder *sb, const char *for
     VarArgs_End(args);
 }
 
-public void StringBuilder_AppendFormatCStringV(StringBuilder *sb, const char *format, VarArgs args)
+public void StringBuilder_AppendFormatCStringV(StringBuilder *sb, const char *format, VarArgsList args)
 {
     String strBuffer;
     String *str = String_WrapCString(format, &strBuffer);
@@ -265,7 +265,7 @@ public void StringBuilder_AppendFormatCStringV(StringBuilder *sb, const char *fo
 
 public void StringBuilder_AppendFormatString(StringBuilder *sb, const String *format, ...)
 {
-    VarArgs args;
+    VarArgsList args;
     VarArgs_Start(args, format);
 
     StringBuilder_AppendFormatStringV(sb, format, args);

@@ -26,11 +26,11 @@
 
 /* Macros */
 /// <summary>
-/// Initializes a <see cref="VarArgs"/> object to retrieve a variable number of arguments.
+/// Initializes a <see cref="VarArgsList"/> to retrieve a variable number of arguments.
 ///
 /// A function that invokes <see cref="VarArgs_Start"/> must also invoke <see cref="VarArgs_End"/> before it returns.
 /// </summary>
-/// <param name="args">An uninitialized <see cref="VarArgs"/> object.</param>
+/// <param name="args">An uninitialized <see cref="VarArgsList"/>.</param>
 /// <param name="lastArg">
 ///     Name of the last named parameter in the function definition. The arguments extracted by subsequent calls to
 ///     <see cref="VarArg"/> are those after <paramref name="lastArg"/>.
@@ -38,15 +38,15 @@
 #define VarArgs_Start(args, lastArg) va_start((args).List, lastArg)
 
 /// <summary>
-/// Destroys a <see cref="VarArgs"/> object.
+/// Destroys a <see cref="VarArgsList"/>.
 /// </summary>
-/// <param name="args">A <see cref="VarArgs"/> object previously initialized by <see cref="VarArgs_Start"/>.</param>
+/// <param name="args">A <see cref="VarArgsList"/> previously initialized by <see cref="VarArgs_Start"/>.</param>
 #define VarArgs_End(args) va_end((args).List)
 
 /// <summary>
-/// Retrieves the next argument from a <see cref="VarArgs"/> object.
+/// Retrieves the next argument from a <see cref="VarArgsList"/>.
 /// </summary>
-/// <param name="args">A <see cref="VarArgs"/> object previously initialized by <see cref="VarArgs_Start"/>.</param>
+/// <param name="args">A <see cref="VarArgsList"/> previously initialized by <see cref="VarArgs_Start"/>.</param>
 /// <param name="type">The type of the argument to retrieve.</param>
 /// <returns>The value of the current variable argument as an expression of type <paramref name="type"/>.</returns>
 #define VarArg(args, type) va_arg((args).List, type)
@@ -55,11 +55,11 @@
 /// <summary>
 /// Represents a variable arguments list.
 /// </summary>
-typedef struct VarArgs {
+typedef struct VarArgsList {
     /// <summary>
     /// Do not touch.
     /// </summary>
     va_list List;
-} VarArgs;
+} VarArgsList;
 
 #endif

@@ -182,7 +182,7 @@ String *String_FormatCString(const char *format, ...);
 /// <exception cref="::ArgumentNullException"><paramref name="format"/> is <see cref="null"/>.</exception>
 /// <exception cref="::FormatException"><paramref name="format"/> is invalid.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-String *String_FormatCStringV(const char *format, VarArgs args);
+String *String_FormatCStringV(const char *format, VarArgsList args);
 
 /// <summary>
 /// Returns a pointer to a new <see cref="String"/> that is formatted according to the given format string, with each
@@ -209,7 +209,7 @@ String *String_FormatString(const String *format, ...);
 /// <exception cref="::ArgumentNullException"><paramref name="format"/> is <see cref="null"/>.</exception>
 /// <exception cref="::FormatException"><paramref name="format"/> is invalid.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-String *String_FormatStringV(const String *format, VarArgs args);
+String *String_FormatStringV(const String *format, VarArgsList args);
 
 /// <summary>
 /// Returns the index of the first occurance of the specified character in a <see cref="String"/>.

@@ -256,7 +256,7 @@ void StringBuilder_AppendFormatCString(StringBuilder *sb, const char *format, ..
 /// </exception>
 /// <exception cref="::FormatException"><paramref name="format"/> is invalid.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_AppendFormatCStringV(StringBuilder *sb, const char *format, VarArgs args);
+void StringBuilder_AppendFormatCStringV(StringBuilder *sb, const char *format, VarArgsList args);
 
 /// <summary>
 /// Appends a string that is formatted according to the given format string, to a <see cref="StringBuilder"/>.
@@ -289,7 +289,7 @@ void StringBuilder_AppendFormatString(StringBuilder *sb, const struct String *fo
 /// </exception>
 /// <exception cref="::FormatException"><paramref name="format"/> is invalid.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_AppendFormatStringV(StringBuilder *sb, const struct String *format, VarArgs args);
+void StringBuilder_AppendFormatStringV(StringBuilder *sb, const struct String *format, VarArgsList args);
 
 /// <summary>
 /// Appends a new line to a <see cref="StringBuilder"/>.

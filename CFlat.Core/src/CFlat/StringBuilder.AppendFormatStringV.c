@@ -55,7 +55,7 @@ typedef enum ArgumentType {
 /* Private functions                  */
 /**************************************/
 
-private void ProcessFormatItem(StringBuilder *sb, StringReader *reader, StringBuilder *buffer, VarArgs *args);
+private void ProcessFormatItem(StringBuilder *sb, StringReader *reader, StringBuilder *buffer, VarArgsList *args);
 private ArgumentType ReadFormatItem(StringReader *reader, char **formatString, StringBuilder *formatBuffer);
 private ArgumentType ParseFormatItem(char *formatItem, char **formatString);
 private ArgumentType ToArgumentType(const char *type);
@@ -64,7 +64,7 @@ private ArgumentType ToArgumentType(const char *type);
 /* Public function definitions        */
 /**************************************/
 
-public void StringBuilder_AppendFormatStringV(StringBuilder *sb, const String *format, VarArgs args)
+public void StringBuilder_AppendFormatStringV(StringBuilder *sb, const String *format, VarArgsList args)
 {
     Validate_NotNull(sb);
     Validate_NotNull(format);
@@ -117,7 +117,7 @@ public void StringBuilder_AppendFormatStringV(StringBuilder *sb, const String *f
 /// </summary>
 /// <exception cref="::FormatException"><paramref name="reader"/> does not contain a valid format item.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-private void ProcessFormatItem(StringBuilder *sb, StringReader *reader, StringBuilder *buffer, VarArgs *args)
+private void ProcessFormatItem(StringBuilder *sb, StringReader *reader, StringBuilder *buffer, VarArgsList *args)
 {
     assert(sb != null);
     assert(reader != null);
