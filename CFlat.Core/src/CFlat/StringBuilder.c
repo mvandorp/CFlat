@@ -45,6 +45,12 @@ private const ObjectVTable VTable = ObjectVTable_Initializer((DestructorFunc)Str
 private const ObjectVTable VTableNoDestructor = ObjectVTable_Initializer(null);
 
 /**************************************/
+/* Private functions                  */
+/**************************************/
+
+private void EnsureCapacity(StringBuilder *sb, uintsize minCapacity);
+
+/**************************************/
 /* Public function definitions        */
 /**************************************/
 
@@ -208,41 +214,40 @@ public void StringBuilder_Append(StringBuilder *sb, char value)
 {
     Validate_NotNull(sb);
 
-    // Increase the capacity if needed.
-    if (sb->Length == sb->Capacity) {
-        StringBuilder_SetCapacity(sb, sb->Capacity * 2);
-    }
+    EnsureCapacity(sb, sb->Length + 1);
 
     sb->Value[sb->Length++] = value;
 }
 
+public void StringBuilder_AppendBuffer(StringBuilder *sb, const char *buffer, uintsize offset, uintsize count)
+{
+    Validate_NotNull(sb);
+    Validate_NotNull(buffer);
+
+    EnsureCapacity(sb, sb->Length + count);
+
+    // Copy the string to the end of the buffer.
+    Memory_CopyOffset(buffer, offset, sb->Value, sb->Length, count);
+
+    sb->Length += count;
+}
+
 public void StringBuilder_AppendCString(StringBuilder *sb, const char *value)
 {
-    String strBuffer;
-    String *str = String_WrapCString(value, &strBuffer);
+    Validate_NotNull(sb);
 
-    StringBuilder_AppendString(sb, str);
+    if (value == null) return;
+
+    StringBuilder_AppendBuffer(sb, value, 0, CString_Length(value));
 }
 
 public void StringBuilder_AppendString(StringBuilder *sb, const String *value)
 {
     Validate_NotNull(sb);
 
-    if (value == null) {
-        return;
-    }
+    if (value == null) return;
 
-    uintsize length = String_GetLength(value);
-
-    // Increase the capacity if needed.
-    if (sb->Length + length > sb->Capacity) {
-        StringBuilder_SetCapacity(sb, uintsize_Max(sb->Capacity * 2, sb->Capacity + length));
-    }
-
-    // Copy the string to the end of the buffer.
-    Memory_CopyOffset(String_GetCString(value), 0, sb->Value, sb->Length, length);
-
-    sb->Length += length;
+    StringBuilder_AppendBuffer(sb, String_GetCString(value), 0, String_GetLength(value));
 }
 
 public void StringBuilder_AppendFormatCString(StringBuilder *sb, const char *format, ...)
@@ -280,10 +285,10 @@ public void StringBuilder_AppendLine(StringBuilder *sb)
 
 public void StringBuilder_AppendLineCString(StringBuilder *sb, const char *value)
 {
-    String strBuffer;
-    String *str = String_WrapCString(value, &strBuffer);
+    Validate_NotNull(sb);
 
-    StringBuilder_AppendLineString(sb, str);
+    StringBuilder_AppendCString(sb, value);
+    StringBuilder_Append(sb, '\n');
 }
 
 public void StringBuilder_AppendLineString(StringBuilder *sb, const String *value)
@@ -353,10 +358,7 @@ public void StringBuilder_Insert(StringBuilder *sb, uintsize index, char value)
     Validate_NotNull(sb);
     Validate_IsTrue(index <= sb->Length, ArgumentOutOfRangeException, "Index must be within the bounds of the string.");
 
-    // Increase the capacity if needed.
-    if (sb->Length == sb->Capacity) {
-        StringBuilder_SetCapacity(sb, sb->Capacity * 2);
-    }
+    EnsureCapacity(sb, sb->Length + 1);
 
     // Copy the contents of the buffer after index forward by 1 byte.
     Memory_CopyOffset(sb->Value, index, sb->Value, index + 1, sb->Length - index);
@@ -367,12 +369,36 @@ public void StringBuilder_Insert(StringBuilder *sb, uintsize index, char value)
     sb->Length++;
 }
 
+public void StringBuilder_InsertBuffer(
+    StringBuilder *sb,
+    uintsize index,
+    const char *buffer,
+    uintsize offset,
+    uintsize count)
+{
+    Validate_NotNull(sb);
+    Validate_NotNull(buffer);
+    Validate_IsTrue(index <= sb->Length, ArgumentOutOfRangeException, "Index must be within the bounds of the string.");
+
+    EnsureCapacity(sb, sb->Length + count);
+
+    // Copy the contents of the buffer after index forward by length bytes.
+    Memory_CopyOffset(sb->Value, index, sb->Value, index + count, sb->Length - index);
+
+    // Copy the string into the buffer.
+    Memory_CopyOffset(buffer, offset, sb->Value, index, count);
+
+    sb->Length += count;
+}
+
 public void StringBuilder_InsertCString(StringBuilder *sb, uintsize index, const char *value)
 {
-    String strBuffer;
-    String *str = String_WrapCString(value, &strBuffer);
+    Validate_NotNull(sb);
+    Validate_IsTrue(index <= sb->Length, ArgumentOutOfRangeException, "Index must be within the bounds of the string.");
 
-    StringBuilder_InsertString(sb, index, str);
+    if (value == null) return;
+
+    StringBuilder_InsertBuffer(sb, index, value, 0, CString_Length(value));
 }
 
 public void StringBuilder_InsertString(StringBuilder *sb, uintsize index, const String *value)
@@ -380,24 +406,9 @@ public void StringBuilder_InsertString(StringBuilder *sb, uintsize index, const 
     Validate_NotNull(sb);
     Validate_IsTrue(index <= sb->Length, ArgumentOutOfRangeException, "Index must be within the bounds of the string.");
 
-    if (value == null) {
-        return;
-    }
+    if (value == null) return;
 
-    uintsize length = String_GetLength(value);
-
-    // Increase the capacity if needed.
-    if (sb->Length + length > sb->Capacity) {
-        StringBuilder_SetCapacity(sb, uintsize_Max(sb->Capacity * 2, sb->Capacity + length));
-    }
-
-    // Copy the contents of the buffer after index forward by length bytes.
-    Memory_CopyOffset(sb->Value, index, sb->Value, index + length, sb->Length - index);
-
-    // Copy the string into the buffer.
-    Memory_CopyOffset(String_GetCString(value), 0, sb->Value, index, length);
-
-    sb->Length += length;
+    StringBuilder_InsertBuffer(sb, index, String_GetCString(value), 0, String_GetLength(value));
 }
 
 public void StringBuilder_Remove(StringBuilder *sb, uintsize startIndex, uintsize count)
@@ -436,4 +447,21 @@ internal char *StringBuilder_GetBuffer(const StringBuilder *sb)
     sb->Value[sb->Length] = '\0';
 
     return sb->Value;
+}
+
+/**************************************/
+/* Private function definitions       */
+/**************************************/
+
+private void EnsureCapacity(StringBuilder *sb, uintsize minCapacity)
+{
+    assert(sb != null);
+
+    if (sb->Capacity < minCapacity) {
+        uintsize capacity;
+        capacity = uintsize_Max(minCapacity, sb->Length * 2);
+        capacity = uintsize_Max(capacity, DefaultCapacity);
+
+        StringBuilder_SetCapacity(sb, capacity);
+    }
 }

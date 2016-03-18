@@ -208,6 +208,20 @@ void StringBuilder_SetCapacity(StringBuilder *sb, uintsize capacity);
 void StringBuilder_Append(StringBuilder *sb, char value);
 
 /// <summary>
+/// Appends the contents of the given buffer to a <see cref="StringBuilder"/>.
+/// </summary>
+/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
+/// <param name="buffer">An array of characters.</param>
+/// <param name="offset">The starting position in <paramref name="buffer"/>.</param>
+/// <param name="count">The number of characters to append.</param>
+/// <exception cref="::ArgumentNullException">
+///     <paramref name="sb"/> is <see cref="null"/> <b>-or-</b>
+///     <paramref name="buffer"/> is <see cref="null"/>.
+/// </exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+void StringBuilder_AppendBuffer(StringBuilder *sb, const char *buffer, uintsize offset, uintsize count);
+
+/// <summary>
 /// Appends the given string to a <see cref="StringBuilder"/>.
 /// </summary>
 /// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
@@ -351,7 +365,7 @@ char *StringBuilder_DeleteAndToCString(StringBuilder *sb);
 /// Inserts the given character into a <see cref="StringBuilder"/> at the given index.
 /// </summary>
 /// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="index">The position where to insert <paramref name="value"/>.</param>
+/// <param name="index">The position in <paramref name="sb"/> where insertion begins.</param>
 /// <param name="value">The character to insert.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
 /// <exception cref="::ArgumentOutOfRangeException">
@@ -361,10 +375,28 @@ char *StringBuilder_DeleteAndToCString(StringBuilder *sb);
 void StringBuilder_Insert(StringBuilder *sb, uintsize index, char value);
 
 /// <summary>
+/// Inserts the contents of the given buffer into a <see cref="StringBuilder"/> at the given index.
+/// </summary>
+/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
+/// <param name="index">The position in <paramref name="sb"/> where insertion begins.</param>
+/// <param name="buffer">An array of characters.</param>
+/// <param name="offset">The starting position in <paramref name="buffer"/>.</param>
+/// <param name="count">The number of characters to insert.</param>
+/// <exception cref="::ArgumentNullException">
+///     <paramref name="sb"/> is <see cref="null"/> <b>-or-</b>
+///     <paramref name="buffer"/> is <see cref="null"/>.
+/// </exception>
+/// <exception cref="::ArgumentOutOfRangeException">
+///     <paramref name="index"/> is greater than the length of <paramref name="sb"/>.
+/// </exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+void StringBuilder_InsertBuffer(StringBuilder *sb, uintsize index, const char *buffer, uintsize offset, uintsize count);
+
+/// <summary>
 /// Inserts the given string into a <see cref="StringBuilder"/> at the given index.
 /// </summary>
 /// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="index">The position where to insert <paramref name="value"/>.</param>
+/// <param name="index">The position in <paramref name="sb"/> where insertion begins.</param>
 /// <param name="value">Pointer to the string to insert.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
 /// <exception cref="::ArgumentOutOfRangeException">
@@ -377,7 +409,7 @@ void StringBuilder_InsertCString(StringBuilder *sb, uintsize index, const char *
 /// Inserts the given string into a <see cref="StringBuilder"/> at the given index.
 /// </summary>
 /// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="index">The position where to insert <paramref name="value"/>.</param>
+/// <param name="index">The position in <paramref name="sb"/> where insertion begins.</param>
 /// <param name="value">Pointer to the string to insert.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
 /// <exception cref="::ArgumentOutOfRangeException">
