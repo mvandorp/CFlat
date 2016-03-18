@@ -102,6 +102,16 @@ typedef enum ExceptionType {
     /// formed.
     /// </summary>
     FormatException = CFLAT_EXCEPTIONTYPE_VALUE(9) | SystemException,
+
+    /// <summary>
+    /// Thrown when a method or operation is not implemented.
+    /// </summary>
+    NotImplementedException = CFLAT_EXCEPTIONTYPE_VALUE(10) | SystemException,
+
+    /// <summary>
+    /// Thrown when a method or operation is not supported.
+    /// </summary>
+    NotSupportedException = CFLAT_EXCEPTIONTYPE_VALUE(11) | SystemException,
 } ExceptionType;
 
 #undef CFLAT_EXCEPTIONTYPE_BASE_BITS

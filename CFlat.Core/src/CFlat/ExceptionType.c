@@ -37,7 +37,9 @@
     EXCEPTION(ArgumentOutOfRangeException,  "Specified argument was out of the range of valid values.")             \
     EXCEPTION(OutOfMemoryException,         "Insufficient memory to continue the execution of the program.")        \
     EXCEPTION(FileNotFoundException,        "Unable to find the specified file.")                                   \
-    EXCEPTION(FormatException,              "One of the identified items was in an invalid format.")
+    EXCEPTION(FormatException,              "One of the identified items was in an invalid format.")                \
+    EXCEPTION(NotImplementedException,      "The method or operation is not implemented.")                          \
+    EXCEPTION(NotSupportedException,        "The method or operation is not suppoted.")
 #undef EXCEPTION
 
 // Define strings containing the exception names.
