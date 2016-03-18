@@ -91,8 +91,16 @@ public void StringBuilder_AppendFormatStringV(StringBuilder *sb, const String *f
                 }
             }
             // Found random closing brace.
-            else if (ch == '}' && StringReader_Peek(&reader) != '}') {
-                throw_new(FormatException, "Invalid format string.");
+            else if (ch == '}') {
+                // Parse '}}'.
+                if (StringReader_Peek(&reader) == '}') {
+                    StringReader_Skip(&reader, 2);
+                    StringBuilder_Append(sb, '}');
+                }
+                // Handle invalid '}'.
+                else {
+                    throw_new(FormatException, "Invalid format string.");
+                }
             }
             // Otherwise add character.
             else {
@@ -188,7 +196,13 @@ private void ProcessFormatItem(StringBuilder *sb, StringReader *reader, StringBu
             break;
 
         case ArgumentType_SByte:
+            sbyte_ToStringBuffered(sb, (sbyte)VarArg(*args, int), format);
+            break;
+
         case ArgumentType_Short:
+            short_ToStringBuffered(sb, (short)VarArg(*args, int), format);
+            break;
+
         case ArgumentType_Int:
             int_ToStringBuffered(sb, VarArg(*args, int), format);
             break;
@@ -202,7 +216,13 @@ private void ProcessFormatItem(StringBuilder *sb, StringReader *reader, StringBu
             break;
 
         case ArgumentType_Byte:
+            byte_ToStringBuffered(sb, (byte)VarArg(*args, uint), format);
+            break;
+
         case ArgumentType_UShort:
+            short_ToStringBuffered(sb, (short)VarArg(*args, uint), format);
+            break;
+
         case ArgumentType_UInt:
             uint_ToStringBuffered(sb, VarArg(*args, uint), format);
             break;
@@ -247,9 +267,13 @@ private ArgumentType ReadFormatItem(StringReader *reader, char **formatString, S
     // Clear the string buffer.
     StringBuilder_Clear(formatBuffer);
 
+    // Indicates whether we're now reading in the format specifier part of the format item.
+    bool inFormatSpecifier = false;
+
     // Read the format specifier.
-    while (StringReader_Peek(reader) != -1) {
-        if (StringReader_Peek(reader) == '{') {
+    int ch;
+    while ((ch = StringReader_Peek(reader)) != -1) {
+        if (ch == '{') {
             if (StringReader_PeekOffset(reader, 1) == '{') {
                 StringReader_Read(reader);
             }
@@ -257,13 +281,19 @@ private ArgumentType ReadFormatItem(StringReader *reader, char **formatString, S
                 break;
             }
         }
-        if (StringReader_Peek(reader) == '}') {
+        else if (ch == '}') {
+            // Do not escape '}}' unless reading a format specifier, since no valid format item contains '}'.
+            if (!inFormatSpecifier) break;
+
             if (StringReader_PeekOffset(reader, 1) == '}') {
                 StringReader_Read(reader);
             }
             else {
                 break;
             }
+        }
+        else if (ch == ':') {
+            inFormatSpecifier = true;
         }
 
         StringBuilder_Append(formatBuffer, (char)StringReader_Read(reader));

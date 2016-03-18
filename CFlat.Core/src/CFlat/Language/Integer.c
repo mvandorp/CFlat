@@ -413,7 +413,7 @@ internal void uintsize_ToStringBuffered(StringBuilder *sb, uintsize value, const
 internal void sbyte_ToStringBuffered(StringBuilder *sb, sbyte value, const String *format)
 {
     if (value < 0 && Number_IsNonDecimalFormat(format)) {
-        uintmax_ToStringFormat((uintmax)value & byte_MaxValue, format);
+        uintmax_ToStringBuffered(sb, (uintmax)value & byte_MaxValue, format);
     }
     else {
         intmax_ToStringBuffered(sb, (intmax)value, format);
