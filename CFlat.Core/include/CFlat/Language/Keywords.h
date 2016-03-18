@@ -39,6 +39,21 @@
 /// </summary>
 #define private static
 
+/// <summary>
+/// Indicates that a function is abstract.
+/// </summary>
+#define abstract
+
+/// <summary>
+/// Indicates that a function is virtual.
+/// </summary>
+#define virtual
+
+/// <summary>
+/// Indicates that a function overrides an abstract or virtual base function.
+/// </summary>
+#define override
+
 /* Object.c */
 /// <summary>
 /// Increments the reference count of an <see cref="Object"/>.
