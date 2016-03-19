@@ -22,6 +22,11 @@
     <ClInclude Include="include\CFlat\CString.h" />
     <ClInclude Include="include\CFlat\IO\SeekOrigin.h" />
     <ClInclude Include="include\CFlat\IO\Stream.h" />
+    <ClInclude Include="include\CFlat\IO\StreamReader.h" />
+    <ClInclude Include="include\CFlat\IO\StreamWriter.h" />
+    <ClInclude Include="include\CFlat\IO\StringWriter.h" />
+    <ClInclude Include="include\CFlat\IO\TextReader.h" />
+    <ClInclude Include="include\CFlat\IO\TextWriter.h" />
     <ClInclude Include="include\CFlat\Language\Assert.h" />
     <ClInclude Include="include\CFlat\Language\Bool.h" />
     <ClInclude Include="include\CFlat\Language\Char.h" />
@@ -69,6 +74,13 @@
     <ClCompile Include="src\CFlat\IO\SeekOrigin.c" />
     <ClCompile Include="src\CFlat\IO\Stream.c" />
     <ClCompile Include="src\CFlat\IO\Stream.NullStream.c" />
+    <ClCompile Include="src\CFlat\IO\StreamReader.c" />
+    <ClCompile Include="src\CFlat\IO\StreamWriter.c" />
+    <ClCompile Include="src\CFlat\IO\StringWriter.c" />
+    <ClCompile Include="src\CFlat\IO\TextReader.c" />
+    <ClCompile Include="src\CFlat\IO\TextReader.NullTextReader.c" />
+    <ClCompile Include="src\CFlat\IO\TextWriter.c" />
+    <ClCompile Include="src\CFlat\IO\TextWriter.NullTextWriter.c" />
     <ClCompile Include="src\CFlat\Language\Assert.c" />
     <ClCompile Include="src\CFlat\Language\Char.c" />
     <ClCompile Include="src\CFlat\ExceptionType.c" />

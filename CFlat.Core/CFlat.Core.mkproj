@@ -31,7 +31,7 @@ Libraries               := m
 # Advanced Options
 CFLAGS                  :=                  \
     -O2 -std=c99 -pedantic                  \
-    -Wall -Wextra -Werror                   \
+    -Wall -Wextra -Werror -Wno-error=shadow \
     -Wdouble-promotion                      \
     -Wformat=2                              \
     -Winit-self                             \
