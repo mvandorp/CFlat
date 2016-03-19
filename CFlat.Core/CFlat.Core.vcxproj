@@ -20,6 +20,8 @@
     <ClInclude Include="include\CFlat\Collections\ObjectList.h" />
     <ClInclude Include="include\CFlat\Collections\PointerList.h" />
     <ClInclude Include="include\CFlat\CString.h" />
+    <ClInclude Include="include\CFlat\IO\SeekOrigin.h" />
+    <ClInclude Include="include\CFlat\IO\Stream.h" />
     <ClInclude Include="include\CFlat\Language\Assert.h" />
     <ClInclude Include="include\CFlat\Language\Bool.h" />
     <ClInclude Include="include\CFlat\Language\Char.h" />
@@ -64,6 +66,9 @@
     <ClCompile Include="src\CFlat\Collections\ObjectList.c" />
     <ClCompile Include="src\CFlat\Collections\PointerList.c" />
     <ClCompile Include="src\CFlat\const_cast.c" />
+    <ClCompile Include="src\CFlat\IO\SeekOrigin.c" />
+    <ClCompile Include="src\CFlat\IO\Stream.c" />
+    <ClCompile Include="src\CFlat\IO\Stream.NullStream.c" />
     <ClCompile Include="src\CFlat\Language\Assert.c" />
     <ClCompile Include="src\CFlat\Language\Char.c" />
     <ClCompile Include="src\CFlat\ExceptionType.c" />
