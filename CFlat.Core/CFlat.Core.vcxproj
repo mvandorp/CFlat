@@ -19,7 +19,9 @@
     <ClInclude Include="include\CFlat\Collections\List.h" />
     <ClInclude Include="include\CFlat\Collections\ObjectList.h" />
     <ClInclude Include="include\CFlat\Collections\PointerList.h" />
+    <ClInclude Include="include\CFlat\Console.h" />
     <ClInclude Include="include\CFlat\CString.h" />
+    <ClInclude Include="include\CFlat\IO\FileAccess.h" />
     <ClInclude Include="include\CFlat\IO\SeekOrigin.h" />
     <ClInclude Include="include\CFlat\IO\Stream.h" />
     <ClInclude Include="include\CFlat\IO\StreamReader.h" />
@@ -70,7 +72,10 @@
     <ClCompile Include="src\CFlat\Collections\ListEnumerator.c" />
     <ClCompile Include="src\CFlat\Collections\ObjectList.c" />
     <ClCompile Include="src\CFlat\Collections\PointerList.c" />
+    <ClCompile Include="src\CFlat\Console.c" />
+    <ClCompile Include="src\CFlat\Console.ConsoleStream.c" />
     <ClCompile Include="src\CFlat\const_cast.c" />
+    <ClCompile Include="src\CFlat\IO\FileAccess.c" />
     <ClCompile Include="src\CFlat\IO\SeekOrigin.c" />
     <ClCompile Include="src\CFlat\IO\Stream.c" />
     <ClCompile Include="src\CFlat\IO\Stream.NullStream.c" />

@@ -20,13 +20,14 @@
 #include "CFlat/Language/Exceptions.h"
 
 #include "CFlat.h"
+#include "CFlat/Console.h"
 #include "CFlat/CString.h"
 #include "CFlat/Memory.h"
 #include "CFlat/Object.h"
 #include "CFlat/String.h"
 #include "CFlat/Validate.h"
+#include "CFlat/IO/TextWriter.h"
 
-#include <stdio.h>
 #include <stdlib.h>
 
 /* Types */
@@ -386,14 +387,23 @@ private void UnhandledException(void)
     try {
         String *message = GenerateExceptionText(CurrentException);
 
-        fprintf(stderr, "%s", String_GetCString(message));
-
-        release(message);
+        try {
+            TextWriter_Write_String(Console_GetError(), message);
+        }
+        finally  {
+            release(message);
+        }
+        endtry;
     }
     catch (Exception);
     endtry;
 
-    release(CurrentException);
+    try {
+        release(CurrentException);
+    }
+    catch (Exception);
+    endtry;
+
     abort();
 }
 

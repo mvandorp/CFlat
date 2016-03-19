@@ -17,31 +17,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "CFlat/Language/Assert.h"
+#include "CFlat/IO/FileAccess.h"
 
 #include "CFlat.h"
-#include "CFlat/Console.h"
-#include "CFlat/String.h"
-#include "CFlat/IO/TextWriter.h"
+#include "CFlat/Validate.h"
 
-#include <stdlib.h>
-
-public void __CFLAT_ASSERT_FAIL(const char *condition, const char *file, int line)
+public bool FileAccess_IsValid(FileAccess fileAccess)
 {
-    assert(condition != null);
-    assert(file != null);
-    assert(line > 0);
+    return
+        (fileAccess & FileAccess_Read) == FileAccess_Read ||
+        (fileAccess & FileAccess_Write) == FileAccess_Write;
+}
 
-    try {
-        TextWriter_WriteFormat_CString(
-            Console_GetError(),
-            "Assertion failed: {cstring}\n   at {cstring}:{int}\n",
-            condition,
-            file,
-            line);
-    }
-    catch (Exception);
-    endtry;
-
-    abort();
+public void FileAccess_Validate(FileAccess fileAccess)
+{
+    Validate_IsTrue(
+        FileAccess_IsValid(fileAccess),
+        ArgumentException,
+        "Value was out of legal range for enum FileAccess.");
 }
