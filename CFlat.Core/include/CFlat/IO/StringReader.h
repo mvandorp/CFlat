@@ -19,10 +19,11 @@
 
 //! @file StringReader.h
 
-#ifndef CFLAT_CORE_STRINGREADER_H
-#define CFLAT_CORE_STRINGREADER_H
+#ifndef CFLAT_CORE_IO_STRINGREADER_H
+#define CFLAT_CORE_IO_STRINGREADER_H
 
 #include "CFlat/Language/Integer.h"
+#include "CFlat/Language/Keywords.h"
 
 /* Forward declarations */
 struct String;
@@ -70,7 +71,7 @@ void StringReader_Destructor(StringReader *reader);
 /// <param name="reader">Pointer to a <see cref="StringReader"/>.</param>
 /// <returns>An integer representing the next character, or -1 if no more characters are available.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="reader"/> is <see cref="null"/>.</exception>
-int StringReader_Peek(const StringReader *reader);
+override int StringReader_Peek(const StringReader *reader);
 
 /// <summary>
 /// Returns the character at the given offset of a <see cref="StringReader"/>.
@@ -90,7 +91,54 @@ int StringReader_PeekOffset(const StringReader *reader, uintsize offset);
 /// <param name="reader">Pointer to a <see cref="StringReader"/>.</param>
 /// <returns>An integer representing the next character, or -1 if no more characters are available.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="reader"/> is <see cref="null"/>.</exception>
-int StringReader_Read(StringReader *reader);
+override int StringReader_Read(StringReader *reader);
+
+/// <summary>
+/// Reads a given maximum number of characters from the input string of a <see cref="StringReader"/> and advances the
+/// character position by the number of characters read.
+/// </summary>
+/// <param name="reader">Pointer to a <see cref="StringReader"/>.</param>
+/// <param name="buffer">The array to which the characters should be read.</param>
+/// <param name="offset">
+///     The offset in <paramref name="buffer"/> at which to begin storing characters read from
+///     <paramref name="reader"/>.
+/// </param>
+/// <param name="count">The maximum number of characters to read.</param>
+/// <returns>
+///     The total number of characters read into the buffer. This can be less than the number of bytes requested if
+///     that many characters are currently not available, or zero if all characters have been read.
+/// </returns>
+/// <exception cref="::ArgumentNullException">
+///     <paramref name="reader"/> is <see cref="null"/> <b>-or-</b>
+///     <paramref name="buffer"/> is <see cref="null"/>.
+/// </exception>>
+override uintsize StringReader_ReadBuffer(StringReader *reader, char *buffer, uintsize offset, uintsize count);
+
+/// <summary>
+/// Reads a line of characters from the input string of a <see cref="StringReader"/> and returns the data as a
+/// <see cref="String"/>.
+/// </summary>
+/// <param name="reader">Pointer to a <see cref="StringReader"/>.</param>
+/// <returns>
+///     A pointer to a <see cref="String"/> containing the next line of the reader, or <see cref="null"/> if all
+///     characters have been read.
+/// </returns>
+/// <exception cref="::ArgumentNullException"><paramref name="reader"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+struct String *StringReader_ReadLine(StringReader *reader);
+
+/// <summary>
+/// Reads all characters from the input string of a <see cref="StringReader"/> and returns the data as a
+/// <see cref="String"/>.
+/// </summary>
+/// <param name="reader">Pointer to a <see cref="StringReader"/>.</param>
+/// <returns>
+///     A pointer to a <see cref="String"/> containing all remaining characters of the reader, or <see cref="null"/>
+///     if all characters have been read.
+/// </returns>
+/// <exception cref="::ArgumentNullException"><paramref name="reader"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+struct String *StringReader_ReadToEnd(StringReader *reader);
 
 /// <summary>
 /// Advances the position of a <see cref="StringReader"/> by the given number of characters.
@@ -101,7 +149,7 @@ int StringReader_Read(StringReader *reader);
 void StringReader_Skip(StringReader *reader, uintsize amount);
 
 #ifdef CFLAT_CORE_INTERNAL
- #include "CFlat/StringReader.internal.h"
+ #include "CFlat/IO/StringReader.internal.h"
 #endif
 
 #endif

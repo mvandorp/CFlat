@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "CFlat/StringReader.h"
+#include "CFlat/IO/StringReader.h"
 
 #include "CFlat.h"
 #include "CFlat/CString.h"
@@ -30,7 +30,11 @@
 /// <summary>
 /// The virtual method table for the <see cref="StringReader"/> class.
 /// </summary>
-private const ObjectVTable VTable = ObjectVTable_Initializer((DestructorFunc)StringReader_Destructor);
+private const TextReaderVTable VTable = TextReaderVTable_Initializer(
+    (DestructorFunc)StringReader_Destructor,
+    (TextReader_PeekFunc)StringReader_Peek,
+    (TextReader_ReadFunc)StringReader_Read,
+    (TextReader_ReadBufferFunc)StringReader_ReadBuffer);
 
 /**************************************/
 /* Public function definitions        */
@@ -60,7 +64,7 @@ public void StringReader_Constructor(StringReader *reader, const String *str)
 {
     Validate_NotNull(str);
 
-    Object_Constructor(reader, &VTable);
+    TextReader_Constructor((TextReader*)reader, &VTable);
 
     reader->Value = retain_const(str);
     reader->Position = 0;
@@ -73,7 +77,7 @@ public void StringReader_Destructor(StringReader *reader)
     release(reader->Value);
 }
 
-public int StringReader_Peek(const StringReader *reader)
+public override int StringReader_Peek(const StringReader *reader)
 {
     return StringReader_PeekOffset(reader, 0);
 }
@@ -90,7 +94,7 @@ public int StringReader_PeekOffset(const StringReader *reader, uintsize offset)
     }
 }
 
-public int StringReader_Read(StringReader *reader)
+public override int StringReader_Read(StringReader *reader)
 {
     Validate_NotNull(reader);
 
@@ -100,6 +104,40 @@ public int StringReader_Read(StringReader *reader)
     else {
         return String_GetCharAt(reader->Value, reader->Position++);
     }
+}
+
+public override uintsize StringReader_ReadBuffer(StringReader *reader, char *buffer, uintsize offset, uintsize count)
+{
+    Validate_NotNull(reader);
+    Validate_NotNull(buffer);
+
+    if (count == 0) return 0;
+
+    // The number of characters read.
+    uintsize charactersRead = 0;
+
+    // The number of characters remaining.
+    uintsize remaining = String_GetLength(reader->Value) - reader->Position;
+
+    if (remaining > 0) {
+        charactersRead = uintsize_Min(remaining, count);
+
+        Memory_CopyOffset(String_GetCString(reader->Value), reader->Position, buffer, offset, charactersRead);
+
+        reader->Position += charactersRead;
+    }
+
+    return charactersRead;
+}
+
+public String *StringReader_ReadLine(StringReader *reader)
+{
+    return TextReader_ReadLine((TextReader*)reader);
+}
+
+public String *StringReader_ReadToEnd(StringReader *reader)
+{
+    return TextReader_ReadToEnd((TextReader*)reader);
 }
 
 public void StringReader_Skip(StringReader *reader, uintsize amount)

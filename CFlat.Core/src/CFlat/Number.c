@@ -25,8 +25,8 @@
 #include "CFlat/Object.h"
 #include "CFlat/String.h"
 #include "CFlat/StringBuilder.h"
-#include "CFlat/StringReader.h"
 #include "CFlat/Validate.h"
+#include "CFlat/IO/StringReader.h"
 
 /**************************************/
 /* Private functions                  */

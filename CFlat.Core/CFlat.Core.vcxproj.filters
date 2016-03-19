@@ -48,9 +48,6 @@
     <ClInclude Include="include\CFlat\Validate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\CFlat\StringReader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\CFlat\Math.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -73,9 +70,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\CFlat\StringBuilder.internal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\CFlat\StringReader.internal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\CFlat\Macros.h">
@@ -153,6 +147,9 @@
     <ClInclude Include="include\CFlat\IO\StreamWriter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\CFlat\IO\StringReader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="include\CFlat\IO\StringWriter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -160,6 +157,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\CFlat\IO\TextWriter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CFlat\IO\StringReader.internal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -183,9 +183,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CFlat\ExceptionType.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CFlat\StringReader.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CFlat\Math.c">
@@ -255,6 +252,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CFlat\IO\StreamWriter.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\IO\StringReader.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CFlat\IO\StringWriter.c">

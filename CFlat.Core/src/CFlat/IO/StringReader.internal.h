@@ -17,22 +17,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CFLAT_CORE_STRINGREADER_INTERNAL_H
-#define CFLAT_CORE_STRINGREADER_INTERNAL_H
+#ifndef CFLAT_CORE_IO_STRINGREADER_INTERNAL_H
+#define CFLAT_CORE_IO_STRINGREADER_INTERNAL_H
 
-#ifndef CFLAT_CORE_STRINGREADER_H
+#ifndef CFLAT_CORE_IO_STRINGREADER_H
  #error StringReader.internal.h should not be included directly.
 #endif
 
 #include "CFlat/Object.h"
+#include "CFlat/IO/TextReader.h"
 #include "CFlat/Language/Integer.h"
 
 /* Forward declarations */
 struct String;
 
 /* Types */
+/// <summary>
+/// Implements a reader that reads from a string of characters.
+/// </summary>
 struct StringReader {
-    Object Base;
+    TextReader Base;
     const struct String *Value;
     uintsize Position;
 };

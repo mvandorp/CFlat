@@ -22,8 +22,8 @@
 #include "CFlat.h"
 #include "CFlat/CString.h"
 #include "CFlat/String.h"
-#include "CFlat/StringReader.h"
 #include "CFlat/Validate.h"
+#include "CFlat/IO/StringReader.h"
 
 /* Types */
 typedef enum ArgumentType {
