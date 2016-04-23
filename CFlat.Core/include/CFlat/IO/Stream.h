@@ -25,6 +25,7 @@
 #include "CFlat/Object.h"
 #include "CFlat/IO/SeekOrigin.h"
 #include "CFlat/Language/Bool.h"
+#include "CFlat/Language/Integer.h"
 
 /* Macros */
 /// <summary>
@@ -122,7 +123,7 @@ typedef bool (*Stream_CanWriteFunc)(const Stream *stream);
 /// <returns>The length of the stream in bytes.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="stream"/> is <see cref="null"/>.</exception>
 /// <exception cref="::NotSupportedException"><paramref name="stream"/> does not support seeking.</exception>
-typedef long (*Stream_GetLengthFunc)(const Stream *stream);
+typedef intfsize (*Stream_GetLengthFunc)(const Stream *stream);
 
 /// <summary>
 /// A function that sets the length of a <see cref="Stream"/> in bytes.
@@ -142,7 +143,7 @@ typedef long (*Stream_GetLengthFunc)(const Stream *stream);
 ///     <paramref name="stream"/> does not support both writing and seeking.
 /// </exception>
 /// <exception cref="::IOException">An I/O error occurs.</exception>
-typedef void (*Stream_SetLengthFunc)(Stream *stream, long length);
+typedef void (*Stream_SetLengthFunc)(Stream *stream, intfsize length);
 
 /// <summary>
 /// A function that returns the length of a <see cref="Stream"/> in bytes.
@@ -155,7 +156,7 @@ typedef void (*Stream_SetLengthFunc)(Stream *stream, long length);
 /// <returns>The length of the stream in bytes.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="stream"/> is <see cref="null"/>.</exception>
 /// <exception cref="::NotSupportedException"><paramref name="stream"/> does not support seeking.</exception>
-typedef long (*Stream_GetPositionFunc)(const Stream *stream);
+typedef intfsize (*Stream_GetPositionFunc)(const Stream *stream);
 
 /// <summary>
 /// A function that sets the length of a <see cref="Stream"/> in bytes.
@@ -175,7 +176,7 @@ typedef long (*Stream_GetPositionFunc)(const Stream *stream);
 ///     <paramref name="stream"/> does not support both writing and seeking.
 /// </exception>
 /// <exception cref="::IOException">An I/O error occurs.</exception>
-typedef void (*Stream_SetPositionFunc)(Stream *stream, long position);
+typedef void (*Stream_SetPositionFunc)(Stream *stream, intfsize position);
 
 /// <summary>
 /// A function that writes any unwritten data in the output buffer of a <see cref="Stream"/> to the underlying device.
@@ -225,7 +226,7 @@ typedef uintsize (*Stream_ReadFunc)(Stream *stream, byte *buffer, uintsize offse
 /// <exception cref="::ArgumentNullException"><paramref name="stream"/> is <see cref="null"/>.</exception>
 /// <exception cref="::NotSupportedException"><paramref name="stream"/> does not support seeking.</exception>
 /// <exception cref="::IOException">An I/O error occurs.</exception>
-typedef long (*Stream_SeekFunc)(Stream *stream, long offset, SeekOrigin origin);
+typedef intfsize (*Stream_SeekFunc)(Stream *stream, intfsize offset, SeekOrigin origin);
 
 /// <summary>
 /// A function that writes a sequence of bytes to a <see cref="Stream"/> and advances the position of the stream by the
@@ -376,7 +377,7 @@ abstract bool Stream_CanWrite(const Stream *stream);
 /// <returns>The length of the stream in bytes.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="stream"/> is <see cref="null"/>.</exception>
 /// <exception cref="::NotSupportedException"><paramref name="stream"/> does not support seeking.</exception>
-abstract long Stream_GetLength(const Stream *stream);
+abstract intfsize Stream_GetLength(const Stream *stream);
 
 /// <summary>
 /// Sets the length of a <see cref="Stream"/> in bytes.
@@ -396,7 +397,7 @@ abstract long Stream_GetLength(const Stream *stream);
 ///     <paramref name="stream"/> does not support both writing and seeking.
 /// </exception>
 /// <exception cref="::IOException">An I/O error occurs.</exception>
-abstract void Stream_SetLength(Stream *stream, long length);
+abstract void Stream_SetLength(Stream *stream, intfsize length);
 
 /// <summary>
 /// Gets the position within a <see cref="Stream"/>.
@@ -410,7 +411,7 @@ abstract void Stream_SetLength(Stream *stream, long length);
 /// <exception cref="::ArgumentNullException"><paramref name="stream"/> is <see cref="null"/>.</exception>
 /// <exception cref="::NotSupportedException"><paramref name="stream"/> does not support seeking.</exception>
 /// <exception cref="::IOException">An I/O error occurs.</exception>
-abstract long Stream_GetPosition(const Stream *stream);
+abstract intfsize Stream_GetPosition(const Stream *stream);
 
 /// <summary>
 /// Sets the position within a <see cref="Stream"/>.
@@ -424,7 +425,7 @@ abstract long Stream_GetPosition(const Stream *stream);
 /// <exception cref="::ArgumentNullException"><paramref name="stream"/> is <see cref="null"/>.</exception>
 /// <exception cref="::NotSupportedException"><paramref name="stream"/> does not support seeking.</exception>
 /// <exception cref="::IOException">An I/O error occurs.</exception>
-abstract void Stream_SetPosition(Stream *stream, long position);
+abstract void Stream_SetPosition(Stream *stream, intfsize position);
 
 /// <summary>
 /// Reads the bytes from a <see cref="Stream"/> and writes them to another <see cref="Stream"/>.
@@ -537,7 +538,7 @@ int Stream_ReadByte(Stream *stream);
 /// <exception cref="::ArgumentException"><paramref name="origin"/> is not a valid <see cref="SeekOrigin"/>.</exception>
 /// <exception cref="::NotSupportedException"><paramref name="stream"/> does not support seeking.</exception>
 /// <exception cref="::IOException">An I/O error occurs.</exception>
-abstract long Stream_Seek(Stream *stream, long offset, SeekOrigin origin);
+abstract intfsize Stream_Seek(Stream *stream, intfsize offset, SeekOrigin origin);
 
 /// <summary>
 /// Writes a sequence of bytes to a <see cref="Stream"/> and advances the position of the stream by the number of bytes

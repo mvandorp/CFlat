@@ -36,15 +36,15 @@ private override bool NullStream_CanRead(const Stream *stream);
 private override bool NullStream_CanSeek(const Stream *stream);
 private override bool NullStream_CanWrite(const Stream *stream);
 
-private override long NullStream_GetLength(const Stream *stream);
-private override void NullStream_SetLength(Stream *stream, long length);
+private override intfsize NullStream_GetLength(const Stream *stream);
+private override void NullStream_SetLength(Stream *stream, intfsize length);
 
-private override long NullStream_GetPosition(const Stream *stream);
-private override void NullStream_SetPosition(Stream *stream, long position);
+private override intfsize NullStream_GetPosition(const Stream *stream);
+private override void NullStream_SetPosition(Stream *stream, intfsize position);
 
 private override void NullStream_Flush(Stream *stream);
 private override uintsize NullStream_Read(Stream *stream, byte *buffer, uintsize offset, uintsize count);
-private override long NullStream_Seek(Stream *stream, long offset, SeekOrigin origin);
+private override intfsize NullStream_Seek(Stream *stream, intfsize offset, SeekOrigin origin);
 private override void NullStream_Write(Stream *stream, const byte *buffer, uintsize offset, uintsize count);
 
 /* Private constants */
@@ -101,28 +101,28 @@ private override bool NullStream_CanWrite(const Stream *stream)
     return true;
 }
 
-private override long NullStream_GetLength(const Stream *stream)
+private override intfsize NullStream_GetLength(const Stream *stream)
 {
     Validate_NotNull(stream);
 
     return 0;
 }
 
-private override void NullStream_SetLength(Stream *stream, long length)
+private override void NullStream_SetLength(Stream *stream, intfsize length)
 {
     Validate_NotNull(stream);
 
     (void)length;
 }
 
-private override long NullStream_GetPosition(const Stream *stream)
+private override intfsize NullStream_GetPosition(const Stream *stream)
 {
     Validate_NotNull(stream);
 
     return 0;
 }
 
-private override void NullStream_SetPosition(Stream *stream, long position)
+private override void NullStream_SetPosition(Stream *stream, intfsize position)
 {
     Validate_NotNull(stream);
 
@@ -145,7 +145,7 @@ private override uintsize NullStream_Read(Stream *stream, byte *buffer, uintsize
     return 0;
 }
 
-private override long NullStream_Seek(Stream *stream, long offset, SeekOrigin origin)
+private override intfsize NullStream_Seek(Stream *stream, intfsize offset, SeekOrigin origin)
 {
     Validate_NotNull(stream);
 

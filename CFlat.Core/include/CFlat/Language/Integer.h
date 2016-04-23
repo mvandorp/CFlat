@@ -28,78 +28,7 @@
 /* Forward declarations */
 struct String;
 
-/* Special integer types */
-//! @name Special integer types
-//! @{
-
-#if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) || (_MSC_VER >= 1700)
-    #include <stdint.h>
-
-    #ifdef INTPTR_MAX
-        #define CFLAT_INTPTR        intptr_t
-        #define CFLAT_INTPTR_MIN    INTPTR_MIN
-        #define CFLAT_INTPTR_MAX    INTPTR_MAX
-    #endif
-
-    #ifdef INTPTR_MAX
-        #define CFLAT_UINTPTR       uintptr_t
-        #define CFLAT_UINTPTR_MAX   UINTPTR_MAX
-    #endif
-#endif
-
-#ifdef CFLAT_INTPTR
-    /// <summary>
-    /// Represents a signed integer capable of holding a void pointer.
-    /// </summary>
-    typedef CFLAT_INTPTR intptr;
-
-    /// <summary>
-    /// Represents the smallest possible value of <see cref="intptr"/>.
-    /// </summary>
-    #define intptr_MinValue CFLAT_INTPTR_MIN
-
-    /// <summary>
-    /// Represents the largest possible value of <see cref="intptr"/>.
-    /// </summary>
-    #define intptr_MaxValue CFLAT_INTPTR_MAX
-#endif
-
-#ifdef CFLAT_UINTPTR
-    /// <summary>
-    /// Represents an unsigned integer capable of holding a void pointer.
-    /// </summary>
-    typedef CFLAT_UINTPTR uintptr;
-
-    /// <summary>
-    /// Represents the smallest possible value of <see cref="uintptr"/>.
-    /// </summary>
-    /// <remarks>The value of this constant is 0.</remarks>
-    #define uintptr_MinValue 0
-
-    /// <summary>
-    /// Represents the largest possible value of <see cref="uintptr"/>.
-    /// </summary>
-    #define uintptr_MaxValue CFLAT_UINTPTR_MAX
-#endif
-
-/// <summary>
-/// Represents an unsigned integer with a width of at least 16 bits
-/// that is large enough to store the size of any array or object.
-/// </summary>
-typedef size_t uintsize;
-
-/// <summary>
-/// Represents the smallest possible value of <see cref="uintsize"/>.
-/// </summary>
-#define uintsize_MinValue ((uintsize)0)
-
-/// <summary>
-/// Represents the largest possible value of <see cref="uintsize"/>.
-/// </summary>
-#define uintsize_MaxValue ((uintsize)-1)
-
 /* Standard integer types */
-//! @}
 //! @name Standard integer types
 //! @{
 
@@ -217,7 +146,7 @@ typedef unsigned long ulong;
 //! @name Max-width integer types
 //! @{
 
-#if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) || (_MSC_VER >= 1700)
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L || _MSC_VER >= 1700
     #include <stdint.h>
 
     #define CFLAT_INTMAX        intmax_t
@@ -271,7 +200,7 @@ typedef CFLAT_UINTMAX uintmax;
 //! @name Exact-width integer types
 //! @{
 
-#if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) || (_MSC_VER >= 1700)
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L || _MSC_VER >= 1700
     #include <stdint.h>
 
     #ifdef INT8_MAX
@@ -499,7 +428,7 @@ typedef CFLAT_UINTMAX uintmax;
 //! @name Least-width integer types
 //! @{
 
-#if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) || (defined(_MSC_VER) && _MSC_VER >= 1700)
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L || defined(_MSC_VER) && _MSC_VER >= 1700
     #include <stdint.h>
 
     #define CFLAT_INT8_LEAST        int_least8_t
@@ -783,7 +712,7 @@ typedef CFLAT_UINT32_LEAST uint32_least;
 //! @name Fast integer types
 //! @{
 
-#if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) || (defined(_MSC_VER) && _MSC_VER >= 1700)
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L || defined(_MSC_VER) && _MSC_VER >= 1700
     #include <stdint.h>
 
     #define CFLAT_INT8_FAST        int_fast8_t
@@ -998,51 +927,129 @@ typedef CFLAT_UINT32_FAST uint32_fast;
     #define uint64_fast_MaxValue ((uint64_fast)CFLAT_UINT64_FAST_MAX)
 #endif
 
+/* Special integer types */
+//! @}
+//! @name Special integer types
+//! @{
+
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L || _MSC_VER >= 1700
+    #include <stdint.h>
+
+    #ifdef INTPTR_MAX
+        #define CFLAT_INTPTR        intptr_t
+        #define CFLAT_INTPTR_MIN    INTPTR_MIN
+        #define CFLAT_INTPTR_MAX    INTPTR_MAX
+    #endif
+
+    #ifdef INTPTR_MAX
+        #define CFLAT_UINTPTR       uintptr_t
+        #define CFLAT_UINTPTR_MAX   UINTPTR_MAX
+    #endif
+#endif
+
+#if defined(__unix__) || (defined (__APPLE__) && defined (__MACH__))
+ #include <unistd.h>
+#endif
+
+#if defined(_LARGEFILE_SOURCE) || \
+    defined(_XOPEN_SOURCE) && _XOPEN_SOURCE >= 500 || \
+    defined(_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200112L
+    // POSIX.1-2001
+
+    // Copied from: https://mail-index.netbsd.org/tech-misc/2007/02/05/0000.html
+    // These macros determine the maximum/minimum value of the given integer type
+    // "t". This works for signed as well as unsigned types. This code does
+    // carefully avoid integer overflows and undefined behaviour.
+    // However, it's assumed the type consists of exactly sizeof(type) * CHAR_BIT
+    // bits.
+    #define __CFLAT_MAX_INT_VAL_STEP(t)    ((t) 1 << (CHAR_BIT * sizeof(t) - 1 - ((t) -1 < 1)))
+    #define __CFLAT_MAX_INT_VAL(t)         ((__CFLAT_MAX_INT_VAL_STEP(t) - 1) + __CFLAT_MAX_INT_VAL_STEP(t))
+    #define __CFLAT_MIN_INT_VAL(t)         ((t) -__CFLAT_MAX_INT_VAL(t) - 1)
+
+    #define CFLAT_INTFSIZE      off_t
+    #define CFLAT_INTFSIZE_MIN  __CFLAT_MIN_INT_VAL(off_t)
+    #define CFLAT_INTFSIZE_MAX  __CFLAT_MAX_INT_VAL(off_t)
+#elif defined(_MSC_VER) && _MSC_VER >= 1400
+    // MSVC++ 8.0 or newer
+
+    #define CFLAT_INTFSIZE      __int64
+    #define CFLAT_INTFSIZE_MIN  _I64_MIN
+    #define CFLAT_INTFSIZE_MAX  _I64_MAX
+#else
+    #define CFLAT_INTFSIZE      long
+    #define CFLAT_INTFSIZE_MIN  long_MinValue
+    #define CFLAT_INTFSIZE_MAX  long_MaxValue
+#endif
+
+#ifdef CFLAT_INTPTR
+    /// <summary>
+    /// Represents a signed integer capable of holding a void pointer.
+    /// </summary>
+    typedef CFLAT_INTPTR intptr;
+
+    /// <summary>
+    /// Represents the smallest possible value of <see cref="intptr"/>.
+    /// </summary>
+    #define intptr_MinValue CFLAT_INTPTR_MIN
+
+    /// <summary>
+    /// Represents the largest possible value of <see cref="intptr"/>.
+    /// </summary>
+    #define intptr_MaxValue CFLAT_INTPTR_MAX
+#endif
+
+#ifdef CFLAT_UINTPTR
+    /// <summary>
+    /// Represents an unsigned integer capable of holding a void pointer.
+    /// </summary>
+    typedef CFLAT_UINTPTR uintptr;
+
+    /// <summary>
+    /// Represents the smallest possible value of <see cref="uintptr"/>.
+    /// </summary>
+    /// <remarks>The value of this constant is 0.</remarks>
+    #define uintptr_MinValue 0
+
+    /// <summary>
+    /// Represents the largest possible value of <see cref="uintptr"/>.
+    /// </summary>
+    #define uintptr_MaxValue CFLAT_UINTPTR_MAX
+#endif
+
+/// <summary>
+/// Represents an unsigned integer with a width of at least 16 bits
+/// that is large enough to store the size of any array or object.
+/// </summary>
+typedef size_t uintsize;
+
+/// <summary>
+/// Represents the smallest possible value of <see cref="uintsize"/>.
+/// </summary>
+#define uintsize_MinValue ((uintsize)0)
+
+/// <summary>
+/// Represents the largest possible value of <see cref="uintsize"/>.
+/// </summary>
+#define uintsize_MaxValue ((uintsize)-1)
+
+/// <summary>
+/// Represents a signed integer used to represent the size of a file.
+/// </summary>
+typedef CFLAT_INTFSIZE intfsize;
+
+/// <summary>
+/// Represents the smallest possible value of <see cref="intfsize"/>.
+/// </summary>
+#define intfsize_MinValue ((intfsize)CFLAT_INTFSIZE_MIN)
+
+/// <summary>
+/// Represents the largest possible value of <see cref="intfsize"/>.
+/// </summary>
+#define intfsize_MaxValue ((intfsize)CFLAT_INTFSIZE_MAX)
+
 //! @}
 
 /* Functions */
-/// <summary>
-/// Returns the larger of two numbers.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The larger of two numbers.</returns>
-uintsize uintsize_Max(uintsize x, uintsize y);
-
-/// <summary>
-/// Returns the smaller of two numbers.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The smaller of two numbers.</returns>
-uintsize uintsize_Min(uintsize x, uintsize y);
-
-/// <summary>
-/// Converts the given number to a string representation.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <returns>The string representation of the given number.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *uintsize_ToString(uintsize value);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *uintsize_ToStringFormat(uintsize value, const struct String *format);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *uintsize_ToStringFormatC(uintsize value, const char *format);
-
 #ifdef CFLAT_INTPTR
 /// <summary>
 /// Converts the given number to a string representation.
@@ -1098,6 +1105,90 @@ struct String *uintptr_ToStringFormat(uintptr value, const struct String *format
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 struct String *uintptr_ToStringFormatC(uintptr value, const char *format);
 #endif
+
+/// <summary>
+/// Returns the larger of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The larger of two numbers.</returns>
+uintsize uintsize_Max(uintsize x, uintsize y);
+
+/// <summary>
+/// Returns the smaller of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The smaller of two numbers.</returns>
+uintsize uintsize_Min(uintsize x, uintsize y);
+
+/// <summary>
+/// Converts the given number to a string representation.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <returns>The string representation of the given number.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+struct String *uintsize_ToString(uintsize value);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+struct String *uintsize_ToStringFormat(uintsize value, const struct String *format);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+struct String *uintsize_ToStringFormatC(uintsize value, const char *format);
+
+/// <summary>
+/// Returns the larger of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The larger of two numbers.</returns>
+intfsize intfsize_Max(intfsize x, intfsize y);
+
+/// <summary>
+/// Returns the smaller of two numbers.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The smaller of two numbers.</returns>
+intfsize intfsize_Min(intfsize x, intfsize y);
+
+/// <summary>
+/// Converts the given number to a string representation.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <returns>The string representation of the given number.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+struct String *intfsize_ToString(intfsize value);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+struct String *intfsize_ToStringFormat(intfsize value, const struct String *format);
+
+/// <summary>
+/// Converts the given number to a string representation, using the specified format.
+/// </summary>
+/// <param name="value">The value to be converted to a string.</param>
+/// <param name="format">A standard or custom numeric format string.</param>
+/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+struct String *intfsize_ToStringFormatC(intfsize value, const char *format);
 
 /// <summary>
 /// Returns the larger of two numbers.

@@ -101,6 +101,37 @@ public String *uintsize_ToStringFormatC(uintsize value, const char *format)
     return uintsize_ToStringFormat(value, str);
 }
 
+/* IntFSize */
+public intfsize intfsize_Max(intfsize x, intfsize y) {
+    return MAX(x, y);
+}
+
+public intfsize intfsize_Min(intfsize x, intfsize y) {
+    return MIN(x, y);
+}
+
+public String *intfsize_ToString(intfsize value)
+{
+    return intfsize_ToStringFormat(value, null);
+}
+
+public String *intfsize_ToStringFormat(intfsize value, const String *format)
+{
+    if (value < 0 && Number_IsNonDecimalFormat(format)) {
+        return uintmax_ToStringFormat((uintmax)value & intfsize_MaxValue, format);
+    }
+
+    return intmax_ToStringFormat((intmax)value, format);
+}
+
+public String *intfsize_ToStringFormatC(intfsize value, const char *format)
+{
+    String strBuffer;
+    String *str = String_WrapCString(format, &strBuffer);
+
+    return intfsize_ToStringFormat(value, str);
+}
+
 /* Byte */
 public sbyte sbyte_Max(sbyte x, sbyte y) {
     return MAX(x, y);
@@ -408,6 +439,16 @@ internal void uintptr_ToStringBuffered(StringBuilder *sb, uintptr value, const S
 internal void uintsize_ToStringBuffered(StringBuilder *sb, uintsize value, const String *format)
 {
     uintmax_ToStringBuffered(sb, (uintmax)value, format);
+}
+
+internal void intfsize_ToStringBuffered(StringBuilder *sb, intfsize value, const String *format)
+{
+    if (value < 0 && Number_IsNonDecimalFormat(format)) {
+        uintmax_ToStringBuffered(sb, (uintmax)value & intfsize_MaxValue, format);
+    }
+    else {
+        intmax_ToStringBuffered(sb, (intmax)value, format);
+    }
 }
 
 internal void sbyte_ToStringBuffered(StringBuilder *sb, sbyte value, const String *format)

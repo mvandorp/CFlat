@@ -50,15 +50,15 @@ private override bool ConsoleStream_CanRead(const ConsoleStream *stream);
 private override bool ConsoleStream_CanSeek(const ConsoleStream *stream);
 private override bool ConsoleStream_CanWrite(const ConsoleStream *stream);
 
-private override long ConsoleStream_GetLength(const ConsoleStream *stream);
-private override void ConsoleStream_SetLength(ConsoleStream *stream, long length);
+private override intfsize ConsoleStream_GetLength(const ConsoleStream *stream);
+private override void ConsoleStream_SetLength(ConsoleStream *stream, intfsize length);
 
-private override long ConsoleStream_GetPosition(const ConsoleStream *stream);
-private override void ConsoleStream_SetPosition(ConsoleStream *stream, long position);
+private override intfsize ConsoleStream_GetPosition(const ConsoleStream *stream);
+private override void ConsoleStream_SetPosition(ConsoleStream *stream, intfsize position);
 
 private override void ConsoleStream_Flush(ConsoleStream *stream);
 private override uintsize ConsoleStream_Read(ConsoleStream *stream, byte *buffer, uintsize offset, uintsize count);
-private override long ConsoleStream_Seek(ConsoleStream *stream, long offset, SeekOrigin origin);
+private override intfsize ConsoleStream_Seek(ConsoleStream *stream, intfsize offset, SeekOrigin origin);
 private override void ConsoleStream_Write(ConsoleStream *stream, const byte *buffer, uintsize offset, uintsize count);
 
 private void ValidateReadSupported(const ConsoleStream *stream);
@@ -152,28 +152,28 @@ private override bool ConsoleStream_CanWrite(const ConsoleStream *stream)
     return (stream->Access & FileAccess_Write) == FileAccess_Write;
 }
 
-private override long ConsoleStream_GetLength(const ConsoleStream *stream)
+private override intfsize ConsoleStream_GetLength(const ConsoleStream *stream)
 {
     ValidateSeekSupported(stream);
 
     return 0;
 }
 
-private override void ConsoleStream_SetLength(ConsoleStream *stream, long length)
+private override void ConsoleStream_SetLength(ConsoleStream *stream, intfsize length)
 {
     ValidateSeekSupported(stream);
 
     (void)length;
 }
 
-private override long ConsoleStream_GetPosition(const ConsoleStream *stream)
+private override intfsize ConsoleStream_GetPosition(const ConsoleStream *stream)
 {
     ValidateSeekSupported(stream);
 
     return 0;
 }
 
-private override void ConsoleStream_SetPosition(ConsoleStream *stream, long position)
+private override void ConsoleStream_SetPosition(ConsoleStream *stream, intfsize position)
 {
     ValidateSeekSupported(stream);
 
@@ -217,7 +217,7 @@ private override uintsize ConsoleStream_Read(ConsoleStream *stream, byte *buffer
     return bytesRead;
 }
 
-private override long ConsoleStream_Seek(ConsoleStream *stream, long offset, SeekOrigin origin)
+private override intfsize ConsoleStream_Seek(ConsoleStream *stream, intfsize offset, SeekOrigin origin)
 {
     ValidateSeekSupported(stream);
 

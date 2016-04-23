@@ -30,6 +30,7 @@ typedef enum ArgumentType {
     ArgumentType_Pointer,
     ArgumentType_IntPtr,
     ArgumentType_UIntPtr,
+    ArgumentType_IntFSize,
     ArgumentType_UIntSize,
 
     ArgumentType_Char,
@@ -173,6 +174,15 @@ private void ProcessFormatItem(StringBuilder *sb, StringReader *reader, StringBu
             }
             break;
 #endif
+
+        case ArgumentType_IntFSize:
+            if (sizeof(intfsize) < sizeof(int)) {
+                intfsize_ToStringBuffered(sb, (intfsize)VarArg(*args, int), format);
+            }
+            else {
+                intfsize_ToStringBuffered(sb, VarArg(*args, intfsize), format);
+            }
+            break;
 
         case ArgumentType_UIntSize:
             if (sizeof(uintsize) < sizeof(uint)) {
@@ -356,6 +366,9 @@ private ArgumentType ToArgumentType(const char *type)
         return ArgumentType_UIntPtr;
     }
 #endif
+    else if (CString_Equals(type, "intfsize")) {
+        return ArgumentType_IntFSize;
+    }
     else if (CString_Equals(type, "uintsize")) {
         return ArgumentType_UIntSize;
     }

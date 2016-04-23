@@ -71,22 +71,22 @@ public abstract bool Stream_CanWrite(const Stream *stream)
     return GetVTable(stream)->CanWrite(stream);
 }
 
-public abstract long Stream_GetLength(const Stream *stream)
+public abstract intfsize Stream_GetLength(const Stream *stream)
 {
     return GetVTable(stream)->GetLength(stream);
 }
 
-public abstract void Stream_SetLength(Stream *stream, long length)
+public abstract void Stream_SetLength(Stream *stream, intfsize length)
 {
     GetVTable(stream)->SetLength(stream, length);
 }
 
-public abstract long Stream_GetPosition(const Stream *stream)
+public abstract intfsize Stream_GetPosition(const Stream *stream)
 {
     return GetVTable(stream)->GetPosition(stream);
 }
 
-public abstract void Stream_SetPosition(Stream *stream, long position)
+public abstract void Stream_SetPosition(Stream *stream, intfsize position)
 {
     GetVTable(stream)->SetPosition(stream, position);
 }
@@ -127,7 +127,7 @@ public abstract void Stream_Flush(Stream *stream)
     GetVTable(stream)->Flush(stream);
 }
 
-public abstract long Stream_Seek(Stream *stream, long offset, SeekOrigin origin)
+public abstract intfsize Stream_Seek(Stream *stream, intfsize offset, SeekOrigin origin)
 {
     return GetVTable(stream)->Seek(stream, offset, origin);
 }
