@@ -60,7 +60,9 @@ bool FileAccess_IsValid(FileAccess fileAccess);
 /// Validates that <paramref name="fileAccess"/> is a valid <see cref="FileAccess"/>.
 /// </summary>
 /// <param name="fileAccess">The <see cref="FileAccess"/> to validate.</param>
-/// <exception cref="::ArgumentException"><paramref name="fileAccess"/> is not a valid <see cref="FileAccess"/>.</exception>
+/// <exception cref="::ArgumentException">
+///     <paramref name="fileAccess"/> is not a valid <see cref="FileAccess"/>.
+/// </exception>
 void FileAccess_Validate(FileAccess fileAccess);
 
 #endif

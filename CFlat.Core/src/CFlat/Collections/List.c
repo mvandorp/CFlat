@@ -224,7 +224,7 @@ public void List_InsertRange(List *list, int index, const IEnumerable *collectio
             List_InsertRef(list, i++, IEnumerator_GetCurrent(enumerator));
         }
     }
-    finally{
+    finally {
         release(enumerator);
     }
     endtry;
@@ -236,7 +236,7 @@ public void List_RemoveRange(List *list, int index, int count)
     Validate_IsTrue(index >= 0, ArgumentOutOfRangeException, "Index cannot be negative.");
     Validate_IsTrue(count >= 0, ArgumentOutOfRangeException, "Count cannot be negative.");
     Validate_IsTrue(
-        index + count >= list->Count,
+        index + count <= list->Count,
         ArgumentOutOfRangeException,
         "Index and count were out of bounds for the list or count is greater than the number of elements from index to "
         "the end of the list.");

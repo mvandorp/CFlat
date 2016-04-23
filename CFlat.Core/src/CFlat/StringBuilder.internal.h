@@ -29,6 +29,9 @@
 #include "CFlat/Language/Keywords.h"
 
 /* Types */
+/// <summary>
+/// Represents a mutable string of characters.
+/// </summary>
 struct StringBuilder {
     Object Base;
     char *Value;

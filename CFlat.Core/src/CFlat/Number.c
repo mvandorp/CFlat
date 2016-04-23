@@ -795,7 +795,7 @@ private void PrintDecimalSeparator(StringBuilder *sb, uintsize *decimalSeparator
 }
 
 /// <summary>
-/// Prints any  leading zeros if needed.
+/// Prints any leading zeros if needed.
 /// </summary>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 private void PrintLeadingZeros(StringBuilder *sb, int *numLeadingZeros)

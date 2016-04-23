@@ -51,6 +51,9 @@
 }
 
 /* Types */
+/// <summary>
+/// Represents text as an immutable string of characters.
+/// </summary>
 struct String {
     /// <summary>
     /// The base class of the string.

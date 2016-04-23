@@ -187,7 +187,7 @@ public void ObjectList_InsertRange(ObjectList *list, int index, const IEnumerabl
             ObjectList_Insert(list, i++, IEnumerator_GetCurrent(enumerator));
         }
     }
-    finally{
+    finally {
         release(enumerator);
     }
     endtry;
@@ -237,7 +237,7 @@ public void ObjectList_CopyTo(const ObjectList *list, void *destination, uintsiz
             retain(IEnumerator_GetCurrent(enumerator));
         }
     }
-    finally{
+    finally {
         release(enumerator);
     }
     endtry;

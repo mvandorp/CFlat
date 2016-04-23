@@ -25,7 +25,7 @@
 #include "CFlat/String.h"
 #include "CFlat/StringBuilder.h"
 
-#if (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L) || (_MSC_VER >= 1700)
+#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L || _MSC_VER >= 1700
  #include <math.h>
  #define C99_math
 #endif
