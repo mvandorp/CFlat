@@ -21,6 +21,7 @@
     <ClInclude Include="include\CFlat\Collections\PointerList.h" />
     <ClInclude Include="include\CFlat\Console.h" />
     <ClInclude Include="include\CFlat\CString.h" />
+    <ClInclude Include="include\CFlat\Environment.h" />
     <ClInclude Include="include\CFlat\Event.h" />
     <ClInclude Include="include\CFlat\IO\FileAccess.h" />
     <ClInclude Include="include\CFlat\IO\FileMode.h" />
@@ -56,7 +57,9 @@
     <ClInclude Include="src\CFlat\Collections\ListEnumerator.h" />
     <ClInclude Include="src\CFlat\Collections\ObjectList.internal.h" />
     <ClInclude Include="src\CFlat\Collections\PointerList.internal.h" />
+    <ClInclude Include="src\CFlat\Console.internal.h" />
     <ClInclude Include="src\CFlat\const_cast.h" />
+    <ClInclude Include="src\CFlat\Environment.internal.h" />
     <ClInclude Include="src\CFlat\Language\Double.internal.h" />
     <ClInclude Include="src\CFlat\Language\Float.internal.h" />
     <ClInclude Include="src\CFlat\Language\Integer.internal.h" />
@@ -79,6 +82,7 @@
     <ClCompile Include="src\CFlat\Console.c" />
     <ClCompile Include="src\CFlat\Console.ConsoleStream.c" />
     <ClCompile Include="src\CFlat\const_cast.c" />
+    <ClCompile Include="src\CFlat\Environment.c" />
     <ClCompile Include="src\CFlat\Event.c" />
     <ClCompile Include="src\CFlat\IO\FileAccess.c" />
     <ClCompile Include="src\CFlat\IO\FileMode.c" />

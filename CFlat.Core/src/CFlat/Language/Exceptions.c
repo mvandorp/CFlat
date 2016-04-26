@@ -22,13 +22,12 @@
 #include "CFlat.h"
 #include "CFlat/Console.h"
 #include "CFlat/CString.h"
+#include "CFlat/Environment.h"
 #include "CFlat/Memory.h"
 #include "CFlat/Object.h"
 #include "CFlat/String.h"
 #include "CFlat/Validate.h"
 #include "CFlat/IO/TextWriter.h"
-
-#include <stdlib.h>
 
 /* Types */
 struct CFlatException {
@@ -37,7 +36,7 @@ struct CFlatException {
     const char *File;
     int Line;
     ExceptionType Type;
-    const CFlatException *InnerException;
+    CFlatException *InnerException;
 };
 
 typedef struct __CFLAT_EXCEPTION_STATE ExceptionState;
@@ -49,7 +48,7 @@ public jmp_buf __CFLAT_EXCEPTION_BUFFER;
 /// <summary>
 /// A handle to the exception that is currently being handled, or <see cref="null"/> if there is no exception right now.
 /// </summary>
-private const CFlatException *CurrentException = null;
+private CFlatException *CurrentException = null;
 
 /// <summary>
 /// Indicates whether the current exception has already been handled by a catch clause.
@@ -71,14 +70,14 @@ private CFlatException *Exception_New(
     const String *userMessage,
     const char *file,
     int line,
-    const CFlatException *innerException);
+    CFlatException *innerException);
 private void Exception_Constructor(
     CFlatException *ex,
     ExceptionType type,
     const String *userMessage,
     const char *file,
     int line,
-    const CFlatException *innerException);
+    CFlatException *innerException);
 private void Exception_Destructor(CFlatException *ex);
 
 private void PushJumpBuffer(jmp_buf stack);
@@ -169,7 +168,7 @@ public void __CFLAT_EXCEPTION_THROW(void)
     }
 }
 
-public void __CFLAT_EXCEPTION_THROW_AGAIN(const CFlatException *ex)
+public void __CFLAT_EXCEPTION_THROW_AGAIN(CFlatException *ex)
 {
     Validate_NotNull(ex);
 
@@ -185,13 +184,17 @@ public void __CFLAT_EXCEPTION_THROW_NEW(
     const char *message,
     const char *file,
     int line,
-    const CFlatException *innerException)
+    CFlatException *innerException)
 {
     assert(file != null);
     assert(line > 0);
 
+    CFlatException *exception = Exception_New(type, String_New(message), file, line, innerException);
+
+    Environment_OnFirstChanceException(exception);
+
     // Set exception information.
-    CurrentException = Exception_New(type, String_New(message), file, line, innerException);
+    CurrentException = exception;
 
     // Throw an exception with the set information.
     __CFLAT_EXCEPTION_THROW();
@@ -204,7 +207,7 @@ public bool Exception_IsInstanceOf(const CFlatException *ex, ExceptionType type)
     return ExceptionType_IsAssignableFrom(type, ex->Type);
 }
 
-public const CFlatException *Exception_GetInnerException(const CFlatException *ex)
+public CFlatException *Exception_GetInnerException(const CFlatException *ex)
 {
     Validate_NotNull(ex);
 
@@ -248,7 +251,7 @@ private CFlatException *Exception_New(
     const String *userMessage,
     const char *file,
     int line,
-    const CFlatException *innerException)
+    CFlatException *innerException)
 {
     CFlatException *ex = Memory_Allocate(sizeof(CFlatException));
 
@@ -276,7 +279,7 @@ private void Exception_Constructor(
     const String *userMessage,
     const char *file,
     int line,
-    const CFlatException *innerException)
+    CFlatException *innerException)
 {
     assert(ex != null);
     assert(file != null);
@@ -285,10 +288,10 @@ private void Exception_Constructor(
     Object_Constructor(ex, &Exception_VTable);
 
     ex->Type = type;
-    ex->UserMessage = userMessage;
+    ex->UserMessage = retain_const(userMessage);
     ex->File = file;
     ex->Line = line;
-    ex->InnerException = retain_const(innerException);
+    ex->InnerException = retain(innerException);
 }
 
 /// <summary>
@@ -352,27 +355,31 @@ private String *GenerateExceptionText(const CFlatException *ex)
 
     const String *name = retain_const(ExceptionType_GetName(ex->Type));
     const String *message = retain_const(Exception_GetMessage(ex));
-    String *result;
+    String *result = null;
 
-    if (message == null || String_GetLength(message) == 0) {
-        result = String_FormatCString(
-            "An unhandled exception of type '{string}' occurred\n   at {cstring}:{int}\n",
-            name,
-            ex->File,
-            ex->Line);
+    try {
+        if (message == null || String_GetLength(message) == 0) {
+            result = String_FormatCString(
+                "An unhandled exception of type '{string}' occurred\n   at {cstring}:{int}\n",
+                name,
+                ex->File,
+                ex->Line);
+        }
+        else {
+            result = String_FormatCString(
+                "An unhandled exception of type '{string}' occurred\n   at {cstring}:{int}\n\n"
+                "Additional information: {string}\n",
+                name,
+                ex->File,
+                ex->Line,
+                message);
+        }
     }
-    else {
-        result = String_FormatCString(
-            "An unhandled exception of type '{string}' occurred\n   at {cstring}:{int}\n\n"
-            "Additional information: {string}\n",
-            name,
-            ex->File,
-            ex->Line,
-            message);
+    finally {
+        release(name);
+        release(message);
     }
-
-    release(name);
-    release(message);
+    endtry;
 
     return result;
 }
@@ -384,27 +391,24 @@ private void UnhandledException(void)
 {
     assert(CurrentException != null);
 
-    try {
-        String *message = GenerateExceptionText(CurrentException);
+    CFlatException *exception = CurrentException;
+    CurrentException = null;
+    Environment_OnUnhandledException(exception);
+    CurrentException = exception;
 
-        try {
-            TextWriter_Write_String(Console_GetError(), message);
-        }
-        finally  {
-            release(message);
-        }
-        endtry;
-    }
-    catch (Exception);
-    endtry;
+    String *message =  GenerateExceptionText(CurrentException);
 
     try {
-        release(CurrentException);
+        TextWriter_Write_String(Console_GetError(), message);
     }
-    catch (Exception);
+    finally {
+        release(message);
+    }
     endtry;
 
-    abort();
+    release(CurrentException);
+
+    Environment_FailFast();
 }
 
 /// <summary>

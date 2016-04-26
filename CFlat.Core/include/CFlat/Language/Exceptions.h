@@ -60,7 +60,7 @@ struct String;
 /// </summary>
 #define catch_ex(toCatch, var)                                                      \
         catch(toCatch)                                                              \
-        const CFlatException *var = __CFLAT_EXCEPTION_STATE.Exception;
+        CFlatException *var = __CFLAT_EXCEPTION_STATE.Exception;
 
 /// <summary>
 /// Begins a finally block.
@@ -145,7 +145,7 @@ struct __CFLAT_EXCEPTION_STATE {
     /// <summary>
     /// The exception that occured.
     /// </summary>
-    const CFlatException *Exception;
+    CFlatException *Exception;
 };
 
 /* Variables */
@@ -174,7 +174,7 @@ bool Exception_IsInstanceOf(const CFlatException *ex, ExceptionType type);
 ///     <see cref="null"/> if no inner exception was specified.
 /// </returns>
 /// <exception cref="::ArgumentNullException"><paramref name="ex"/> is <see cref="null"/>.</exception>
-const CFlatException *Exception_GetInnerException(const CFlatException *ex);
+CFlatException *Exception_GetInnerException(const CFlatException *ex);
 
 /// <summary>
 /// Gets the message describing a given <see cref="CFlatException"/>.
@@ -243,7 +243,7 @@ void __CFLAT_EXCEPTION_THROW(void);
 /// </summary>
 /// <remarks>This function is intended for internal use only.</remarks>
 /// <param name="ex">Pointer to the <see cref="CFlatException"/> to rethrow.</param>
-void __CFLAT_EXCEPTION_THROW_AGAIN(const CFlatException *ex);
+void __CFLAT_EXCEPTION_THROW_AGAIN(CFlatException *ex);
 
 /// <summary>
 /// Throws an exception of the given type.
@@ -264,6 +264,6 @@ void __CFLAT_EXCEPTION_THROW_NEW(
     const char *message,
     const char *file,
     int line,
-    const CFlatException *innerException);
+    CFlatException *innerException);
 
 #endif

@@ -17,30 +17,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "CFlat/Language/Assert.h"
+#ifndef CFLAT_CORE_CONSOLE_INTERNAL_H
+#define CFLAT_CORE_CONSOLE_INTERNAL_H
 
-#include "CFlat.h"
-#include "CFlat/Console.h"
-#include "CFlat/Environment.h"
-#include "CFlat/String.h"
-#include "CFlat/IO/TextWriter.h"
+#ifndef CFLAT_CORE_CONSOLE_H
+ #error Console.internal.h should not be included directly.
+#endif
 
-public void __CFLAT_ASSERT_FAIL(const char *condition, const char *file, int line)
-{
-    assert(condition != null);
-    assert(file != null);
-    assert(line > 0);
+#include "CFlat/Language/Keywords.h"
 
-    try {
-        TextWriter_WriteFormat_CString(
-            Console_GetError(),
-            "Assertion failed: {cstring}\n   at {cstring}:{int}\n",
-            condition,
-            file,
-            line);
-    }
-    catch (Exception);
-    endtry;
+/* Functions */
+ /// <summary>
+ /// Destroys the static resources associated with <c>Console</c>.
+ /// </summary>
+internal void Console_StaticDestructor(void);
 
-    Environment_FailFast();
-}
+#endif

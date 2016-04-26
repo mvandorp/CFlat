@@ -270,4 +270,8 @@ void Console_WriteLineFormat_String(const struct String *format, ...);
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 void Console_WriteLineFormat_StringV(const struct String *format, VarArgsList args);
 
+#ifdef CFLAT_CORE_INTERNAL
+ #include "CFlat/Console.internal.h"
+#endif
+
 #endif

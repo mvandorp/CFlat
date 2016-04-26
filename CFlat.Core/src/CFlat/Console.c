@@ -20,6 +20,7 @@
 #include "CFlat/Console.h"
 
 #include "CFlat.h"
+#include "CFlat/Environment.h"
 #include "CFlat/String.h"
 #include "CFlat/Validate.h"
 #include "CFlat/IO/FileAccess.h"
@@ -237,4 +238,15 @@ public void Console_WriteLineFormat_String(const String *format, ...)
 public void Console_WriteLineFormat_StringV(const String *format, VarArgsList args)
 {
     TextWriter_WriteLineFormat_StringV(Console_GetOut(), format, args);
+}
+
+/**************************************/
+/* Internal function definitions      */
+/**************************************/
+
+internal void Console_StaticDestructor(void)
+{
+    release(In);
+    release(Out);
+    release(Error);
 }
