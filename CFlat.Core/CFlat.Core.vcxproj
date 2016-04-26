@@ -55,6 +55,7 @@
     <ClInclude Include="src\CFlat\Collections\ListEnumerator.h" />
     <ClInclude Include="src\CFlat\Collections\ObjectList.internal.h" />
     <ClInclude Include="src\CFlat\Collections\PointerList.internal.h" />
+    <ClInclude Include="src\CFlat\const_cast.h" />
     <ClInclude Include="src\CFlat\Language\Double.internal.h" />
     <ClInclude Include="src\CFlat\Language\Float.internal.h" />
     <ClInclude Include="src\CFlat\Language\Integer.internal.h" />

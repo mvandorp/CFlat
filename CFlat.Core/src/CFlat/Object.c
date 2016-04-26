@@ -20,11 +20,9 @@
 #include "CFlat/Object.h"
 
 #include "CFlat.h"
+#include "CFlat/const_cast.h"
 #include "CFlat/Memory.h"
 #include "CFlat/Validate.h"
-
-/* Internal functions */
-internal void *const_cast(const void *ptr);
 
 /**************************************/
 /* Private functions                  */
