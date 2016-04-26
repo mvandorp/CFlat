@@ -21,6 +21,7 @@
     <ClInclude Include="include\CFlat\Collections\PointerList.h" />
     <ClInclude Include="include\CFlat\Console.h" />
     <ClInclude Include="include\CFlat\CString.h" />
+    <ClInclude Include="include\CFlat\Event.h" />
     <ClInclude Include="include\CFlat\IO\FileAccess.h" />
     <ClInclude Include="include\CFlat\IO\FileMode.h" />
     <ClInclude Include="include\CFlat\IO\FileStream.h" />
@@ -78,6 +79,7 @@
     <ClCompile Include="src\CFlat\Console.c" />
     <ClCompile Include="src\CFlat\Console.ConsoleStream.c" />
     <ClCompile Include="src\CFlat\const_cast.c" />
+    <ClCompile Include="src\CFlat\Event.c" />
     <ClCompile Include="src\CFlat\IO\FileAccess.c" />
     <ClCompile Include="src\CFlat\IO\FileMode.c" />
     <ClCompile Include="src\CFlat\IO\FileStream.c" />
