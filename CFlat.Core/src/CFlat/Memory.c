@@ -21,10 +21,32 @@
 
 #include "CFlat.h"
 #include "CFlat/const_cast.h"
+#include "CFlat/CFlatException.h"
 #include "CFlat/Validate.h"
 
 #include <stdlib.h>
 #include <string.h>
+
+/* Macros */
+/// <summary>
+/// Throws a buffered <see cref="CFlatException"/> of the given type.
+/// </summary>
+/// <param name="buffer">The buffer to use for the exception.</param>
+/// <param name="type">The type of exception thrown.</param>
+#define ThrowBufferedException(buffer, type)                                    \
+    do {                                                                        \
+        Exception_Constructor(buffer, type, null, __FILE__, __LINE__, null);    \
+                                                                                \
+        throw_ex(buffer);                                                       \
+    }                                                                           \
+    while (false)
+
+/* Private variables */
+/// <summary>
+/// A buffer for exceptions so that an <see cref="OutOfMemoryException"/> can still be thrown when the system is out of
+/// memory.
+/// </summary>
+private CFlatException ExceptionBuffer[3];
 
 /**************************************/
 /* Public function definitions        */
@@ -39,7 +61,7 @@ public void *Memory_Allocate(uintsize size)
     void *memory = malloc(size);
 
     // If the allocation failed, throw an OutOfMemoryException.
-    Validate_IsTrue(memory != null, OutOfMemoryException, null);
+    if (memory == null) ThrowBufferedException(&ExceptionBuffer[0], OutOfMemoryException);
 
     return memory;
 }
@@ -53,7 +75,7 @@ public void *Memory_AllocateZeroed(uintsize size)
     void *memory = calloc(1, size);
 
     // If the allocation failed, throw an OutOfMemoryException.
-    Validate_IsTrue(memory != null, OutOfMemoryException, null);
+    if (memory == null) ThrowBufferedException(&ExceptionBuffer[1], OutOfMemoryException);
 
     return memory;
 }
@@ -74,7 +96,7 @@ public void *Memory_Reallocate(void *memory, uintsize newSize)
     memory = realloc(memory, newSize);
 
     // If the allocation failed, throw an OutOfMemoryException.
-    Validate_IsTrue(memory != null, OutOfMemoryException, null);
+    if (memory == null) ThrowBufferedException(&ExceptionBuffer[2], OutOfMemoryException);
 
     return memory;
 }
