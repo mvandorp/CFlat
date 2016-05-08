@@ -22,8 +22,8 @@
 #ifndef CFLAT_CORE_LANGUAGE_EXCEPTIONS_H
 #define CFLAT_CORE_LANGUAGE_EXCEPTIONS_H
 
+#include "CFlat/CFlatException.h"
 #include "CFlat/ExceptionType.h"
-#include "CFlat/Object.h"
 #include "CFlat/Language/Bool.h"
 #include "CFlat/Language/Null.h"
 
@@ -118,11 +118,6 @@ struct String;
 
 /* Types */
 /// <summary>
-/// Holds information about the exception that occured.
-/// </summary>
-typedef struct CFlatException CFlatException;
-
-/// <summary>
 /// Holds state information required for exception handling.
 /// </summary>
 /// <remarks>This struct is intended for internal use only.</remarks>
@@ -156,51 +151,6 @@ struct __CFLAT_EXCEPTION_STATE {
 extern jmp_buf __CFLAT_EXCEPTION_BUFFER;
 
 /* Functions */
-/// <summary>
-/// Determines whether a <see cref="CFlatException"/> is of the given type.
-/// </summary>
-/// <param name="ex">Pointer to a <see cref="CFlatException"/>.</param>
-/// <param name="type">The exception type to compare with.</param>
-/// <returns><see cref="true"/> if the exception is of the given type; otherwise, <see cref="false"/>.</returns>
-/// <exception cref="::ArgumentNullException"><paramref name="ex"/> is <see cref="null"/>.</exception>
-bool Exception_IsInstanceOf(const CFlatException *ex, ExceptionType type);
-
-/// <summary>
-/// Gets the <see cref="CFlatException"/> that caused the given <see cref="CFlatException"/>.
-/// </summary>
-/// <param name="ex">Pointer to a <see cref="CFlatException"/>.</param>
-/// <returns>
-///     A pointer to the <see cref="CFlatException"/> that caused the given <see cref="CFlatException"/>, or
-///     <see cref="null"/> if no inner exception was specified.
-/// </returns>
-/// <exception cref="::ArgumentNullException"><paramref name="ex"/> is <see cref="null"/>.</exception>
-CFlatException *Exception_GetInnerException(const CFlatException *ex);
-
-/// <summary>
-/// Gets the message describing a given <see cref="CFlatException"/>.
-/// </summary>
-/// <param name="ex">Pointer to a <see cref="CFlatException"/>.</param>
-/// <returns>The message describing the given <see cref="CFlatException"/>.</returns>
-/// <exception cref="::ArgumentNullException"><paramref name="ex"/> is <see cref="null"/>.</exception>
-const struct String *Exception_GetMessage(const CFlatException *ex);
-
-/// <summary>
-/// Gets the name of a <see cref="CFlatException"/>.
-/// </summary>
-/// <param name="ex">Pointer to a <see cref="CFlatException"/>.</param>
-/// <returns>The name of the <see cref="CFlatException"/>.</returns>
-/// <exception cref="::ArgumentNullException"><paramref name="ex"/> is <see cref="null"/>.</exception>
-const struct String *Exception_GetName(const CFlatException *ex);
-
-/// <summary>
-/// Gets the <see cref="ExceptionType"/> of a <see cref="CFlatException"/>.
-/// </summary>
-/// <param name="ex">Pointer to a <see cref="CFlatException"/>.</param>
-/// <returns>The <see cref="ExceptionType"/> of the <see cref="CFlatException"/>.</returns>
-/// <exception cref="::ArgumentNullException"><paramref name="ex"/> is <see cref="null"/>.</exception>
-ExceptionType Exception_GetType(const CFlatException *ex);
-
-/* 'Hidden / obfuscated' functions */
 /// <summary>
 /// Prepares the given <see cref="__CFLAT_EXCEPTION_STATE"/>.
 /// </summary>

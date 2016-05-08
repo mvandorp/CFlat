@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\CFlat.h" />
+    <ClInclude Include="include\CFlat\CFlatException.h" />
     <ClInclude Include="include\CFlat\Collections\ICollection.h" />
     <ClInclude Include="include\CFlat\Collections\IEnumerable.h" />
     <ClInclude Include="include\CFlat\Collections\IEnumerator.h" />
@@ -53,6 +54,7 @@
     <ClInclude Include="include\CFlat\StringBuilder.h" />
     <ClInclude Include="include\CFlat\IO\StringReader.h" />
     <ClInclude Include="include\CFlat\Validate.h" />
+    <ClInclude Include="src\CFlat\CFlatException.internal.h" />
     <ClInclude Include="src\CFlat\Collections\List.internal.h" />
     <ClInclude Include="src\CFlat\Collections\ListEnumerator.h" />
     <ClInclude Include="src\CFlat\Collections\ObjectList.internal.h" />
@@ -71,6 +73,7 @@
     <ClInclude Include="src\CFlat\IO\StringReader.internal.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\CFlat\CFlatException.c" />
     <ClCompile Include="src\CFlat\Collections\ICollection.c" />
     <ClCompile Include="src\CFlat\Collections\IEnumerable.c" />
     <ClCompile Include="src\CFlat\Collections\IEnumerator.c" />

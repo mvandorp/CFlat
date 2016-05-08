@@ -21,24 +21,13 @@
 
 #include "CFlat.h"
 #include "CFlat/Console.h"
-#include "CFlat/CString.h"
 #include "CFlat/Environment.h"
 #include "CFlat/Memory.h"
-#include "CFlat/Object.h"
 #include "CFlat/String.h"
 #include "CFlat/Validate.h"
 #include "CFlat/IO/TextWriter.h"
 
 /* Types */
-struct CFlatException {
-    Object Base;
-    const struct String *UserMessage;
-    const char *File;
-    int Line;
-    ExceptionType Type;
-    CFlatException *InnerException;
-};
-
 typedef struct __CFLAT_EXCEPTION_STATE ExceptionState;
 
 /* Public variables */
@@ -65,30 +54,12 @@ private int StackSize = 0;
 /* Private functions                  */
 /**************************************/
 
-private CFlatException *Exception_New(
-    ExceptionType type,
-    const String *userMessage,
-    const char *file,
-    int line,
-    CFlatException *innerException);
-private void Exception_Constructor(
-    CFlatException *ex,
-    ExceptionType type,
-    const String *userMessage,
-    const char *file,
-    int line,
-    CFlatException *innerException);
-private void Exception_Destructor(CFlatException *ex);
-
 private void PushJumpBuffer(jmp_buf stack);
 private void PopJumpBuffer(jmp_buf stack);
 private void RestoreJumpBuffer(ExceptionState *state);
 private String *GenerateExceptionText(const CFlatException *ex);
 private void UnhandledException(void);
 private bool IsInsideTryBlock(void);
-
-/* Private constants */
-private const ObjectVTable Exception_VTable = ObjectVTable_Initializer((DestructorFunc)Exception_Destructor);
 
 /**************************************/
 /* Public function definitions        */
@@ -200,111 +171,9 @@ public void __CFLAT_EXCEPTION_THROW_NEW(
     __CFLAT_EXCEPTION_THROW();
 }
 
-public bool Exception_IsInstanceOf(const CFlatException *ex, ExceptionType type)
-{
-    Validate_NotNull(ex);
-
-    return ExceptionType_IsAssignableFrom(type, ex->Type);
-}
-
-public CFlatException *Exception_GetInnerException(const CFlatException *ex)
-{
-    Validate_NotNull(ex);
-
-    return ex->InnerException;
-}
-
-public const String *Exception_GetMessage(const CFlatException *ex)
-{
-    Validate_NotNull(ex);
-
-    if (ex->UserMessage == null) {
-        return ExceptionType_GetDefaultMessage(ex->Type);
-    }
-    else {
-        return ex->UserMessage;
-    }
-}
-
-public const String *Exception_GetName(const CFlatException *ex)
-{
-    return ExceptionType_GetName(Exception_GetType(ex));
-}
-
-public ExceptionType Exception_GetType(const CFlatException *ex)
-{
-    Validate_NotNull(ex);
-
-    return ex->Type;
-}
-
 /**************************************/
 /* Private function definitions       */
 /**************************************/
-
-/// <summary>
-/// Allocates and initializes a new <see cref="CFlatException"/>.
-/// </summary>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-private CFlatException *Exception_New(
-    ExceptionType type,
-    const String *userMessage,
-    const char *file,
-    int line,
-    CFlatException *innerException)
-{
-    CFlatException *ex = Memory_Allocate(sizeof(CFlatException));
-
-    try {
-        Exception_Constructor(ex, type, userMessage, file, line, innerException);
-
-        Object_SetDeallocator(ex, Memory_Deallocate);
-    }
-    catch (Exception) {
-        Memory_Deallocate(ex);
-        throw;
-    }
-    endtry;
-
-    return ex;
-}
-
-/// <summary>
-/// Initializes the <see cref="CFlatException"/> referenced by the given <see cref="CFlatException"/>.
-/// </summary>
-/// <exception cref="::ArgumentNullException"><paramref name="ex"/> is <see cref="null"/>.</exception>
-private void Exception_Constructor(
-    CFlatException *ex,
-    ExceptionType type,
-    const String *userMessage,
-    const char *file,
-    int line,
-    CFlatException *innerException)
-{
-    assert(ex != null);
-    assert(file != null);
-    assert(line > 0);
-
-    Object_Constructor(ex, &Exception_VTable);
-
-    ex->Type = type;
-    ex->UserMessage = retain_const(userMessage);
-    ex->File = file;
-    ex->Line = line;
-    ex->InnerException = retain(innerException);
-}
-
-/// <summary>
-/// Destroys the <see cref="CFlatException"/> referenced by the given <see cref="CFlatExceptionf"/>.
-/// </summary>
-/// <exception cref="::ArgumentNullException"><paramref name="ex"/> is <see cref="null"/>.</exception>
-private void Exception_Destructor(CFlatException *ex)
-{
-    Validate_NotNull(ex);
-
-    release(ex->UserMessage);
-    release(ex->InnerException);
-}
 
 /// <summary>
 /// Pushes the current jump buffer onto the stack to support nested try-catch statements.
