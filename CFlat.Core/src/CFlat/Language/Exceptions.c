@@ -45,6 +45,15 @@ private CFlatException *CurrentException = null;
 private bool ExceptionHandled = true;
 
 /// <summary>
+/// Indicates whether or not the first chance exception handler should be invoked when an exception occurs.
+/// </summary>
+/// <remarks>
+///     This is used to disable first chance exception handling when calling a first chance exception handler to prevent
+///     calling the exception handler recursively should an exception occur inside the exception handler.
+/// </remarks>
+private bool InvokeFirstChanceHandler = true;
+
+/// <summary>
 /// The size of the exception state stack. A stack size greater than zero indicates that the program is currently inside
 /// a try block.
 /// </summary>
@@ -57,7 +66,7 @@ private int StackSize = 0;
 private void PushJumpBuffer(jmp_buf stack);
 private void PopJumpBuffer(jmp_buf stack);
 private void RestoreJumpBuffer(ExceptionState *state);
-private String *GenerateExceptionText(const CFlatException *ex);
+private void PrintUnhandledException(const CFlatException *ex);
 private void UnhandledException(void);
 private bool IsInsideTryBlock(void);
 
@@ -74,7 +83,12 @@ public void __CFLAT_EXCEPTION_BEGINTRY(ExceptionState *state)
     // Set the flag to indicate that this try-catch has not yet popped the previous jump buffer off the stack.
     state->ShouldPopStack = true;
 
-    // Clear the exception flag.
+    // Store the exception state.
+    state->PreviousException = CurrentException;
+    state->PreviousExceptionHandled = ExceptionHandled;
+
+    // Reset the exception state.
+    CurrentException = null;
     ExceptionHandled = true;
 }
 
@@ -107,16 +121,18 @@ public void __CFLAT_EXCEPTION_ENDTRY(ExceptionState *state)
 {
     RestoreJumpBuffer(state);
 
-    // If the exception flag is still set at this point, throw the exception.
     if (!ExceptionHandled) {
+        // If the exception flag is still set at this point, throw the exception.
+        release(state->PreviousException);
+
         __CFLAT_EXCEPTION_THROW();
     }
-
-    // If there was an exception but it was handled, clean up the exception.
-    if (CurrentException != null) {
+    else {
+        // If there was an exception but it was handled, clean up the exception.
         release(CurrentException);
 
-        CurrentException = null;
+        CurrentException = state->PreviousException;
+        ExceptionHandled = state->PreviousExceptionHandled;
     }
 }
 
@@ -125,7 +141,33 @@ public void __CFLAT_EXCEPTION_THROW(void)
     Validate_State(CurrentException != null,
         "A throw statement with no arguments is not allowed outside of a catch clause.");
 
-    // Set the exception flag.
+    CFlatException *exception = CurrentException;
+
+    // Reset the exception state.
+    CurrentException = null;
+    ExceptionHandled = true;
+
+    // Invoke the exception handlers.
+    if (InvokeFirstChanceHandler) {
+        InvokeFirstChanceHandler = false;
+
+        try {
+            Environment_OnFirstChanceException(exception);
+        }
+        catch_ex(Exception, ex) {
+            // If an exception occurs in the exception handler, overwrite the original exception and propagate the
+            // exception.
+            release(exception);
+
+            throw_ex(ex);
+        }
+        endtry;
+
+        InvokeFirstChanceHandler = true;
+    }
+
+    // Restore the exception state.
+    CurrentException = exception;
     ExceptionHandled = false;
 
     // Test whether the exception occured within a try block.
@@ -160,15 +202,7 @@ public void __CFLAT_EXCEPTION_THROW_NEW(
     assert(file != null);
     assert(line > 0);
 
-    CFlatException *exception = Exception_New(type, String_New(message), file, line, innerException);
-
-    Environment_OnFirstChanceException(exception);
-
-    // Set exception information.
-    CurrentException = exception;
-
-    // Throw an exception with the set information.
-    __CFLAT_EXCEPTION_THROW();
+    __CFLAT_EXCEPTION_THROW_AGAIN(Exception_New(type, String_New(message), file, line, innerException));
 }
 
 /**************************************/
@@ -215,27 +249,26 @@ private void RestoreJumpBuffer(ExceptionState *state)
 }
 
 /// <summary>
-/// Generates the error text for a given exception.
+/// Prints the error message for a given unhandled exception.
 /// </summary>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-private String *GenerateExceptionText(const CFlatException *ex)
+private void PrintUnhandledException(const CFlatException *ex)
 {
     assert(ex != null);
 
     const String *name = retain_const(ExceptionType_GetName(ex->Type));
     const String *message = retain_const(Exception_GetMessage(ex));
-    String *result = null;
 
     try {
         if (message == null || String_GetLength(message) == 0) {
-            result = String_FormatCString(
+            TextWriter_WriteFormat_CString(Console_GetError(),
                 "An unhandled exception of type '{string}' occurred\n   at {cstring}:{int}\n",
                 name,
                 ex->File,
                 ex->Line);
         }
         else {
-            result = String_FormatCString(
+            TextWriter_WriteFormat_CString(Console_GetError(),
                 "An unhandled exception of type '{string}' occurred\n   at {cstring}:{int}\n\n"
                 "Additional information: {string}\n",
                 name,
@@ -249,8 +282,6 @@ private String *GenerateExceptionText(const CFlatException *ex)
         release(message);
     }
     endtry;
-
-    return result;
 }
 
 /// <summary>
@@ -261,21 +292,38 @@ private void UnhandledException(void)
     assert(CurrentException != null);
 
     CFlatException *exception = CurrentException;
+
+    // Reset the exception state.
     CurrentException = null;
-    Environment_OnUnhandledException(exception);
-    CurrentException = exception;
+    ExceptionHandled = true;
 
-    String *message =  GenerateExceptionText(CurrentException);
-
+    // Invoke the exception handlers.
     try {
-        TextWriter_Write_String(Console_GetError(), message);
+        InvokeFirstChanceHandler = true;
+
+        Environment_OnUnhandledException(exception);
+    }
+    catch_ex (Exception, ex) {
+        // If an exception occurs in the exception handler, overwrite the original exception.
+        release(exception);
+
+        exception = retain(ex);
     }
     finally {
-        release(message);
+        InvokeFirstChanceHandler = false;
     }
     endtry;
 
-    release(CurrentException);
+    // Print the unhandled exception message.
+    try {
+        PrintUnhandledException(exception);
+    }
+    catch (Exception) {
+        // If an exception occurs, just give up and call Environment_FailFast().
+    }
+    endtry;
+
+    release(exception);
 
     Environment_FailFast();
 }

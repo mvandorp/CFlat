@@ -141,6 +141,8 @@ struct __CFLAT_EXCEPTION_STATE {
     /// The exception that occured.
     /// </summary>
     CFlatException *Exception;
+    CFlatException* PreviousException;
+    bool PreviousExceptionHandled;
 };
 
 /* Variables */

@@ -78,9 +78,15 @@ public void Environment_Exit(int exitCode)
 
 public void Environment_FailFast(void)
 {
-    if (!Initialized) Environment_Initialize();
+    try {
+        if (!Initialized) Environment_Initialize();
 
-    Event_Raise(Environment_Destroy, null);
+        Event_Raise(Environment_Destroy, null);
+    }
+    catch (Exception) {
+        // When an Exception occurs, just call abort().
+    }
+    endtry;
 
     abort();
 }
