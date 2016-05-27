@@ -144,7 +144,7 @@ internal bool NumberBuffer_IsZero(const NumberBuffer *number)
 {
     assert(number != null);
 
-    return NumberBuffer_GetIntegerCount(number) == 0 && HasAllZeroDigits(number);
+    return number->DecimalPlace <= 0 && HasAllZeroDigits(number);
 }
 
 /* Formatting functions */
@@ -186,7 +186,7 @@ internal void NumberBuffer_FormatFixedPoint(NumberBuffer *number, int precision)
     assert(precision >= 0);
 
     if (number->ValueType == NumberType_UInt) {
-        NumberBuffer_FormatInteger(number, 0, 10, false);
+        NumberBuffer_FormatInteger(number, 1, 10, false);
     }
     else {
         NumberBuffer_FormatFloat(number, precision, false);
@@ -303,7 +303,7 @@ internal void NumberBuffer_ToString(const NumberBuffer *number, StringBuilder *s
 
         NumberBuffer exponentBuffer;
         NumberBuffer_FromIntMax(&exponentBuffer, number->Exponent);
-        NumberBuffer_FormatInteger(&exponentBuffer, 0, 10, false);
+        NumberBuffer_FormatInteger(&exponentBuffer, 1, 10, false);
         NumberBuffer_ToString(&exponentBuffer, sb);
     }
 }
@@ -406,6 +406,9 @@ private void NumberBuffer_FormatFloat(NumberBuffer *number,  int numDecimals, bo
     else {
         number->Exponent = 0;
         number->DecimalPlace = exponent;
+
+        // Padd the number with leading integer zeros if required.
+        PaddIntegerDigits(number, 1);
     }
 }
 
@@ -419,7 +422,7 @@ private void NumberBuffer_FormatCustomExponential(NumberBuffer *number, int inte
     assert(precision >= 0);
 
     if (number->ValueType == NumberType_UInt) {
-        NumberBuffer_FormatInteger(number, 0, 10, false);
+        NumberBuffer_FormatInteger(number, 1, 10, false);
 
         number->Exponent = number->DecimalPlace - integerDigits;
         number->DecimalPlace = integerDigits;
@@ -497,7 +500,7 @@ private int FloatExponent(double x)
         x = -x;
     }
 
-    if (x < double_Epsilon) {
+    if (x < double_MinPositiveValue) {
         return 0;
     }
 
@@ -545,7 +548,7 @@ private double Normalize(double x, int numSignificantDigits, int maxExponent, in
 }
 
 /// <summary>
-/// Determines whether all of the number's decimal digits are zero.
+/// Determines whether all of the number digits are zero.
 /// </summary>
 private bool HasAllZeroDigits(const NumberBuffer *number)
 {

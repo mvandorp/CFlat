@@ -21,8 +21,6 @@
 #include "CFlat/Number.NumberBuffer.h"
 
 #include "CFlat.h"
-#include "CFlat/Math.h"
-#include "CFlat/Object.h"
 #include "CFlat/String.h"
 #include "CFlat/StringBuilder.h"
 #include "CFlat/Validate.h"
@@ -289,6 +287,7 @@ private void FormatCustomNumber(StringBuilder *sb, NumberBuffer *value, StringRe
     int decimalIndex = 0;
     int leadingDecimalZeros = 0;
 
+    bool printedInteger = false;
     bool integerPart = true;
     bool printedExponent = false;
     uintsize decimalSeparatorIndex = InvalidIndex;
@@ -327,7 +326,19 @@ private void FormatCustomNumber(StringBuilder *sb, NumberBuffer *value, StringRe
 
                     // While there are integer digits to print, print them.
                     while (valueIntegerDigits >= formatIntegerDigits) {
-                        StringBuilder_Append(sb, NumberBuffer_GetIntegerDigit(value, integerIndex++));
+                        char digit = NumberBuffer_GetIntegerDigit(value, integerIndex++);
+
+                        if (ch == '#' && digit == '0' && !printedInteger) {
+                            // If we have not printed an integer yet, the digit is zero and it should not be printed,
+                            // then do not print it.
+                        }
+                        else
+                        {
+                            // Otherwise print the integer.
+                            StringBuilder_Append(sb, digit);
+                            printedInteger = true;
+                        }
+
                         valueIntegerDigits--;
                     }
 
@@ -336,11 +347,9 @@ private void FormatCustomNumber(StringBuilder *sb, NumberBuffer *value, StringRe
                 else {
                     // We're processing the decimal part.
 
-                    bool isZero =
-                        decimalIndex >= valueDecimalDigits ||
-                        NumberBuffer_GetDecimalDigit(value, decimalIndex) == '0';
+                    char digit = NumberBuffer_GetDecimalDigit(value, decimalIndex);
 
-                    if (ch == '#' && isZero) {
+                    if (ch == '#' && digit == '0') {
                         // If the digit is zero and it should not be printed, increment leadingDecimalZeros and break.
                         decimalIndex++;
                         leadingDecimalZeros++;
@@ -353,7 +362,8 @@ private void FormatCustomNumber(StringBuilder *sb, NumberBuffer *value, StringRe
 
                     if (decimalIndex < valueDecimalDigits) {
                         // If there is a decimal digit left to print, print it.
-                        StringBuilder_Append(sb, NumberBuffer_GetDecimalDigit(value, decimalIndex++));
+                        StringBuilder_Append(sb, digit);
+                        decimalIndex++;
                     }
                     else if (ch == '0') {
                         // Otherwise, print a zero if required.
@@ -469,20 +479,21 @@ private void ProcessCustomFormatString(
 
     // If the number is zero, try skipping to the third section of the format string which contains the format for zero
     // values.
-    if (NumberBuffer_IsZero(value)) {
+    if (formatContainsMultipleSections && NumberBuffer_IsZero(value)) {
         // If the number is positive, we are still in the first section and so we must skip two sections.
         if (!NumberBuffer_IsNegative(value)) {
             formatContainsMultipleSections = SkipFormatSection(reader);
         }
 
         // If the format string does not contain at least second section then there cannot be a third section either,
-        // so we don't bother trying.
-        if (formatContainsMultipleSections) {
-            // Only if the format string actually contains a third section, count the number of digits in this section
-            // of the format string.
-            if (SkipFormatSection(reader)) {
-                ParseFormatSection(reader, integerDigits, decimalDigits, exponentDigits);
-            }
+        // so we don't bother trying. Only if the format string actually contains a third section, count the number of
+        // digits in this section of the format string.
+        if (formatContainsMultipleSections && SkipFormatSection(reader)) {
+            // Count the number of digits in the format.
+            ParseFormatSection(reader, integerDigits, decimalDigits, exponentDigits);
+
+            // Prepare the number buffer by setting the decimal precision.
+            NumberBuffer_FormatCustomNumber(value, *integerDigits, *decimalDigits, *exponentDigits > 0);
         }
     }
 
