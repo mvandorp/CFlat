@@ -55,22 +55,27 @@ struct String;
 #define float_MaxBase10Exponent ((int)FLT_MAX_10_EXP)
 
 /// <summary>
-/// Represents the smallest possible value of <see cref="float"/>.
+/// The smallest possible value of <see cref="float"/>.
 /// </summary>
-#define float_MinValue ((float)FLT_MIN)
+#define float_MinValue ((float)-FLT_MAX)
 
 /// <summary>
-/// Represents the largest possible value of <see cref="float"/>.
+/// The largest possible value of <see cref="float"/>.
 /// </summary>
 #define float_MaxValue ((float)FLT_MAX)
 
 /// <summary>
-/// Represents the smallest possible <see cref="float"/> value that is greater than zero.
+/// The difference between 1 and the smallest value greater than 1 that can be represented by <see cref="float"/>.
 /// </summary>
 #define float_Epsilon ((float)FLT_EPSILON)
 
 /// <summary>
-/// Represents the number of decimal digits a <see cref="float"/> can accurately represent.
+/// The smallest possible normalized value of <see cref="float"/> that is greater than zero.
+/// </summary>
+#define float_MinPositiveValue ((float)FLT_MIN)
+
+/// <summary>
+/// The number of decimal digits a <see cref="float"/> can accurately represent.
 /// </summary>
 #define float_Digits ((int)FLT_DIG)
 

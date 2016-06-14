@@ -55,22 +55,27 @@ struct String;
 #define double_MaxBase10Exponent ((int)DBL_MAX_10_EXP)
 
 /// <summary>
-/// Represents the smallest possible value of <see cref="double"/>.
+/// The smallest possible value of <see cref="double"/>.
 /// </summary>
-#define double_MinValue ((double)DBL_MIN)
+#define double_MinValue ((double)-DBL_MAX)
 
 /// <summary>
-/// Represents the largest possible value of <see cref="double"/>.
+/// The largest possible value of <see cref="double"/>.
 /// </summary>
 #define double_MaxValue ((double)DBL_MAX)
 
 /// <summary>
-/// Represents the smallest possible <see cref="double"/> value that is greater than zero.
+/// The difference between 1 and the smallest value greater than 1 that can be represented by <see cref="double"/>.
 /// </summary>
 #define double_Epsilon ((double)DBL_EPSILON)
 
 /// <summary>
-/// Represents the number of decimal digits a <see cref="double"/> can accurately represent.
+/// The smallest possible normalized value of <see cref="double"/> that is greater than zero.
+/// </summary>
+#define double_MinPositiveValue ((double)DBL_MIN)
+
+/// <summary>
+/// The number of decimal digits a <see cref="double"/> can accurately represent.
 /// </summary>
 #define double_Digits ((int)DBL_DIG)
 
