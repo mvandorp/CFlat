@@ -49,7 +49,9 @@ typedef enum ArgumentType {
     ArgumentType_UIntMax,
 
     ArgumentType_Single,
-    ArgumentType_Double
+    ArgumentType_Double,
+
+    ArgumentType_Bool
 } ArgumentType;
 
 /**************************************/
@@ -122,7 +124,7 @@ public void StringBuilder_AppendFormatStringV(StringBuilder *sb, const String *f
 
 /// <summary>
 /// Processes the format item that the given <see cref="StringReader"/> is reading and appends the resulting string
-/// to the given  <see cref="StringReader"/>.
+/// to the given <see cref="StringReader"/>.
 /// </summary>
 /// <exception cref="::FormatException"><paramref name="reader"/> does not contain a valid format item.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
@@ -251,6 +253,10 @@ private void ProcessFormatItem(StringBuilder *sb, StringReader *reader, StringBu
 
         case ArgumentType_Double:
             double_ToStringBuffered(sb, VarArg(*args, double), format);
+            break;
+
+        case ArgumentType_Bool:
+            bool_ToStringBuffered(sb, (bool)VarArg(*args, int));
             break;
 
         default:
@@ -416,6 +422,9 @@ private ArgumentType ToArgumentType(const char *type)
     }
     else if (CString_Equals(type, "double")) {
         return ArgumentType_Double;
+    }
+    else if (CString_Equals(type, "bool")) {
+        return ArgumentType_Bool;
     }
     else {
         throw_new(FormatException, "Invalid format string.");

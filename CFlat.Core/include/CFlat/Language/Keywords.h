@@ -22,8 +22,6 @@
 #ifndef CFLAT_CORE_LANGUAGE_KEYWORDS_H
 #define CFLAT_CORE_LANGUAGE_KEYWORDS_H
 
-#include "CFlat/Language/Bool.h"
-
 /// <summary>
 /// Indicates that a function or variable is public and uses external linkage.
 /// </summary>
@@ -53,6 +51,8 @@
 /// Indicates that a function overrides an abstract or virtual base function.
 /// </summary>
 #define override
+
+#include "CFlat/Language/Bool.h"
 
 /* Object.c */
 /// <summary>

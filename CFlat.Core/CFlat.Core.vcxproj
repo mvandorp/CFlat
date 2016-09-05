@@ -62,6 +62,7 @@
     <ClInclude Include="src\CFlat\Console.internal.h" />
     <ClInclude Include="src\CFlat\const_cast.h" />
     <ClInclude Include="src\CFlat\Environment.internal.h" />
+    <ClInclude Include="src\CFlat\Language\Bool.internal.h" />
     <ClInclude Include="src\CFlat\Language\Double.internal.h" />
     <ClInclude Include="src\CFlat\Language\Float.internal.h" />
     <ClInclude Include="src\CFlat\Language\Integer.internal.h" />
@@ -101,6 +102,7 @@
     <ClCompile Include="src\CFlat\IO\TextWriter.c" />
     <ClCompile Include="src\CFlat\IO\TextWriter.NullTextWriter.c" />
     <ClCompile Include="src\CFlat\Language\Assert.c" />
+    <ClCompile Include="src\CFlat\Language\Bool.c" />
     <ClCompile Include="src\CFlat\Language\Char.c" />
     <ClCompile Include="src\CFlat\ExceptionType.c" />
     <ClCompile Include="src\CFlat\Language\Double.c" />
