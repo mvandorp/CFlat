@@ -169,7 +169,9 @@ public void StringBuilder_Constructor_WithInitialStringValueAndCapacity(
     sb->Value = Memory_Allocate(capacity + 1);
 
     // Initialize the contents of the StringBuilder to the given string.
-    Memory_Copy(String_GetCString(value), sb->Value, length);
+    if (length) {
+        Memory_Copy(String_GetCString(value), sb->Value, length);
+    }
 }
 
 /* Destructor */
@@ -421,6 +423,61 @@ public void StringBuilder_Remove(StringBuilder *sb, uintsize startIndex, uintsiz
     Memory_CopyOffset(sb->Value, startIndex + count, sb->Value, startIndex, sb->Length - (startIndex + count));
 
     sb->Length -= count;
+}
+
+public void StringBuilder_Replace(StringBuilder *sb, char oldValue, char newValue)
+{
+    Validate_NotNull(sb);
+
+    for (uintsize i = 0; i < sb->Length; i++) {
+        if (sb->Value[i] == oldValue) sb->Value[i] = newValue;
+    }
+}
+
+public void StringBuilder_ReplaceCString(StringBuilder *sb, const char *oldValue, const char *newValue)
+{
+    Validate_NotNull(sb);
+    Validate_NotNull(oldValue);
+    Validate_Argument(oldValue[0] != '\0', "String cannot be of zero length.", "oldValue");
+
+    uintsize oldValueLength = CString_Length(oldValue);
+    uintsize newValueLength = newValue == null ? 0 : CString_Length(newValue);
+    uintsize i = 0;
+
+    while (i < sb->Length) {
+        if (CString_StartsWithCString(&sb->Value[i], oldValue)) {
+            StringBuilder_Remove(sb, i, oldValueLength);
+            StringBuilder_InsertCString(sb, i, newValue);
+
+            i += newValueLength;
+        }
+        else {
+            i++;
+        }
+    }
+}
+
+public void StringBuilder_ReplaceString(StringBuilder *sb, const struct String *oldValue, const struct String *newValue)
+{
+    Validate_NotNull(sb);
+    Validate_NotNull(oldValue);
+    Validate_Argument(oldValue->Length != 0, "String cannot be of zero length.", "oldValue");
+
+    uintsize oldValueLength = String_GetLength(oldValue);
+    uintsize newValueLength = newValue == null ? 0 : String_GetLength(newValue);
+    uintsize i = 0;
+
+    while (i < sb->Length) {
+        if (CString_StartsWithString(&sb->Value[i], oldValue)) {
+            StringBuilder_Remove(sb, i, oldValueLength);
+            StringBuilder_InsertString(sb, i, newValue);
+
+            i += newValueLength;
+        }
+        else {
+            i++;
+        }
+    }
 }
 
 public String *StringBuilder_ToString(const StringBuilder *sb)

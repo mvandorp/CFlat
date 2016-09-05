@@ -431,6 +431,47 @@ void StringBuilder_InsertString(StringBuilder *sb, uintsize index, const struct 
 void StringBuilder_Remove(StringBuilder *sb, uintsize startIndex, uintsize count);
 
 /// <summary>
+/// Replaces all occurrences of a specified character in a <see cref="StringBuilder"/> with another specified character.
+/// </summary>
+/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
+/// <param name="oldChar">The character to be replaced.</param>
+/// <param name="newChar">The character to replace all occurrences of <paramref name="oldChar"/>.</param>
+/// <exception cref="ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+void StringBuilder_Replace(StringBuilder *sb, char oldValue, char newValue);
+
+/// <summary>
+/// Replaces all occurrences of a specified string in a <see cref="StringBuilder"/> with another specified string.
+/// </summary>
+/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
+/// <param name="oldValue">The string to be replaced.</param>
+/// <param name="newValue">The string to replace all occurrences of <paramref name="newValue"/>.</param>
+/// <exception cref="ArgumentNullException">
+///     <paramref name="sb"/> is <see cref="null"/> <b>-or-</b>
+///     <paramref name="oldValue"/> is <see cref="null"/>.
+/// </exception>
+/// <exception cref="ArgumentException">
+///     <paramref name="oldValue"/> is the empty string ("").
+/// </exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+void StringBuilder_ReplaceCString(StringBuilder *sb, const char *oldValue, const char *newValue);
+
+/// <summary>
+/// Replaces all occurrences of a specified string in a <see cref="StringBuilder"/> with another specified string.
+/// </summary>
+/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
+/// <param name="oldValue">The string to be replaced.</param>
+/// <param name="newValue">The string to replace all occurrences of <paramref name="newValue"/>.</param>
+/// <exception cref="ArgumentNullException">
+///     <paramref name="sb"/> is <see cref="null"/> <b>-or-</b>
+///     <paramref name="oldValue"/> is <see cref="null"/>.
+/// </exception>
+/// <exception cref="ArgumentException">
+///     <paramref name="oldValue"/> is the empty string ("").
+/// </exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+void StringBuilder_ReplaceString(StringBuilder *sb, const struct String *oldValue, const struct String *newValue);
+
+/// <summary>
 /// Converts the value of a <see cref="StringBuilder"/> to a <see cref="String"/>.
 /// </summary>
 /// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>

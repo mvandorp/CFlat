@@ -22,6 +22,7 @@
 #include "CFlat.h"
 #include "CFlat/Memory.h"
 #include "CFlat/String.h"
+#include "CFlat/StringBuilder.h"
 #include "CFlat/Validate.h"
 
 /**************************************/
@@ -37,21 +38,73 @@ private void ValidatePositionIsWithinString(const char *str);
 
 public uintsize CString_Length(const char *str)
 {
-    return CString_IndexOf(str, '\0');
-}
-
-public char *CString_Copy(const char *str)
-{
     Validate_NotNull(str);
 
-    // Add one to the length to account for the terminating null character.
-    uintsize length = CString_Length(str) + 1;
+    uintsize length = 0;
 
-    char *copy = Memory_Allocate(length);
+    while (*str) {
+        length++;
+        str++;
+    }
 
-    Memory_Copy(str, copy, length);
+    return length;
+}
 
-    return copy;
+public int CString_Compare(const char *str1, const char *str2)
+{
+    return CString_Compare_IgnoreCase(str1, str2, false);
+}
+
+public int CString_Compare_IgnoreCase(const char *str1, const char *str2, bool ignoreCase)
+{
+    if (str1 == str2) return 0;
+    if (str1 == null) return -1;
+    if (str2 == null) return 1;
+
+    return CString_CompareSubstrings_IgnoreCase(
+        str1, 0,
+        str2, 0,
+        uintsize_Max(CString_Length(str1), CString_Length(str2)),
+        ignoreCase);
+}
+
+public int CString_CompareSubstrings(
+    const char *str1, uintsize startIndex1,
+    const char *str2, uintsize startIndex2,
+    uintsize length)
+{
+    return CString_CompareSubstrings_IgnoreCase(str1, startIndex1, str2, startIndex2, length, false);
+}
+
+public int CString_CompareSubstrings_IgnoreCase(
+    const char *str1, uintsize startIndex1,
+    const char *str2, uintsize startIndex2,
+    uintsize length,
+    bool ignoreCase)
+{
+    Validate_Argument(length == 0 || str1 != null, "String cannot be null if length is greater than zero.", "str1");
+    Validate_Argument(length == 0 || str2 != null, "String cannot be null if length is greater than zero.", "str2");
+    Validate_ArgumentRange(str1 == null || startIndex1 <= CString_Length(str1),
+        "Index cannot be greater than the the size of the string/array/collection.", "startIndex1");
+    Validate_ArgumentRange(str2 == null || startIndex2 <= CString_Length(str2),
+        "Index cannot be greater than the the size of the string/array/collection.", "startIndex2");
+
+    if (length == 0) return 0;
+
+    const char *cstr1 = str1;
+    const char *cstr2 = str2;
+
+    for (uintsize i = 0; i < length; i++) {
+        int c1 = ignoreCase ? char_ToLower(cstr1[i]) : cstr1[i];
+        int c2 = ignoreCase ? char_ToLower(cstr2[i]) : cstr2[i];
+        int diff = c1 - c2;
+
+        if (diff) return diff;
+
+        if (c1 == '\0') break;
+    }
+
+    return 0;
 }
 
 public bool CString_Contains(const char *str, char value)
@@ -69,7 +122,92 @@ public bool CString_ContainsString(const char *str, const String *value)
     return CString_IndexOfString(str, value) != InvalidIndex;
 }
 
+public char *CString_Copy(const char *str)
+{
+    Validate_NotNull(str);
+
+    // Add one to the length to account for the terminating null character.
+    uintsize length = CString_Length(str) + 1;
+
+    char *copy = Memory_Allocate(length);
+
+    Memory_Copy(str, copy, length);
+
+    return copy;
+}
+
+public void CString_CopyTo(
+    const char *source,
+    uintsize sourceIndex,
+    char *destination,
+    uintsize destinationIndex,
+    uintsize count)
+{
+    Validate_NotNull(source);
+    Validate_NotNull(destination);
+    Validate_ArgumentRange(sourceIndex <= CString_Length(source),
+        "Index cannot be greater than the the size of the string/array/collection.", "sourceIndex");
+    Validate_ArgumentRange(sourceIndex + count <= CString_Length(source),
+        "Count must refer to a location within the string/array/collection.", "count");
+
+    Memory_Copy(&source[sourceIndex], &destination[destinationIndex], count);
+}
+
+public bool CString_EndsWith(const char *str, char value)
+{
+    Validate_NotNull(str);
+
+    uintsize length = CString_Length(str);
+
+    return length > 0 && str[length - 1] == value;
+}
+
+public bool CString_EndsWithCString(const char *str, const char *value)
+{
+    return CString_EndsWithCString_IgnoreCase(str, value, false);
+}
+
+public bool CString_EndsWithCString_IgnoreCase(const char *str, const char *value, bool ignoreCase)
+{
+    String buffer;
+
+    return CString_EndsWithString_IgnoreCase(str, String_WrapCString(value, &buffer), ignoreCase);
+}
+
+public bool CString_EndsWithString(const char *str, const String *value)
+{
+    return CString_EndsWithString_IgnoreCase(str, value, false);
+}
+
+public bool CString_EndsWithString_IgnoreCase(const char *str, const String *value, bool ignoreCase)
+{
+    Validate_NotNull(str);
+    Validate_NotNull(value);
+
+    if (value->Length == 0) return true;
+    if (value->Length > CString_Length(str)) return false;
+
+    // Indices are within bounds because of the early-out above.
+    const char *cstr1 = &str[CString_Length(str) - 1];
+    const char *cstr2 = &value->Value[value->Length - 1];
+
+    // Iterate through all of the search string's characters, or until we find two inequal characters.
+    for (uintsize length = value->Length; length-- > 0; cstr1--, cstr2--) {
+        if ((!ignoreCase && *cstr1 != *cstr2) || (ignoreCase && char_ToLower(*cstr1) != char_ToLower(*cstr2))) {
+            return false;
+        }
+    }
+
+    // Reached the end of the search string, all the characters must've matched.
+    return true;
+}
+
 public bool CString_Equals(const char *str1, const char *str2)
+{
+    return CString_Equals_IgnoreCase(str1, str2, false);
+}
+
+public bool CString_Equals_IgnoreCase(const char *str1, const char *str2, bool ignoreCase)
 {
     if (str1 == str2) {
         return true;
@@ -80,13 +218,28 @@ public bool CString_Equals(const char *str1, const char *str2)
 
     // Iterate through all of the string's characters, or until we find two inequal characters.
     for (; *str1; str1++, str2++) {
-        if (*str1 != *str2) {
+        if ((!ignoreCase && *str1 != *str2) || (ignoreCase && char_ToLower(*str1) != char_ToLower(*str2))) {
             return false;
         }
     }
 
     // We reached the end of the string. If we also reached the end of the second string, the strings compare equal.
     return *str1 == *str2;
+}
+
+public int CString_GetHashCode(const char *str)
+{
+    Validate_NotNull(str);
+
+    // DJB2 hash
+    int hash = 5381;
+
+    char c;
+    while ((c = *str++) != '\0') {
+        hash = ((hash << 5) + hash) ^ c;
+    }
+
+    return hash;
 }
 
 public uintsize CString_IndexOf(const char *str, char value)
@@ -100,14 +253,9 @@ public uintsize CString_IndexOf_Offset(const char *str, char value, uintsize sta
     ValidateStartIndex(str, startIndex);
 
     // Iterate through the remaining characters.
-    for (uintsize i = startIndex; true; i++, str++) {
+    for (uintsize i = startIndex; *str; i++, str++) {
         if (*str == value) {
             return i;
-        }
-
-        // Check for the null character after the comparison to allow searching for the terminating null character.
-        if (*str == '\0') {
-            break;
         }
     }
 
@@ -255,6 +403,23 @@ public uintsize CString_IndexOfString_Substring(
     return CString_IndexOfCString_Substring(str, String_GetCString(value), startIndex, count);
 }
 
+public bool CString_IsNullOrEmpty(const char *str)
+{
+    return str == null || str[0] == '\0';
+}
+
+public bool CString_IsNullOrWhiteSpace(const char *str)
+{
+    if (str == null) return true;
+
+    char c;
+    while ((c = *str++) != '\0') {
+        if (!char_IsWhiteSpace(c)) return false;
+    }
+
+    return true;
+}
+
 public uintsize CString_LastIndexOf(const char *str, char value)
 {
     Validate_NotNull(str);
@@ -262,15 +427,10 @@ public uintsize CString_LastIndexOf(const char *str, char value)
     uintsize lastIndex = InvalidIndex;
 
     // Iterate through all characters.
-    for (uintsize i = 0; true; i++, str++) {
+    for (uintsize i = 0; *str; i++, str++) {
         // If we find the search value, remember the index.
         if (*str == value) {
             lastIndex = i;
-        }
-
-        // Check for the null character after the comparison to allow searching for the terminating null character.
-        if (*str == '\0') {
-            break;
         }
     }
 
@@ -378,14 +538,102 @@ public uintsize CString_LastIndexOfString_Substring(
     return String_LastIndexOfString_Substring(strWrapper, value, startIndex, count);
 }
 
+public char *CString_Remove(const char *str, uintsize startIndex)
+{
+    return CString_CSubstring_WithLength(str, 0, startIndex);
+}
+
+public char *CString_Remove_Substring(const char *str, uintsize startIndex, uintsize count)
+{
+    Validate_NotNull(str);
+    Validate_ArgumentRange(startIndex <= CString_Length(str),
+        "Index cannot be greater than the the size of the string/array/collection.", "startIndex");
+    Validate_ArgumentRange(startIndex + count <= CString_Length(str),
+        "Count must refer to a location within the string/array/collection.", "count");
+
+    uintsize endIndex = startIndex + count;
+
+    StringBuilder sb;
+    StringBuilder_Constructor_WithCapacity(&sb, CString_Length(str) - count);
+
+    StringBuilder_AppendBuffer(&sb, str, 0, startIndex);
+    StringBuilder_AppendBuffer(&sb, str, endIndex, CString_Length(str) - endIndex);
+
+    return StringBuilder_DeleteAndToCString(&sb);
+}
+
+public char *CString_Replace(const char *str, char oldValue, char newValue)
+{
+    Validate_NotNull(str);
+
+    StringBuilder sb;
+    StringBuilder_Constructor_WithInitialCStringValue(&sb, str);
+
+    StringBuilder_Replace(&sb, oldValue, newValue);
+
+    return StringBuilder_DeleteAndToCString(&sb);
+}
+
+public char *CString_ReplaceCString(const char *str, const char *oldValue, const char *newValue)
+{
+    Validate_NotNull(str);
+
+    StringBuilder sb;
+    StringBuilder_Constructor_WithInitialCStringValue(&sb, str);
+
+    try {
+        StringBuilder_ReplaceCString(&sb, oldValue, newValue);
+    }
+    catch (Exception) {
+        release(&sb);
+
+        throw;
+    }
+    endtry;
+
+    return StringBuilder_DeleteAndToCString(&sb);
+}
+
+public char *CString_ReplaceString(const char *str, const String *oldValue, const String *newValue)
+{
+    Validate_NotNull(str);
+
+    StringBuilder sb;
+    StringBuilder_Constructor_WithInitialCStringValue(&sb, str);
+
+    try {
+        StringBuilder_ReplaceString(&sb, oldValue, newValue);
+    }
+    catch (Exception) {
+        release(&sb);
+
+        throw;
+    }
+    endtry;
+
+    return StringBuilder_DeleteAndToCString(&sb);
+}
+
+public bool CString_StartsWith(const char *str, char value)
+{
+    Validate_NotNull(str);
+
+    return *str == value;
+}
+
 public bool CString_StartsWithCString(const char *str, const char *value)
+{
+    return CString_StartsWithCString_IgnoreCase(str, value, false);
+}
+
+public bool CString_StartsWithCString_IgnoreCase(const char *str, const char *value, bool ignoreCase)
 {
     Validate_NotNull(str);
     Validate_NotNull(value);
 
     // Iterate through all of the search string's characters, or until we find two inequal characters.
     for (; *value; str++, value++) {
-        if (*str != *value) {
+        if ((!ignoreCase && *str != *value) || (ignoreCase && char_ToLower(*str) != char_ToLower(*value))) {
             return false;
         }
     }
@@ -397,6 +645,66 @@ public bool CString_StartsWithCString(const char *str, const char *value)
 public bool CString_StartsWithString(const char *str, const String *value)
 {
     return CString_StartsWithCString(str, String_GetCString(value));
+}
+
+public bool CString_StartsWithString_IgnoreCase(const char *str, const String *value, bool ignoreCase)
+{
+    return CString_StartsWithCString_IgnoreCase(str, String_GetCString(value), ignoreCase);
+}
+
+public char *CString_CSubstring(const char *str, uintsize startIndex)
+{
+    Validate_NotNull(str);
+    Validate_ArgumentRange(startIndex <= CString_Length(str),
+        "Index was out of range. Must be less than the length of the string.", "startIndex");
+
+    return CString_Copy(&str[startIndex]);
+}
+
+public char *CString_CSubstring_WithLength(const char *str, uintsize startIndex, uintsize length)
+{
+    Validate_NotNull(str);
+    Validate_ArgumentRange(startIndex <= CString_Length(str),
+        "Index was out of range. Must be less than the length of the string.", "startIndex");
+    Validate_ArgumentRange(startIndex + length <= CString_Length(str),
+        "Index and count must refer to a location within the string.", "count");
+
+    // Add one to the length to account for the terminating null character.
+    char *substring = Memory_Allocate(length + 1);
+
+    // Ensure that the string has a terminating null character.
+    substring[length] = '\0';
+
+    Memory_Copy(&str[startIndex], substring, length);
+
+    return substring;
+}
+
+public String *CString_Substring(const char *str, uintsize startIndex)
+{
+    Validate_NotNull(str);
+    Validate_ArgumentRange(startIndex <= CString_Length(str),
+        "Index was out of range. Must be less than the length of the string.", "startIndex");
+
+    return String_New(&str[startIndex]);
+}
+
+public String *CString_Substring_WithLength(const char *str, uintsize startIndex, uintsize length)
+{
+    Validate_NotNull(str);
+    Validate_ArgumentRange(startIndex <= CString_Length(str),
+        "Index was out of range. Must be less than the length of the string.", "startIndex");
+    Validate_ArgumentRange(startIndex + length <= CString_Length(str),
+        "Index and count must refer to a location within the string.", "count");
+
+    return String_New_Substring(str, startIndex, length);
+}
+
+public String *CString_ToString(const char *str)
+{
+    Validate_NotNull(str);
+
+    return String_New(str);
 }
 
 /**************************************/
