@@ -37,6 +37,7 @@
 ///     Pointer to a null-terminated string describing the exception, or <see cref="null"/> to use the default
 ///     exception message.
 /// </param>
+/// <exception cref="::Exception"><paramref name="condition"/> is <see cref="false"/>.</exception>
 #define Validate_IsTrue(condition, exception, message) \
     ((void)((condition) ? 0 : (throw_new(exception, message), 0)))
 
@@ -48,6 +49,42 @@
 /// <exception cref="::ArgumentNullException"><paramref name="param"/> is <see cref="null"/>.</exception>
 #define Validate_NotNull(param) \
     Validate_IsTrue((param) != null, ArgumentNullException, "Parameter '" #param "' cannot be null.")
+
+/// <summary>
+/// Validates that the specified argument is not negative; otherwise throws an
+/// <see cref="ArgumentOutOfRangeException"/>.
+/// </summary>
+/// <param name="param">The object to check, this should be a parameter.</param>
+/// <exception cref="::ArgumentOutOfRangeException"><paramref name="param"/> is negative.</exception>
+#define Validate_NotNegative(param) \
+    Validate_IsTrue((param) >= 0, ArgumentOutOfRangeException, "Parameter '" #param "' cannot be negative.")
+
+/// <summary>
+/// Validates that an argument satisfies the specified condition; otherwise throws an <see cref="ArgumentException"/>.
+/// </summary>
+/// <param name="condition">The condition to check.</param>
+/// <param name="message">
+///     Pointer to a null-terminated string describing the exception, or <see cref="null"/> to use the default
+///     exception message.
+/// </param>
+/// <param name="param">Pointer to a null-terminated string representing the name of the parameter to validate.</param>
+/// <exception cref="::ArgumentException"><paramref name="condition"/> is <see cref="false"/>.</exception>
+#define Validate_Argument(condition, message, param) \
+    Validate_IsTrue(condition, ArgumentException, message "\nParameter name: " param)
+
+/// <summary>
+/// Validates that an argument satisfies the specified condition; otherwise throws an
+/// <see cref="ArgumentOutOfRangeException"/>.
+/// </summary>
+/// <param name="condition">The condition to check.</param>
+/// <param name="message">
+///     Pointer to a null-terminated string describing the exception, or <see cref="null"/> to use the default
+///     exception message.
+/// </param>
+/// <param name="param">Pointer to a null-terminated string representing the name of the parameter to validate.</param>
+/// <exception cref="::ArgumentOutOfRangeException"><paramref name="condition"/> is <see cref="false"/>.</exception>
+#define Validate_ArgumentRange(condition, message, param) \
+    Validate_IsTrue(condition, ArgumentOutOfRangeException, message "\nParameter name: " param)
 
 /// <summary>
 /// Validates that the specified condition involving the state of an object is true; otherwise throws an
