@@ -181,13 +181,12 @@ public void PointerList_InsertRange(PointerList *list, int index, const IEnumera
 public void PointerList_RemoveRange(PointerList *list, int index, int count)
 {
     Validate_NotNull(list);
-    Validate_IsTrue(index >= 0, ArgumentOutOfRangeException, "Index cannot be negative.");
-    Validate_IsTrue(count >= 0, ArgumentOutOfRangeException, "Count cannot be negative.");
-    Validate_IsTrue(
-        index + count >= PointerList_GetCount(list),
-        ArgumentOutOfRangeException,
-        "Index and count were out of bounds for the list or count is greater than the number of elements from index to "
-        "the end of the list.");
+    Validate_NotNegative(index);
+    Validate_NotNegative(count);
+    Validate_ArgumentRange(index < PointerList_GetCount(list),
+        "Index must be less than the size of the string/array/collection.", "index");
+    Validate_ArgumentRange(index + count < PointerList_GetCount(list),
+        "Count must refer to a location within the string/array/collection.", "count");
 
     if (list->ElementDestructor != null) {
         for (int i = index; i < index + count; i++) {

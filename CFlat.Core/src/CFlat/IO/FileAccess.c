@@ -31,8 +31,6 @@ public bool FileAccess_IsValid(FileAccess fileAccess)
 
 public void FileAccess_Validate(FileAccess fileAccess)
 {
-    Validate_IsTrue(
-        FileAccess_IsValid(fileAccess),
-        ArgumentException,
-        "Value was out of legal range for enum FileAccess.");
+    Validate_Argument(FileAccess_IsValid(fileAccess),
+        "Value was out of legal range for enum FileAccess.", "fileAccess");
 }

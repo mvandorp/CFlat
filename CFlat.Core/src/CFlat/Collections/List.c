@@ -179,10 +179,8 @@ public int List_GetCapacity(const List *list)
 public void List_SetCapacity(List *list, int capacity)
 {
     Validate_NotNull(list);
-    Validate_IsTrue(
-        capacity >= list->Count,
-        ArgumentOutOfRangeException,
-        "Capacity cannot be smaller than the current length.");
+    Validate_ArgumentRange(capacity >= list->Count,
+        "Capacity cannot be smaller than the current length.", "capacity");
 
     if (capacity != list->Capacity) {
         list->Array = Memory_Reallocate(list->Array, (uintsize)capacity * list->ElementSize);
@@ -210,10 +208,8 @@ public void List_InsertRange(List *list, int index, const IEnumerable *collectio
 {
     Validate_NotNull(list);
     Validate_NotNull(collection);
-    Validate_IsTrue(
-        index >= 0 && index <= list->Count,
-        ArgumentOutOfRangeException,
-        "Index must be within the bounds of the List.");
+    Validate_ArgumentRange(index >= 0 && index <= list->Count,
+        "Index must be within the bounds of the List.", "index");
 
     IEnumerator *enumerator = IEnumerable_GetEnumerator(collection);
 
@@ -233,13 +229,12 @@ public void List_InsertRange(List *list, int index, const IEnumerable *collectio
 public void List_RemoveRange(List *list, int index, int count)
 {
     Validate_NotNull(list);
-    Validate_IsTrue(index >= 0, ArgumentOutOfRangeException, "Index cannot be negative.");
-    Validate_IsTrue(count >= 0, ArgumentOutOfRangeException, "Count cannot be negative.");
-    Validate_IsTrue(
-        index + count <= list->Count,
-        ArgumentOutOfRangeException,
-        "Index and count were out of bounds for the list or count is greater than the number of elements from index to "
-        "the end of the list.");
+    Validate_NotNegative(index);
+    Validate_NotNegative(count);
+    Validate_ArgumentRange(index < list->Count,
+        "Index must be less than the size of the string/array/collection.", "index");
+    Validate_ArgumentRange(index + count < list->Count,
+        "Count must refer to a location within the string/array/collection.", "count");
 
     uintsize size = list->ElementSize;
 
@@ -316,10 +311,8 @@ public bool List_RemoveRef(List *list, const void *item)
 public void *List_GetItemRef(const List *list, int index)
 {
     Validate_NotNull(list);
-    Validate_IsTrue(
-        index >= 0 && index <= list->Count,
-        ArgumentOutOfRangeException,
-        "Index must be within the bounds of the List.");
+    Validate_ArgumentRange(index >= 0 && index <= list->Count,
+        "Index must be within the bounds of the List.", "index");
 
     byte *array = list->Array;
     uintsize size = list->ElementSize;
@@ -366,10 +359,8 @@ public void List_InsertRef(List *list, int index, const void *item)
 {
     Validate_NotNull(list);
     Validate_NotNull(item);
-    Validate_IsTrue(
-        index >= 0 && index <= list->Count,
-        ArgumentOutOfRangeException,
-        "Index must be within the bounds of the List.");
+    Validate_ArgumentRange(index >= 0 && index <= list->Count,
+        "Index must be within the bounds of the List.", "index");
 
     EnsureCapacity(list, list->Count + 1);
 
@@ -409,8 +400,8 @@ internal void List_Constructor_Full(
     EqualityPredicate equals,
     int capacity)
 {
-    Validate_IsTrue(elementSize > 0, ArgumentOutOfRangeException, "Element size cannot be zero.");
-    Validate_IsTrue(capacity >= 0, ArgumentOutOfRangeException, "Capacity cannot be negative.");
+    Validate_ArgumentRange(elementSize > 0, "Element size cannot be zero.", "elementSize");
+    Validate_NotNegative(capacity);
 
     IList_Constructor((IList*)list, vtable);
 

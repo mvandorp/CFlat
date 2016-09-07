@@ -100,12 +100,11 @@ public void Stream_CopyTo_WithBufferSize(Stream *stream, Stream *destination, ui
 {
     Validate_NotNull(stream);
     Validate_NotNull(destination);
-    Validate_IsTrue(Stream_CanWrite(stream), NotSupportedException, "The source stream does not support reading.");
-    Validate_IsTrue(
-        Stream_CanWrite(destination),
-        NotSupportedException,
-        "The destination stream does not support writing.");
-    Validate_IsTrue(bufferSize > 0, ArgumentOutOfRangeException, "Buffer size cannot be zero.");
+    Validate_IsTrue(Stream_CanWrite(stream),
+        NotSupportedException, "The source stream does not support reading.");
+    Validate_IsTrue(Stream_CanWrite(destination),
+        NotSupportedException, "The destination stream does not support writing.");
+    Validate_ArgumentRange(bufferSize > 0, "Buffer size cannot be zero.", "bufferSize");
 
     byte *buffer = Memory_Allocate(bufferSize);
 

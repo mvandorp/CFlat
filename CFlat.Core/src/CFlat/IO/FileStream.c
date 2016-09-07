@@ -239,7 +239,7 @@ private override intfsize FileStream_GetLength(const FileStream *stream)
 private override void FileStream_SetLength(FileStream *stream, intfsize length)
 {
     ValidateSeekSupported(stream);
-    Validate_IsTrue(length >= 0, ArgumentOutOfRangeException, "Length cannot be negative.");
+    Validate_NotNegative(length);
 
     FileTruncate(stream->File, length);
 }

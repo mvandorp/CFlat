@@ -35,8 +35,6 @@ public bool FileMode_IsValid(FileMode mode)
 
 public void FileMode_Validate(FileMode mode)
 {
-    Validate_IsTrue(
-        FileMode_IsValid(mode),
-        ArgumentException,
-        "Value was out of legal range for enum FileMode.");
+    Validate_Argument(FileMode_IsValid(mode),
+        "Value was out of legal range for enum FileMode.", "mode");
 }

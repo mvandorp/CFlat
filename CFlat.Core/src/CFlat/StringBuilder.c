@@ -198,10 +198,8 @@ public uintsize StringBuilder_GetCapacity(const StringBuilder *sb)
 public void StringBuilder_SetCapacity(StringBuilder *sb, uintsize capacity)
 {
     Validate_NotNull(sb);
-    Validate_IsTrue(
-        capacity >= sb->Length,
-        ArgumentOutOfRangeException,
-        "Capacity cannot be smaller than the current length.");
+    Validate_ArgumentRange(capacity >= sb->Length,
+        "Capacity cannot be smaller than the current length.", "capacity");
 
     if (capacity != sb->Capacity) {
         sb->Value = Memory_Reallocate(sb->Value, capacity + 1);
@@ -356,7 +354,7 @@ public char *StringBuilder_DeleteAndToCString(StringBuilder *sb)
 public void StringBuilder_Insert(StringBuilder *sb, uintsize index, char value)
 {
     Validate_NotNull(sb);
-    Validate_IsTrue(index <= sb->Length, ArgumentOutOfRangeException, "Index must be within the bounds of the string.");
+    Validate_ArgumentRange(index <= sb->Length, "Index must be within the bounds of the string.", "index");
 
     EnsureCapacity(sb, sb->Length + 1);
 
@@ -378,7 +376,7 @@ public void StringBuilder_InsertBuffer(
 {
     Validate_NotNull(sb);
     Validate_NotNull(buffer);
-    Validate_IsTrue(index <= sb->Length, ArgumentOutOfRangeException, "Index must be within the bounds of the string.");
+    Validate_ArgumentRange(index <= sb->Length, "Index must be within the bounds of the string.", "index");
 
     EnsureCapacity(sb, sb->Length + count);
 
@@ -394,7 +392,7 @@ public void StringBuilder_InsertBuffer(
 public void StringBuilder_InsertCString(StringBuilder *sb, uintsize index, const char *value)
 {
     Validate_NotNull(sb);
-    Validate_IsTrue(index <= sb->Length, ArgumentOutOfRangeException, "Index must be within the bounds of the string.");
+    Validate_ArgumentRange(index <= sb->Length, "Index must be within the bounds of the string.", "index");
 
     if (value == null) return;
 
@@ -404,7 +402,7 @@ public void StringBuilder_InsertCString(StringBuilder *sb, uintsize index, const
 public void StringBuilder_InsertString(StringBuilder *sb, uintsize index, const String *value)
 {
     Validate_NotNull(sb);
-    Validate_IsTrue(index <= sb->Length, ArgumentOutOfRangeException, "Index must be within the bounds of the string.");
+    Validate_ArgumentRange(index <= sb->Length, "Index must be within the bounds of the string.", "index");
 
     if (value == null) return;
 
@@ -414,10 +412,10 @@ public void StringBuilder_InsertString(StringBuilder *sb, uintsize index, const 
 public void StringBuilder_Remove(StringBuilder *sb, uintsize startIndex, uintsize count)
 {
     Validate_NotNull(sb);
-    Validate_IsTrue(startIndex <= sb->Length, ArgumentOutOfRangeException,
-        "Index was out of range. Must be less than the length of the string.");
-    Validate_IsTrue(startIndex + count <= sb->Length, ArgumentOutOfRangeException,
-        "Count must be positive and count must refer to a location within the string.");
+    Validate_ArgumentRange(startIndex <= sb->Length,
+        "Index cannot be greater than the the size of the string/array/collection.", "startIndex");
+    Validate_ArgumentRange(startIndex + count <= sb->Length,
+        "Count must refer to a location within the string/array/collection.", "count");
 
     // Copy the contents of the buffer backward after index forward by length bytes.
     Memory_CopyOffset(sb->Value, startIndex + count, sb->Value, startIndex, sb->Length - (startIndex + count));

@@ -32,8 +32,6 @@ public bool SeekOrigin_IsValid(SeekOrigin origin)
 
 public void SeekOrigin_Validate(SeekOrigin origin)
 {
-    Validate_IsTrue(
-        SeekOrigin_IsValid(origin),
-        ArgumentException,
-        "Value was out of legal range for enum SeekOrigin.");
+    Validate_Argument(SeekOrigin_IsValid(origin),
+        "Value was out of legal range for enum SeekOrigin.", "origin");
 }

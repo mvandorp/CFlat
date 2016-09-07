@@ -173,10 +173,9 @@ public void ObjectList_InsertRange(ObjectList *list, int index, const IEnumerabl
 {
     Validate_NotNull(list);
     Validate_NotNull(collection);
-    Validate_IsTrue(
+    Validate_ArgumentRange(
         index >= 0 && index <= ObjectList_GetCount(list),
-        ArgumentOutOfRangeException,
-        "Index must be within the bounds of the List.");
+        "Index must be within the bounds of the List.", "index");
 
     IEnumerator *enumerator = IEnumerable_GetEnumerator(collection);
 
