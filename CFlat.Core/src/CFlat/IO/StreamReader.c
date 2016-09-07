@@ -23,6 +23,7 @@
 #include "CFlat/Memory.h"
 #include "CFlat/String.h"
 #include "CFlat/Validate.h"
+#include "CFlat/IO/FileStream.h"
 #include "CFlat/IO/Stream.h"
 #include "CFlat/IO/TextReader.h"
 
@@ -83,6 +84,22 @@ public TextReader *StreamReader_New(Stream *stream)
     endtry;
 
     return (TextReader*)reader;
+}
+
+public TextReader *StreamReader_New_FromFile(const char *path)
+{
+    TextReader *reader = null;
+    Stream *stream = FileStream_New(path, FileMode_Open);
+
+    try {
+        reader = StreamReader_New(stream);
+    }
+    finally {
+        release(stream);
+    }
+    endtry;
+
+    return reader;
 }
 
 /**************************************/

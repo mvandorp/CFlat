@@ -39,10 +39,23 @@ typedef struct StreamReader StreamReader;
 /// <remarks>
 ///     The lifetime of the <see cref="StreamReader"/> should be managed with retain() and release().
 /// </remarks>
-/// <param name="stream">Pointer to the <see cref="Stream"/> to write to.</param>
+/// <param name="stream">Pointer to the <see cref="Stream"/> to read from.</param>
 /// <returns>A pointer to the newly allocated stream reader.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="stream"/> is <see cref="null"/>.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 struct TextReader *StreamReader_New(struct Stream *stream);
+
+/// <summary>
+/// Allocates and initializes a new <see cref="StreamReader"/> for the specified file.
+/// </summary>
+/// <remarks>
+///     The lifetime of the <see cref="StreamWriter"/> should be managed with retain() and release().
+/// </remarks>
+/// <param name="path">The file path to read from.</param>
+/// <returns>A pointer to the newly allocated stream reader.</returns>
+/// <exception cref="::ArgumentNullException"><paramref name="path"/> is <see cref="null"/>.</exception>
+/// <exception cref="::IOException">An I/O error occurs.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+struct TextReader *StreamReader_New_FromFile(const char *path);
 
 #endif

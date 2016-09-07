@@ -63,7 +63,9 @@ struct Stream *FileStream_New(const char *path, FileMode mode);
 /// <returns>A pointer to the newly allocated stream.</returns>
 /// <param name="path">Pointer to a null-terminated string containg the path of the file.</param>
 /// <param name="mode">A <see cref="FileMode"/> value that determines how to open or create the file.</param>
-/// <param name="fileAccess">A <see cref="FileAccess"/> value that indicates the desired permissions on the file.</param>
+/// <param name="fileAccess">
+///     A <see cref="FileAccess"/> value that indicates the desired permissions on the file.
+/// </param>
 /// <exception cref="::ArgumentNullException">
 ///     <paramref name="stream"/> is <see cref="null"/> <b>-or-</b>
 ///     <paramref name="path"/> is <see cref="null"/>.

@@ -32,12 +32,12 @@ typedef enum FileAccess {
     /// <summary>
     /// Specifies read access to a file. Combine with <see cref="FileAccess_Write"/> for read/write access.
     /// </summary>
-    FileAccess_Read = 0x01,
+    FileAccess_Read = 1 << 0,
 
     /// <summary>
     /// Specifies write access to a file. Combine with <see cref="FileAccess_Read"/> for read/write access.
     /// </summary>
-    FileAccess_Write = 0x02,
+    FileAccess_Write = 1 << 1,
 
     /// <summary>
     /// Specifies read/write access to a file.

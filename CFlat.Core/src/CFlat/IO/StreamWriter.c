@@ -23,6 +23,7 @@
 #include "CFlat/Memory.h"
 #include "CFlat/String.h"
 #include "CFlat/Validate.h"
+#include "CFlat/IO/FileStream.h"
 #include "CFlat/IO/Stream.h"
 #include "CFlat/IO/TextWriter.h"
 
@@ -82,6 +83,22 @@ public TextWriter *StreamWriter_New(Stream *stream)
     endtry;
 
     return (TextWriter*)writer;
+}
+
+public TextWriter *StreamWriter_New_FromFile(const char *path, bool append)
+{
+    TextWriter *writer = null;
+    Stream *stream = FileStream_New(path, append ? FileMode_Append : FileMode_Create);
+
+    try {
+        writer = StreamWriter_New(stream);
+    }
+    finally {
+        release(stream);
+    }
+    endtry;
+
+    return writer;
 }
 
 /**************************************/
