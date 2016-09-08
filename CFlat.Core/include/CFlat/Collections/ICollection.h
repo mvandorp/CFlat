@@ -130,8 +130,7 @@ typedef bool (*ICollection_ContainsFunc)(const ICollection *collection, const vo
 /// <param name="destination">
 ///     The array that is the destination of the elements copied from the <see cref="ICollection"/>.
 /// </param>
-/// <param name="destinationSize">The size in bytes of the array.</param>
-typedef void (*ICollection_CopyToFunc)(const ICollection *collection, void *destination, uintsize destinationSize);
+typedef void (*ICollection_CopyToFunc)(const ICollection *collection, void *destination);
 
 /// <summary>
 /// A function that removes the first occurance of the given item from an <see cref="ICollection"/>.
@@ -262,16 +261,11 @@ bool ICollection_Contains(const ICollection *collection, const void *item);
 /// <param name="destination">
 ///     The array that is the destination of the elements copied from the <see cref="ICollection"/>.
 /// </param>
-/// <param name="destinationSize">The size in bytes of the array.</param>
 /// <exception cref="::ArgumentNullException">
 ///     <paramref name="collection"/> is <see cref="null"/> <b>-or-</b>
 ///     <paramref name="destination"/> is <see cref="null"/>.
 /// </exception>
-/// <exception cref="::ArgumentException">
-///     The number of elements in the list is greater than the number of elements that the destination array can
-///     contain.
-/// </exception>
-void ICollection_CopyTo(const ICollection *collection, void *destination, uintsize destinationSize);
+void ICollection_CopyTo(const ICollection *collection, void *destination);
 
 /// <summary>
 /// Removes the first occurance of the given item from an <see cref="ICollection"/>.

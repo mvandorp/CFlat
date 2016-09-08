@@ -80,9 +80,9 @@ public bool IList_Contains(const IList *list, const void *item)
     return ICollection_Contains((const ICollection*)list, item);
 }
 
-public void IList_CopyTo(const IList *list, void *destination, uintsize destinationSize)
+public void IList_CopyTo(const IList *list, void *destination)
 {
-    ICollection_CopyTo((const ICollection*)list, destination, destinationSize);
+    ICollection_CopyTo((const ICollection*)list, destination);
 }
 
 public bool IList_Remove(IList *list, const void *item)

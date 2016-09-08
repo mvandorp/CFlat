@@ -208,6 +208,24 @@ void ObjectList_InsertRange(ObjectList *list, int index, const struct IEnumerabl
 /// </exception>
 void ObjectList_RemoveRange(ObjectList *list, int index, int count);
 
+/// <summary>
+/// Copies the elements of a <see cref="ObjectList"/> to a new array.
+/// </summary>
+/// <param name="list">Object to a <see cref="ObjectList"/>.</param>
+/// <returns>An array containing copies of the elements of <paramref name="list"/>.</returns>
+/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+void *ObjectList_ToArray(const ObjectList *list);
+
+/// <summary>
+/// Sets the capacity to the actual number of elements in the <see cref="ObjectList"/>, if that number is less than a treshold
+/// value.
+/// </summary>
+/// <param name="list">Object to a <see cref="ObjectList"/>.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+void ObjectList_TrimExcess(ObjectList *list);
+
 /* IEnumerable */
 /// <summary>
 /// Returns a pointer to an <see cref="IEnumerator"/> that iterates through the given <see cref="ObjectList"/>.
@@ -258,16 +276,11 @@ bool ObjectList_Contains(const ObjectList *list, const void *item);
 /// <param name="destination">
 ///     The array that is the destination of the elements copied from the <see cref="ObjectList"/>.
 /// </param>
-/// <param name="destinationSize">The size in bytes of the array.</param>
 /// <exception cref="::ArgumentNullException">
 ///     <paramref name="list"/> is <see cref="null"/> <b>-or-</b>
 ///     <paramref name="destination"/> is <see cref="null"/>.
 /// </exception>
-/// <exception cref="::ArgumentException">
-///     The number of elements in the list is greater than the number of elements that the destination array can
-///     contain.
-/// </exception>
-void ObjectList_CopyTo(const ObjectList *list, void *destination, uintsize destinationSize);
+void ObjectList_CopyTo(const ObjectList *list, void *destination);
 
 /// <summary>
 /// Removes the first occurance of the given item from a <see cref="ObjectList"/>.

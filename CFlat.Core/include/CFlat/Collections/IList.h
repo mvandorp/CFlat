@@ -251,16 +251,11 @@ bool IList_Contains(const IList *list, const void *item);
 /// <param name="destination">
 ///     The array that is the destination of the elements copied from the <see cref="IList"/>.
 /// </param>
-/// <param name="destinationSize">The size in bytes of the array.</param>
 /// <exception cref="::ArgumentNullException">
 ///     <paramref name="list"/> is <see cref="null"/> <b>-or-</b>
 ///     <paramref name="destination"/> is <see cref="null"/>.
 /// </exception>
-/// <exception cref="::ArgumentException">
-///     The number of elements in the list is greater than the number of elements that the destination array can
-///     contain.
-/// </exception>
-void IList_CopyTo(const IList *list, void *destination, uintsize destinationSize);
+void IList_CopyTo(const IList *list, void *destination);
 
 /// <summary>
 /// Removes the first occurance of the given item from an <see cref="IList"/>.

@@ -214,7 +214,7 @@ void List_SetCapacity(List *list, int capacity);
 /// Gets the size in bytes of each element in a <see cref="List"/>.
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
-/// <returns>Tthe size in bytes of each element in the <see cref="List"/>.</returns>
+/// <returns>The size in bytes of each element in the <see cref="List"/>.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 uintsize List_GetElementSize(const List *list);
 
@@ -261,6 +261,24 @@ void List_InsertRange(List *list, int index, const struct IEnumerable *collectio
 ///     <paramref name="list"/>.
 /// </exception>
 void List_RemoveRange(List *list, int index, int count);
+
+/// <summary>
+/// Copies the elements of a <see cref="List"/> to a new array.
+/// </summary>
+/// <param name="list">Pointer to a <see cref="List"/>.</param>
+/// <returns>An array containing copies of the elements of <paramref name="list"/>.</returns>
+/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+void *List_ToArray(const List *list);
+
+/// <summary>
+/// Sets the capacity to the actual number of elements in the <see cref="List"/>, if that number is less than a treshold
+/// value.
+/// </summary>
+/// <param name="list">Pointer to a <see cref="List"/>.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+void List_TrimExcess(List *list);
 
 /* IEnumerable */
 /// <summary>
@@ -342,16 +360,11 @@ bool List_ContainsRef(const List *list, const void *item);
 /// <param name="destination">
 ///     The array that is the destination of the elements copied from the <see cref="List"/>.
 /// </param>
-/// <param name="destinationSize">The size in bytes of the array.</param>
 /// <exception cref="::ArgumentNullException">
 ///     <paramref name="list"/> is <see cref="null"/> <b>-or-</b>
 ///     <paramref name="destination"/> is <see cref="null"/>.
 /// </exception>
-/// <exception cref="::ArgumentException">
-///     The number of elements in the list is greater than the number of elements that the destination array can
-///     contain.
-/// </exception>
-void List_CopyTo(const List *list, void *destination, uintsize destinationSize);
+void List_CopyTo(const List *list, void *destination);
 
 /// <summary>
 /// Removes the first occurance of the given item from a <see cref="List"/>.

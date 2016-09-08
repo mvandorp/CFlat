@@ -83,9 +83,9 @@ public bool ICollection_Contains(const ICollection *collection, const void *item
     return GetVTable(collection)->Contains(collection, item);
 }
 
-public void ICollection_CopyTo(const ICollection *collection, void *destination, uintsize destinationSize)
+public void ICollection_CopyTo(const ICollection *collection, void *destination)
 {
-    GetVTable(collection)->CopyTo(collection, destination, destinationSize);
+    GetVTable(collection)->CopyTo(collection, destination);
 }
 
 public bool ICollection_Remove(ICollection *collection, const void *item)

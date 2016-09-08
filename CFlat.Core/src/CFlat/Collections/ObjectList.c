@@ -197,6 +197,30 @@ public void ObjectList_RemoveRange(ObjectList *list, int index, int count)
     PointerList_RemoveRange((PointerList*)list, index, count);
 }
 
+public void *ObjectList_ToArray(const ObjectList *list)
+{
+    void *array = PointerList_ToArray((const PointerList*)list);
+
+    IEnumerator *enumerator = ObjectList_GetEnumerator(list);
+
+    try {
+        while (IEnumerator_MoveNext(enumerator)) {
+            retain(IEnumerator_GetCurrent(enumerator));
+        }
+    }
+    finally {
+        release(enumerator);
+    }
+    endtry;
+
+    return array;
+}
+
+public void ObjectList_TrimExcess(ObjectList *list)
+{
+    PointerList_TrimExcess((PointerList*)list);
+}
+
 /* IEnumerable */
 public IEnumerator *ObjectList_GetEnumerator(const ObjectList *list)
 {
@@ -225,9 +249,9 @@ public bool ObjectList_Contains(const ObjectList *list, const void *item)
     return PointerList_Contains((const PointerList*)list, item);
 }
 
-public void ObjectList_CopyTo(const ObjectList *list, void *destination, uintsize destinationSize)
+public void ObjectList_CopyTo(const ObjectList *list, void *destination)
 {
-    PointerList_CopyTo((const PointerList*)list, destination, destinationSize);
+    PointerList_CopyTo((const PointerList*)list, destination);
 
     IEnumerator *enumerator = ObjectList_GetEnumerator(list);
 

@@ -242,6 +242,24 @@ void PointerList_InsertRange(PointerList *list, int index, const struct IEnumera
 /// </exception>
 void PointerList_RemoveRange(PointerList *list, int index, int count);
 
+/// <summary>
+/// Copies the elements of a <see cref="PointerList"/> to a new array.
+/// </summary>
+/// <param name="list">Pointer to a <see cref="PointerList"/>.</param>
+/// <returns>An array containing copies of the elements of <paramref name="list"/>.</returns>
+/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+void *PointerList_ToArray(const PointerList *list);
+
+/// <summary>
+/// Sets the capacity to the actual number of elements in the <see cref="PointerList"/>, if that number is less than a treshold
+/// value.
+/// </summary>
+/// <param name="list">Pointer to a <see cref="PointerList"/>.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+void PointerList_TrimExcess(PointerList *list);
+
 /* IEnumerable */
 /// <summary>
 /// Returns a pointer to an <see cref="IEnumerator"/> that iterates through the given <see cref="PointerList"/>.
@@ -292,16 +310,11 @@ bool PointerList_Contains(const PointerList *list, const void *item);
 /// <param name="destination">
 ///     The array that is the destination of the elements copied from the <see cref="PointerList"/>.
 /// </param>
-/// <param name="destinationSize">The size in bytes of the array.</param>
 /// <exception cref="::ArgumentNullException">
 ///     <paramref name="list"/> is <see cref="null"/> <b>-or-</b>
 ///     <paramref name="destination"/> is <see cref="null"/>.
 /// </exception>
-/// <exception cref="::ArgumentException">
-///     The number of elements in the list is greater than the number of elements that the destination array can
-///     contain.
-/// </exception>
-void PointerList_CopyTo(const PointerList *list, void *destination, uintsize destinationSize);
+void PointerList_CopyTo(const PointerList *list, void *destination);
 
 /// <summary>
 /// Removes the first occurance of the given item from a <see cref="PointerList"/>.

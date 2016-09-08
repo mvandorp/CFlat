@@ -248,6 +248,28 @@ public void List_RemoveRange(List *list, int index, int count)
     list->Version++;
 }
 
+public void *List_ToArray(const List *list)
+{
+    Validate_NotNull(list);
+
+    uintsize size = list->ElementSize * (uintsize)list->Count;
+
+    void *copy = Memory_Allocate(size);
+
+    Memory_Copy(list->Array, copy, size);
+
+    return copy;
+}
+
+public void List_TrimExcess(List *list)
+{
+    Validate_NotNull(list);
+
+    if (list->Count < (int)((double)list->Capacity * 0.9)) {
+        List_SetCapacity(list, list->Count);
+    }
+}
+
 /* IEnumerable */
 public IEnumerator *List_GetEnumerator(const List *list)
 {
@@ -283,15 +305,10 @@ public bool List_ContainsRef(const List *list, const void *item)
     return List_IndexOfRef(list, item) >= 0;
 }
 
-public void List_CopyTo(const List *list, void *destination, uintsize destinationSize)
+public void List_CopyTo(const List *list, void *destination)
 {
     Validate_NotNull(list);
     Validate_NotNull(destination);
-    Validate_IsTrue(
-        destinationSize >= (uintsize)list->Count * list->ElementSize,
-        ArgumentException,
-        "The number of elements in the list is greater than the number of elements that the destination array can "
-        "contain.");
 
     Memory_Copy(list->Array, destination, (uintsize)list->Count * list->ElementSize);
 }
