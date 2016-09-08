@@ -57,6 +57,27 @@ CFlatException *Exception_New(
     CFlatException *innerException);
 
 /// <summary>
+/// Allocates and initializes a new <see cref="CFlatException"/>.
+/// </summary>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+/// <param name="type">The type of exception thrown.</param>
+/// <param name="message">
+///     Pointer to a null-terminated string that describes the exception, or <see cref="null"/> to use the default
+///     exception message.
+/// </param>
+/// <param name="file">The file in which the exception occured.</param>
+/// <param name="line">The line at which the exception occured.</param>
+/// <param name="innerException">
+///     Optional pointer to a <see cref="CFlatException"/> that caused the current exception.
+/// </param>
+CFlatException *Exception_New_CString(
+    ExceptionType type,
+    const char *userMessage,
+    const char *file,
+    int line,
+    CFlatException *innerException);
+
+/// <summary>
 /// Initializes a <see cref="CFlatException"/>.
 /// </summary>
 /// <exception cref="::ArgumentNullException"><paramref name="ex"/> is <see cref="null"/>.</exception>
@@ -129,6 +150,22 @@ const struct String *Exception_GetName(const CFlatException *ex);
 /// <returns>The <see cref="ExceptionType"/> of the <see cref="CFlatException"/>.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="ex"/> is <see cref="null"/>.</exception>
 ExceptionType Exception_GetType(const CFlatException *ex);
+
+/// <summary>
+/// Gets the path of the file in which the specified <see cref="CFlatException"/> was raised.
+/// </summary>
+/// <param name="ex">Pointer to a <see cref="CFlatException"/>.</param>
+/// <returns>The path of the file in which <paramref name="ex"/> was raised.</returns>
+/// <exception cref="::ArgumentNullException"><paramref name="ex"/> is <see cref="null"/>.</exception>
+const char *Exception_GetFile(const CFlatException *ex);
+
+/// <summary>
+/// Gets the line number at which the specified <see cref="CFlatException"/> was raised.
+/// </summary>
+/// <param name="ex">Pointer to a <see cref="CFlatException"/>.</param>
+/// <returns>The line number where <paramref name="ex"/> was raised.</returns>
+/// <exception cref="::ArgumentNullException"><paramref name="ex"/> is <see cref="null"/>.</exception>
+int Exception_GetLine(const CFlatException *ex);
 
 #ifdef CFLAT_CORE_INTERNAL
  #include "CFlat/CFlatException.internal.h"

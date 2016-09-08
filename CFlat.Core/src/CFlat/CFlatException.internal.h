@@ -24,7 +24,6 @@
  #error CFlatException.internal.h should not be included directly.
 #endif
 
-#include "CFlat/CFlatException.h"
 #include "CFlat/ExceptionType.h"
 #include "CFlat/Object.h"
 

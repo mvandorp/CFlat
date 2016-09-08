@@ -55,6 +55,28 @@ public CFlatException *Exception_New(
     return ex;
 }
 
+public CFlatException *Exception_New_CString(
+    ExceptionType type,
+    const char *userMessage,
+    const char *file,
+    int line,
+    CFlatException *innerException)
+{
+    CFlatException *ex = null;
+
+    String *message = String_New(userMessage);
+
+    try {
+        ex = Exception_New(type, message, file, line, innerException);
+    }
+    finally {
+        release(message);
+    }
+    endtry;
+
+    return ex;
+}
+
 public void Exception_Constructor(
     CFlatException *ex,
     ExceptionType type,
@@ -120,4 +142,18 @@ public ExceptionType Exception_GetType(const CFlatException *ex)
     Validate_NotNull(ex);
 
     return ex->Type;
+}
+
+public const char *Exception_GetFile(const CFlatException *ex)
+{
+    Validate_NotNull(ex);
+
+    return ex->File;
+}
+
+public int Exception_GetLine(const CFlatException *ex)
+{
+    Validate_NotNull(ex);
+
+    return ex->Line;
 }
