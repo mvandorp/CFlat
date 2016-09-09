@@ -25,7 +25,7 @@
 #endif
 
 #include "CFlat.h"
-#include "CFlat/Object.h"
+#include "CFlat/Collections/IEnumerable.h"
 #include "CFlat/Language/Integer.h"
 
 /* Macros */
@@ -43,11 +43,11 @@
 /// Initializer for a <see cref="String"/> that initializes the value to the given value string literal.
 /// </summary>
 /// <param name="value">A string literal.</param>
-#define CFLAT_STRING_LITERAL(value)                                             \
-{                                                                               \
-    Object_const_Initializer((const ObjectVTable*)&String_VTableNoDestructor),  \
-    CFLAT_STRING_LITERAL_LENGTH(value),                                         \
-    value                                                                       \
+#define CFLAT_STRING_LITERAL(value)                                                 \
+{                                                                                   \
+    IEnumerable_const_Initializer((const ObjectVTable*)&String_VTableNoDestructor), \
+    CFLAT_STRING_LITERAL_LENGTH(value),                                             \
+    value                                                                           \
 }
 
 /* Types */
@@ -58,7 +58,7 @@ struct String {
     /// <summary>
     /// The base class of the string.
     /// </summary>
-    Object Base;
+    IEnumerable Base;
     /// <summary>
     /// The length of the string.
     /// </summary>
@@ -73,13 +73,13 @@ struct String {
 /// <summary>
 /// The virtual method table for the <see cref="String"/> class.
 /// </summary>
-internal extern const ObjectVTable String_VTable;
+internal extern const IEnumerableVTable String_VTable;
 
 /// <summary>
 /// The virtual method table for the <see cref="String"/> class, without a destructor set so that the internal
 /// null-terminated string is not automatically destroyed.
 /// </summary>
-internal extern const ObjectVTable String_VTableNoDestructor;
+internal extern const IEnumerableVTable String_VTableNoDestructor;
 
 /* Functions */
 /// <summary>

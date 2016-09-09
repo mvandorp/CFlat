@@ -321,7 +321,7 @@ public String *StringBuilder_DeleteAndToString(StringBuilder *sb)
         String_WrapCString(buffer, str);
 
         // Restore the vtable and deallocator of the String.
-        Object_SetVTable(str, &String_VTable);
+        Object_SetVTable(str, (const ObjectVTable*)&String_VTable);
         Object_SetDeallocator(str, Memory_Deallocate);
     }
     catch (Exception) {

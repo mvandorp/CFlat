@@ -1420,6 +1420,16 @@ String *String_TrimEnd(const String *str, const char *trimChars);
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 String *String_TrimStart(const String *str, const char *trimChars);
 
+/* IEnumerable */
+/// <summary>
+/// Returns a pointer to an <see cref="IEnumerator"/> that iterates through the characters of the given
+/// <see cref="String"/>.
+/// </summary>
+/// <param name="str">Pointer to a <see cref="String"/>.</param>
+/// <returns>An <see cref="IEnumerator"/> that iterates through the characters of a <see cref="String"/>.</returns>
+/// <exception cref="::ArgumentNullException"><paramref name="str"/> is <see cref="null"/>.</exception>
+struct IEnumerator *String_GetEnumerator(const String *str);
+
 #ifdef CFLAT_CORE_INTERNAL
  #include "CFlat/String.internal.h"
 #endif

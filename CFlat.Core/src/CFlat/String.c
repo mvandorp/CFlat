@@ -25,6 +25,7 @@
 #include "CFlat/Memory.h"
 #include "CFlat/Object.h"
 #include "CFlat/StringBuilder.h"
+#include "CFlat/StringEnumerator.h"
 #include "CFlat/Validate.h"
 #include "CFlat/Collections/IEnumerable.h"
 #include "CFlat/Collections/IEnumerator.h"
@@ -47,13 +48,17 @@ public String * const String_Empty = &Empty;
 /// <summary>
 /// The virtual method table for the <see cref="String"/> class.
 /// </summary>
-internal const ObjectVTable String_VTable = ObjectVTable_Initializer((DestructorFunc)String_Destructor);
+internal const IEnumerableVTable String_VTable = IEnumerableVTable_Initializer(
+    (DestructorFunc)String_Destructor,
+    (IEnumerable_GetEnumeratorFunc)String_GetEnumerator);
 
 /// <summary>
 /// The virtual method table for the <see cref="String"/> class, without a destructor set so that the internal
 /// null-terminated string is not automatically destroyed.
 /// </summary>
-internal const ObjectVTable String_VTableNoDestructor = ObjectVTable_Initializer(null);
+internal const IEnumerableVTable String_VTableNoDestructor = IEnumerableVTable_Initializer(
+    null,
+    (IEnumerable_GetEnumeratorFunc)String_GetEnumerator);
 
 /**************************************/
 /* Private functions                  */
@@ -108,7 +113,7 @@ public void String_Constructor(String *str, const char *value)
 {
     Validate_NotNull(str);
 
-    Object_Constructor(str, &String_VTable);
+    Object_Constructor(str, (const ObjectVTable*)&String_VTable);
 
     if (value == null) {
         str->Length = 0;
@@ -124,7 +129,7 @@ public void String_Constructor_Substring(String *str, const char *value, uintsiz
 {
     Validate_NotNull(str);
 
-    Object_Constructor(str, &String_VTable);
+    Object_Constructor(str, (const ObjectVTable*)&String_VTable);
 
     if (length == 0) {
         str->Length = 0;
@@ -1250,6 +1255,12 @@ public String *String_TrimStart(const String *str, const char *trimChars)
     return Trim(str, trimChars, 0);
 }
 
+/* IEnumerable */
+public IEnumerator *String_GetEnumerator(const String *str)
+{
+    return StringEnumerator_New(str);
+}
+
 /**************************************/
 /* Internal function definitions      */
 /**************************************/
@@ -1266,7 +1277,7 @@ internal String *String_WrapCString(const char *value, String *buffer)
         // Otherwise, initialize the buffer.
 
         // Do not set the destructor to prevent the value from being deallocated.
-        Object_Constructor(buffer, &String_VTableNoDestructor);
+        Object_Constructor(buffer, (const ObjectVTable*)&String_VTableNoDestructor);
 
         buffer->Length = CString_Length(value);
         buffer->Value = value;
