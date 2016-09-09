@@ -27,6 +27,18 @@
 
 /* Macros */
 /// <summary>
+/// Initializer for an <see cref="IEnumerator"/>.
+/// </summary>
+/// <param name="vtable">Pointer to a virtual method table.</param>
+#define IEnumerator_Initializer(vtable) { Object_Initializer(vtable)
+
+/// <summary>
+/// Initializer for a const <see cref="IEnumerator"/>.
+/// </summary>
+/// <param name="vtable">Pointer to a virtual method table.</param>
+#define IEnumerator_const_Initializer(vtable) { Object_const_Initializer(vtable) }
+
+/// <summary>
 /// Initializer for an <see cref="IEnumertorVTable"/>.
 /// </summary>
 /// <param name="destructor">A <see cref="DestructorFunc"/>.</param>

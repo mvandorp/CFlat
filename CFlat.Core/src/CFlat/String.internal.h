@@ -43,11 +43,11 @@
 /// Initializer for a <see cref="String"/> that initializes the value to the given value string literal.
 /// </summary>
 /// <param name="value">A string literal.</param>
-#define CFLAT_STRING_LITERAL(value)                             \
-{                                                               \
-    CFLAT_CONST_OBJECT_INITIALIZER(&String_VTableNoDestructor), \
-    CFLAT_STRING_LITERAL_LENGTH(value),                         \
-    value                                                       \
+#define CFLAT_STRING_LITERAL(value)                                             \
+{                                                                               \
+    Object_const_Initializer((const ObjectVTable*)&String_VTableNoDestructor),  \
+    CFLAT_STRING_LITERAL_LENGTH(value),                                         \
+    value                                                                       \
 }
 
 /* Types */

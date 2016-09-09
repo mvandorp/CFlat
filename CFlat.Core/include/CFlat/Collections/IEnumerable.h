@@ -29,6 +29,18 @@ struct IEnumerator;
 
 /* Macros */
 /// <summary>
+/// Initializer for an <see cref="IEnumerable"/>.
+/// </summary>
+/// <param name="vtable">Pointer to a virtual method table.</param>
+#define IEnumerable_Initializer(vtable) { Object_Initializer(vtable)
+
+/// <summary>
+/// Initializer for a const <see cref="IEnumerable"/>.
+/// </summary>
+/// <param name="vtable">Pointer to a virtual method table.</param>
+#define IEnumerable_const_Initializer(vtable) { Object_const_Initializer(vtable) }
+
+/// <summary>
 /// Initializer for an <see cref="IEnumerableVTable"/>.
 /// </summary>
 /// <param name="destructor">A <see cref="DestructorFunc"/>.</param>

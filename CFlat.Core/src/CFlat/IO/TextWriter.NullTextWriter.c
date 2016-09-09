@@ -26,10 +26,10 @@
 /// <summary>
 /// Initializer for a <see cref="TextWriter"/> with no backing store.
 /// </summary>
-#define NullTextWriter_Initializer()                                                \
-{                                                                                   \
-    CFLAT_CONST_OBJECT_INITIALIZER((const ObjectVTable*)&NullTextWriter_VTable),    \
-    false                                                                           \
+#define NullTextWriter_Initializer()                                        \
+{                                                                           \
+    Object_const_Initializer((const ObjectVTable*)&NullTextWriter_VTable),  \
+    false                                                                   \
 }
 
 /**************************************/

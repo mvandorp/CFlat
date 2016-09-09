@@ -26,7 +26,7 @@
 /// <summary>
 /// Initializer for a <see cref="TextReader"/> with no backing store.
 /// </summary>
-#define NullTextReader_Initializer() { CFLAT_CONST_OBJECT_INITIALIZER((const ObjectVTable*)&NullTextReader_VTable) }
+#define NullTextReader_Initializer() { Object_const_Initializer((const ObjectVTable*)&NullTextReader_VTable) }
 
 /**************************************/
 /* Private functions                  */

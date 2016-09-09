@@ -26,7 +26,7 @@
 /// <summary>
 /// Initializer for a <see cref="Stream"/> with no backing store.
 /// </summary>
-#define NullStream_Initializer() { CFLAT_CONST_OBJECT_INITIALIZER((const ObjectVTable*)&NullStream_VTable) }
+#define NullStream_Initializer() { Object_const_Initializer((const ObjectVTable*)&NullStream_VTable) }
 
 /**************************************/
 /* Private functions                  */

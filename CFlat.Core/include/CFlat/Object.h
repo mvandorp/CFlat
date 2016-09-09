@@ -30,13 +30,13 @@
 /// Initializer for an <see cref="Object"/>.
 /// </summary>
 /// <param name="vtable">Pointer to a virtual method table.</param>
-#define CFLAT_OBJECT_INITIALIZER(vtable) { 1, null, vtable }
+#define Object_Initializer(vtable) { 1, null, vtable }
 
 /// <summary>
 /// Initializer for a const <see cref="Object"/>.
 /// </summary>
 /// <param name="vtable">Pointer to a virtual method table.</param>
-#define CFLAT_CONST_OBJECT_INITIALIZER(vtable) { uintsize_MaxValue, null, vtable }
+#define Object_const_Initializer(vtable) { uintsize_MaxValue, null, vtable }
 
 /// <summary>
 /// Initializer for an <see cref="ObjectVTable"/>.
