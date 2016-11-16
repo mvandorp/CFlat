@@ -24,10 +24,7 @@
  #error ObjectList.internal.h should not be included directly.
 #endif
 
-#include "CFlat/Object.h"
-#include "CFlat/Collections/IEnumerable.h"
 #include "CFlat/Collections/PointerList.h"
-#include "CFlat/Language/Integer.h"
 #include "CFlat/Language/Keywords.h"
 
 /* Types */

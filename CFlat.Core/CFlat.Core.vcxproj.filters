@@ -126,9 +126,6 @@
     <ClInclude Include="src\CFlat\Collections\PointerList.internal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\CFlat\Collections\ListEnumerator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\CFlat\Collections\ObjectList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -240,6 +237,39 @@
     <ClInclude Include="src\CFlat\Collections\ObjectArray.internal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\CFlat\Collections\ListEnumerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CFlat\Collections\Enumerable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CFlat\Collections\Enumerable.ConcatMany.Enumerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CFlat\Collections\Enumerable.ConcatMany.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CFlat\Collections\Enumerable.ConcatTwo.Enumerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CFlat\Collections\Enumerable.ConcatTwo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CFlat\Collections\Enumerable.Empty.Enumerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CFlat\Collections\Enumerable.Empty.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CFlat\Collections\Enumerable.SingleObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CFlat\Collections\Enumerable.SinglePointer.Enumerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CFlat\Collections\Enumerable.SinglePointer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CFlat\CString.c">
@@ -309,9 +339,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CFlat\Collections\PointerList.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CFlat\Collections\ListEnumerator.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CFlat\Collections\ObjectList.c">
@@ -417,6 +444,42 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CFlat\Collections\ObjectArray.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\Collections\ListEnumerator.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\Collections\Enumerable.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\Collections\Enumerable.ConcatMany.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\Collections\Enumerable.ConcatMany.Enumerator.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\Collections\Enumerable.ConcatTwo.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\Collections\Enumerable.ConcatTwo.Enumerator.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\Collections\Enumerable.Empty.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\Collections\Enumerable.Empty.Enumerator.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\Collections\Enumerable.SingleObject.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\Collections\Enumerable.SinglePointer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\Collections\Enumerable.SinglePointer.Enumerator.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\Language\Functions.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

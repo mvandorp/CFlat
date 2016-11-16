@@ -96,8 +96,8 @@ private void Constructor(
     IEnumerator_Constructor((IEnumerator*)enumerator, &VTable);
 
     enumerator->List = retain_const(list);
-    enumerator->Index = 0;
     enumerator->Current = null;
+    enumerator->Index = 0;
     enumerator->Version = getVersion(list);
     enumerator->GetVersion = getVersion;
 }
@@ -106,7 +106,7 @@ private void Destructor(ListEnumerator *enumerator)
 {
     Validate_NotNull(enumerator);
 
-    release(((ListEnumerator*)enumerator)->List);
+    release(enumerator->List);
 }
 
 private void *GetCurrent(const ListEnumerator *enumerator)
@@ -151,6 +151,6 @@ private void Reset(ListEnumerator *enumerator)
         enumerator->Version == enumerator->GetVersion(enumerator->List),
         "Collection was modified; enumeration operation may not execute.");
 
-    enumerator->Index = 0;
     enumerator->Current = null;
+    enumerator->Index = 0;
 }

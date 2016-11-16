@@ -14,6 +14,7 @@
     <ClInclude Include="include\CFlat.h" />
     <ClInclude Include="include\CFlat\CFlatException.h" />
     <ClInclude Include="include\CFlat\Collections\Array.h" />
+    <ClInclude Include="include\CFlat\Collections\Enumerable.h" />
     <ClInclude Include="include\CFlat\Collections\ICollection.h" />
     <ClInclude Include="include\CFlat\Collections\IEnumerable.h" />
     <ClInclude Include="include\CFlat\Collections\IEnumerator.h" />
@@ -61,12 +62,21 @@
     <ClInclude Include="include\CFlat\Validate.h" />
     <ClInclude Include="src\CFlat\CFlatException.internal.h" />
     <ClInclude Include="src\CFlat\Collections\Array.internal.h" />
+    <ClInclude Include="src\CFlat\Collections\Enumerable.ConcatMany.h" />
+    <ClInclude Include="src\CFlat\Collections\Enumerable.ConcatTwo.h" />
+    <ClInclude Include="src\CFlat\Collections\Enumerable.ConcatMany.Enumerator.h" />
+    <ClInclude Include="src\CFlat\Collections\Enumerable.ConcatTwo.Enumerator.h" />
+    <ClInclude Include="src\CFlat\Collections\Enumerable.Empty.Enumerator.h" />
+    <ClInclude Include="src\CFlat\Collections\Enumerable.Empty.h" />
     <ClInclude Include="src\CFlat\Collections\List.internal.h" />
     <ClInclude Include="src\CFlat\Collections\ListEnumerator.h" />
     <ClInclude Include="src\CFlat\Collections\ObjectArray.internal.h" />
     <ClInclude Include="src\CFlat\Collections\ObjectList.internal.h" />
     <ClInclude Include="src\CFlat\Collections\PointerArray.internal.h" />
     <ClInclude Include="src\CFlat\Collections\PointerList.internal.h" />
+    <ClInclude Include="src\CFlat\Collections\Enumerable.SingleObject.h" />
+    <ClInclude Include="src\CFlat\Collections\Enumerable.SinglePointer.h" />
+    <ClInclude Include="src\CFlat\Collections\Enumerable.SinglePointer.Enumerator.h" />
     <ClInclude Include="src\CFlat\Console.internal.h" />
     <ClInclude Include="src\CFlat\const_cast.h" />
     <ClInclude Include="src\CFlat\Environment.internal.h" />
@@ -85,8 +95,15 @@
   <ItemGroup>
     <ClCompile Include="src\CFlat\CFlatException.c" />
     <ClCompile Include="src\CFlat\Collections\Array.c" />
+    <ClCompile Include="src\CFlat\Collections\Enumerable.c" />
+    <ClCompile Include="src\CFlat\Collections\Enumerable.ConcatMany.c" />
+    <ClCompile Include="src\CFlat\Collections\Enumerable.ConcatTwo.c" />
+    <ClCompile Include="src\CFlat\Collections\Enumerable.ConcatMany.Enumerator.c" />
+    <ClCompile Include="src\CFlat\Collections\Enumerable.ConcatTwo.Enumerator.c" />
     <ClCompile Include="src\CFlat\Collections\ICollection.c" />
     <ClCompile Include="src\CFlat\Collections\IEnumerable.c" />
+    <ClCompile Include="src\CFlat\Collections\Enumerable.Empty.c" />
+    <ClCompile Include="src\CFlat\Collections\Enumerable.Empty.Enumerator.c" />
     <ClCompile Include="src\CFlat\Collections\IEnumerator.c" />
     <ClCompile Include="src\CFlat\Collections\IList.c" />
     <ClCompile Include="src\CFlat\Collections\IReadOnlyCollection.c" />
@@ -97,6 +114,9 @@
     <ClCompile Include="src\CFlat\Collections\ObjectList.c" />
     <ClCompile Include="src\CFlat\Collections\PointerArray.c" />
     <ClCompile Include="src\CFlat\Collections\PointerList.c" />
+    <ClCompile Include="src\CFlat\Collections\Enumerable.SingleObject.c" />
+    <ClCompile Include="src\CFlat\Collections\Enumerable.SinglePointer.c" />
+    <ClCompile Include="src\CFlat\Collections\Enumerable.SinglePointer.Enumerator.c" />
     <ClCompile Include="src\CFlat\Console.c" />
     <ClCompile Include="src\CFlat\Console.ConsoleStream.c" />
     <ClCompile Include="src\CFlat\const_cast.c" />
@@ -122,6 +142,7 @@
     <ClCompile Include="src\CFlat\Language\Double.c" />
     <ClCompile Include="src\CFlat\Language\Exceptions.c" />
     <ClCompile Include="src\CFlat\Language\Float.c" />
+    <ClCompile Include="src\CFlat\Language\Functions.c" />
     <ClCompile Include="src\CFlat\Language\Integer.c" />
     <ClCompile Include="src\CFlat\Math.c" />
     <ClCompile Include="src\CFlat\Number.c" />

@@ -25,9 +25,7 @@
 #endif
 
 #include "CFlat/Object.h"
-#include "CFlat/Collections/IEnumerable.h"
 #include "CFlat/Collections/List.h"
-#include "CFlat/Language/Integer.h"
 #include "CFlat/Language/Keywords.h"
 
 /* Types */

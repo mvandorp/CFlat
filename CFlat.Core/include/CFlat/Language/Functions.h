@@ -24,6 +24,17 @@
 
 #include "CFlat/Language/Bool.h"
 
+/* Types */
+/// <summary>
+/// A function that determines whether the given object meets certain criteria.
+/// </summary>
+/// <param name="x">The object to compare against the criteria.</param>
+/// <returns>
+///     <see cref="true"/> if <paramref name="x"/> meets the criteria set by the predicate;
+///     otherwise <see cref="false"/>.
+/// </returns>
+typedef bool (*Predicate)(const void *x);
+
 /// <summary>
 /// A function that determines whether two given objects compare equal.
 /// </summary>
@@ -31,5 +42,26 @@
 /// <param name="x">The second object to compare.</param>
 /// <returns><see cref="true"/> if the objects compare equal; otherwise, <see cref="false"/>.</returns>
 typedef bool (*EqualityPredicate)(const void *x, const void *y);
+
+/* Functions */
+/// <summary>
+/// Determines whether the given pointer is <see cref="null"/>.
+/// </summary>
+/// <param name="x">The object to test.</param>
+/// <returns>
+///     <see cref="true"/> if <paramref name="x"/> is <see cref="null"/>;
+///     otherwise <see cref="false"/>.
+/// </returns>
+bool Predicate_IsNull(const void *x);
+
+/// <summary>
+/// Determines whether the given pointer is <see cref="null"/>.
+/// </summary>
+/// <param name="x">The object to test.</param>
+/// <returns>
+///     <see cref="true"/> if <paramref name="x"/> is not <see cref="null"/>;
+///     otherwise <see cref="false"/>.
+/// </returns>
+bool Predicate_IsNotNull(const void *x);
 
 #endif
