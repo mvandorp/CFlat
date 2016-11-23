@@ -81,14 +81,14 @@ typedef void *(*IEnumerator_GetCurrentFunc)(const IEnumerator *enumerator);
 ///     <see cref="true"/> if the enumerator was successfully advanced to the next element;
 ///     <see cref="false"/> if the enumerator passed the end of the collection.
 /// </returns>
-typedef bool(*IEnumerator_MoveNextFunc)(IEnumerator *enumerator);
+typedef bool (*IEnumerator_MoveNextFunc)(IEnumerator *enumerator);
 
 /// <summary>
 /// A function that resets an <see cref="IEnumerator"/> to its initial position, which is before the first element in
 /// the collection.
 /// </summary>
 /// <param name="enumerator">Pointer to an <see cref="IEnumerator"/>.</param>
-typedef void(*IEnumerator_ResetFunc)(IEnumerator *enumerator);
+typedef void (*IEnumerator_ResetFunc)(IEnumerator *enumerator);
 
 /// <summary>
 /// A virtual method table for the <see cref="IEnumerator"/> class.

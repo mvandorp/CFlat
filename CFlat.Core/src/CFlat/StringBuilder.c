@@ -21,7 +21,6 @@
 
 #include "CFlat.h"
 #include "CFlat/CString.h"
-#include "CFlat/Math.h"
 #include "CFlat/Memory.h"
 #include "CFlat/Object.h"
 #include "CFlat/String.h"
@@ -457,7 +456,7 @@ public void StringBuilder_ReplaceCString(StringBuilder *sb, const char *oldValue
     }
 }
 
-public void StringBuilder_ReplaceString(StringBuilder *sb, const struct String *oldValue, const struct String *newValue)
+public void StringBuilder_ReplaceString(StringBuilder *sb, const String *oldValue, const String *newValue)
 {
     Validate_NotNull(sb);
     Validate_NotNull(oldValue);

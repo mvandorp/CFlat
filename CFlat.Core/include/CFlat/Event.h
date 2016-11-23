@@ -43,7 +43,7 @@ typedef void *Event;
 /// </summary>
 /// <param name="handlerData">Pointer to data associated with the subscriber itsself, or <see cref="null"/>.</param>
 /// <param name="args">Pointer to event data, or <see cref="null"/>.</param>
-typedef void(*EventHandler)(void *handlerData, void *args);
+typedef void (*EventHandler)(void *handlerData, void *args);
 
 /* Constants */
 /// <summary>

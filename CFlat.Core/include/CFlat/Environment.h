@@ -28,7 +28,7 @@
 /// <summary>
 /// A function that performs clean up of static resources.
 /// </summary>
-typedef void(*StaticDestructorFunc)(void);
+typedef void (*StaticDestructorFunc)(void);
 
 /* Events */
 /// <summary>

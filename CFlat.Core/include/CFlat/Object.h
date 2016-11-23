@@ -22,7 +22,6 @@
 #ifndef CFLAT_CORE_OBJECT_H
 #define CFLAT_CORE_OBJECT_H
 
-#include "CFlat/Language/Bool.h"
 #include "CFlat/Language/Integer.h"
 
 /* Macros */
@@ -52,13 +51,13 @@
 /// A function that performs clean up of an object before it gets deallocated.
 /// </summary>
 /// <param name="obj">Pointer to the object to clean up.</param>
-typedef void(*DestructorFunc)(void *obj);
+typedef void (*DestructorFunc)(void *obj);
 
 /// <summary>
 /// A function that deallocates an object.
 /// </summary>
 /// <param name="obj">Pointer to the object to deallocate.</param>
-typedef void(*DeallocatorFunc)(const void *obj);
+typedef void (*DeallocatorFunc)(const void *obj);
 
 /// <summary>
 /// A virtual method table for the <see cref="Object"/> class.

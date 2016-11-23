@@ -21,7 +21,6 @@
 
 #include "CFlat.h"
 #include "CFlat/const_cast.h"
-#include "CFlat/Memory.h"
 #include "CFlat/Validate.h"
 
 /**************************************/
