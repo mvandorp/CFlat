@@ -116,12 +116,12 @@ public void String_Constructor(String *str, const char *value)
     Object_Constructor(str, (const ObjectVTable*)&String_VTable);
 
     if (value == null) {
-        str->Length = 0;
-        str->Value = "";
+        *(uintsize*)const_cast(&str->Length) = 0;
+        *(const char**)const_cast(&str->Value) = "";
     }
     else {
-        str->Length = CString_Length(value);
-        str->Value = CString_Copy(value);
+        *(uintsize*)const_cast(&str->Length) = CString_Length(value);
+        *(const char**)const_cast(&str->Value) = CString_Copy(value);
     }
 }
 
@@ -132,14 +132,14 @@ public void String_Constructor_Substring(String *str, const char *value, uintsiz
     Object_Constructor(str, (const ObjectVTable*)&String_VTable);
 
     if (length == 0) {
-        str->Length = 0;
-        str->Value = "";
+        *(uintsize*)const_cast(&str->Length) = 0;
+        *(const char**)const_cast(&str->Value) = "";
     }
     else {
         Validate_NotNull(value);
 
-        str->Length = length;
-        str->Value = CString_CSubstring_WithLength(value, startIndex, length);
+        *(uintsize*)const_cast(&str->Length) = length;
+        *(const char**)const_cast(&str->Value) = CString_CSubstring_WithLength(value, startIndex, length);
     }
 }
 
@@ -1279,8 +1279,8 @@ internal String *String_WrapCString(const char *value, String *buffer)
         // Do not set the destructor to prevent the value from being deallocated.
         Object_Constructor(buffer, (const ObjectVTable*)&String_VTableNoDestructor);
 
-        buffer->Length = CString_Length(value);
-        buffer->Value = value;
+        *(uintsize*)const_cast(&buffer->Length) = CString_Length(value);
+        *(const char**)const_cast(&buffer->Value) = value;
 
         return buffer;
     }

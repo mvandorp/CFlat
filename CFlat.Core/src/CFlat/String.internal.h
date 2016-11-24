@@ -58,15 +58,15 @@ struct String {
     /// <summary>
     /// The base class of the string.
     /// </summary>
-    IEnumerable Base;
+    const IEnumerable Base;
     /// <summary>
     /// The length of the string.
     /// </summary>
-    uintsize Length;
+    const uintsize Length;
     /// <summary>
     /// Pointer to the null-terminated string that represents the value of the string.
     /// </summary>
-    const char* Value;
+    const char * const Value;
 };
 
 /* Constants */
