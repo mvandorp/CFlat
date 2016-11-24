@@ -52,7 +52,7 @@ private override void StreamWriter_WriteBuffer(
 /// <summary>
 /// The default string representation of a <see cref="StreamWriter"/>.
 /// </summary>
-private String ClassName = CFLAT_STRING_LITERAL("StreamWriter");
+private String ClassName = String_Initializer("StreamWriter");
 
 /// <summary>
 /// The virtual method table for the <see cref="ConsoleStream"/> class.

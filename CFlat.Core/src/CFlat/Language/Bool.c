@@ -26,8 +26,8 @@
 
 /* Private constants */
 
-private String True = CFLAT_STRING_LITERAL("true");
-private String False = CFLAT_STRING_LITERAL("false");
+private String True = String_Initializer("true");
+private String False = String_Initializer("false");
 
 /**************************************/
 /* Public function definitions        */

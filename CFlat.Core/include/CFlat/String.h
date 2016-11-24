@@ -22,6 +22,7 @@
 #ifndef CFLAT_CORE_STRING_H
 #define CFLAT_CORE_STRING_H
 
+#include "CFlat/Collections/IEnumerable.h"
 #include "CFlat/Language/Bool.h"
 #include "CFlat/Language/Integer.h"
 #include "CFlat/Language/VarArgs.h"
@@ -29,11 +30,58 @@
 /* Forward declarations */
 struct IEnumerable;
 
+/* Macros */
+/// <summary>
+/// Evaluates to the size of the given string literal.
+/// </summary>
+/// <remarks>
+///     <paramref name="value"/> must be an actual string literal. Passing <see cref="null"/> will yield an incorrect
+///     result.
+/// </remarks>
+/// <param name="value">A string literal.</param>
+#define __CFLAT_STRING_LITERAL_LENGTH(value) (sizeof(value) - 1)
+
+/// <summary>
+/// Initializer for a <see cref="String"/> that initializes the value to the given value string literal.
+/// </summary>
+/// <param name="value">A string literal.</param>
+#define String_Initializer(value)                                                   \
+{                                                                                   \
+    IEnumerable_const_Initializer((const ObjectVTable*)&String_VTableNoDestructor), \
+    __CFLAT_STRING_LITERAL_LENGTH(value),                                           \
+    value                                                                           \
+}
+
+/* Constants */
+/// <summary>
+/// The virtual method table for the <see cref="String"/> class.
+/// </summary>
+extern const IEnumerableVTable String_VTable;
+
+/// <summary>
+/// The virtual method table for the <see cref="String"/> class, without a destructor set so that the internal
+/// null-terminated string is not automatically destroyed.
+/// </summary>
+extern const IEnumerableVTable String_VTableNoDestructor;
+
 /* Types */
 /// <summary>
 /// Represents text as an immutable string of characters.
 /// </summary>
-typedef struct String String;
+typedef struct String {
+    /// <summary>
+    /// The base class of the string.
+    /// </summary>
+    const IEnumerable Base;
+    /// <summary>
+    /// The length of the string.
+    /// </summary>
+    const uintsize Length;
+    /// <summary>
+    /// Pointer to the null-terminated string that represents the value of the string.
+    /// </summary>
+    const char * const Value;
+} String;
 
 /// <summary>
 /// Specifies how a string should be split.

@@ -24,62 +24,8 @@
  #error String.internal.h should not be included directly.
 #endif
 
-#include "CFlat.h"
-#include "CFlat/Collections/IEnumerable.h"
-#include "CFlat/Language/Integer.h"
-
-/* Macros */
-/// <summary>
-/// Evaluates to the size of the given string literal.
-/// </summary>
-/// <remarks>
-///     <paramref name="value"/> must be an actual string literal. Passing <see cref="null"/> will yield an incorrect
-///     result.
-/// </remarks>
-/// <param name="value">A string literal.</param>
-#define CFLAT_STRING_LITERAL_LENGTH(value) (sizeof(value) - 1)
-
-/// <summary>
-/// Initializer for a <see cref="String"/> that initializes the value to the given value string literal.
-/// </summary>
-/// <param name="value">A string literal.</param>
-#define CFLAT_STRING_LITERAL(value)                                                 \
-{                                                                                   \
-    IEnumerable_const_Initializer((const ObjectVTable*)&String_VTableNoDestructor), \
-    CFLAT_STRING_LITERAL_LENGTH(value),                                             \
-    value                                                                           \
-}
-
-/* Types */
-/// <summary>
-/// Represents text as an immutable string of characters.
-/// </summary>
-struct String {
-    /// <summary>
-    /// The base class of the string.
-    /// </summary>
-    const IEnumerable Base;
-    /// <summary>
-    /// The length of the string.
-    /// </summary>
-    const uintsize Length;
-    /// <summary>
-    /// Pointer to the null-terminated string that represents the value of the string.
-    /// </summary>
-    const char * const Value;
-};
-
-/* Constants */
-/// <summary>
-/// The virtual method table for the <see cref="String"/> class.
-/// </summary>
-internal extern const IEnumerableVTable String_VTable;
-
-/// <summary>
-/// The virtual method table for the <see cref="String"/> class, without a destructor set so that the internal
-/// null-terminated string is not automatically destroyed.
-/// </summary>
-internal extern const IEnumerableVTable String_VTableNoDestructor;
+/* Forward declarations */
+struct String;
 
 /* Functions */
 /// <summary>

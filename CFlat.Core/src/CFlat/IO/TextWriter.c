@@ -36,7 +36,7 @@ private const uintsize DefaultBufferSize = 81920;
 /// <summary>
 /// The default string representation of a <see cref="TextWriter"/>.
 /// </summary>
-private String ClassName = CFLAT_STRING_LITERAL("TextWriter");
+private String ClassName = String_Initializer("TextWriter");
 
  /**************************************/
 /* Private functions                  */

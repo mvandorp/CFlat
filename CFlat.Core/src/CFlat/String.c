@@ -36,7 +36,7 @@
 /// <summary>
 /// Represents an empty string.
 /// </summary>
-private String Empty = CFLAT_STRING_LITERAL("");
+private String Empty = String_Initializer("");
 
 /* Public constants */
 /// <summary>
@@ -44,11 +44,10 @@ private String Empty = CFLAT_STRING_LITERAL("");
 /// </summary>
 public String * const String_Empty = &Empty;
 
-/* Internal constants */
 /// <summary>
 /// The virtual method table for the <see cref="String"/> class.
 /// </summary>
-internal const IEnumerableVTable String_VTable = IEnumerableVTable_Initializer(
+public const IEnumerableVTable String_VTable = IEnumerableVTable_Initializer(
     (DestructorFunc)String_Destructor,
     (IEnumerable_GetEnumeratorFunc)String_GetEnumerator);
 
@@ -56,7 +55,7 @@ internal const IEnumerableVTable String_VTable = IEnumerableVTable_Initializer(
 /// The virtual method table for the <see cref="String"/> class, without a destructor set so that the internal
 /// null-terminated string is not automatically destroyed.
 /// </summary>
-internal const IEnumerableVTable String_VTableNoDestructor = IEnumerableVTable_Initializer(
+public const IEnumerableVTable String_VTableNoDestructor = IEnumerableVTable_Initializer(
     null,
     (IEnumerable_GetEnumeratorFunc)String_GetEnumerator);
 

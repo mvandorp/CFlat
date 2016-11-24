@@ -44,13 +44,13 @@
 
 // Define strings containing the exception names.
 #define EXCEPTION(name, message) \
-private const String name##Name = CFLAT_STRING_LITERAL(#name);
+private const String name##Name = String_Initializer(#name);
 EXCEPTIONS
 #undef EXCEPTION
 
 // Define strings containing the exception messages.
 #define EXCEPTION(name, message) \
-private const String name##Message = CFLAT_STRING_LITERAL(message);
+private const String name##Message = String_Initializer(message);
 EXCEPTIONS
 #undef EXCEPTION
 
