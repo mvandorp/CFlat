@@ -28,6 +28,7 @@
     EXCEPTION(SystemException,              "System error.")                                                        \
     EXCEPTION(ArgumentException,            "Value does not fall within the expected range.")                       \
     EXCEPTION(IOException,                  "I/O error occurred.")                                                  \
+    EXCEPTION(ArithmeticException,          "Arithmetic error.")                                                    \
     EXCEPTION(IndexOutOfRangeException,     "Index was outside the bounds of the array.")                           \
     EXCEPTION(NullReferenceException,       "Object reference not set to an instance of an object.")                \
     EXCEPTION(AccessViolationException,                                                                             \
@@ -39,7 +40,9 @@
     EXCEPTION(FileNotFoundException,        "Unable to find the specified file.")                                   \
     EXCEPTION(FormatException,              "One of the identified items was in an invalid format.")                \
     EXCEPTION(NotImplementedException,      "The method or operation is not implemented.")                          \
-    EXCEPTION(NotSupportedException,        "The method or operation is not suppoted.")
+    EXCEPTION(NotSupportedException,        "The method or operation is not suppoted.")                             \
+    EXCEPTION(OverflowException,            "Arithmetic operation resulted in an overflow.")                        \
+    EXCEPTION(DivideByZeroException,        "Attempted to divide by zero.")
 #undef EXCEPTION
 
 // Define strings containing the exception names.

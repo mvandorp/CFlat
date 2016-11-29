@@ -1052,6 +1052,24 @@ typedef CFLAT_INTFSIZE intfsize;
 /* Functions */
 #ifdef CFLAT_INTPTR
 /// <summary>
+/// Returns the sum of two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The sum of two numbers.</returns>
+/// <exception cref="::OverflowException">The addition results in an overflow.</exception>
+intptr intptr_CheckedAddition(intptr x, intptr y);
+
+/// <summary>
+/// Returns the difference between two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The difference between two numbers.</returns>
+/// <exception cref="::OverflowException">The subtraction results in an overflow.</exception>
+intptr intptr_CheckedSubtraction(intptr x, intptr y);
+
+/// <summary>
 /// Converts the given number to a string representation.
 /// </summary>
 /// <param name="value">The value to be converted to a string.</param>
@@ -1080,6 +1098,24 @@ struct String *intptr_ToStringFormatC(intptr value, const char *format);
 
 #ifdef CFLAT_UINTPTR
 /// <summary>
+/// Returns the sum of two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The sum of two numbers.</returns>
+/// <exception cref="::OverflowException">The addition results in an overflow.</exception>
+uintptr uintptr_CheckedAddition(uintptr x, uintptr y);
+
+/// <summary>
+/// Returns the difference between two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The difference between two numbers.</returns>
+/// <exception cref="::OverflowException">The subtraction results in an overflow.</exception>
+uintptr uintptr_CheckedSubtraction(uintptr x, uintptr y);
+
+/// <summary>
 /// Converts the given number to a string representation.
 /// </summary>
 /// <param name="value">The value to be converted to a string.</param>
@@ -1105,6 +1141,42 @@ struct String *uintptr_ToStringFormat(uintptr value, const struct String *format
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 struct String *uintptr_ToStringFormatC(uintptr value, const char *format);
 #endif
+
+/// <summary>
+/// Returns the sum of two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The sum of two numbers.</returns>
+/// <exception cref="::OverflowException">The addition results in an overflow.</exception>
+uintsize uintsize_CheckedAddition(uintsize x, uintsize y);
+
+/// <summary>
+/// Returns the difference between two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The difference between two numbers.</returns>
+/// <exception cref="::OverflowException">The subtraction results in an overflow.</exception>
+uintsize uintsize_CheckedSubtraction(uintsize x, uintsize y);
+
+/// <summary>
+/// Returns the product of two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The product of two numbers.</returns>
+/// <exception cref="::OverflowException">The multiplication results in an overflow.</exception>
+uintsize uintsize_CheckedMultiplication(uintsize x, uintsize y);
+
+/// <summary>
+/// Returns the quotient of two numbers and checks for division by zero.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The quotient of two numbers.</returns>
+/// <exception cref="::DivideByZeroException"><paramref name="y"/> is zero.</exception>
+uintsize uintsize_CheckedDivision(uintsize x, uintsize y);
 
 /// <summary>
 /// Returns the larger of two numbers.
@@ -1149,6 +1221,42 @@ struct String *uintsize_ToStringFormat(uintsize value, const struct String *form
 struct String *uintsize_ToStringFormatC(uintsize value, const char *format);
 
 /// <summary>
+/// Returns the sum of two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The sum of two numbers.</returns>
+/// <exception cref="::OverflowException">The addition results in an overflow.</exception>
+intfsize intfsize_CheckedAddition(intfsize x, intfsize y);
+
+/// <summary>
+/// Returns the difference between two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The difference between two numbers.</returns>
+/// <exception cref="::OverflowException">The subtraction results in an overflow.</exception>
+intfsize intfsize_CheckedSubtraction(intfsize x, intfsize y);
+
+/// <summary>
+/// Returns the product of two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The product of two numbers.</returns>
+/// <exception cref="::OverflowException">The multiplication results in an overflow.</exception>
+intfsize intfsize_CheckedMultiplication(intfsize x, intfsize y);
+
+/// <summary>
+/// Returns the quotient of two numbers and checks for division by zero.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The quotient of two numbers.</returns>
+/// <exception cref="::DivideByZeroException"><paramref name="y"/> is zero.</exception>
+intfsize intfsize_CheckedDivision(intfsize x, intfsize y);
+
+/// <summary>
 /// Returns the larger of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
@@ -1189,6 +1297,42 @@ struct String *intfsize_ToStringFormat(intfsize value, const struct String *form
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 struct String *intfsize_ToStringFormatC(intfsize value, const char *format);
+
+/// <summary>
+/// Returns the sum of two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The sum of two numbers.</returns>
+/// <exception cref="::OverflowException">The addition results in an overflow.</exception>
+sbyte sbyte_CheckedAddition(sbyte x, sbyte y);
+
+/// <summary>
+/// Returns the difference between two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The difference between two numbers.</returns>
+/// <exception cref="::OverflowException">The subtraction results in an overflow.</exception>
+sbyte sbyte_CheckedSubtraction(sbyte x, sbyte y);
+
+/// <summary>
+/// Returns the product of two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The product of two numbers.</returns>
+/// <exception cref="::OverflowException">The multiplication results in an overflow.</exception>
+sbyte sbyte_CheckedMultiplication(sbyte x, sbyte y);
+
+/// <summary>
+/// Returns the quotient of two numbers and checks for division by zero.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The quotient of two numbers.</returns>
+/// <exception cref="::DivideByZeroException"><paramref name="y"/> is zero.</exception>
+sbyte sbyte_CheckedDivision(sbyte x, sbyte y);
 
 /// <summary>
 /// Returns the larger of two numbers.
@@ -1233,6 +1377,42 @@ struct String *sbyte_ToStringFormat(sbyte value, const struct String *format);
 struct String *sbyte_ToStringFormatC(sbyte value, const char *format);
 
 /// <summary>
+/// Returns the sum of two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The sum of two numbers.</returns>
+/// <exception cref="::OverflowException">The addition results in an overflow.</exception>
+byte byte_CheckedAddition(byte x, byte y);
+
+/// <summary>
+/// Returns the difference between two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The difference between two numbers.</returns>
+/// <exception cref="::OverflowException">The subtraction results in an overflow.</exception>
+byte byte_CheckedSubtraction(byte x, byte y);
+
+/// <summary>
+/// Returns the product of two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The product of two numbers.</returns>
+/// <exception cref="::OverflowException">The multiplication results in an overflow.</exception>
+byte byte_CheckedMultiplication(byte x, byte y);
+
+/// <summary>
+/// Returns the quotient of two numbers and checks for division by zero.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The quotient of two numbers.</returns>
+/// <exception cref="::DivideByZeroException"><paramref name="y"/> is zero.</exception>
+byte byte_CheckedDivision(byte x, byte y);
+
+/// <summary>
 /// Returns the larger of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
@@ -1273,6 +1453,42 @@ struct String *byte_ToStringFormat(byte value, const struct String *format);
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 struct String *byte_ToStringFormatC(byte value, const char *format);
+
+/// <summary>
+/// Returns the sum of two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The sum of two numbers.</returns>
+/// <exception cref="::OverflowException">The addition results in an overflow.</exception>
+short short_CheckedAddition(short x, short y);
+
+/// <summary>
+/// Returns the difference between two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The difference between two numbers.</returns>
+/// <exception cref="::OverflowException">The subtraction results in an overflow.</exception>
+short short_CheckedSubtraction(short x, short y);
+
+/// <summary>
+/// Returns the product of two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The product of two numbers.</returns>
+/// <exception cref="::OverflowException">The multiplication results in an overflow.</exception>
+short short_CheckedMultiplication(short x, short y);
+
+/// <summary>
+/// Returns the quotient of two numbers and checks for division by zero.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The quotient of two numbers.</returns>
+/// <exception cref="::DivideByZeroException"><paramref name="y"/> is zero.</exception>
+short short_CheckedDivision(short x, short y);
 
 /// <summary>
 /// Returns the larger of two numbers.
@@ -1317,6 +1533,42 @@ struct String *short_ToStringFormat(short value, const struct String *format);
 struct String *short_ToStringFormatC(short value, const char *format);
 
 /// <summary>
+/// Returns the sum of two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The sum of two numbers.</returns>
+/// <exception cref="::OverflowException">The addition results in an overflow.</exception>
+ushort ushort_CheckedAddition(ushort x, ushort y);
+
+/// <summary>
+/// Returns the difference between two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The difference between two numbers.</returns>
+/// <exception cref="::OverflowException">The subtraction results in an overflow.</exception>
+ushort ushort_CheckedSubtraction(ushort x, ushort y);
+
+/// <summary>
+/// Returns the product of two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The product of two numbers.</returns>
+/// <exception cref="::OverflowException">The multiplication results in an overflow.</exception>
+ushort ushort_CheckedMultiplication(ushort x, ushort y);
+
+/// <summary>
+/// Returns the quotient of two numbers and checks for division by zero.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The quotient of two numbers.</returns>
+/// <exception cref="::DivideByZeroException"><paramref name="y"/> is zero.</exception>
+ushort ushort_CheckedDivision(ushort x, ushort y);
+
+/// <summary>
 /// Returns the larger of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
@@ -1357,6 +1609,42 @@ struct String *ushort_ToStringFormat(ushort value, const struct String *format);
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 struct String *ushort_ToStringFormatC(ushort value, const char *format);
+
+/// <summary>
+/// Returns the sum of two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The sum of two numbers.</returns>
+/// <exception cref="::OverflowException">The addition results in an overflow.</exception>
+int int_CheckedAddition(int x, int y);
+
+/// <summary>
+/// Returns the difference between two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The difference between two numbers.</returns>
+/// <exception cref="::OverflowException">The subtraction results in an overflow.</exception>
+int int_CheckedSubtraction(int x, int y);
+
+/// <summary>
+/// Returns the product of two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The product of two numbers.</returns>
+/// <exception cref="::OverflowException">The multiplication results in an overflow.</exception>
+int int_CheckedMultiplication(int x, int y);
+
+/// <summary>
+/// Returns the quotient of two numbers and checks for division by zero.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The quotient of two numbers.</returns>
+/// <exception cref="::DivideByZeroException"><paramref name="y"/> is zero.</exception>
+int int_CheckedDivision(int x, int y);
 
 /// <summary>
 /// Returns the larger of two numbers.
@@ -1401,6 +1689,42 @@ struct String *int_ToStringFormat(int value, const struct String *format);
 struct String *int_ToStringFormatC(int value, const char *format);
 
 /// <summary>
+/// Returns the sum of two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The sum of two numbers.</returns>
+/// <exception cref="::OverflowException">The addition results in an overflow.</exception>
+uint uint_CheckedAddition(uint x, uint y);
+
+/// <summary>
+/// Returns the difference between two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The difference between two numbers.</returns>
+/// <exception cref="::OverflowException">The subtraction results in an overflow.</exception>
+uint uint_CheckedSubtraction(uint x, uint y);
+
+/// <summary>
+/// Returns the product of two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The product of two numbers.</returns>
+/// <exception cref="::OverflowException">The multiplication results in an overflow.</exception>
+uint uint_CheckedMultiplication(uint x, uint y);
+
+/// <summary>
+/// Returns the quotient of two numbers and checks for division by zero.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The quotient of two numbers.</returns>
+/// <exception cref="::DivideByZeroException"><paramref name="y"/> is zero.</exception>
+uint uint_CheckedDivision(uint x, uint y);
+
+/// <summary>
 /// Returns the larger of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
@@ -1441,6 +1765,42 @@ struct String *uint_ToStringFormat(uint value, const struct String *format);
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 struct String *uint_ToStringFormatC(uint value, const char *format);
+
+/// <summary>
+/// Returns the sum of two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The sum of two numbers.</returns>
+/// <exception cref="::OverflowException">The addition results in an overflow.</exception>
+long long_CheckedAddition(long x, long y);
+
+/// <summary>
+/// Returns the difference between two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The difference between two numbers.</returns>
+/// <exception cref="::OverflowException">The subtraction results in an overflow.</exception>
+long long_CheckedSubtraction(long x, long y);
+
+/// <summary>
+/// Returns the product of two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The product of two numbers.</returns>
+/// <exception cref="::OverflowException">The multiplication results in an overflow.</exception>
+long long_CheckedMultiplication(long x, long y);
+
+/// <summary>
+/// Returns the quotient of two numbers and checks for division by zero.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The quotient of two numbers.</returns>
+/// <exception cref="::DivideByZeroException"><paramref name="y"/> is zero.</exception>
+long long_CheckedDivision(long x, long y);
 
 /// <summary>
 /// Returns the larger of two numbers.
@@ -1485,6 +1845,42 @@ struct String *long_ToStringFormat(long value, const struct String *format);
 struct String *long_ToStringFormatC(long value, const char *format);
 
 /// <summary>
+/// Returns the sum of two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The sum of two numbers.</returns>
+/// <exception cref="::OverflowException">The addition results in an overflow.</exception>
+ulong ulong_CheckedAddition(ulong x, ulong y);
+
+/// <summary>
+/// Returns the difference between two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The difference between two numbers.</returns>
+/// <exception cref="::OverflowException">The subtraction results in an overflow.</exception>
+ulong ulong_CheckedSubtraction(ulong x, ulong y);
+
+/// <summary>
+/// Returns the product of two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The product of two numbers.</returns>
+/// <exception cref="::OverflowException">The multiplication results in an overflow.</exception>
+ulong ulong_CheckedMultiplication(ulong x, ulong y);
+
+/// <summary>
+/// Returns the quotient of two numbers and checks for division by zero.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The quotient of two numbers.</returns>
+/// <exception cref="::DivideByZeroException"><paramref name="y"/> is zero.</exception>
+ulong ulong_CheckedDivision(ulong x, ulong y);
+
+/// <summary>
 /// Returns the larger of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
@@ -1527,6 +1923,42 @@ struct String *ulong_ToStringFormat(ulong value, const struct String *format);
 struct String *ulong_ToStringFormatC(ulong value, const char *format);
 
 /// <summary>
+/// Returns the sum of two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The sum of two numbers.</returns>
+/// <exception cref="::OverflowException">The addition results in an overflow.</exception>
+intmax intmax_CheckedAddition(intmax x, intmax y);
+
+/// <summary>
+/// Returns the difference between two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The difference between two numbers.</returns>
+/// <exception cref="::OverflowException">The subtraction results in an overflow.</exception>
+intmax intmax_CheckedSubtraction(intmax x, intmax y);
+
+/// <summary>
+/// Returns the product of two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The product of two numbers.</returns>
+/// <exception cref="::OverflowException">The multiplication results in an overflow.</exception>
+intmax intmax_CheckedMultiplication(intmax x, intmax y);
+
+/// <summary>
+/// Returns the quotient of two numbers and checks for division by zero.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The quotient of two numbers.</returns>
+/// <exception cref="::DivideByZeroException"><paramref name="y"/> is zero.</exception>
+intmax intmax_CheckedDivision(intmax x, intmax y);
+
+/// <summary>
 /// Returns the larger of two numbers.
 /// </summary>
 /// <param name="x">The first number.</param>
@@ -1567,6 +1999,42 @@ struct String *intmax_ToStringFormat(intmax value, const struct String *format);
 /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 struct String *intmax_ToStringFormatC(intmax value, const char *format);
+
+/// <summary>
+/// Returns the sum of two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The sum of two numbers.</returns>
+/// <exception cref="::OverflowException">The addition results in an overflow.</exception>
+uintmax uintmax_CheckedAddition(uintmax x, uintmax y);
+
+/// <summary>
+/// Returns the difference between two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The difference between two numbers.</returns>
+/// <exception cref="::OverflowException">The subtraction results in an overflow.</exception>
+uintmax uintmax_CheckedSubtraction(uintmax x, uintmax y);
+
+/// <summary>
+/// Returns the product of two numbers and checks if overflow occurs.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The product of two numbers.</returns>
+/// <exception cref="::OverflowException">The multiplication results in an overflow.</exception>
+uintmax uintmax_CheckedMultiplication(uintmax x, uintmax y);
+
+/// <summary>
+/// Returns the quotient of two numbers and checks for division by zero.
+/// </summary>
+/// <param name="x">The first number.</param>
+/// <param name="y">The second number.</param>
+/// <returns>The quotient of two numbers.</returns>
+/// <exception cref="::DivideByZeroException"><paramref name="y"/> is zero.</exception>
+uintmax uintmax_CheckedDivision(uintmax x, uintmax y);
 
 /// <summary>
 /// Returns the larger of two numbers.

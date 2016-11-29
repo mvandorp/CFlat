@@ -28,7 +28,7 @@
 struct String;
 
 /* Macros */
-#define CFLAT_EXCEPTIONTYPE_BASE_BITS 4
+#define CFLAT_EXCEPTIONTYPE_BASE_BITS 8
 #define CFLAT_EXCEPTIONTYPE_BASE_VALUE(value) (1 << ((value) - 1))
 #define CFLAT_EXCEPTIONTYPE_VALUE(value) ((value) << CFLAT_EXCEPTIONTYPE_BASE_BITS)
 
@@ -56,6 +56,11 @@ typedef enum ExceptionType {
     /// Base class for all I/O exceptions.
     /// </summary>
     IOException = CFLAT_EXCEPTIONTYPE_BASE_VALUE(4) | SystemException,
+
+    /// <summary>
+    /// Base class for all arithmetic exceptions.
+    /// </summary>
+    ArithmeticException = CFLAT_EXCEPTIONTYPE_BASE_VALUE(5) | SystemException,
 
     /// <summary>
     /// Thrown by the runtime only when an array is indexed improperly.
@@ -112,6 +117,16 @@ typedef enum ExceptionType {
     /// Thrown when a method or operation is not supported.
     /// </summary>
     NotSupportedException = CFLAT_EXCEPTIONTYPE_VALUE(11) | SystemException,
+
+    /// <summary>
+    /// Throw when an arithmetic, casting or conversion operation in a checked context results in an overflow.
+    /// </summary>
+    OverflowException = CFLAT_EXCEPTIONTYPE_VALUE(12) | Exception,
+
+    /// <summary>
+    /// Throw when an there is an attempt to divide by zero in checked context.
+    /// </summary>
+    DivideByZeroException = CFLAT_EXCEPTIONTYPE_VALUE(13) | Exception,
 } ExceptionType;
 
 #undef CFLAT_EXCEPTIONTYPE_BASE_BITS
