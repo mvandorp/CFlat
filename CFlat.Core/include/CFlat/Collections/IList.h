@@ -109,7 +109,7 @@ typedef struct IList {
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <param name="index">The index of the element to retrieve.</param>
 /// <returns>The item at the given index of the <see cref="IList"/>.</returns>
-typedef void *(*IList_GetItemFunc)(const IList *list, int index);
+typedef void *(*IList_GetItemFunc)(const IList *list, uintsize index);
 
 /// <summary>
 /// A function that replaces the item at the given index of an <see cref="IList"/>.
@@ -117,7 +117,7 @@ typedef void *(*IList_GetItemFunc)(const IList *list, int index);
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <param name="index">The index of the element to replace.</param>
 /// <param name="item">The new value for the element at the given index.</param>
-typedef void (*IList_SetItemFunc)(IList *list, int index, void *item);
+typedef void (*IList_SetItemFunc)(IList *list, uintsize index, void *item);
 
 /// <summary>
 /// A function that determines the index of the given item in an <see cref="IList"/>.
@@ -125,7 +125,7 @@ typedef void (*IList_SetItemFunc)(IList *list, int index, void *item);
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <param name="item">The item to find.</param>
 /// <returns>The index of <paramref name="item"/> if found; otherwise -1.</returns>
-typedef int (*IList_IndexOfFunc)(const IList *list, const void *item);
+typedef uintsize (*IList_IndexOfFunc)(const IList *list, const void *item);
 
 /// <summary>
 /// A function that inserts an item into an <see cref="IList"/> at the given index.
@@ -133,14 +133,14 @@ typedef int (*IList_IndexOfFunc)(const IList *list, const void *item);
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <param name="index">The index at which <paramref name="item"/> should be inserted.</param>
 /// <param name="item">The item to insert.</param>
-typedef void (*IList_InsertFunc)(IList *list, int index, void *item);
+typedef void (*IList_InsertFunc)(IList *list, uintsize index, void *item);
 
 /// <summary>
 /// A function that removes the element at the given index of an <see cref="IList"/>.
 /// </summary>
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <param name="index">The index of the element to remove.</param>
-typedef void (*IList_RemoveAtFunc)(IList *list, int index);
+typedef void (*IList_RemoveAtFunc)(IList *list, uintsize index);
 
 /// <summary>
 /// A virtual method table for the <see cref="IList"/> class.
@@ -208,7 +208,7 @@ struct IEnumerator *IList_GetEnumerator(const IList *list);
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <returns>The number of elements in the <see cref="IList"/>.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
-int IList_GetCount(const IList *list);
+uintsize IList_GetCount(const IList *list);
 
 /// <summary>
 /// Gets whether or not an <see cref="IList"/> is read-only.
@@ -281,10 +281,9 @@ bool IList_Remove(IList *list, const void *item);
 /// <returns>The item at the given index of the <see cref="IList"/>.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 /// <exception cref="::ArgumentOutOfRangeException">
-///     <paramref name="index"/> is less than 0 <b>-or-</b>
 ///     <paramref name="index"/> is equal to or greater than the number of elements in <paramref name="list"/>.
 /// </exception>
-void *IList_GetItem(const IList *list, int index);
+void *IList_GetItem(const IList *list, uintsize index);
 
 /// <summary>
 /// Replaces the item at the given index of an <see cref="IList"/>.
@@ -294,19 +293,18 @@ void *IList_GetItem(const IList *list, int index);
 /// <param name="item">The new value for the element at the given index.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 /// <exception cref="::ArgumentOutOfRangeException">
-///     <paramref name="index"/> is less than 0 <b>-or-</b>
 ///     <paramref name="index"/> is equal to or greater than the number of elements in <paramref name="list"/>.
 /// </exception>
-void IList_SetItem(IList *list, int index, void *item);
+void IList_SetItem(IList *list, uintsize index, void *item);
 
 /// <summary>
 /// Determines the index of the given item in an <see cref="IList"/>.
 /// </summary>
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
 /// <param name="item">The item to find.</param>
-/// <returns>The index of <paramref name="item"/> if found; otherwise -1.</returns>
+/// <returns>The index of <paramref name="item"/> if found; otherwise <see cref="InvalidIndex"/>.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
-int IList_IndexOf(const IList *list, const void *item);
+uintsize IList_IndexOf(const IList *list, const void *item);
 
 /// <summary>
 /// Inserts an item into an <see cref="IList"/> at the given index.
@@ -316,10 +314,9 @@ int IList_IndexOf(const IList *list, const void *item);
 /// <param name="item">The item to insert.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 /// <exception cref="::ArgumentOutOfRangeException">
-///     <paramref name="index"/> is less than 0 <b>-or-</b>
 ///     <paramref name="index"/> is greater than the number of elements in <paramref name="list"/>.
 /// </exception>
-void IList_Insert(IList *list, int index, void *item);
+void IList_Insert(IList *list, uintsize index, void *item);
 
 /// <summary>
 /// Removes the element at the given index of an <see cref="IList"/>.
@@ -328,9 +325,8 @@ void IList_Insert(IList *list, int index, void *item);
 /// <param name="index">The index of the element to remove.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 /// <exception cref="::ArgumentOutOfRangeException">
-///     <paramref name="index"/> is less than 0 <b>-or-</b>
 ///     <paramref name="index"/> is equal to or greater than the number of elements in <paramref name="list"/>.
 /// </exception>
-void IList_RemoveAt(IList *list, int index);
+void IList_RemoveAt(IList *list, uintsize index);
 
 #endif

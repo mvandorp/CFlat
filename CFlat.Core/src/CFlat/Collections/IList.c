@@ -55,7 +55,7 @@ public IEnumerator *IList_GetEnumerator(const IList *list)
 }
 
 /* ICollection */
-public int IList_GetCount(const IList *list)
+public uintsize IList_GetCount(const IList *list)
 {
     return ICollection_GetCount((const ICollection*)list);
 }
@@ -91,27 +91,27 @@ public bool IList_Remove(IList *list, const void *item)
 }
 
 /* IList */
-public void *IList_GetItem(const IList *list, int index)
+public void *IList_GetItem(const IList *list, uintsize index)
 {
     return GetVTable(list)->GetItem(list, index);
 }
 
-public void IList_SetItem(IList *list, int index, void *value)
+public void IList_SetItem(IList *list, uintsize index, void *value)
 {
     GetVTable(list)->SetItem(list, index, value);
 }
 
-public int IList_IndexOf(const IList *list, const void *item)
+public uintsize IList_IndexOf(const IList *list, const void *item)
 {
     return GetVTable(list)->IndexOf(list, item);
 }
 
-public void IList_Insert(IList *list, int index, void *value)
+public void IList_Insert(IList *list, uintsize index, void *value)
 {
     GetVTable(list)->Insert(list, index, value);
 }
 
-public void IList_RemoveAt(IList *list, int index)
+public void IList_RemoveAt(IList *list, uintsize index)
 {
     GetVTable(list)->RemoveAt(list, index);
 }

@@ -61,7 +61,7 @@ public PointerList *PointerList_New(DestructorFunc elementDestructor)
     return PointerList_New_WithCapacity(elementDestructor, 0);
 }
 
-public PointerList *PointerList_New_WithCapacity(DestructorFunc elementDestructor, int capacity)
+public PointerList *PointerList_New_WithCapacity(DestructorFunc elementDestructor, uintsize capacity)
 {
     PointerList *list = Memory_Allocate(sizeof(PointerList));
 
@@ -121,7 +121,7 @@ public void PointerList_Constructor(PointerList *list, DestructorFunc elementDes
     PointerList_Constructor_WithCapacity(list, elementDestructor, 0);
 }
 
-public void PointerList_Constructor_WithCapacity(PointerList *list, DestructorFunc elementDestructor, int capacity)
+public void PointerList_Constructor_WithCapacity(PointerList *list, DestructorFunc elementDestructor, uintsize capacity)
 {
     PointerList_Constructor_Full(list, &VTable, elementDestructor, capacity);
 }
@@ -157,12 +157,12 @@ public void PointerList_Destructor(PointerList *list)
 }
 
 /* Properties */
-public int PointerList_GetCapacity(const PointerList *list)
+public uintsize PointerList_GetCapacity(const PointerList *list)
 {
     return List_GetCapacity((const List*)list);
 }
 
-public void PointerList_SetCapacity(PointerList *list, int capacity)
+public void PointerList_SetCapacity(PointerList *list, uintsize capacity)
 {
     List_SetCapacity((List*)list, capacity);
 }
@@ -173,12 +173,12 @@ public void PointerList_AddRange(PointerList *list, const IEnumerable *collectio
     List_AddRange((List*)list, collection);
 }
 
-public void PointerList_InsertRange(PointerList *list, int index, const IEnumerable *collection)
+public void PointerList_InsertRange(PointerList *list, uintsize index, const IEnumerable *collection)
 {
     List_InsertRange((List*)list, index, collection);
 }
 
-public void PointerList_RemoveRange(PointerList *list, int index, int count)
+public void PointerList_RemoveRange(PointerList *list, uintsize index, uintsize count)
 {
     Validate_NotNull(list);
     Validate_NotNegative(index);
@@ -189,7 +189,7 @@ public void PointerList_RemoveRange(PointerList *list, int index, int count)
         "Count must refer to a location within the string/array/collection.", "count");
 
     if (list->ElementDestructor != null) {
-        for (int i = index; i < index + count; i++) {
+        for (uintsize i = index; i < index + count; i++) {
             PointerList_SetItem(list, i, null);
         }
     }
@@ -214,7 +214,7 @@ public IEnumerator *PointerList_GetEnumerator(const PointerList *list)
 }
 
 /* ICollection */
-public int PointerList_GetCount(const PointerList *list)
+public uintsize PointerList_GetCount(const PointerList *list)
 {
     return List_GetCount((const List*)list);
 }
@@ -229,9 +229,9 @@ public void PointerList_Clear(PointerList *list)
     Validate_NotNull(list);
 
     if (list->ElementDestructor != null) {
-        int count = PointerList_GetCount(list);
+        uintsize count = PointerList_GetCount(list);
 
-        for (int i = 0; i < count; i++) {
+        for (uintsize i = 0; i < count; i++) {
             PointerList_SetItem(list, i, null);
         }
     }
@@ -251,7 +251,7 @@ public void PointerList_CopyTo(const PointerList *list, void *destination)
 
 public bool PointerList_Remove(PointerList *list, const void *item)
 {
-    int index = PointerList_IndexOf(list, item);
+    uintsize index = PointerList_IndexOf(list, item);
 
     if (index >= 0) {
         PointerList_RemoveAt(list, index);
@@ -261,12 +261,12 @@ public bool PointerList_Remove(PointerList *list, const void *item)
 }
 
 /* IList */
-public void *PointerList_GetItem(const PointerList *list, int index)
+public void *PointerList_GetItem(const PointerList *list, uintsize index)
 {
     return List_GetItem((const List*)list, index, void*);
 }
 
-public void PointerList_SetItem(PointerList *list, int index, const void *item)
+public void PointerList_SetItem(PointerList *list, uintsize index, const void *item)
 {
     Validate_NotNull(list);
 
@@ -284,17 +284,17 @@ public void PointerList_SetItem(PointerList *list, int index, const void *item)
     List_SetItem((List*)list, index, item);
 }
 
-public int PointerList_IndexOf(const PointerList *list, const void *item)
+public uintsize PointerList_IndexOf(const PointerList *list, const void *item)
 {
     return List_IndexOf((const List*)list, item);
 }
 
-public void PointerList_Insert(PointerList *list, int index, void *item)
+public void PointerList_Insert(PointerList *list, uintsize index, void *item)
 {
     List_Insert((List*)list, index, item);
 }
 
-public void PointerList_RemoveAt(PointerList *list, int index)
+public void PointerList_RemoveAt(PointerList *list, uintsize index)
 {
     Validate_NotNull(list);
 
@@ -316,7 +316,7 @@ internal void PointerList_Constructor_Full(
     PointerList *list,
     const IListVTable *vtable,
     DestructorFunc elementDestructor,
-    int capacity)
+    uintsize capacity)
 {
     List_Constructor_Full((List*)list, vtable, sizeof(void*), (EqualityPredicate)PointerEquals, capacity);
 

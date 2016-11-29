@@ -47,12 +47,11 @@ struct ObjectList {
 ///     <paramref name="vtable"/> is <see cref="null"/> <b>-or-</b>
 ///     <paramref name="vtable"/> contains a <see cref="null"/> pointer.
 /// </exception>
-/// <exception cref="::ArgumentOutOfRangeException"><paramref name="capacity"/> is less than 0.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 internal void ObjectList_Constructor_Full(
     ObjectList *list,
     const IListVTable *vtable,
-    int capacity);
+    uintsize capacity);
 
 /// <summary>
 /// Gets the version of a <see cref="ObjectList"/>. The version changes after every mutation to the list.

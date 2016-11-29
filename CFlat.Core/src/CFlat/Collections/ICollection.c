@@ -57,7 +57,7 @@ public IEnumerator *ICollection_GetEnumerator(const ICollection *collection)
 }
 
 /* Properties */
-public int ICollection_GetCount(const ICollection *collection)
+public uintsize ICollection_GetCount(const ICollection *collection)
 {
     return GetVTable(collection)->GetCount(collection);
 }

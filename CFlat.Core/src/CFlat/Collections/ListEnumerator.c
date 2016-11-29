@@ -30,7 +30,7 @@ typedef struct ListEnumerator {
     IEnumerator Base;
     const IList *List;
     void *Current;
-    int Index;
+    uintsize Index;
     uintsize Version;
     ListEnumerator_GetVersionFunc GetVersion;
 } ListEnumerator;

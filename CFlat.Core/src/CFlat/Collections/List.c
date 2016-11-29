@@ -32,13 +32,13 @@
 /// <summary>
 /// The default capacity for a list that is not empty.
 /// </summary>
-private const int DefaultCapacity = 4;
+private const uintsize DefaultCapacity = 4;
 
 /**************************************/
 /* Private functions                  */
 /**************************************/
 
-private void EnsureCapacity(List *list, int capacity);
+private void EnsureCapacity(List *list, uintsize capacity);
 private bool IsReadOnly(const List *list);
 
 /* Private constants */
@@ -71,7 +71,7 @@ public List *List_New(uintsize elementSize, EqualityPredicate equals)
     return List_New_WithCapacity(elementSize, equals, 0);
 }
 
-public List *List_New_WithCapacity(uintsize elementSize, EqualityPredicate equals, int capacity)
+public List *List_New_WithCapacity(uintsize elementSize, EqualityPredicate equals, uintsize capacity)
 {
     List *list = Memory_Allocate(sizeof(List));
 
@@ -131,7 +131,7 @@ public void List_Constructor(List *list, uintsize elementSize, EqualityPredicate
     List_Constructor_WithCapacity(list, elementSize, equals, 0);
 }
 
-public void List_Constructor_WithCapacity(List *list, uintsize elementSize, EqualityPredicate equals, int capacity)
+public void List_Constructor_WithCapacity(List *list, uintsize elementSize, EqualityPredicate equals, uintsize capacity)
 {
     List_Constructor_Full(list, &VTable, elementSize, equals, capacity);
 }
@@ -169,14 +169,14 @@ public void List_Destructor(List *list)
 }
 
 /* Properties */
-public int List_GetCapacity(const List *list)
+public uintsize List_GetCapacity(const List *list)
 {
     Validate_NotNull(list);
 
     return list->Capacity;
 }
 
-public void List_SetCapacity(List *list, int capacity)
+public void List_SetCapacity(List *list, uintsize capacity)
 {
     Validate_NotNull(list);
     Validate_ArgumentRange(capacity >= list->Count,
@@ -204,7 +204,7 @@ public void List_AddRange(List *list, const IEnumerable *collection)
     List_InsertRange(list, list->Count, collection);
 }
 
-public void List_InsertRange(List *list, int index, const IEnumerable *collection)
+public void List_InsertRange(List *list, uintsize index, const IEnumerable *collection)
 {
     Validate_NotNull(list);
     Validate_NotNull(collection);
@@ -214,7 +214,7 @@ public void List_InsertRange(List *list, int index, const IEnumerable *collectio
     IEnumerator *enumerator = IEnumerable_GetEnumerator(collection);
 
     try {
-        int i = index;
+        uintsize i = index;
 
         while (IEnumerator_MoveNext(enumerator)) {
             List_InsertRef(list, i++, IEnumerator_GetCurrent(enumerator));
@@ -226,7 +226,7 @@ public void List_InsertRange(List *list, int index, const IEnumerable *collectio
     endtry;
 }
 
-public void List_RemoveRange(List *list, int index, int count)
+public void List_RemoveRange(List *list, uintsize index, uintsize count)
 {
     Validate_NotNull(list);
     Validate_NotNegative(index);
@@ -265,7 +265,7 @@ public void List_TrimExcess(List *list)
 {
     Validate_NotNull(list);
 
-    if (list->Count < (int)((double)list->Capacity * 0.9)) {
+    if (list->Count < (uintsize)((double)list->Capacity * 0.9)) {
         List_SetCapacity(list, list->Count);
     }
 }
@@ -277,7 +277,7 @@ public IEnumerator *List_GetEnumerator(const List *list)
 }
 
 /* ICollection */
-public int List_GetCount(const List *list)
+public uintsize List_GetCount(const List *list)
 {
     Validate_NotNull(list);
 
@@ -315,7 +315,7 @@ public void List_CopyTo(const List *list, void *destination)
 
 public bool List_RemoveRef(List *list, const void *item)
 {
-    int index = List_IndexOfRef(list, item);
+    uintsize index = List_IndexOfRef(list, item);
 
     if (index >= 0) {
         List_RemoveAt(list, index);
@@ -325,7 +325,7 @@ public bool List_RemoveRef(List *list, const void *item)
 }
 
 /* IList */
-public void *List_GetItemRef(const List *list, int index)
+public void *List_GetItemRef(const List *list, uintsize index)
 {
     Validate_NotNull(list);
     Validate_ArgumentRange(index >= 0 && index <= list->Count,
@@ -338,7 +338,7 @@ public void *List_GetItemRef(const List *list, int index)
     return &array[i * size];
 }
 
-public void List_SetItemRef(List *list, int index, const void *item)
+public void List_SetItemRef(List *list, uintsize index, const void *item)
 {
     Validate_NotNull(list);
     Validate_NotNull(item);
@@ -348,7 +348,7 @@ public void List_SetItemRef(List *list, int index, const void *item)
     list->Version++;
 }
 
-public int List_IndexOfRef(const List *list, const void *item)
+public uintsize List_IndexOfRef(const List *list, const void *item)
 {
     Validate_NotNull(list);
     Validate_NotNull(item);
@@ -361,25 +361,25 @@ public int List_IndexOfRef(const List *list, const void *item)
 
     byte *array = list->Array;
     uintsize size = list->ElementSize;
-    uintsize count = (uintsize)list->Count;
+    uintsize count = list->Count;
 
     for (uintsize i = 0; i < count; i++) {
         if (list->Equals(&array[i * size], item)) {
-            return (int)i;
+            return i;
         }
     }
 
     return -1;
 }
 
-public void List_InsertRef(List *list, int index, const void *item)
+public void List_InsertRef(List *list, uintsize index, const void *item)
 {
     Validate_NotNull(list);
     Validate_NotNull(item);
-    Validate_ArgumentRange(index >= 0 && index <= list->Count,
+    Validate_ArgumentRange(index <= list->Count,
         "Index must be within the bounds of the List.", "index");
 
-    EnsureCapacity(list, list->Count + 1);
+    EnsureCapacity(list, uintsize_CheckedAddition(list->Count, 1));
 
     byte *array = list->Array;
     uintsize size = list->ElementSize;
@@ -401,7 +401,7 @@ public void List_InsertRef(List *list, int index, const void *item)
     list->Version++;
 }
 
-public void List_RemoveAt(List *list, int index)
+public void List_RemoveAt(List *list, uintsize index)
 {
     List_RemoveRange(list, index, 1);
 }
@@ -415,7 +415,7 @@ internal void List_Constructor_Full(
     const IListVTable *vtable,
     uintsize elementSize,
     EqualityPredicate equals,
-    int capacity)
+    uintsize capacity)
 {
     Validate_ArgumentRange(elementSize > 0, "Element size cannot be zero.", "elementSize");
     Validate_NotNegative(capacity);
@@ -443,24 +443,16 @@ internal uintsize List_GetVersion(const List *list)
 /* Private function definitions       */
 /**************************************/
 
-private void EnsureCapacity(List *list, int minCapacity)
+private void EnsureCapacity(List *list, uintsize minCapacity)
 {
     assert(list != null);
-    assert(minCapacity >= 0);
 
     if (list->Capacity < minCapacity) {
-        if (minCapacity > List_MaxCapacity) {
-            throw_new(OutOfMemoryException, "Capacity exceeded the maximum capacity of a List.");
-        }
+        uintsize capacity;
+        capacity = uintsize_Max(minCapacity, list->Count * 2);
+        capacity = uintsize_Max(capacity, DefaultCapacity);
 
-        int finalCapacity;
-        uint capacity;
-        capacity = uint_Max((uint)minCapacity, (uint)list->Count * 2);
-        capacity = uint_Max(capacity, (uint)DefaultCapacity);
-        capacity = uint_Min(capacity, (uint)List_MaxCapacity);
-        finalCapacity = (int)uint_Min(capacity, int_MaxValue);
-
-        List_SetCapacity(list, finalCapacity);
+        List_SetCapacity(list, capacity);
     }
 }
 

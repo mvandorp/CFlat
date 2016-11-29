@@ -91,7 +91,7 @@ typedef struct ICollection {
 /// </summary>
 /// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
 /// <returns>The number of elements in the <see cref="ICollection"/>.</returns>
-typedef int (*ICollection_GetCountFunc)(const ICollection *collection);
+typedef uintsize (*ICollection_GetCountFunc)(const ICollection *collection);
 
 /// <summary>
 /// A function that returns whether or not an <see cref="ICollection"/> is read-only.
@@ -218,7 +218,7 @@ struct IEnumerator *ICollection_GetEnumerator(const ICollection *collection);
 /// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
 /// <returns>The number of elements in the <see cref="ICollection"/>.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="collection"/> is <see cref="null"/>.</exception>
-int ICollection_GetCount(const ICollection *collection);
+uintsize ICollection_GetCount(const ICollection *collection);
 
 /// <summary>
 /// Gets whether or not an <see cref="ICollection"/> is read-only.

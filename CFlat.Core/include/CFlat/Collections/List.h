@@ -70,12 +70,9 @@ List *List_New(uintsize elementSize, EqualityPredicate equals);
 /// </param>
 /// <param name="capacity">The initial capacity of the <see cref="List"/>.</param>
 /// <returns>A pointer to the newly allocated <see cref="List"/>.</returns>
-/// <exception cref="::ArgumentOutOfRangeException">
-///     <paramref name="elementSize"/> is 0 <b>-or-</b>
-///     <paramref name="capacity"/> is less than 0.
-/// </exception>
+/// <exception cref="::ArgumentOutOfRangeException"><paramref name="elementSize"/> is 0.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-List *List_New_WithCapacity(uintsize elementSize, EqualityPredicate equals, int capacity);
+List *List_New_WithCapacity(uintsize elementSize, EqualityPredicate equals, uintsize capacity);
 
 /// <summary>
 /// Allocates and initializes a <see cref="List"/> that contains the elements copied from the given collection.
@@ -134,12 +131,9 @@ void List_Constructor(List *list, uintsize elementSize, EqualityPredicate equals
 /// </param>
 /// <param name="capacity">The initial capacity of the <see cref="List"/>.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
-/// <exception cref="::ArgumentOutOfRangeException">
-///     <paramref name="elementSize"/> is 0 <b>-or-</b>
-///     <paramref name="capacity"/> is less than 0.
-/// </exception>
+/// <exception cref="::ArgumentOutOfRangeException"><paramref name="elementSize"/> is 0.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void List_Constructor_WithCapacity(List *list, uintsize elementSize, EqualityPredicate equals, int capacity);
+void List_Constructor_WithCapacity(List *list, uintsize elementSize, EqualityPredicate equals, uintsize capacity);
 
 /// <summary>
 /// Initializes a <see cref="List"/> that contains the elements copied from the given collection.
@@ -196,7 +190,7 @@ void List_Destructor(List *list);
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
 /// <returns>The capacity of the <see cref="List"/>.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
-int List_GetCapacity(const List *list);
+uintsize List_GetCapacity(const List *list);
 
 /// <summary>
 /// Sets the capacity of a <see cref="List"/>.
@@ -208,7 +202,7 @@ int List_GetCapacity(const List *list);
 ///     <paramref name="capacity"/> is less than the number of elements in <paramref name="list"/>.
 /// </exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void List_SetCapacity(List *list, int capacity);
+void List_SetCapacity(List *list, uintsize capacity);
 
 /// <summary>
 /// Gets the size in bytes of each element in a <see cref="List"/>.
@@ -245,7 +239,7 @@ void List_AddRange(List *list, const struct IEnumerable *collection);
 ///     <paramref name="collection"/> is <see cref="null"/>.
 /// </exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void List_InsertRange(List *list, int index, const struct IEnumerable *collection);
+void List_InsertRange(List *list, uintsize index, const struct IEnumerable *collection);
 
 /// <summary>
 /// Removes the given range of elements from the a <see cref="List"/>.
@@ -255,12 +249,10 @@ void List_InsertRange(List *list, int index, const struct IEnumerable *collectio
 /// <param name="count">The number of elements to remove.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 /// <exception cref="::ArgumentOutOfRangeException">
-///     <paramref name="index"/> is less than 0 <b>-or-</b>
-///     <paramref name="count"/> is less than 0 <b>-or-</b>
 ///     <paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in
 ///     <paramref name="list"/>.
 /// </exception>
-void List_RemoveRange(List *list, int index, int count);
+void List_RemoveRange(List *list, uintsize index, uintsize count);
 
 /// <summary>
 /// Copies the elements of a <see cref="List"/> to a new array.
@@ -296,7 +288,7 @@ struct IEnumerator *List_GetEnumerator(const List *list);
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
 /// <returns>The number of elements in the <see cref="List"/>.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
-int List_GetCount(const List *list);
+uintsize List_GetCount(const List *list);
 
 /// <summary>
 /// Adds an item to a <see cref="List"/>.
@@ -407,7 +399,6 @@ bool List_RemoveRef(List *list, const void *item);
 /// <returns>The item at the given index of the <see cref="List"/>.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 /// <exception cref="::ArgumentOutOfRangeException">
-///     <paramref name="index"/> is less than 0 <b>-or-</b>
 ///     <paramref name="index"/> is equal to or greater than the number of elements in <paramref name="list"/>.
 /// </exception>
 #define List_GetItem(list, index, type) (*(type*)List_GetItemRef(list, index))
@@ -424,10 +415,9 @@ bool List_RemoveRef(List *list, const void *item);
 /// <returns>The item at the given index of the <see cref="List"/>.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 /// <exception cref="::ArgumentOutOfRangeException">
-///     <paramref name="index"/> is less than 0 <b>-or-</b>
 ///     <paramref name="index"/> is equal to or greater than the number of elements in <paramref name="list"/>.
 /// </exception>
-void *List_GetItemRef(const List *list, int index);
+void *List_GetItemRef(const List *list, uintsize index);
 
 /// <summary>
 /// Replaces the item at the given index of a <see cref="List"/>.
@@ -437,7 +427,6 @@ void *List_GetItemRef(const List *list, int index);
 /// <param name="item">The new value for the element at the given index, must be an lvalue.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 /// <exception cref="::ArgumentOutOfRangeException">
-///     <paramref name="index"/> is less than 0 <b>-or-</b>
 ///     <paramref name="index"/> is equal to or greater than the number of elements in <paramref name="list"/>.
 /// </exception>
 #define List_SetItem(list, index, item) List_SetItemRef(list, index, &item)
@@ -453,17 +442,16 @@ void *List_GetItemRef(const List *list, int index);
 ///     <paramref name="item"/> is <see cref="null"/>.
 /// </exception>
 /// <exception cref="::ArgumentOutOfRangeException">
-///     <paramref name="index"/> is less than 0 <b>-or-</b>
 ///     <paramref name="index"/> is equal to or greater than the number of elements in <paramref name="list"/>.
 /// </exception>
-void List_SetItemRef(List *list, int index, const void *item);
+void List_SetItemRef(List *list, uintsize index, const void *item);
 
 /// <summary>
 /// Determines the index of the given item in a <see cref="List"/>.
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
 /// <param name="item">The item to find, must be an lvalue.</param>
-/// <returns>The index of <paramref name="item"/> if found; otherwise -1.</returns>
+/// <returns>The index of <paramref name="item"/> if found; otherwise <see cref="InvalidIndex"/>.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 /// <exception cref="::InvalidOperationException">
 ///     <paramref name="list"/> does not have an equality predicate set.
@@ -475,7 +463,7 @@ void List_SetItemRef(List *list, int index, const void *item);
 /// </summary>
 /// <param name="list">Pointer to a <see cref="List"/>.</param>
 /// <param name="item">The item to find.</param>
-/// <returns>The index of <paramref name="item"/> if found; otherwise -1.</returns>
+/// <returns>The index of <paramref name="item"/> if found; otherwise <see cref="InvalidIndex"/>.</returns>
 /// <exception cref="::ArgumentNullException">
 ///     <paramref name="list"/> is <see cref="null"/> <b>-or-</b>
 ///     <paramref name="item"/> is <see cref="null"/>.
@@ -483,7 +471,7 @@ void List_SetItemRef(List *list, int index, const void *item);
 /// <exception cref="::InvalidOperationException">
 ///     <paramref name="list"/> does not have an equality predicate set.
 /// </exception>
-int List_IndexOfRef(const List *list, const void *item);
+uintsize List_IndexOfRef(const List *list, const void *item);
 
 /// <summary>
 /// Inserts an item into a <see cref="List"/> at the given index.
@@ -493,7 +481,6 @@ int List_IndexOfRef(const List *list, const void *item);
 /// <param name="item">The item to insert, must be an lvalue.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 /// <exception cref="::ArgumentOutOfRangeException">
-///     <paramref name="index"/> is less than 0 <b>-or-</b>
 ///     <paramref name="index"/> is greater than the number of elements in <paramref name="list"/>.
 /// </exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
@@ -510,11 +497,10 @@ int List_IndexOfRef(const List *list, const void *item);
 ///     <paramref name="item"/> is <see cref="null"/>.
 /// </exception>
 /// <exception cref="::ArgumentOutOfRangeException">
-///     <paramref name="index"/> is less than 0 <b>-or-</b>
 ///     <paramref name="index"/> is greater than the number of elements in <paramref name="list"/>.
 /// </exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void List_InsertRef(List *list, int index, const void *item);
+void List_InsertRef(List *list, uintsize index, const void *item);
 
 /// <summary>
 /// Removes the element at the given index of a <see cref="List"/>.
@@ -523,10 +509,9 @@ void List_InsertRef(List *list, int index, const void *item);
 /// <param name="index">The index of the element to remove.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 /// <exception cref="::ArgumentOutOfRangeException">
-///     <paramref name="index"/> is less than 0 <b>-or-</b>
 ///     <paramref name="index"/> is equal to or greater than the number of elements in <paramref name="list"/>.
 /// </exception>
-void List_RemoveAt(List *list, int index);
+void List_RemoveAt(List *list, uintsize index);
 
 #ifdef CFLAT_CORE_INTERNAL
  #include "CFlat/Collections/List.internal.h"

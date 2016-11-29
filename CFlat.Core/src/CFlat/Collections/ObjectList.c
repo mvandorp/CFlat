@@ -61,7 +61,7 @@ public ObjectList *ObjectList_New(void)
     return ObjectList_New_WithCapacity(0);
 }
 
-public ObjectList *ObjectList_New_WithCapacity(int capacity)
+public ObjectList *ObjectList_New_WithCapacity(uintsize capacity)
 {
     ObjectList *list = Memory_Allocate(sizeof(ObjectList));
 
@@ -121,7 +121,7 @@ public void ObjectList_Constructor(ObjectList *list)
     ObjectList_Constructor_WithCapacity(list, 0);
 }
 
-public void ObjectList_Constructor_WithCapacity(ObjectList *list, int capacity)
+public void ObjectList_Constructor_WithCapacity(ObjectList *list, uintsize capacity)
 {
     ObjectList_Constructor_Full(list, &VTable, capacity);
 }
@@ -153,12 +153,12 @@ public void ObjectList_Destructor(ObjectList *list)
 }
 
 /* Properties */
-public int ObjectList_GetCapacity(const ObjectList *list)
+public uintsize ObjectList_GetCapacity(const ObjectList *list)
 {
     return PointerList_GetCapacity((const PointerList*)list);
 }
 
-public void ObjectList_SetCapacity(ObjectList *list, int capacity)
+public void ObjectList_SetCapacity(ObjectList *list, uintsize capacity)
 {
     PointerList_SetCapacity((PointerList*)list, capacity);
 }
@@ -169,18 +169,18 @@ public void ObjectList_AddRange(ObjectList *list, const IEnumerable *collection)
     ObjectList_InsertRange(list, ObjectList_GetCount(list), collection);
 }
 
-public void ObjectList_InsertRange(ObjectList *list, int index, const IEnumerable *collection)
+public void ObjectList_InsertRange(ObjectList *list, uintsize index, const IEnumerable *collection)
 {
     Validate_NotNull(list);
     Validate_NotNull(collection);
     Validate_ArgumentRange(
-        index >= 0 && index <= ObjectList_GetCount(list),
+        index <= ObjectList_GetCount(list),
         "Index must be within the bounds of the List.", "index");
 
     IEnumerator *enumerator = IEnumerable_GetEnumerator(collection);
 
     try {
-        int i = index;
+        uintsize i = index;
 
         while (IEnumerator_MoveNext(enumerator)) {
             ObjectList_Insert(list, i++, IEnumerator_GetCurrent(enumerator));
@@ -192,7 +192,7 @@ public void ObjectList_InsertRange(ObjectList *list, int index, const IEnumerabl
     endtry;
 }
 
-public void ObjectList_RemoveRange(ObjectList *list, int index, int count)
+public void ObjectList_RemoveRange(ObjectList *list, uintsize index, uintsize count)
 {
     PointerList_RemoveRange((PointerList*)list, index, count);
 }
@@ -228,7 +228,7 @@ public IEnumerator *ObjectList_GetEnumerator(const ObjectList *list)
 }
 
 /* ICollection */
-public int ObjectList_GetCount(const ObjectList *list)
+public uintsize ObjectList_GetCount(const ObjectList *list)
 {
     return PointerList_GetCount((const PointerList*)list);
 }
@@ -272,12 +272,12 @@ public bool ObjectList_Remove(ObjectList *list, const void *item)
 }
 
 /* IList */
-public void *ObjectList_GetItem(const ObjectList *list, int index)
+public void *ObjectList_GetItem(const ObjectList *list, uintsize index)
 {
     return PointerList_GetItem((const PointerList*)list, index);
 }
 
-public void ObjectList_SetItem(ObjectList *list, int index, const void *item)
+public void ObjectList_SetItem(ObjectList *list, uintsize index, const void *item)
 {
     if (ObjectList_GetItem(list, index) == item) {
         return;
@@ -287,18 +287,18 @@ public void ObjectList_SetItem(ObjectList *list, int index, const void *item)
     retain_const(item);
 }
 
-public int ObjectList_IndexOf(const ObjectList *list, const void *item)
+public uintsize ObjectList_IndexOf(const ObjectList *list, const void *item)
 {
     return PointerList_IndexOf((const PointerList*)list, item);
 }
 
-public void ObjectList_Insert(ObjectList *list, int index, void *item)
+public void ObjectList_Insert(ObjectList *list, uintsize index, void *item)
 {
     PointerList_Insert((PointerList*)list, index, item);
     retain(item);
 }
 
-public void ObjectList_RemoveAt(ObjectList *list, int index)
+public void ObjectList_RemoveAt(ObjectList *list, uintsize index)
 {
     PointerList_RemoveAt((PointerList*)list, index);
 }
@@ -306,10 +306,11 @@ public void ObjectList_RemoveAt(ObjectList *list, int index)
 /**************************************/
 /* Internal function definitions      */
 /**************************************/
+
 internal void ObjectList_Constructor_Full(
     ObjectList *list,
     const IListVTable *vtable,
-    int capacity)
+    uintsize capacity)
 {
     PointerList_Constructor_Full((PointerList*)list, vtable, ReleaseElement, capacity);
 }

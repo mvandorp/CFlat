@@ -23,7 +23,6 @@
 #define CFLAT_CORE_COLLECTIONS_POINTERLIST_H
 
 #include "CFlat/Object.h"
-#include "CFlat/Language/Functions.h"
 #include "CFlat/Language/Integer.h"
 
 /* Forward declarations */
@@ -70,9 +69,8 @@ PointerList *PointerList_New(DestructorFunc elementDestructor);
 /// </param>
 /// <param name="capacity">The initial capacity of the <see cref="PointerList"/>.</param>
 /// <returns>A pointer to the newly allocated <see cref="PointerList"/>.</returns>
-/// <exception cref="::ArgumentOutOfRangeException"><paramref name="capacity"/> is less than 0.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-PointerList *PointerList_New_WithCapacity(DestructorFunc elementDestructor, int capacity);
+PointerList *PointerList_New_WithCapacity(DestructorFunc elementDestructor, uintsize capacity);
 
 /// <summary>
 /// Allocates and initializes a <see cref="PointerList"/> that contains the elements copied from the given collection.
@@ -128,9 +126,8 @@ void PointerList_Constructor(PointerList *list, DestructorFunc elementDestructor
 /// </param>
 /// <param name="capacity">The initial capacity of the <see cref="PointerList"/>.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
-/// <exception cref="::ArgumentOutOfRangeException"><paramref name="capacity"/> is less than 0.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void PointerList_Constructor_WithCapacity(PointerList *list, DestructorFunc elementDestructor, int capacity);
+void PointerList_Constructor_WithCapacity(PointerList *list, DestructorFunc elementDestructor, uintsize capacity);
 
 /// <summary>
 /// Initializes a <see cref="PointerList"/> that contains the elements copied from the given collection.
@@ -183,7 +180,7 @@ void PointerList_Destructor(PointerList *list);
 /// <param name="list">Pointer to a <see cref="PointerList"/>.</param>
 /// <returns>The capacity of the <see cref="PointerList"/>.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
-int PointerList_GetCapacity(const PointerList *list);
+uintsize PointerList_GetCapacity(const PointerList *list);
 
 /// <summary>
 /// Sets the capacity of a <see cref="PointerList"/>.
@@ -195,7 +192,7 @@ int PointerList_GetCapacity(const PointerList *list);
 ///     <paramref name="capacity"/> is less than the number of elements in <paramref name="list"/>.
 /// </exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void PointerList_SetCapacity(PointerList *list, int capacity);
+void PointerList_SetCapacity(PointerList *list, uintsize capacity);
 
 /// <summary>
 /// Adds the elements of the given collection to the end of a <see cref="PointerList"/>.
@@ -225,7 +222,7 @@ void PointerList_AddRange(PointerList *list, const struct IEnumerable *collectio
 ///     <paramref name="collection"/> is <see cref="null"/>.
 /// </exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void PointerList_InsertRange(PointerList *list, int index, const struct IEnumerable *collection);
+void PointerList_InsertRange(PointerList *list, uintsize index, const struct IEnumerable *collection);
 
 /// <summary>
 /// Removes the given range of elements from the a <see cref="PointerList"/>.
@@ -235,12 +232,10 @@ void PointerList_InsertRange(PointerList *list, int index, const struct IEnumera
 /// <param name="count">The number of elements to remove.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 /// <exception cref="::ArgumentOutOfRangeException">
-///     <paramref name="index"/> is less than 0 <b>-or-</b>
-///     <paramref name="count"/> is less than 0 <b>-or-</b>
 ///     <paramref name="index"/> and <paramref name="count"/> do not denote a valid range of elements in
 ///     <paramref name="list"/>.
 /// </exception>
-void PointerList_RemoveRange(PointerList *list, int index, int count);
+void PointerList_RemoveRange(PointerList *list, uintsize index, uintsize count);
 
 /// <summary>
 /// Copies the elements of a <see cref="PointerList"/> to a new array.
@@ -252,8 +247,8 @@ void PointerList_RemoveRange(PointerList *list, int index, int count);
 void *PointerList_ToArray(const PointerList *list);
 
 /// <summary>
-/// Sets the capacity to the actual number of elements in the <see cref="PointerList"/>, if that number is less than a treshold
-/// value.
+/// Sets the capacity to the actual number of elements in the <see cref="PointerList"/>, if that number is less than a
+/// treshold value.
 /// </summary>
 /// <param name="list">Pointer to a <see cref="PointerList"/>.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
@@ -276,7 +271,7 @@ struct IEnumerator *PointerList_GetEnumerator(const PointerList *list);
 /// <param name="list">Pointer to a <see cref="PointerList"/>.</param>
 /// <returns>The number of elements in the <see cref="PointerList"/>.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
-int PointerList_GetCount(const PointerList *list);
+uintsize PointerList_GetCount(const PointerList *list);
 
 /// <summary>
 /// Adds an item to a <see cref="PointerList"/>.
@@ -336,10 +331,9 @@ bool PointerList_Remove(PointerList *list, const void *item);
 /// <returns>The item at the given index of the <see cref="PointerList"/>.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 /// <exception cref="::ArgumentOutOfRangeException">
-///     <paramref name="index"/> is less than 0 <b>-or-</b>
 ///     <paramref name="index"/> is equal to or greater than the number of elements in <paramref name="list"/>.
 /// </exception>
-void *PointerList_GetItem(const PointerList *list, int index);
+void *PointerList_GetItem(const PointerList *list, uintsize index);
 
 /// <summary>
 /// Replaces the item at the given index of a <see cref="PointerList"/>.
@@ -349,19 +343,18 @@ void *PointerList_GetItem(const PointerList *list, int index);
 /// <param name="item">The new value for the element at the given index.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>>.</exception>
 /// <exception cref="::ArgumentOutOfRangeException">
-///     <paramref name="index"/> is less than 0 <b>-or-</b>
 ///     <paramref name="index"/> is equal to or greater than the number of elements in <paramref name="list"/>.
 /// </exception>
-void PointerList_SetItem(PointerList *list, int index, const void *item);
+void PointerList_SetItem(PointerList *list, uintsize index, const void *item);
 
 /// <summary>
 /// Determines the index of the given item in a <see cref="PointerList"/>.
 /// </summary>
 /// <param name="list">Pointer to a <see cref="PointerList"/>.</param>
 /// <param name="item">The item to find.</param>
-/// <returns>The index of <paramref name="item"/> if found; otherwise -1.</returns>
+/// <returns>The index of <paramref name="item"/> if found; otherwise <see cref="InvalidIndex"/>.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>>.</exception>
-int PointerList_IndexOf(const PointerList *list, const void *item);
+uintsize PointerList_IndexOf(const PointerList *list, const void *item);
 
 /// <summary>
 /// Inserts an item into a <see cref="PointerList"/> at the given index.
@@ -371,11 +364,10 @@ int PointerList_IndexOf(const PointerList *list, const void *item);
 /// <param name="item">The item to insert.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>>.</exception>
 /// <exception cref="::ArgumentOutOfRangeException">
-///     <paramref name="index"/> is less than 0 <b>-or-</b>
 ///     <paramref name="index"/> is greater than the number of elements in <paramref name="list"/>.
 /// </exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void PointerList_Insert(PointerList *list, int index, void *item);
+void PointerList_Insert(PointerList *list, uintsize index, void *item);
 
 /// <summary>
 /// Removes the element at the given index of a <see cref="PointerList"/>.
@@ -384,10 +376,9 @@ void PointerList_Insert(PointerList *list, int index, void *item);
 /// <param name="index">The index of the element to remove.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 /// <exception cref="::ArgumentOutOfRangeException">
-///     <paramref name="index"/> is less than 0 <b>-or-</b>
 ///     <paramref name="index"/> is equal to or greater than the number of elements in <paramref name="list"/>.
 /// </exception>
-void PointerList_RemoveAt(PointerList *list, int index);
+void PointerList_RemoveAt(PointerList *list, uintsize index);
 
 #ifdef CFLAT_CORE_INTERNAL
  #include "CFlat/Collections/PointerList.internal.h"
