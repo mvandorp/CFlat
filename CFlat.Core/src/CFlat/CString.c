@@ -30,7 +30,6 @@
 /**************************************/
 
 private void ValidateStartIndex(const char *str, uintsize startIndex);
-private void ValidatePositionIsWithinString(const char *str);
 
 /**************************************/
 /* Public function definitions        */
@@ -127,7 +126,7 @@ public char *CString_Copy(const char *str)
     Validate_NotNull(str);
 
     // Add one to the length to account for the terminating null character.
-    uintsize length = CString_Length(str) + 1;
+    uintsize length = uintsize_CheckedAddition(CString_Length(str), 1);
 
     char *copy = Memory_Allocate(length);
 
@@ -145,9 +144,12 @@ public void CString_CopyTo(
 {
     Validate_NotNull(source);
     Validate_NotNull(destination);
-    Validate_ArgumentRange(sourceIndex <= CString_Length(source),
+
+    uintsize sourceLength = CString_Length(source);
+
+    Validate_ArgumentRange(sourceIndex <= sourceLength,
         "Index cannot be greater than the the size of the string/array/collection.", "sourceIndex");
-    Validate_ArgumentRange(sourceIndex + count <= CString_Length(source),
+    Validate_ArgumentRange(count <= sourceLength - sourceIndex,
         "Count must refer to a location within the string/array/collection.", "count");
 
     Memory_Copy(&source[sourceIndex], &destination[destinationIndex], count);
@@ -265,8 +267,12 @@ public uintsize CString_IndexOf_Offset(const char *str, char value, uintsize sta
 
 public uintsize CString_IndexOf_Substring(const char *str, char value, uintsize startIndex, uintsize count)
 {
-    Validate_NotNull(str);
-    ValidateStartIndex(str, startIndex);
+    uintsize length = CString_Length(str);
+
+    Validate_ArgumentRange(startIndex <= length,
+        "Index cannot be greater than the the size of the string/array/collection.", "startIndex");
+    Validate_ArgumentRange(count <= length - startIndex,
+        "Count must refer to a location within the string/array/collection.", "count");
 
     uintsize end = startIndex + count;
 
@@ -275,9 +281,6 @@ public uintsize CString_IndexOf_Substring(const char *str, char value, uintsize 
         if (*str == value) {
             return i;
         }
-
-        // Validate the position after the comparison to allow searching for the terminating null character.
-        ValidatePositionIsWithinString(str);
     }
 
     // The character was not found.
@@ -308,16 +311,18 @@ public uintsize CString_IndexOfAny_Offset(const char *str, const char *anyOf, ui
 
 public uintsize CString_IndexOfAny_Substring(const char *str, const char *anyOf, uintsize startIndex, uintsize count)
 {
-    Validate_NotNull(str);
+    uintsize length = CString_Length(str);
+
     Validate_NotNull(anyOf);
-    ValidateStartIndex(str, startIndex);
+    Validate_ArgumentRange(startIndex <= length,
+        "Index cannot be greater than the the size of the string/array/collection.", "startIndex");
+    Validate_ArgumentRange(count <= length - startIndex,
+        "Count must refer to a location within the string/array/collection.", "count");
 
     uintsize end = startIndex + count;
 
     // Iterate through the next given number of characters.
     for (uintsize i = startIndex; i < end; i++, str++) {
-        ValidatePositionIsWithinString(str);
-
         if (CString_Contains(anyOf, *str)) {
             return i;
         }
@@ -360,9 +365,13 @@ public uintsize CString_IndexOfCString_Substring(
     uintsize startIndex,
     uintsize count)
 {
-    Validate_NotNull(str);
+    uintsize length = CString_Length(str);
+
     Validate_NotNull(value);
-    ValidateStartIndex(str, startIndex);
+    Validate_ArgumentRange(startIndex <= length,
+        "Index cannot be greater than the the size of the string/array/collection.", "startIndex");
+    Validate_ArgumentRange(count <= length - startIndex,
+        "Count must refer to a location within the string/array/collection.", "count");
 
     // If we are searching for an empty string, report it at the starting index.
     if (*value == '\0') {
@@ -373,8 +382,6 @@ public uintsize CString_IndexOfCString_Substring(
 
     // Iterate through the next given number of characters.
     for (uintsize i = startIndex; i < end; i++, str++) {
-        ValidatePositionIsWithinString(str);
-
         if (CString_StartsWithCString(str, value)) {
             return i;
         }
@@ -545,19 +552,20 @@ public char *CString_Remove(const char *str, uintsize startIndex)
 
 public char *CString_Remove_Substring(const char *str, uintsize startIndex, uintsize count)
 {
-    Validate_NotNull(str);
-    Validate_ArgumentRange(startIndex <= CString_Length(str),
+    uintsize length = CString_Length(str);
+
+    Validate_ArgumentRange(startIndex <= length,
         "Index cannot be greater than the the size of the string/array/collection.", "startIndex");
-    Validate_ArgumentRange(startIndex + count <= CString_Length(str),
+    Validate_ArgumentRange(count <= length - startIndex,
         "Count must refer to a location within the string/array/collection.", "count");
 
     uintsize endIndex = startIndex + count;
 
     StringBuilder sb;
-    StringBuilder_Constructor_WithCapacity(&sb, CString_Length(str) - count);
+    StringBuilder_Constructor_WithCapacity(&sb, length - count);
 
     StringBuilder_AppendBuffer(&sb, str, 0, startIndex);
-    StringBuilder_AppendBuffer(&sb, str, endIndex, CString_Length(str) - endIndex);
+    StringBuilder_AppendBuffer(&sb, str, endIndex, length - endIndex);
 
     return StringBuilder_DeleteAndToCString(&sb);
 }
@@ -655,22 +663,22 @@ public bool CString_StartsWithString_IgnoreCase(const char *str, const String *v
 public char *CString_CSubstring(const char *str, uintsize startIndex)
 {
     Validate_NotNull(str);
-    Validate_ArgumentRange(startIndex <= CString_Length(str),
-        "Index was out of range. Must be less than the length of the string.", "startIndex");
+    ValidateStartIndex(str, startIndex);
 
     return CString_Copy(&str[startIndex]);
 }
 
 public char *CString_CSubstring_WithLength(const char *str, uintsize startIndex, uintsize length)
 {
-    Validate_NotNull(str);
-    Validate_ArgumentRange(startIndex <= CString_Length(str),
+    uintsize strLength = CString_Length(str);
+
+    Validate_ArgumentRange(startIndex <= strLength,
         "Index was out of range. Must be less than the length of the string.", "startIndex");
-    Validate_ArgumentRange(startIndex + length <= CString_Length(str),
+    Validate_ArgumentRange(length <= strLength - startIndex,
         "Index and count must refer to a location within the string.", "count");
 
     // Add one to the length to account for the terminating null character.
-    char *substring = Memory_Allocate(length + 1);
+    char *substring = Memory_Allocate(uintsize_CheckedAddition(length, 1));
 
     // Ensure that the string has a terminating null character.
     substring[length] = '\0';
@@ -683,18 +691,18 @@ public char *CString_CSubstring_WithLength(const char *str, uintsize startIndex,
 public String *CString_Substring(const char *str, uintsize startIndex)
 {
     Validate_NotNull(str);
-    Validate_ArgumentRange(startIndex <= CString_Length(str),
-        "Index was out of range. Must be less than the length of the string.", "startIndex");
+    ValidateStartIndex(str, startIndex);
 
     return String_New(&str[startIndex]);
 }
 
 public String *CString_Substring_WithLength(const char *str, uintsize startIndex, uintsize length)
 {
-    Validate_NotNull(str);
-    Validate_ArgumentRange(startIndex <= CString_Length(str),
+    uintsize strLength = CString_Length(str);
+
+    Validate_ArgumentRange(startIndex <= strLength,
         "Index was out of range. Must be less than the length of the string.", "startIndex");
-    Validate_ArgumentRange(startIndex + length <= CString_Length(str),
+    Validate_ArgumentRange(length <= strLength - startIndex,
         "Index and count must refer to a location within the string.", "count");
 
     return String_New_Substring(str, startIndex, length);
@@ -717,22 +725,8 @@ private void ValidateStartIndex(const char *str, uintsize startIndex)
 
     // Move to the start index.
     for (uintsize i = 0; i < startIndex; i++, str++) {
-        if (*str == 0) {
-            // The end of the string was reached before the given start index, throw an exception.
-            throw_new(
-                ArgumentOutOfRangeException,
-                "Index was out of range. Must be less than the length of the string.");
-        }
-    }
-}
-
-private void ValidatePositionIsWithinString(const char *str)
-{
-    assert(str != null);
-
-    if (*str == '\0') {
-        // The end of the string was reached before we checked the given number of characters, throw an exception.
-        throw_new(ArgumentOutOfRangeException,
-            "Count must be positive and count must refer to a location within the string.");
+        // Throws when the end of the string was reached before the given start index.
+        Validate_ArgumentRange(*str != 0,
+            "Index was out of range. Must be less than the length of the string.", "startIndex");
     }
 }

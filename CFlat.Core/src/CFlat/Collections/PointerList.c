@@ -181,11 +181,9 @@ public void PointerList_InsertRange(PointerList *list, uintsize index, const IEn
 public void PointerList_RemoveRange(PointerList *list, uintsize index, uintsize count)
 {
     Validate_NotNull(list);
-    Validate_NotNegative(index);
-    Validate_NotNegative(count);
-    Validate_ArgumentRange(index < PointerList_GetCount(list),
-        "Index must be less than the size of the string/array/collection.", "index");
-    Validate_ArgumentRange(index + count < PointerList_GetCount(list),
+    Validate_ArgumentRange(index <= PointerList_GetCount(list),
+        "Index cannot be greater than the size of the string/array/collection.", "index");
+    Validate_ArgumentRange(count <= PointerList_GetCount(list) - index,
         "Count must refer to a location within the string/array/collection.", "count");
 
     if (list->ElementDestructor != null) {
@@ -253,11 +251,11 @@ public bool PointerList_Remove(PointerList *list, const void *item)
 {
     uintsize index = PointerList_IndexOf(list, item);
 
-    if (index >= 0) {
+    if (index != InvalidIndex) {
         PointerList_RemoveAt(list, index);
     }
 
-    return index >= 0;
+    return index != InvalidIndex;
 }
 
 /* IList */

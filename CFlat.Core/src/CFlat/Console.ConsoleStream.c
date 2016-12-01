@@ -198,6 +198,9 @@ private override uintsize ConsoleStream_Read(ConsoleStream *stream, byte *buffer
     ValidateReadSupported(stream);
     Validate_NotNull(buffer);
 
+    // Skip to the offset.
+    buffer = &buffer[offset];
+
     uintsize bytesRead = 0;
 
     while (bytesRead < count) {
@@ -205,7 +208,7 @@ private override uintsize ConsoleStream_Read(ConsoleStream *stream, byte *buffer
 
         if (ch == EOF) break;
 
-        buffer[offset + bytesRead++] = (byte)ch;
+        buffer[bytesRead++] = (byte)ch;
 
         if (ch == '\n') break;
     }

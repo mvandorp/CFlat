@@ -165,7 +165,7 @@ public void StringBuilder_Constructor_WithInitialStringValueAndCapacity(
     // Initialize the StringBuilder.
     sb->Length = length;
     sb->Capacity = capacity;
-    sb->Value = Memory_Allocate(capacity + 1);
+    sb->Value = Memory_Allocate(uintsize_CheckedAddition(capacity, 1));
 
     // Initialize the contents of the StringBuilder to the given string.
     if (length) {
@@ -203,7 +203,7 @@ public void StringBuilder_SetCapacity(StringBuilder *sb, uintsize capacity)
         "Capacity cannot be smaller than the current length.", "capacity");
 
     if (capacity != sb->Capacity) {
-        sb->Value = Memory_Reallocate(sb->Value, capacity + 1);
+        sb->Value = Memory_Reallocate(sb->Value, uintsize_CheckedAddition(capacity, 1));
         sb->Capacity = capacity;
     }
 }
@@ -213,9 +213,10 @@ public void StringBuilder_Append(StringBuilder *sb, char value)
 {
     Validate_NotNull(sb);
 
-    EnsureCapacity(sb, sb->Length + 1);
+    EnsureCapacity(sb, uintsize_CheckedAddition(sb->Length, 1));
 
-    sb->Value[sb->Length++] = value;
+    sb->Value[sb->Length] = value;
+    sb->Length++;
 }
 
 public void StringBuilder_AppendBuffer(StringBuilder *sb, const char *buffer, uintsize offset, uintsize count)
@@ -223,7 +224,7 @@ public void StringBuilder_AppendBuffer(StringBuilder *sb, const char *buffer, ui
     Validate_NotNull(sb);
     Validate_NotNull(buffer);
 
-    EnsureCapacity(sb, sb->Length + count);
+    EnsureCapacity(sb, uintsize_CheckedAddition(sb->Length, count));
 
     // Copy the string to the end of the buffer.
     Memory_CopyOffset(buffer, offset, sb->Value, sb->Length, count);
@@ -357,14 +358,13 @@ public void StringBuilder_Insert(StringBuilder *sb, uintsize index, char value)
     Validate_NotNull(sb);
     Validate_ArgumentRange(index <= sb->Length, "Index must be within the bounds of the string.", "index");
 
-    EnsureCapacity(sb, sb->Length + 1);
+    EnsureCapacity(sb, uintsize_CheckedAddition(sb->Length, 1));
 
     // Copy the contents of the buffer after index forward by 1 byte.
     Memory_CopyOffset(sb->Value, index, sb->Value, index + 1, sb->Length - index);
 
     // Insert the character.
     sb->Value[index] = value;
-
     sb->Length++;
 }
 
@@ -379,7 +379,7 @@ public void StringBuilder_InsertBuffer(
     Validate_NotNull(buffer);
     Validate_ArgumentRange(index <= sb->Length, "Index must be within the bounds of the string.", "index");
 
-    EnsureCapacity(sb, sb->Length + count);
+    EnsureCapacity(sb, uintsize_CheckedAddition(sb->Length, count));
 
     // Copy the contents of the buffer after index forward by length bytes.
     Memory_CopyOffset(sb->Value, index, sb->Value, index + count, sb->Length - index);
@@ -415,7 +415,7 @@ public void StringBuilder_Remove(StringBuilder *sb, uintsize startIndex, uintsiz
     Validate_NotNull(sb);
     Validate_ArgumentRange(startIndex <= sb->Length,
         "Index cannot be greater than the the size of the string/array/collection.", "startIndex");
-    Validate_ArgumentRange(startIndex + count <= sb->Length,
+    Validate_ArgumentRange(count <= sb->Length - startIndex,
         "Count must refer to a location within the string/array/collection.", "count");
 
     // Copy the contents of the buffer backward after index forward by length bytes.

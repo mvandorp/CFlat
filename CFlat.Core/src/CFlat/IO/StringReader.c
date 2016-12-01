@@ -86,7 +86,7 @@ public int StringReader_PeekOffset(const StringReader *reader, uintsize offset)
 {
     Validate_NotNull(reader);
 
-    if (reader->Position + offset >= String_GetLength(reader->Value)) {
+    if (uintsize_CheckedAddition(reader->Position, offset) >= String_GetLength(reader->Value)) {
         return -1;
     }
     else {
@@ -146,7 +146,7 @@ public void StringReader_Skip(StringReader *reader, uintsize amount)
 
     uintsize length = String_GetLength(reader->Value);
 
-    if (reader->Position + amount >= length) {
+    if (uintsize_CheckedAddition(reader->Position, amount) >= length) {
         reader->Position = length;
     }
     else {

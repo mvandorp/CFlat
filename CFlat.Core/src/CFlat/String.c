@@ -354,7 +354,7 @@ public void String_CopyTo(
     Validate_NotNull(destination);
     Validate_ArgumentRange(sourceIndex <= source->Length,
         "Index cannot be greater than the the size of the string/array/collection.", "sourceIndex");
-    Validate_ArgumentRange(sourceIndex + count <= source->Length,
+    Validate_ArgumentRange(count <= source->Length - sourceIndex,
         "Count must refer to a location within the string/array/collection.", "count");
 
     Memory_Copy(&source->Value[sourceIndex], &destination[destinationIndex], count);
@@ -510,7 +510,7 @@ public uintsize String_IndexOf_Substring(const String *str, char value, uintsize
     Validate_NotNull(str);
     Validate_ArgumentRange(startIndex <= str->Length,
         "Index cannot be greater than the the size of the string/array/collection.", "startIndex");
-    Validate_ArgumentRange(startIndex + count <= str->Length,
+    Validate_ArgumentRange(count <= str->Length - startIndex,
         "Count must refer to a location within the string/array/collection.", "count");
 
     uintsize end = startIndex + count;
@@ -541,7 +541,7 @@ public uintsize String_IndexOfAny_Substring(const String *str, const char *anyOf
     Validate_NotNull(anyOf);
     Validate_ArgumentRange(startIndex <= str->Length,
         "Index cannot be greater than the the size of the string/array/collection.", "startIndex");
-    Validate_ArgumentRange(startIndex + count <= str->Length,
+    Validate_ArgumentRange(count <= str->Length - startIndex,
         "Count must refer to a location within the string/array/collection.", "count");
 
     uintsize end = startIndex + count;
@@ -576,7 +576,7 @@ public uintsize String_IndexOfCString_Substring(
     Validate_NotNull(value);
     Validate_ArgumentRange(startIndex <= str->Length,
         "Index cannot be greater than the the size of the string/array/collection.", "startIndex");
-    Validate_ArgumentRange(startIndex + count <= str->Length,
+    Validate_ArgumentRange(count <= str->Length - startIndex,
         "Count must refer to a location within the string/array/collection.", "count");
 
     // If we are searching for an empty string, report it at the starting index.
@@ -623,7 +623,7 @@ public String *String_Insert(const String *str, uintsize startIndex, const Strin
 
     if (value == null || value->Length == 0) return const_cast(retain_const(str));
 
-    uintsize capacity = str->Length + value->Length;
+    uintsize capacity = uintsize_CheckedAddition(str->Length, value->Length);
 
     StringBuilder sb;
     StringBuilder_Constructor_WithCapacity(&sb, capacity);
@@ -664,13 +664,13 @@ public String *String_Join(const String *separator, const String * const *string
 
     // Calculate the total length of the resulting string.
     if (separator != null) {
-        capacity += (count - 1) * separator->Length;
+        capacity = uintsize_CheckedMultiplication(count - 1, separator->Length);
     }
 
     for (uintsize i = 0; i < count; i++) {
         if (strings[i] == null) continue;
 
-        capacity += strings[i]->Length;
+        capacity = uintsize_CheckedAddition(capacity, strings[i]->Length);
     }
 
     StringBuilder sb;
@@ -740,15 +740,15 @@ public uintsize String_LastIndexOf(const String *str, char value)
 
 public uintsize String_LastIndexOf_Offset(const String *str, char value, uintsize startIndex)
 {
-    return String_LastIndexOf_Substring(str, value, startIndex, startIndex + 1);
+    return String_LastIndexOf_Substring(str, value, startIndex, uintsize_CheckedAddition(startIndex, 1));
 }
 
 public uintsize String_LastIndexOf_Substring(const String *str, char value, uintsize startIndex, uintsize count)
 {
     Validate_NotNull(str);
-    Validate_ArgumentRange(str->Length == 0 || startIndex < str->Length,
+    Validate_ArgumentRange(startIndex < str->Length || str->Length == 0,
         "Index must be less than the size of the string/array/collection.", "startIndex");
-    Validate_ArgumentRange(str->Length == 0 || count < startIndex,
+    Validate_ArgumentRange(startIndex + 1 >= count || str->Length == 0,
         "Count must refer to a location within the string/array/collection.", "count");
 
     // If the string is empty, return InvalidIndex.
@@ -782,7 +782,7 @@ public uintsize String_LastIndexOfAny(const String *str, const char *anyOf)
 
 public uintsize String_LastIndexOfAny_Offset(const String *str, const char *anyOf, uintsize startIndex)
 {
-    return String_LastIndexOfAny_Substring(str, anyOf, startIndex, startIndex + 1);
+    return String_LastIndexOfAny_Substring(str, anyOf, startIndex, uintsize_CheckedAddition(startIndex, 1));
 }
 
 public uintsize String_LastIndexOfAny_Substring(
@@ -862,7 +862,7 @@ public uintsize String_LastIndexOfString(const String *str, const String *value)
 
 public uintsize String_LastIndexOfString_Offset(const String *str, const String *value, uintsize startIndex)
 {
-    return String_LastIndexOfString_Substring(str, value, startIndex, startIndex + 1);
+    return String_LastIndexOfString_Substring(str, value, startIndex, uintsize_CheckedAddition(startIndex, 1));
 }
 
 public uintsize String_LastIndexOfString_Substring(
@@ -873,9 +873,9 @@ public uintsize String_LastIndexOfString_Substring(
 {
     Validate_NotNull(str);
     Validate_NotNull(value);
-    Validate_ArgumentRange(str->Length == 0 || startIndex < str->Length,
+    Validate_ArgumentRange(startIndex < str->Length || str->Length == 0,
         "Index must be less than the size of the string/array/collection.", "startIndex");
-    Validate_ArgumentRange(str->Length == 0 || count < startIndex,
+    Validate_ArgumentRange(startIndex + 1 >= count || str->Length == 0,
         "Count must refer to a location within the string/array/collection.", "count");
 
     uintsize length = value->Length;
@@ -963,7 +963,7 @@ public String *String_Remove_Substring(const String *str, uintsize startIndex, u
     Validate_NotNull(str);
     Validate_ArgumentRange(startIndex <= str->Length,
         "Index cannot be greater than the the size of the string/array/collection.", "startIndex");
-    Validate_ArgumentRange(startIndex + count <= str->Length,
+    Validate_ArgumentRange(count <= str->Length - startIndex,
         "Count must refer to a location within the string/array/collection.", "count");
 
     uintsize endIndex = startIndex + count;
@@ -1034,7 +1034,7 @@ public IList *String_Split(const String *str, const char *separators)
     return String_Split_AtMost_WithOptions(str, separators, int_MaxValue, StringSplitOptions_None);
 }
 
-public IList *String_Split_AtMost(const String *str, const char *separators, int count)
+public IList *String_Split_AtMost(const String *str, const char *separators, uintsize count)
 {
     return String_Split_AtMost_WithOptions(str, separators, count, StringSplitOptions_None);
 }
@@ -1050,17 +1050,16 @@ public IList *String_Split_WithOptions(
 public IList *String_Split_AtMost_WithOptions(
     const String *str,
     const char *separators,
-    int count,
+    uintsize count,
     StringSplitOptions options)
 {
     Validate_NotNull(str);
     Validate_NotNull(separators);
-    Validate_NotNegative(count);
 
     IList *list = (IList*)ObjectList_New();
 
     try {
-        int i;
+        uintsize i;
         uintsize offset = 0;
 
         for (i = 1; i <= count; i++) {
@@ -1171,7 +1170,7 @@ public String *String_Substring_WithLength(const String *str, uintsize startInde
     Validate_NotNull(str);
     Validate_ArgumentRange(startIndex <= str->Length,
         "Index cannot be greater than the the size of the string/array/collection.", "startIndex");
-    Validate_ArgumentRange(startIndex + length <= str->Length,
+    Validate_ArgumentRange(length <= str->Length - startIndex,
         "StartIndex and length must refer to a location within the string.", "length");
 
     if (length == 0) return String_Empty;

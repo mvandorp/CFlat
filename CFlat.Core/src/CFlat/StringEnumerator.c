@@ -123,7 +123,7 @@ private bool MoveNext(StringEnumerator *enumerator)
     }
     else {
         enumerator->Current = '\0';
-        enumerator->Index = String_GetLength(enumerator->String) + 1;
+        enumerator->Index = uintsize_CheckedAddition(String_GetLength(enumerator->String), 1);
 
         return false;
     }

@@ -51,9 +51,9 @@ public void Event_DestructorRef(Event *event)
 
     if (*event == null) return;
 
-    int count = List_GetCount((List*)*event);
+    uintsize count = List_GetCount((List*)*event);
 
-    for (int i = 0; i < count; i++) {
+    for (uintsize i = 0; i < count; i++) {
         EventData eventData = List_GetItem((List*)*event, i, EventData);
 
         if (eventData.HandlerDataIsObject) {
@@ -70,9 +70,9 @@ public void Event_Raise(Event event, void *args)
 {
     if (event == null) return;
 
-    int count = List_GetCount((List*)event);
+    uintsize count = List_GetCount((List*)event);
 
-    for (int i = count - 1; i >= 0; i--) {
+    for (uintsize i = count; i-- > 0; ) {
         EventData eventData = List_GetItem((List*)event, i, EventData);
 
         eventData.Handler(eventData.HandlerData, args);

@@ -1244,9 +1244,8 @@ struct IList *String_Split(const String *str, const char *separators);
 ///     An <see cref="IList"/> containing the substrings resulting from splitting <paramref name="str"/>.
 /// </returns>
 /// <exception cref="::ArgumentNullException"><paramref name="str"/> is <see cref="null"/>.</exception>
-/// <exception cref="::ArgumentOutOfRangeException"><paramref name="count"/> is negative.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct IList *String_Split_AtMost(const String *str, const char *separators, int count);
+struct IList *String_Split_AtMost(const String *str, const char *separators, uintsize count);
 
 /// <summary>
 /// Splits a string into substrings delimited by any of the given separator characters.
@@ -1276,12 +1275,11 @@ struct IList *String_Split_WithOptions(const String *str, const char *separators
 ///     An <see cref="IList"/> containing the substrings resulting from splitting <paramref name="str"/>.
 /// </returns>
 /// <exception cref="::ArgumentNullException"><paramref name="str"/> is <see cref="null"/>.</exception>
-/// <exception cref="::ArgumentOutOfRangeException"><paramref name="count"/> is negative.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 struct IList *String_Split_AtMost_WithOptions(
     const String *str,
     const char *separators,
-    int count,
+    uintsize count,
     StringSplitOptions options);
 
 /// <summary>

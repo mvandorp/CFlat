@@ -132,7 +132,7 @@ private bool MoveNext(ListEnumerator *enumerator)
     }
     else {
         enumerator->Current = null;
-        enumerator->Index = IList_GetCount(enumerator->List) + 1;
+        enumerator->Index = uintsize_CheckedAddition(IList_GetCount(enumerator->List), 1);
 
         return false;
     }

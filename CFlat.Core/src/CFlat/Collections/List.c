@@ -181,9 +181,11 @@ public void List_SetCapacity(List *list, uintsize capacity)
     Validate_NotNull(list);
     Validate_ArgumentRange(capacity >= list->Count,
         "Capacity cannot be smaller than the current length.", "capacity");
+    Validate_ArgumentRange(capacity != InvalidIndex,
+        "Capacity cannot be equal to the value of InvalidIndex.", "capacity");
 
     if (capacity != list->Capacity) {
-        list->Array = Memory_Reallocate(list->Array, (uintsize)capacity * list->ElementSize);
+        list->Array = Memory_Reallocate(list->Array, uintsize_CheckedMultiplication(capacity, list->ElementSize));
         list->Capacity = capacity;
     }
 }
@@ -208,7 +210,7 @@ public void List_InsertRange(List *list, uintsize index, const IEnumerable *coll
 {
     Validate_NotNull(list);
     Validate_NotNull(collection);
-    Validate_ArgumentRange(index >= 0 && index <= list->Count,
+    Validate_ArgumentRange(index <= list->Count,
         "Index must be within the bounds of the List.", "index");
 
     IEnumerator *enumerator = IEnumerable_GetEnumerator(collection);
@@ -229,20 +231,18 @@ public void List_InsertRange(List *list, uintsize index, const IEnumerable *coll
 public void List_RemoveRange(List *list, uintsize index, uintsize count)
 {
     Validate_NotNull(list);
-    Validate_NotNegative(index);
-    Validate_NotNegative(count);
-    Validate_ArgumentRange(index < list->Count,
-        "Index must be less than the size of the string/array/collection.", "index");
-    Validate_ArgumentRange(index + count < list->Count,
+    Validate_ArgumentRange(index <= list->Count,
+        "Index cannot be greater than the size of the string/array/collection.", "index");
+    Validate_ArgumentRange(count <= list->Count - index,
         "Count must refer to a location within the string/array/collection.", "count");
 
     uintsize size = list->ElementSize;
 
     // Copy the contents of the buffer backward after index forward by length bytes.
     Memory_CopyOffset(
-        list->Array, (uintsize)(index + count) * size,
-        list->Array, (uintsize)count * size,
-        (uintsize)(list->Count - (index + count)) * size);
+        list->Array, (index + count) * size,
+        list->Array, count * size,
+        (list->Count - (index + count)) * size);
 
     list->Count -= count;
     list->Version++;
@@ -252,7 +252,7 @@ public void *List_ToArray(const List *list)
 {
     Validate_NotNull(list);
 
-    uintsize size = list->ElementSize * (uintsize)list->Count;
+    uintsize size = list->ElementSize * list->Count;
 
     void *copy = Memory_Allocate(size);
 
@@ -265,7 +265,7 @@ public void List_TrimExcess(List *list)
 {
     Validate_NotNull(list);
 
-    if (list->Count < (uintsize)((double)list->Capacity * 0.9)) {
+    if (list->Count < (list->Capacity * 9) / 10) {
         List_SetCapacity(list, list->Count);
     }
 }
@@ -302,7 +302,7 @@ public void List_Clear(List *list)
 
 public bool List_ContainsRef(const List *list, const void *item)
 {
-    return List_IndexOfRef(list, item) >= 0;
+    return List_IndexOfRef(list, item) != InvalidIndex;
 }
 
 public void List_CopyTo(const List *list, void *destination)
@@ -310,32 +310,28 @@ public void List_CopyTo(const List *list, void *destination)
     Validate_NotNull(list);
     Validate_NotNull(destination);
 
-    Memory_Copy(list->Array, destination, (uintsize)list->Count * list->ElementSize);
+    Memory_Copy(list->Array, destination, list->Count * list->ElementSize);
 }
 
 public bool List_RemoveRef(List *list, const void *item)
 {
     uintsize index = List_IndexOfRef(list, item);
 
-    if (index >= 0) {
+    if (index != InvalidIndex) {
         List_RemoveAt(list, index);
     }
 
-    return index >= 0;
+    return index != InvalidIndex;
 }
 
 /* IList */
 public void *List_GetItemRef(const List *list, uintsize index)
 {
     Validate_NotNull(list);
-    Validate_ArgumentRange(index >= 0 && index <= list->Count,
+    Validate_ArgumentRange(index <= list->Count,
         "Index must be within the bounds of the List.", "index");
 
-    byte *array = list->Array;
-    uintsize size = list->ElementSize;
-    uintsize i = (uintsize)index;
-
-    return &array[i * size];
+    return &list->Array[index * list->ElementSize];
 }
 
 public void List_SetItemRef(List *list, uintsize index, const void *item)
@@ -369,7 +365,7 @@ public uintsize List_IndexOfRef(const List *list, const void *item)
         }
     }
 
-    return -1;
+    return InvalidIndex;
 }
 
 public void List_InsertRef(List *list, uintsize index, const void *item)
@@ -383,8 +379,8 @@ public void List_InsertRef(List *list, uintsize index, const void *item)
 
     byte *array = list->Array;
     uintsize size = list->ElementSize;
-    uintsize i = (uintsize)index;
-    uintsize length = (uintsize)list->Count;
+    uintsize i = index;
+    uintsize length = list->Count;
 
     if (i < length) {
         // Move the contents of the array after index forward by 1 index.
@@ -418,7 +414,8 @@ internal void List_Constructor_Full(
     uintsize capacity)
 {
     Validate_ArgumentRange(elementSize > 0, "Element size cannot be zero.", "elementSize");
-    Validate_NotNegative(capacity);
+    Validate_ArgumentRange(capacity != InvalidIndex,
+        "Capacity cannot be equal to the value of InvalidIndex.", "capacity");
 
     IList_Constructor((IList*)list, vtable);
 
@@ -449,7 +446,8 @@ private void EnsureCapacity(List *list, uintsize minCapacity)
 
     if (list->Capacity < minCapacity) {
         uintsize capacity;
-        capacity = uintsize_Max(minCapacity, list->Count * 2);
+        capacity = uintsize_Min(list->Count * 2, InvalidIndex - 1);
+        capacity = uintsize_Max(capacity, minCapacity);
         capacity = uintsize_Max(capacity, DefaultCapacity);
 
         List_SetCapacity(list, capacity);
