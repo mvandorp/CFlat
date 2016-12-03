@@ -39,13 +39,27 @@ public void IList_Constructor(
     const IListVTable *vtable)
 {
     Validate_NotNull(vtable);
-    Validate_NotNull(vtable->GetItem);
     Validate_NotNull(vtable->SetItem);
-    Validate_NotNull(vtable->IndexOf);
     Validate_NotNull(vtable->Insert);
     Validate_NotNull(vtable->RemoveAt);
 
-    ICollection_Constructor((ICollection*)list, (const ICollectionVTable*)vtable);
+    IReadOnlyList_Constructor((IReadOnlyList*)list, (const IReadOnlyListVTable*)vtable);
+}
+
+/* Methods */
+public void IList_SetItem(IList *list, uintsize index, void *value)
+{
+    GetVTable(list)->SetItem(list, index, value);
+}
+
+public void IList_Insert(IList *list, uintsize index, void *value)
+{
+    GetVTable(list)->Insert(list, index, value);
+}
+
+public void IList_RemoveAt(IList *list, uintsize index)
+{
+    GetVTable(list)->RemoveAt(list, index);
 }
 
 /* IEnumerable */
@@ -90,30 +104,15 @@ public bool IList_Remove(IList *list, const void *item)
     return ICollection_Remove((ICollection*)list, item);
 }
 
-/* IList */
+/* IReadOnlyList */
 public void *IList_GetItem(const IList *list, uintsize index)
 {
-    return GetVTable(list)->GetItem(list, index);
-}
-
-public void IList_SetItem(IList *list, uintsize index, void *value)
-{
-    GetVTable(list)->SetItem(list, index, value);
+    return IReadOnlyList_GetItem((const IReadOnlyList*)list, index);
 }
 
 public uintsize IList_IndexOf(const IList *list, const void *item)
 {
-    return GetVTable(list)->IndexOf(list, item);
-}
-
-public void IList_Insert(IList *list, uintsize index, void *value)
-{
-    GetVTable(list)->Insert(list, index, value);
-}
-
-public void IList_RemoveAt(IList *list, uintsize index)
-{
-    GetVTable(list)->RemoveAt(list, index);
+    return IReadOnlyList_IndexOf((const IReadOnlyList*)list, item);
 }
 
 /**************************************/

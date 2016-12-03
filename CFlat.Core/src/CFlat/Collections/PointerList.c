@@ -38,16 +38,16 @@ private bool IsReadOnly(const PointerList *list);
 private const IListVTable VTable = IListVTable_Initializer(
     (DestructorFunc)PointerList_Destructor,
     (IEnumerable_GetEnumeratorFunc)PointerList_GetEnumerator,
-    (ICollection_GetCountFunc)PointerList_GetCount,
+    (IReadOnlyCollection_GetCountFunc)PointerList_GetCount,
     (ICollection_IsReadOnlyFunc)IsReadOnly,
     (ICollection_AddFunc)PointerList_Add,
     (ICollection_ClearFunc)PointerList_Clear,
-    (ICollection_ContainsFunc)PointerList_Contains,
-    (ICollection_CopyToFunc)PointerList_CopyTo,
+    (IReadOnlyCollection_ContainsFunc)PointerList_Contains,
+    (IReadOnlyCollection_CopyToFunc)PointerList_CopyTo,
     (ICollection_RemoveFunc)PointerList_Remove,
-    (IList_GetItemFunc)PointerList_GetItem,
+    (IReadOnlyList_GetItemFunc)PointerList_GetItem,
     (IList_SetItemFunc)PointerList_SetItem,
-    (IList_IndexOfFunc)PointerList_IndexOf,
+    (IReadOnlyList_IndexOfFunc)PointerList_IndexOf,
     (IList_InsertFunc)PointerList_Insert,
     (IList_RemoveAtFunc)PointerList_RemoveAt);
 

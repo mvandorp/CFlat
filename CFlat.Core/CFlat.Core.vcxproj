@@ -17,6 +17,8 @@
     <ClInclude Include="include\CFlat\Collections\IEnumerable.h" />
     <ClInclude Include="include\CFlat\Collections\IEnumerator.h" />
     <ClInclude Include="include\CFlat\Collections\IList.h" />
+    <ClInclude Include="include\CFlat\Collections\IReadOnlyCollection.h" />
+    <ClInclude Include="include\CFlat\Collections\IReadOnlyList.h" />
     <ClInclude Include="include\CFlat\Collections\List.h" />
     <ClInclude Include="include\CFlat\Collections\ObjectList.h" />
     <ClInclude Include="include\CFlat\Collections\PointerList.h" />
@@ -80,6 +82,8 @@
     <ClCompile Include="src\CFlat\Collections\IEnumerable.c" />
     <ClCompile Include="src\CFlat\Collections\IEnumerator.c" />
     <ClCompile Include="src\CFlat\Collections\IList.c" />
+    <ClCompile Include="src\CFlat\Collections\IReadOnlyCollection.c" />
+    <ClCompile Include="src\CFlat\Collections\IReadOnlyList.c" />
     <ClCompile Include="src\CFlat\Collections\List.c" />
     <ClCompile Include="src\CFlat\Collections\ListEnumerator.c" />
     <ClCompile Include="src\CFlat\Collections\ObjectList.c" />

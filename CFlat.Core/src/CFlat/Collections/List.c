@@ -48,16 +48,16 @@ private bool IsReadOnly(const List *list);
 private const IListVTable VTable = IListVTable_Initializer(
     (DestructorFunc)List_Destructor,
     (IEnumerable_GetEnumeratorFunc)List_GetEnumerator,
-    (ICollection_GetCountFunc)List_GetCount,
+    (IReadOnlyCollection_GetCountFunc)List_GetCount,
     (ICollection_IsReadOnlyFunc)IsReadOnly,
     (ICollection_AddFunc)List_AddRef,
     (ICollection_ClearFunc)List_Clear,
-    (ICollection_ContainsFunc)List_ContainsRef,
-    (ICollection_CopyToFunc)List_CopyTo,
+    (IReadOnlyCollection_ContainsFunc)List_ContainsRef,
+    (IReadOnlyCollection_CopyToFunc)List_CopyTo,
     (ICollection_RemoveFunc)List_RemoveRef,
-    (IList_GetItemFunc)List_GetItemRef,
+    (IReadOnlyList_GetItemFunc)List_GetItemRef,
     (IList_SetItemFunc)List_SetItemRef,
-    (IList_IndexOfFunc)List_IndexOfRef,
+    (IReadOnlyList_IndexOfFunc)List_IndexOfRef,
     (IList_InsertFunc)List_InsertRef,
     (IList_RemoveAtFunc)List_RemoveAt);
 
@@ -273,7 +273,7 @@ public void List_TrimExcess(List *list)
 /* IEnumerable */
 public IEnumerator *List_GetEnumerator(const List *list)
 {
-    return ListEnumerator_New((const IList*)list, (ListEnumerator_GetVersionFunc)List_GetVersion);
+    return ListEnumerator_New((const IReadOnlyList*)list, (ListEnumerator_GetVersionFunc)List_GetVersion);
 }
 
 /* ICollection */

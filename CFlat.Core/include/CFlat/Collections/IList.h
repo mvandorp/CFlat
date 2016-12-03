@@ -22,7 +22,7 @@
 #ifndef CFLAT_CORE_COLLECTIONS_ILIST_H
 #define CFLAT_CORE_COLLECTIONS_ILIST_H
 
-#include "CFlat/Collections/ICollection.h"
+#include "CFlat/Collections/IReadOnlyList.h"
 #include "CFlat/Language/Bool.h"
 #include "CFlat/Language/Integer.h"
 
@@ -47,14 +47,14 @@ struct IEnumerator;
 /// </summary>
 /// <param name="destructor">A <see cref="DestructorFunc"/>.</param>
 /// <param name="getEnumerator">An <see cref="IEnumerable_GetEnumeratorFunc"/>.</param>
-/// <param name="getCount">An <see cref="ICollection_GetCountFunc"/>.</param>
+/// <param name="getCount">An <see cref="IReadOnlyCollection_GetCountFunc"/>.</param>
 /// <param name="isReadOnly">An <see cref="ICollection_IsReadOnlyFunc"/>.</param>
 /// <param name="add">An <see cref="ICollection_AddFunc"/>.</param>
 /// <param name="clear">An <see cref="ICollection_ClearFunc"/>.</param>
 /// <param name="contains">An <see cref="ICollection_ContainsFunc"/>.</param>
 /// <param name="copyTo">An <see cref="ICollection_CopyToFunc"/>.</param>
 /// <param name="remove">An <see cref="ICollection_RemoveFunc"/>.</param>
-/// <param name="getItem">An <see cref="IList_GetItemFunc"/>.</param>
+/// <param name="getItem">An <see cref="IReadOnlyList_GetItemFunc"/>.</param>
 /// <param name="setItem">An <see cref="IList_SetItemFunc"/>.</param>
 /// <param name="indexOf">An <see cref="IList_IndexOfFunc"/>.</param>
 /// <param name="insert">An <see cref="IList_InsertFunc"/>.</param>
@@ -75,7 +75,7 @@ struct IEnumerator;
     insert,                                                     \
     removeAt)                                                   \
 {                                                               \
-    ICollectionVTable_Initializer(                              \
+    IReadOnlyListVTable_ICollection_Initializer(                \
         destructor,                                             \
         getEnumerator,                                          \
         getCount,                                               \
@@ -84,10 +84,10 @@ struct IEnumerator;
         clear,                                                  \
         contains,                                               \
         copyTo,                                                 \
-        remove),                                                \
-    getItem,                                                    \
+        remove,                                                 \
+        getItem,                                                \
+        indexOf),                                               \
     setItem,                                                    \
-    indexOf,                                                    \
     insert,                                                     \
     removeAt                                                    \
 }
@@ -100,16 +100,8 @@ typedef struct IList {
     /// <summary>
     /// The base class of <see cref="IList"/>.
     /// </summary>
-    ICollection Base;
+    IReadOnlyList Base;
 } IList;
-
-/// <summary>
-/// A function that returns the item at the given index of an <see cref="IList"/>.
-/// </summary>
-/// <param name="list">Pointer to an <see cref="IList"/>.</param>
-/// <param name="index">The index of the element to retrieve.</param>
-/// <returns>The item at the given index of the <see cref="IList"/>.</returns>
-typedef void *(*IList_GetItemFunc)(const IList *list, uintsize index);
 
 /// <summary>
 /// A function that replaces the item at the given index of an <see cref="IList"/>.
@@ -118,14 +110,6 @@ typedef void *(*IList_GetItemFunc)(const IList *list, uintsize index);
 /// <param name="index">The index of the element to replace.</param>
 /// <param name="item">The new value for the element at the given index.</param>
 typedef void (*IList_SetItemFunc)(IList *list, uintsize index, void *item);
-
-/// <summary>
-/// A function that determines the index of the given item in an <see cref="IList"/>.
-/// </summary>
-/// <param name="list">Pointer to an <see cref="IList"/>.</param>
-/// <param name="item">The item to find.</param>
-/// <returns>The index of <paramref name="item"/> if found; otherwise -1.</returns>
-typedef uintsize (*IList_IndexOfFunc)(const IList *list, const void *item);
 
 /// <summary>
 /// A function that inserts an item into an <see cref="IList"/> at the given index.
@@ -149,22 +133,12 @@ typedef struct IListVTable {
     /// <summary>
     /// The virtual method table of the base class of <see cref="IList"/>.
     /// </summary>
-    ICollectionVTable Base;
-
-    /// <summary>
-    /// A function that returns the item at the given index of an <see cref="IList"/>.
-    /// </summary>
-    IList_GetItemFunc GetItem;
+    IReadOnlyListVTable Base;
 
     /// <summary>
     /// A function that replaces the item at the given index of an <see cref="IList"/>.
     /// </summary>
     IList_SetItemFunc SetItem;
-
-    /// <summary>
-    /// A function that determines the index of the given item in an <see cref="IList"/>.
-    /// </summary>
-    IList_IndexOfFunc IndexOf;
 
     /// <summary>
     /// A function that inserts an item into an <see cref="IList"/> at the given index.
@@ -191,6 +165,41 @@ typedef struct IListVTable {
 void IList_Constructor(
     IList *list,
     const IListVTable *vtable);
+
+/// <summary>
+/// Replaces the item at the given index of an <see cref="IList"/>.
+/// </summary>
+/// <param name="list">Pointer to an <see cref="IList"/>.</param>
+/// <param name="index">The index of the element to replace.</param>
+/// <param name="item">The new value for the element at the given index.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
+/// <exception cref="::ArgumentOutOfRangeException">
+///     <paramref name="index"/> is equal to or greater than the number of elements in <paramref name="list"/>.
+/// </exception>
+void IList_SetItem(IList *list, uintsize index, void *item);
+
+/// <summary>
+/// Inserts an item into an <see cref="IList"/> at the given index.
+/// </summary>
+/// <param name="list">Pointer to an <see cref="IList"/>.</param>
+/// <param name="index">The index at which <paramref name="item"/> should be inserted.</param>
+/// <param name="item">The item to insert.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
+/// <exception cref="::ArgumentOutOfRangeException">
+///     <paramref name="index"/> is greater than the number of elements in <paramref name="list"/>.
+/// </exception>
+void IList_Insert(IList *list, uintsize index, void *item);
+
+/// <summary>
+/// Removes the element at the given index of an <see cref="IList"/>.
+/// </summary>
+/// <param name="list">Pointer to an <see cref="IList"/>.</param>
+/// <param name="index">The index of the element to remove.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
+/// <exception cref="::ArgumentOutOfRangeException">
+///     <paramref name="index"/> is equal to or greater than the number of elements in <paramref name="list"/>.
+/// </exception>
+void IList_RemoveAt(IList *list, uintsize index);
 
 /* IEnumerable */
 /// <summary>
@@ -268,7 +277,7 @@ void IList_CopyTo(const IList *list, void *destination);
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 bool IList_Remove(IList *list, const void *item);
 
-/* IList */
+/* IReadOnlyList */
 /// <summary>
 /// Gets the item at the given index of an <see cref="IList"/>.
 /// </summary>
@@ -286,18 +295,6 @@ bool IList_Remove(IList *list, const void *item);
 void *IList_GetItem(const IList *list, uintsize index);
 
 /// <summary>
-/// Replaces the item at the given index of an <see cref="IList"/>.
-/// </summary>
-/// <param name="list">Pointer to an <see cref="IList"/>.</param>
-/// <param name="index">The index of the element to replace.</param>
-/// <param name="item">The new value for the element at the given index.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
-/// <exception cref="::ArgumentOutOfRangeException">
-///     <paramref name="index"/> is equal to or greater than the number of elements in <paramref name="list"/>.
-/// </exception>
-void IList_SetItem(IList *list, uintsize index, void *item);
-
-/// <summary>
 /// Determines the index of the given item in an <see cref="IList"/>.
 /// </summary>
 /// <param name="list">Pointer to an <see cref="IList"/>.</param>
@@ -305,28 +302,5 @@ void IList_SetItem(IList *list, uintsize index, void *item);
 /// <returns>The index of <paramref name="item"/> if found; otherwise <see cref="InvalidIndex"/>.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 uintsize IList_IndexOf(const IList *list, const void *item);
-
-/// <summary>
-/// Inserts an item into an <see cref="IList"/> at the given index.
-/// </summary>
-/// <param name="list">Pointer to an <see cref="IList"/>.</param>
-/// <param name="index">The index at which <paramref name="item"/> should be inserted.</param>
-/// <param name="item">The item to insert.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
-/// <exception cref="::ArgumentOutOfRangeException">
-///     <paramref name="index"/> is greater than the number of elements in <paramref name="list"/>.
-/// </exception>
-void IList_Insert(IList *list, uintsize index, void *item);
-
-/// <summary>
-/// Removes the element at the given index of an <see cref="IList"/>.
-/// </summary>
-/// <param name="list">Pointer to an <see cref="IList"/>.</param>
-/// <param name="index">The index of the element to remove.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
-/// <exception cref="::ArgumentOutOfRangeException">
-///     <paramref name="index"/> is equal to or greater than the number of elements in <paramref name="list"/>.
-/// </exception>
-void IList_RemoveAt(IList *list, uintsize index);
 
 #endif

@@ -23,12 +23,12 @@
 #include "CFlat/Memory.h"
 #include "CFlat/Validate.h"
 #include "CFlat/Collections/IEnumerator.h"
-#include "CFlat/Collections/IList.h"
+#include "CFlat/Collections/IReadOnlyList.h"
 
 /* Types */
 typedef struct ListEnumerator {
     IEnumerator Base;
-    const IList *List;
+    const IReadOnlyList *List;
     void *Current;
     uintsize Index;
     uintsize Version;
@@ -39,7 +39,10 @@ typedef struct ListEnumerator {
 /* Private functions                  */
 /**************************************/
 
-private void Constructor(ListEnumerator *enumerator, const IList *list, ListEnumerator_GetVersionFunc getVersion);
+private void Constructor(
+    ListEnumerator *enumerator,
+    const IReadOnlyList *list,
+    ListEnumerator_GetVersionFunc getVersion);
 private void Destructor(ListEnumerator *enumerator);
 private void *GetCurrent(const ListEnumerator *enumerator);
 private bool MoveNext(ListEnumerator *enumerator);
@@ -59,7 +62,7 @@ private const IEnumeratorVTable VTable = IEnumeratorVTable_Initializer(
 /* Internal function definitions      */
 /**************************************/
 
-internal IEnumerator *ListEnumerator_New(const IList *list, ListEnumerator_GetVersionFunc getVersion)
+internal IEnumerator *ListEnumerator_New(const IReadOnlyList *list, ListEnumerator_GetVersionFunc getVersion)
 {
     ListEnumerator *enumerator = Memory_Allocate(sizeof(ListEnumerator));
 
@@ -81,7 +84,10 @@ internal IEnumerator *ListEnumerator_New(const IList *list, ListEnumerator_GetVe
 /* Private function definitions       */
 /**************************************/
 
-private void Constructor(ListEnumerator *enumerator, const IList *list, ListEnumerator_GetVersionFunc getVersion)
+private void Constructor(
+    ListEnumerator *enumerator,
+    const IReadOnlyList *list,
+    ListEnumerator_GetVersionFunc getVersion)
 {
     Validate_NotNull(enumerator);
     Validate_NotNull(list);
@@ -111,7 +117,7 @@ private void *GetCurrent(const ListEnumerator *enumerator)
         "Collection was modified; enumeration operation may not execute.");
     Validate_State(
         enumerator->Index > 0 &&
-        enumerator->Index <= IList_GetCount(enumerator->List),
+        enumerator->Index <= IReadOnlyList_GetCount(enumerator->List),
         "Enumeration has either not started or has already finished.");
 
     return enumerator->Current;
@@ -124,15 +130,15 @@ private bool MoveNext(ListEnumerator *enumerator)
         enumerator->Version == enumerator->GetVersion(enumerator->List),
         "Collection was modified; enumeration operation may not execute.");
 
-    if (enumerator->Index < IList_GetCount(enumerator->List)) {
-        enumerator->Current = IList_GetItem(enumerator->List, enumerator->Index);
+    if (enumerator->Index < IReadOnlyList_GetCount(enumerator->List)) {
+        enumerator->Current = IReadOnlyList_GetItem(enumerator->List, enumerator->Index);
         enumerator->Index++;
 
         return true;
     }
     else {
         enumerator->Current = null;
-        enumerator->Index = uintsize_CheckedAddition(IList_GetCount(enumerator->List), 1);
+        enumerator->Index = uintsize_CheckedAddition(IReadOnlyList_GetCount(enumerator->List), 1);
 
         return false;
     }

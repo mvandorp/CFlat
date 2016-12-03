@@ -22,7 +22,7 @@
 #ifndef CFLAT_CORE_COLLECTIONS_ICOLLECTION_H
 #define CFLAT_CORE_COLLECTIONS_ICOLLECTION_H
 
-#include "CFlat/Collections/IEnumerable.h"
+#include "CFlat/Collections/IReadOnlyCollection.h"
 #include "CFlat/Language/Bool.h"
 #include "CFlat/Language/Integer.h"
 
@@ -34,45 +34,47 @@ struct IEnumerator;
 /// Initializer for an <see cref="ICollection"/>.
 /// </summary>
 /// <param name="vtable">Pointer to a virtual method table.</param>
-#define ICollection_Initializer(vtable) { IEnumerable_Initializer(vtable) }
+#define ICollection_Initializer(vtable) { IReadOnlyCollection_Initializer(vtable) }
 
 /// <summary>
 /// Initializer for a const <see cref="ICollection"/>.
 /// </summary>
 /// <param name="vtable">Pointer to a virtual method table.</param>
-#define ICollection_const_Initializer(vtable) { IEnumerable_const_Initializer(vtable) }
+#define ICollection_const_Initializer(vtable) { IReadOnlyCollection_const_Initializer(vtable) }
 
 /// <summary>
 /// Initializer for an <see cref="ICollectionVTable"/>.
 /// </summary>
 /// <param name="destructor">A <see cref="DestructorFunc"/>.</param>
 /// <param name="getEnumerator">An <see cref="IEnumerable_GetEnumeratorFunc"/>.</param>
-/// <param name="getCount">An <see cref="ICollection_GetCountFunc"/>.</param>
+/// <param name="getCount">An <see cref="IReadOnlyCollection_GetCountFunc"/>.</param>
 /// <param name="isReadOnly">An <see cref="ICollection_IsReadOnlyFunc"/>.</param>
 /// <param name="add">An <see cref="ICollection_AddFunc"/>.</param>
 /// <param name="clear">An <see cref="ICollection_ClearFunc"/>.</param>
-/// <param name="contains">An <see cref="ICollection_ContainsFunc"/>.</param>
-/// <param name="copyTo">An <see cref="ICollection_CopyToFunc"/>.</param>
+/// <param name="contains">An <see cref="IReadOnlyCollection_ContainsFunc"/>.</param>
+/// <param name="copyTo">An <see cref="IReadOnlyCollection_CopyToFunc"/>.</param>
 /// <param name="remove">An <see cref="ICollection_RemoveFunc"/>.</param>
-#define ICollectionVTable_Initializer(                          \
-    destructor,                                                 \
-    getEnumerator,                                              \
-    getCount,                                                   \
-    isReadOnly,                                                 \
-    add,                                                        \
-    clear,                                                      \
-    contains,                                                   \
-    copyTo,                                                     \
-    remove)                                                     \
-{                                                               \
-    IEnumerableVTable_Initializer(destructor, getEnumerator),   \
-    getCount,                                                   \
-    isReadOnly,                                                 \
-    add,                                                        \
-    clear,                                                      \
-    contains,                                                   \
-    copyTo,                                                     \
-    remove                                                      \
+#define ICollectionVTable_Initializer(      \
+    destructor,                             \
+    getEnumerator,                          \
+    getCount,                               \
+    isReadOnly,                             \
+    add,                                    \
+    clear,                                  \
+    contains,                               \
+    copyTo,                                 \
+    remove)                                 \
+{                                           \
+    IReadOnlyCollectionVTable_Initializer(  \
+        destructor,                         \
+        getEnumerator,                      \
+        getCount,                           \
+        contains,                           \
+        copyTo),                            \
+    isReadOnly,                             \
+    add,                                    \
+    clear,                                  \
+    remove                                  \
 }
 
 /* Types */
@@ -83,15 +85,8 @@ typedef struct ICollection {
     /// <summary>
     /// The base class of <see cref="ICollection"/>.
     /// </summary>
-    IEnumerable Base;
+    IReadOnlyCollection Base;
 } ICollection;
-
-/// <summary>
-/// A function that returns the number of elements in an <see cref="ICollection"/>.
-/// </summary>
-/// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
-/// <returns>The number of elements in the <see cref="ICollection"/>.</returns>
-typedef uintsize (*ICollection_GetCountFunc)(const ICollection *collection);
 
 /// <summary>
 /// A function that returns whether or not an <see cref="ICollection"/> is read-only.
@@ -116,23 +111,6 @@ typedef void (*ICollection_AddFunc)(ICollection *collection, void *item);
 typedef void (*ICollection_ClearFunc)(ICollection *collection);
 
 /// <summary>
-/// A function that determines whether an <see cref="ICollection"/> contains the given value.
-/// </summary>
-/// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
-/// <param name="item">The item to find.</param>
-/// <returns><see cref="true"/> if <paramref name="item"/> was found; otherwise, <see cref="false"/>.</returns>
-typedef bool (*ICollection_ContainsFunc)(const ICollection *collection, const void *item);
-
-/// <summary>
-/// A function that copies the elements of an <see cref="ICollection"/> to the given array.
-/// </summary>
-/// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
-/// <param name="destination">
-///     The array that is the destination of the elements copied from the <see cref="ICollection"/>.
-/// </param>
-typedef void (*ICollection_CopyToFunc)(const ICollection *collection, void *destination);
-
-/// <summary>
 /// A function that removes the first occurance of the given item from an <see cref="ICollection"/>.
 /// </summary>
 /// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
@@ -149,12 +127,7 @@ typedef struct ICollectionVTable {
     /// <summary>
     /// The virtual method table of the base class of <see cref="ICollection"/>.
     /// </summary>
-    IEnumerableVTable Base;
-
-    /// <summary>
-    /// A function that returns the number of elements in an <see cref="ICollection"/>.
-    /// </summary>
-    ICollection_GetCountFunc GetCount;
+    IReadOnlyCollectionVTable Base;
 
     /// <summary>
     /// A function that returns whether or not an <see cref="ICollection"/> is read-only.
@@ -170,16 +143,6 @@ typedef struct ICollectionVTable {
     /// A function that removes all elements from an <see cref="ICollection"/>.
     /// </summary>
     ICollection_ClearFunc Clear;
-
-    /// <summary>
-    /// A function that determines whether an <see cref="ICollection"/> contains the given value.
-    /// </summary>
-    ICollection_ContainsFunc Contains;
-
-    /// <summary>
-    /// A function that copies the elements of an <see cref="ICollection"/> to the given array.
-    /// </summary>
-    ICollection_CopyToFunc CopyTo;
 
     /// <summary>
     /// A function that removes the first occurance of the given item from an <see cref="ICollection"/>.
@@ -201,24 +164,6 @@ typedef struct ICollectionVTable {
 void ICollection_Constructor(
     ICollection *collection,
     const ICollectionVTable *vtable);
-
-/* IEnumerable */
-/// <summary>
-/// Returns a pointer to an <see cref="IEnumerator"/> that iterates through the given <see cref="ICollection"/>.
-/// </summary>
-/// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
-/// <returns>An <see cref="IEnumerator"/> that iterates through an <see cref="ICollection"/>.</returns>
-/// <exception cref="::ArgumentNullException"><paramref name="collection"/> is <see cref="null"/>.</exception>
-struct IEnumerator *ICollection_GetEnumerator(const ICollection *collection);
-
-/* ICollection */
-/// <summary>
-/// Gets the number of elements in an <see cref="ICollection"/>.
-/// </summary>
-/// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
-/// <returns>The number of elements in the <see cref="ICollection"/>.</returns>
-/// <exception cref="::ArgumentNullException"><paramref name="collection"/> is <see cref="null"/>.</exception>
-uintsize ICollection_GetCount(const ICollection *collection);
 
 /// <summary>
 /// Gets whether or not an <see cref="ICollection"/> is read-only.
@@ -246,6 +191,35 @@ void ICollection_Add(ICollection *collection, void *item);
 void ICollection_Clear(ICollection *collection);
 
 /// <summary>
+/// Removes the first occurance of the given item from an <see cref="ICollection"/>.
+/// </summary>
+/// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
+/// <param name="item">The item to remove.</param>
+/// <returns>
+///     <see cref="true"/> if <paramref name="item"/> was successfully removed; otherwise, <see cref="false"/>.
+/// </returns>
+/// <exception cref="::ArgumentNullException"><paramref name="collection"/> is <see cref="null"/>.</exception>
+bool ICollection_Remove(ICollection *collection, const void *item);
+
+/* IEnumerable */
+/// <summary>
+/// Returns a pointer to an <see cref="IEnumerator"/> that iterates through the given <see cref="ICollection"/>.
+/// </summary>
+/// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
+/// <returns>An <see cref="IEnumerator"/> that iterates through an <see cref="ICollection"/>.</returns>
+/// <exception cref="::ArgumentNullException"><paramref name="collection"/> is <see cref="null"/>.</exception>
+struct IEnumerator *ICollection_GetEnumerator(const ICollection *collection);
+
+/* IReadOnlyCollection */
+/// <summary>
+/// Gets the number of elements in an <see cref="ICollection"/>.
+/// </summary>
+/// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
+/// <returns>The number of elements in the <see cref="ICollection"/>.</returns>
+/// <exception cref="::ArgumentNullException"><paramref name="collection"/> is <see cref="null"/>.</exception>
+uintsize ICollection_GetCount(const ICollection *collection);
+
+/// <summary>
 /// Determines whether an <see cref="ICollection"/> contains the given value.
 /// </summary>
 /// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
@@ -266,16 +240,5 @@ bool ICollection_Contains(const ICollection *collection, const void *item);
 ///     <paramref name="destination"/> is <see cref="null"/>.
 /// </exception>
 void ICollection_CopyTo(const ICollection *collection, void *destination);
-
-/// <summary>
-/// Removes the first occurance of the given item from an <see cref="ICollection"/>.
-/// </summary>
-/// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
-/// <param name="item">The item to remove.</param>
-/// <returns>
-///     <see cref="true"/> if <paramref name="item"/> was successfully removed; otherwise, <see cref="false"/>.
-/// </returns>
-/// <exception cref="::ArgumentNullException"><paramref name="collection"/> is <see cref="null"/>.</exception>
-bool ICollection_Remove(ICollection *collection, const void *item);
 
 #endif

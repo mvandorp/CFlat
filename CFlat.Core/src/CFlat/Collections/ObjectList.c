@@ -38,16 +38,16 @@ private void ReleaseElement(void *obj);
 private const IListVTable VTable = IListVTable_Initializer(
     (DestructorFunc)ObjectList_Destructor,
     (IEnumerable_GetEnumeratorFunc)ObjectList_GetEnumerator,
-    (ICollection_GetCountFunc)ObjectList_GetCount,
+    (IReadOnlyCollection_GetCountFunc)ObjectList_GetCount,
     (ICollection_IsReadOnlyFunc)IsReadOnly,
     (ICollection_AddFunc)ObjectList_Add,
     (ICollection_ClearFunc)ObjectList_Clear,
-    (ICollection_ContainsFunc)ObjectList_Contains,
-    (ICollection_CopyToFunc)ObjectList_CopyTo,
+    (IReadOnlyCollection_ContainsFunc)ObjectList_Contains,
+    (IReadOnlyCollection_CopyToFunc)ObjectList_CopyTo,
     (ICollection_RemoveFunc)ObjectList_Remove,
-    (IList_GetItemFunc)ObjectList_GetItem,
+    (IReadOnlyList_GetItemFunc)ObjectList_GetItem,
     (IList_SetItemFunc)ObjectList_SetItem,
-    (IList_IndexOfFunc)ObjectList_IndexOf,
+    (IReadOnlyList_IndexOfFunc)ObjectList_IndexOf,
     (IList_InsertFunc)ObjectList_Insert,
     (IList_RemoveAtFunc)ObjectList_RemoveAt);
 
