@@ -64,7 +64,6 @@ struct IEnumerator;
         destructor,                                                     \
         getEnumerator,                                                  \
         getCount,                                                       \
-        (ICollection_IsReadOnlyFunc)__CFLAT_IREADONLYLIST_IsReadOnly,   \
         (ICollection_AddFunc)__CFLAT_IREADONLYLIST_Add,                 \
         (ICollection_ClearFunc)__CFLAT_IREADONLYLIST_Clear,             \
         contains,                                                       \
@@ -80,7 +79,6 @@ struct IEnumerator;
 /// <param name="destructor">A <see cref="DestructorFunc"/>.</param>
 /// <param name="getEnumerator">An <see cref="IEnumerable_GetEnumeratorFunc"/>.</param>
 /// <param name="getCount">An <see cref="IReadOnlyCollection_GetCountFunc"/>.</param>
-/// <param name="isReadOnly">An <see cref="ICollection_IsReadOnlyFunc"/>.</param>
 /// <param name="add">An <see cref="ICollection_AddFunc"/>.</param>
 /// <param name="clear">An <see cref="ICollection_ClearFunc"/>.</param>
 /// <param name="contains">An <see cref="IReadOnlyCollection_ContainsFunc"/>.</param>
@@ -92,7 +90,6 @@ struct IEnumerator;
     destructor,                                                         \
     getEnumerator,                                                      \
     getCount,                                                           \
-    isReadOnly,                                                         \
     add,                                                                \
     clear,                                                              \
     contains,                                                           \
@@ -105,7 +102,6 @@ struct IEnumerator;
         destructor,                                                     \
         getEnumerator,                                                  \
         getCount,                                                       \
-        isReadOnly,                                                     \
         add,                                                            \
         clear,                                                          \
         contains,                                                       \

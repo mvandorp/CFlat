@@ -28,7 +28,6 @@
 /* Private functions                  */
 /**************************************/
 
-private bool IsReadOnly(const ObjectList *list);
 private void ReleaseElement(void *obj);
 
 /* Private constants */
@@ -39,7 +38,6 @@ private const IListVTable VTable = IListVTable_Initializer(
     (DestructorFunc)ObjectList_Destructor,
     (IEnumerable_GetEnumeratorFunc)ObjectList_GetEnumerator,
     (IReadOnlyCollection_GetCountFunc)ObjectList_GetCount,
-    (ICollection_IsReadOnlyFunc)IsReadOnly,
     (ICollection_AddFunc)ObjectList_Add,
     (ICollection_ClearFunc)ObjectList_Clear,
     (IReadOnlyCollection_ContainsFunc)ObjectList_Contains,
@@ -323,13 +321,6 @@ internal uintsize ObjectList_GetVersion(const ObjectList *list)
 /**************************************/
 /* Private function definitions       */
 /**************************************/
-
-private bool IsReadOnly(const ObjectList *list)
-{
-    Validate_NotNull(list);
-
-    return false;
-}
 
 private void ReleaseElement(void *obj)
 {

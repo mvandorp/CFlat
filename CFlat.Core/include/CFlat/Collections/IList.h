@@ -48,7 +48,6 @@ struct IEnumerator;
 /// <param name="destructor">A <see cref="DestructorFunc"/>.</param>
 /// <param name="getEnumerator">An <see cref="IEnumerable_GetEnumeratorFunc"/>.</param>
 /// <param name="getCount">An <see cref="IReadOnlyCollection_GetCountFunc"/>.</param>
-/// <param name="isReadOnly">An <see cref="ICollection_IsReadOnlyFunc"/>.</param>
 /// <param name="add">An <see cref="ICollection_AddFunc"/>.</param>
 /// <param name="clear">An <see cref="ICollection_ClearFunc"/>.</param>
 /// <param name="contains">An <see cref="ICollection_ContainsFunc"/>.</param>
@@ -63,7 +62,6 @@ struct IEnumerator;
     destructor,                                                 \
     getEnumerator,                                              \
     getCount,                                                   \
-    isReadOnly,                                                 \
     add,                                                        \
     clear,                                                      \
     contains,                                                   \
@@ -79,7 +77,6 @@ struct IEnumerator;
         destructor,                                             \
         getEnumerator,                                          \
         getCount,                                               \
-        isReadOnly,                                             \
         add,                                                    \
         clear,                                                  \
         contains,                                               \
@@ -218,16 +215,6 @@ struct IEnumerator *IList_GetEnumerator(const IList *list);
 /// <returns>The number of elements in the <see cref="IList"/>.</returns>
 /// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
 uintsize IList_GetCount(const IList *list);
-
-/// <summary>
-/// Gets whether or not an <see cref="IList"/> is read-only.
-/// </summary>
-/// <param name="list">Pointer to an <see cref="IList"/>.</param>
-/// <returns>
-///     <see cref="true"/> if the <see cref="IList"/> is read-only; otherwise, <see cref="false"/>.
-/// </returns>
-/// <exception cref="::ArgumentNullException"><paramref name="list"/> is <see cref="null"/>.</exception>
-bool IList_IsReadOnly(const IList *list);
 
 /// <summary>
 /// Adds an item to an <see cref="IList"/>.

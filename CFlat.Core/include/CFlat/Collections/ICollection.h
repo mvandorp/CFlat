@@ -48,7 +48,6 @@ struct IEnumerator;
 /// <param name="destructor">A <see cref="DestructorFunc"/>.</param>
 /// <param name="getEnumerator">An <see cref="IEnumerable_GetEnumeratorFunc"/>.</param>
 /// <param name="getCount">An <see cref="IReadOnlyCollection_GetCountFunc"/>.</param>
-/// <param name="isReadOnly">An <see cref="ICollection_IsReadOnlyFunc"/>.</param>
 /// <param name="add">An <see cref="ICollection_AddFunc"/>.</param>
 /// <param name="clear">An <see cref="ICollection_ClearFunc"/>.</param>
 /// <param name="contains">An <see cref="IReadOnlyCollection_ContainsFunc"/>.</param>
@@ -58,7 +57,6 @@ struct IEnumerator;
     destructor,                             \
     getEnumerator,                          \
     getCount,                               \
-    isReadOnly,                             \
     add,                                    \
     clear,                                  \
     contains,                               \
@@ -71,7 +69,6 @@ struct IEnumerator;
         getCount,                           \
         contains,                           \
         copyTo),                            \
-    isReadOnly,                             \
     add,                                    \
     clear,                                  \
     remove                                  \
@@ -87,15 +84,6 @@ typedef struct ICollection {
     /// </summary>
     IReadOnlyCollection Base;
 } ICollection;
-
-/// <summary>
-/// A function that returns whether or not an <see cref="ICollection"/> is read-only.
-/// </summary>
-/// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
-/// <returns>
-///     <see cref="true"/> if the <see cref="ICollection"/> is read-only; otherwise, <see cref="false"/>.
-/// </returns>
-typedef bool (*ICollection_IsReadOnlyFunc)(const ICollection *collection);
 
 /// <summary>
 /// A function that adds an item to an <see cref="ICollection"/>.
@@ -130,11 +118,6 @@ typedef struct ICollectionVTable {
     IReadOnlyCollectionVTable Base;
 
     /// <summary>
-    /// A function that returns whether or not an <see cref="ICollection"/> is read-only.
-    /// </summary>
-    ICollection_IsReadOnlyFunc IsReadOnly;
-
-    /// <summary>
     /// A function that adds an item to an <see cref="ICollection"/>.
     /// </summary>
     ICollection_AddFunc Add;
@@ -164,16 +147,6 @@ typedef struct ICollectionVTable {
 void ICollection_Constructor(
     ICollection *collection,
     const ICollectionVTable *vtable);
-
-/// <summary>
-/// Gets whether or not an <see cref="ICollection"/> is read-only.
-/// </summary>
-/// <param name="collection">Pointer to an <see cref="ICollection"/>.</param>
-/// <returns>
-///     <see cref="true"/> if the <see cref="ICollection"/> is read-only; otherwise, <see cref="false"/>.
-/// </returns>
-/// <exception cref="::ArgumentNullException"><paramref name="collection"/> is <see cref="null"/>.</exception>
-bool ICollection_IsReadOnly(const ICollection *collection);
 
 /// <summary>
 /// Adds an item to an <see cref="ICollection"/>.

@@ -29,7 +29,6 @@
 /**************************************/
 
 private bool PointerEquals(const void **x, const void **y);
-private bool IsReadOnly(const PointerList *list);
 
 /* Private constants */
 /// <summary>
@@ -39,7 +38,6 @@ private const IListVTable VTable = IListVTable_Initializer(
     (DestructorFunc)PointerList_Destructor,
     (IEnumerable_GetEnumeratorFunc)PointerList_GetEnumerator,
     (IReadOnlyCollection_GetCountFunc)PointerList_GetCount,
-    (ICollection_IsReadOnlyFunc)IsReadOnly,
     (ICollection_AddFunc)PointerList_Add,
     (ICollection_ClearFunc)PointerList_Clear,
     (IReadOnlyCollection_ContainsFunc)PointerList_Contains,
@@ -333,11 +331,4 @@ internal uintsize PointerList_GetVersion(const PointerList *list)
 private bool PointerEquals(const void **x, const void **y)
 {
     return *x == *y;
-}
-
-private bool IsReadOnly(const PointerList *list)
-{
-    Validate_NotNull(list);
-
-    return false;
 }

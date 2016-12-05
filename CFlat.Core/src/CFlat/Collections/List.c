@@ -39,7 +39,6 @@ private const uintsize DefaultCapacity = 4;
 /**************************************/
 
 private void EnsureCapacity(List *list, uintsize capacity);
-private bool IsReadOnly(const List *list);
 
 /* Private constants */
 /// <summary>
@@ -49,7 +48,6 @@ private const IListVTable VTable = IListVTable_Initializer(
     (DestructorFunc)List_Destructor,
     (IEnumerable_GetEnumeratorFunc)List_GetEnumerator,
     (IReadOnlyCollection_GetCountFunc)List_GetCount,
-    (ICollection_IsReadOnlyFunc)IsReadOnly,
     (ICollection_AddFunc)List_AddRef,
     (ICollection_ClearFunc)List_Clear,
     (IReadOnlyCollection_ContainsFunc)List_ContainsRef,
@@ -452,11 +450,4 @@ private void EnsureCapacity(List *list, uintsize minCapacity)
 
         List_SetCapacity(list, capacity);
     }
-}
-
-private bool IsReadOnly(const List *list)
-{
-    Validate_NotNull(list);
-
-    return false;
 }

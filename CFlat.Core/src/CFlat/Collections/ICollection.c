@@ -39,18 +39,11 @@ public void ICollection_Constructor(
     const ICollectionVTable *vtable)
 {
     Validate_NotNull(vtable);
-    Validate_NotNull(vtable->IsReadOnly);
     Validate_NotNull(vtable->Add);
     Validate_NotNull(vtable->Clear);
     Validate_NotNull(vtable->Remove);
 
     IReadOnlyCollection_Constructor((IReadOnlyCollection*)collection, (const IReadOnlyCollectionVTable*)vtable);
-}
-
-/* Properties */
-public bool ICollection_IsReadOnly(const ICollection *collection)
-{
-    return GetVTable(collection)->IsReadOnly(collection);
 }
 
 /* Methods */

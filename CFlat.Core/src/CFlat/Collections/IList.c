@@ -74,11 +74,6 @@ public uintsize IList_GetCount(const IList *list)
     return ICollection_GetCount((const ICollection*)list);
 }
 
-public bool IList_IsReadOnly(const IList *list)
-{
-    return ICollection_IsReadOnly((const ICollection*)list);
-}
-
 public void IList_Add(IList *list, void *item)
 {
     ICollection_Add((ICollection*)list, item);
