@@ -250,6 +250,60 @@ public void StringBuilder_AppendString(StringBuilder *sb, const String *value)
     StringBuilder_AppendBuffer(sb, String_GetCString(value), 0, String_GetLength(value));
 }
 
+public void StringBuilder_AppendInt(StringBuilder *sb, int value)
+{
+    int_ToStringBuffered(sb, value, null);
+}
+
+public void StringBuilder_AppendIntMax(StringBuilder *sb, intmax value)
+{
+    intmax_ToStringBuffered(sb, value, null);
+}
+
+#ifdef CFLAT_INTPTR
+public void StringBuilder_AppendIntPtr(StringBuilder *sb, intptr value)
+{
+    intptr_ToStringBuffered(sb, value, null);
+}
+#endif
+
+public void StringBuilder_AppendIntFSize(StringBuilder *sb, intfsize value)
+{
+    intfsize_ToStringBuffered(sb, value, null);
+}
+
+public void StringBuilder_AppendUInt(StringBuilder *sb, uint value)
+{
+    uint_ToStringBuffered(sb, value, null);
+}
+
+public void StringBuilder_AppendUIntMax(StringBuilder *sb, uintmax value)
+{
+    uintmax_ToStringBuffered(sb, value, null);
+}
+
+#ifdef CFLAT_UINTPTR
+public void StringBuilder_AppendUIntPtr(StringBuilder *sb, uintptr value)
+{
+    uintptr_ToStringBuffered(sb, value, null);
+}
+#endif
+
+public void StringBuilder_AppendUIntSize(StringBuilder *sb, uintsize value)
+{
+    uintsize_ToStringBuffered(sb, value, null);
+}
+
+public void StringBuilder_AppendSingle(StringBuilder *sb, float value)
+{
+    float_ToStringBuffered(sb, value, null);
+}
+
+public void StringBuilder_AppendDouble(StringBuilder *sb, double value)
+{
+    double_ToStringBuffered(sb, value, null);
+}
+
 public void StringBuilder_AppendFormatCString(StringBuilder *sb, const char *format, ...)
 {
     VarArgsList args;

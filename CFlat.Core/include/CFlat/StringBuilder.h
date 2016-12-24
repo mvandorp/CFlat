@@ -240,6 +240,100 @@ void StringBuilder_AppendCString(StringBuilder *sb, const char *value);
 void StringBuilder_AppendString(StringBuilder *sb, const struct String *value);
 
 /// <summary>
+/// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
+/// </summary>
+/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
+/// <param name="value">The value to append.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+void StringBuilder_AppendInt(StringBuilder *sb, int value);
+
+/// <summary>
+/// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
+/// </summary>
+/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
+/// <param name="value">The value to append.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+void StringBuilder_AppendIntMax(StringBuilder *sb, intmax value);
+
+#ifdef CFLAT_INTPTR
+/// <summary>
+/// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
+/// </summary>
+/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
+/// <param name="value">The value to append.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+void StringBuilder_AppendIntPtr(StringBuilder *sb, intptr value);
+#endif
+
+/// <summary>
+/// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
+/// </summary>
+/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
+/// <param name="value">The value to append.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+void StringBuilder_AppendIntFSize(StringBuilder *sb, intfsize value);
+
+/// <summary>
+/// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
+/// </summary>
+/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
+/// <param name="value">The value to append.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+void StringBuilder_AppendUInt(StringBuilder *sb, uint value);
+
+/// <summary>
+/// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
+/// </summary>
+/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
+/// <param name="value">The value to append.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+void StringBuilder_AppendUIntMax(StringBuilder *sb, uintmax value);
+
+#ifdef CFLAT_UINTPTR
+/// <summary>
+/// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
+/// </summary>
+/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
+/// <param name="value">The value to append.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+void StringBuilder_AppendUIntPtr(StringBuilder *sb, uintptr value);
+#endif
+
+/// <summary>
+/// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
+/// </summary>
+/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
+/// <param name="value">The value to append.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+void StringBuilder_AppendUIntSize(StringBuilder *sb, uintsize value);
+
+/// <summary>
+/// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
+/// </summary>
+/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
+/// <param name="value">The value to append.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+void StringBuilder_AppendSingle(StringBuilder *sb, float value);
+
+/// <summary>
+/// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
+/// </summary>
+/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
+/// <param name="value">The value to append.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+void StringBuilder_AppendDouble(StringBuilder *sb, double value);
+
+/// <summary>
 /// Appends a string that is formatted according to the given format string, to a <see cref="StringBuilder"/>.
 /// Each format specifier replaced with a string representation of the corresponding argument.
 /// </summary>
