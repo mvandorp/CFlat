@@ -96,7 +96,7 @@ public void StringBuilder_AppendFormatStringV(StringBuilder *sb, const String *f
             // Found random closing brace.
             else if (ch == '}') {
                 // Parse '}}'.
-                if (StringReader_Peek(&reader) == '}') {
+                if (StringReader_PeekOffset(&reader, 1) == '}') {
                     StringReader_Skip(&reader, 2);
                     StringBuilder_Append(sb, '}');
                 }
