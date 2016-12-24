@@ -24,6 +24,7 @@
 
 /* Forward declarations */
 struct String;
+struct StringBuilder;
 struct TextWriter;
 
 /* Types */
@@ -43,6 +44,18 @@ typedef struct StringWriter StringWriter;
 /// <returns>A pointer to the newly allocated string writer.</returns>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
 struct TextWriter *StringWriter_New(void);
+
+/// <summary>
+/// Allocates and initializes a new <see cref="StringWriter"/> that writes to a given <see cref="StringBuilder"/>.
+/// </summary>
+/// <remarks>
+///     The lifetime of the <see cref="StringWriter"/> should be managed with retain() and release().
+/// </remarks>
+/// <param name="sb">Pointer to a <see cref="StringBuilder"/> that the <see cref="StringWriter"/> will write to.</param>
+/// <returns>A pointer to the newly allocated string writer.</returns>
+/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+struct TextWriter *StringWriter_New_FromStringBuilder(struct StringBuilder *sb);
 
 /// <summary>
 /// Deletes a <see cref="StringWriter"/> and returns its value as a <see cref="String"/>.

@@ -37,6 +37,7 @@ struct StringWriter {
 /**************************************/
 
 private void StringWriter_Constructor(StringWriter *writer);
+private void StringWriter_Constructor_WithStringBuilder(StringWriter *writer, StringBuilder *sb);
 private void StringWriter_Destructor(StringWriter *writer);
 
 private override String *StringWriter_ToString(const StringWriter *writer);
@@ -88,6 +89,24 @@ public TextWriter *StringWriter_New(void)
     return (TextWriter*)writer;
 }
 
+public TextWriter *StringWriter_New_FromStringBuilder(StringBuilder *sb)
+{
+    StringWriter *writer = Memory_Allocate(sizeof(StringWriter));
+
+    try {
+        StringWriter_Constructor_WithStringBuilder(writer, sb);
+
+        Object_SetDeallocator(writer, Memory_Deallocate);
+    }
+    catch (Exception) {
+        Memory_Deallocate(writer);
+        throw;
+    }
+    endtry;
+
+    return (TextWriter*)writer;
+}
+
 public String *StringWriter_DeleteAndToString(StringWriter *writer)
 {
     Validate_NotNull(writer);
@@ -119,6 +138,15 @@ private void StringWriter_Constructor(StringWriter *writer)
     TextWriter_Constructor((TextWriter*)writer, &VTable);
 
     writer->StringBuilder = StringBuilder_New_WithCapacity(4096);
+}
+
+private void StringWriter_Constructor_WithStringBuilder(StringWriter *writer, StringBuilder *sb)
+{
+    Validate_NotNull(sb);
+
+    TextWriter_Constructor((TextWriter*)writer, &VTable);
+
+    writer->StringBuilder = retain(sb);
 }
 
 private void StringWriter_Destructor(StringWriter *writer)
