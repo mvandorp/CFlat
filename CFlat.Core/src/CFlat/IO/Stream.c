@@ -154,10 +154,7 @@ public abstract void Stream_Write(Stream *stream, const byte *buffer, uintsize o
 
 public void Stream_WriteByte(Stream *stream, byte value)
 {
-    byte buffer[1];
-    buffer[0] = value;
-
-    Stream_Write(stream, buffer, 0, 1);
+    Stream_Write(stream, &value, 0, 1);
 }
 
 /**************************************/

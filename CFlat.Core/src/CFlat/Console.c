@@ -20,7 +20,6 @@
 #include "CFlat/Console.h"
 
 #include "CFlat.h"
-#include "CFlat/Environment.h"
 #include "CFlat/String.h"
 #include "CFlat/Validate.h"
 #include "CFlat/IO/FileAccess.h"

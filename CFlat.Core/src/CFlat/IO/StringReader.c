@@ -20,7 +20,6 @@
 #include "CFlat/IO/StringReader.h"
 
 #include "CFlat.h"
-#include "CFlat/CString.h"
 #include "CFlat/Memory.h"
 #include "CFlat/Object.h"
 #include "CFlat/String.h"

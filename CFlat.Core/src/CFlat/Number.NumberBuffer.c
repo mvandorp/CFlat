@@ -342,17 +342,16 @@ private void NumberBuffer_FormatFloat(NumberBuffer *number,  int numDecimals, bo
     assert(number->ValueType == NumberType_Single || number->ValueType == NumberType_Double);
     assert(numDecimals >= 0);
 
-    // Get the floating-point value of the number as a double and find the number of significant digits in this value.
-    int numSignificantDigits;
-    int maxExponent;
-    double value = GetFloatValue(number, &numSignificantDigits, &maxExponent);
-
     int exponent;
+    int maxExponent;
+    int numDigits;
+    int numSignificantDigits;
+
+    // Get the floating-point value of the number as a double and find the number of significant digits in this value.
+    double value = GetFloatValue(number, &numSignificantDigits, &maxExponent);
 
     // Convert all significant digits to integers and get the exponent.
     value = Normalize(value, numSignificantDigits, maxExponent, &exponent);
-
-    int numDigits;
 
     // Find the number of significant digits needed.
     if (shiftIntegersBehindDecimalPoint) {
@@ -533,18 +532,18 @@ private double Normalize(double x, int numSignificantDigits, int maxExponent, in
     assert(maxExponent >= 0);
 
     // Calculate the exponent and negate it to scale it the number to normal range.
-    int exp = FloatExponent(x);
+    int exp = -FloatExponent(x);
 
-    *exponent = exp;
+    *exponent = -exp;
 
-    // If the exponent is too large to be represented we must scale in two steps.
-    while (-exp + numSignificantDigits > maxExponent) {
+    // If the exponent is too large to be represented we must scale in multiple steps.
+    while (exp + numSignificantDigits > maxExponent) {
         x = x * Math_Pow(10.0, maxExponent);
 
-        exp += maxExponent;
+        exp -= maxExponent;
     }
 
-    return Math_Round(x * Math_Pow(10.0, -exp + numSignificantDigits));
+    return Math_Round(x * Math_Pow(10.0, exp + numSignificantDigits));
 }
 
 /// <summary>
@@ -570,10 +569,9 @@ private void ReverseDigits(NumberBuffer *number)
 {
     assert(number != null);
 
-    int count = number->DigitCount;
-    int halfCount = count / 2;
+    const int count = number->DigitCount;
 
-    for (int i = 0; i < halfCount; i++) {
+    for (int i = 0; i < count / 2; i++) {
         char tmp = number->Digits[i];
         number->Digits[i] = number->Digits[count - 1 - i];
         number->Digits[count - 1 - i] = tmp;

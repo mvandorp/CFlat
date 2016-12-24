@@ -329,7 +329,7 @@ private void FormatCustomNumber(StringBuilder *sb, NumberBuffer *value, StringRe
                         char digit = NumberBuffer_GetIntegerDigit(value, integerIndex++);
 
                         if (ch == '#' && digit == '0' && !printedInteger) {
-                            // If we have not printed an integer yet, the digit is zero and it should not be printed,
+                            // If we have not printed an integer yet, and the digit is zero and should not be printed,
                             // then do not print it.
                         }
                         else
@@ -350,7 +350,7 @@ private void FormatCustomNumber(StringBuilder *sb, NumberBuffer *value, StringRe
                     char digit = NumberBuffer_GetDecimalDigit(value, decimalIndex);
 
                     if (ch == '#' && digit == '0') {
-                        // If the digit is zero and it should not be printed, increment leadingDecimalZeros and break.
+                        // If the digit is zero and should not be printed, increment leadingDecimalZeros and break.
                         decimalIndex++;
                         leadingDecimalZeros++;
                         break;

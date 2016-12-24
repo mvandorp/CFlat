@@ -24,7 +24,6 @@
 #include "CFlat/String.h"
 #include "CFlat/StringBuilder.h"
 #include "CFlat/Validate.h"
-#include "CFlat/IO/StringWriter.h"
 #include "CFlat/IO/TextWriter.h"
 
 /* Private constants */
