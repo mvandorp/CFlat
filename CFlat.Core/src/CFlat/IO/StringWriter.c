@@ -39,7 +39,6 @@ struct StringWriter {
 private void StringWriter_Constructor(StringWriter *writer);
 private void StringWriter_Destructor(StringWriter *writer);
 
-private override void StringWriter_Flush(StringWriter *writer);
 private override String *StringWriter_ToString(const StringWriter *writer);
 private override void StringWriter_WriteBuffer(
     StringWriter *writer,
@@ -53,7 +52,7 @@ private override void StringWriter_WriteBuffer(
 /// </summary>
 private const TextWriterVTable VTable = TextWriterVTable_Initializer(
     (DestructorFunc)StringWriter_Destructor,
-    (TextWriter_FlushFunc)StringWriter_Flush,
+    (TextWriter_FlushFunc)null,
     (TextWriter_ToStringFunc)StringWriter_ToString,
     (TextWriter_WriteBufferFunc)StringWriter_WriteBuffer);
 
@@ -63,7 +62,7 @@ private const TextWriterVTable VTable = TextWriterVTable_Initializer(
 /// </summary>
 private const TextWriterVTable VTableNoDestructor = TextWriterVTable_Initializer(
     null,
-    (TextWriter_FlushFunc)StringWriter_Flush,
+    (TextWriter_FlushFunc)null,
     (TextWriter_ToStringFunc)StringWriter_ToString,
     (TextWriter_WriteBufferFunc)StringWriter_WriteBuffer);
 
@@ -127,11 +126,6 @@ private void StringWriter_Destructor(StringWriter *writer)
     Validate_NotNull(writer);
 
     release(writer->StringBuilder);
-}
-
-private override void StringWriter_Flush(StringWriter *writer)
-{
-    Validate_NotNull(writer);
 }
 
 private override String *StringWriter_ToString(const StringWriter *writer)

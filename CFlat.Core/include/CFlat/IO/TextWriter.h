@@ -175,7 +175,7 @@ void TextWriter_SetAutoFlush(TextWriter *writer, bool value);
 /// <param name="writer">Pointer to a <see cref="TextWriter"/>.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="writer"/> is <see cref="null"/>.</exception>
 /// <exception cref="::IOException">An I/O error occurs.</exception>
-abstract void TextWriter_Flush(TextWriter *writer);
+virtual void TextWriter_Flush(TextWriter *writer);
 
 /// <summary>
 /// Returns a string that represents the given <see cref="TextWriter"/>.

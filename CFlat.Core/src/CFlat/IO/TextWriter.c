@@ -26,6 +26,26 @@
 #include "CFlat/StringBuilder.h"
 #include "CFlat/Validate.h"
 
+/* Macros */
+#define WriteWithStringBuilder(writer, bufferName, write)           \
+{                                                                   \
+    Validate_NotNull(writer);                                       \
+                                                                    \
+    StringBuilder __CFLAT_STRINGBUILDER_##__LINE__;                 \
+    StringBuilder *bufferName = &__CFLAT_STRINGBUILDER_##__LINE__;  \
+    StringBuilder_Constructor(bufferName);                          \
+                                                                    \
+    try {                                                           \
+        write;                                                      \
+                                                                    \
+        WriteStringBuilder(writer, bufferName);                     \
+    }                                                               \
+    finally {                                                       \
+        release(bufferName);                                        \
+    }                                                               \
+    endtry;                                                         \
+}
+
 /* Private constants */
 /// <summary>
 /// The default buffer capacity to use when copying a stream.
@@ -42,6 +62,8 @@ private String ClassName = String_Initializer("TextWriter");
 /* Private functions                  */
 /**************************************/
 
+private void WriteStringBuilder(TextWriter *writer, const StringBuilder *sb);
+
 private const TextWriterVTable *GetVTable(const TextWriter *writer);
 
 /**************************************/
@@ -51,7 +73,6 @@ private const TextWriterVTable *GetVTable(const TextWriter *writer);
 public void TextWriter_Constructor(TextWriter *writer, const TextWriterVTable *vtable)
 {
     Validate_NotNull(vtable);
-    Validate_NotNull(vtable->Flush);
     Validate_NotNull(vtable->WriteBuffer);
 
     Object_Constructor((Object*)writer, (const ObjectVTable*)vtable);
@@ -77,9 +98,12 @@ public void TextWriter_SetAutoFlush(TextWriter *writer, bool value)
     }
 }
 
-public abstract void TextWriter_Flush(TextWriter *writer)
+public virtual void TextWriter_Flush(TextWriter *writer)
 {
-    GetVTable(writer)->Flush(writer);
+    TextWriter_FlushFunc flush = GetVTable(writer)->Flush;
+
+    if (flush != null)
+        flush(writer);
 }
 
 public virtual String *TextWriter_ToString(const TextWriter *writer)
@@ -105,10 +129,7 @@ public abstract void TextWriter_WriteBuffer(TextWriter *writer, const char *buff
 
 public void TextWriter_Write(TextWriter *writer, char value)
 {
-    char buffer[1];
-    buffer[0] = value;
-
-    TextWriter_WriteBuffer(writer, buffer, 0, 1);
+    TextWriter_WriteBuffer(writer, &value, 0, 1);
 }
 
 public void TextWriter_Write_CString(TextWriter *writer, const char *value)
@@ -141,18 +162,11 @@ public void TextWriter_WriteFormat_CString(TextWriter *writer, const char *forma
 
 public void TextWriter_WriteFormat_CStringV(TextWriter *writer, const char *format, VarArgsList args)
 {
-    Validate_NotNull(writer);
     Validate_NotNull(format);
 
-    String *value = String_FormatCStringV(format, args);
-
-    try {
-        TextWriter_WriteBuffer(writer, String_GetCString(value), 0, String_GetLength(value));
-    }
-    finally {
-        release(value);
-    }
-    endtry;
+    WriteWithStringBuilder(writer, sb, {
+        StringBuilder_AppendFormatCStringV(sb, format, args);
+    });
 }
 
 public void TextWriter_WriteFormat_String(TextWriter *writer, const String *format, ...)
@@ -167,18 +181,11 @@ public void TextWriter_WriteFormat_String(TextWriter *writer, const String *form
 
 public void TextWriter_WriteFormat_StringV(TextWriter *writer, const String *format, VarArgsList args)
 {
-    Validate_NotNull(writer);
     Validate_NotNull(format);
 
-    String *value = String_FormatStringV(format, args);
-
-    try {
-        TextWriter_WriteBuffer(writer, String_GetCString(value), 0, String_GetLength(value));
-    }
-    finally {
-        release(value);
-    }
-    endtry;
+    WriteWithStringBuilder(writer, sb, {
+        StringBuilder_AppendFormatStringV(sb, format, args);
+    });
 }
 
 public void TextWriter_WriteLine(TextWriter *writer)
@@ -188,38 +195,14 @@ public void TextWriter_WriteLine(TextWriter *writer)
 
 public void TextWriter_WriteLine_CString(TextWriter *writer, const char *value)
 {
-    uintsize capacity = 1 + (value == null ? 0 : CString_Length(value));
-
-    StringBuilder sb;
-    StringBuilder_Constructor_WithInitialCStringValueAndCapacity(&sb, value, capacity);
-
-    try {
-        StringBuilder_Append(&sb, '\n');
-
-        TextWriter_WriteBuffer(writer, StringBuilder_GetBuffer(&sb), 0, StringBuilder_GetLength(&sb));
-    }
-    finally {
-        release(&sb);
-    }
-    endtry;
+    TextWriter_Write_CString(writer, value);
+    TextWriter_WriteLine(writer);
 }
 
 public void TextWriter_WriteLine_String(TextWriter *writer, const String *value)
 {
-    uintsize capacity = 1 + (value == null ? 0 : String_GetLength(value));
-
-    StringBuilder sb;
-    StringBuilder_Constructor_WithInitialStringValueAndCapacity(&sb, value, capacity);
-
-    try {
-        StringBuilder_Append(&sb, '\n');
-
-        TextWriter_WriteBuffer(writer, StringBuilder_GetBuffer(&sb), 0, StringBuilder_GetLength(&sb));
-    }
-    finally {
-        release(&sb);
-    }
-    endtry;
+    TextWriter_Write_String(writer, value);
+    TextWriter_WriteLine(writer);
 }
 
 public void TextWriter_WriteLineFormat_CString(TextWriter *writer, const char *format, ...)
@@ -234,19 +217,12 @@ public void TextWriter_WriteLineFormat_CString(TextWriter *writer, const char *f
 
 public void TextWriter_WriteLineFormat_CStringV(TextWriter *writer, const char *format, VarArgsList args)
 {
-    StringBuilder sb;
-    StringBuilder_Constructor(&sb);
+    Validate_NotNull(format);
 
-    try {
-        StringBuilder_AppendFormatCStringV(&sb, format, args);
-        StringBuilder_Append(&sb, '\n');
-
-        TextWriter_WriteBuffer(writer, StringBuilder_GetBuffer(&sb), 0, StringBuilder_GetLength(&sb));
-    }
-    finally {
-        release(&sb);
-    }
-    endtry;
+    WriteWithStringBuilder(writer, sb, {
+        StringBuilder_AppendFormatCStringV(sb, format, args);
+        StringBuilder_Append(sb, '\n');
+    });
 }
 
 public void TextWriter_WriteLineFormat_String(TextWriter *writer, const String *format, ...)
@@ -261,24 +237,25 @@ public void TextWriter_WriteLineFormat_String(TextWriter *writer, const String *
 
 public void TextWriter_WriteLineFormat_StringV(TextWriter *writer, const String *format, VarArgsList args)
 {
-    StringBuilder sb;
-    StringBuilder_Constructor(&sb);
+    Validate_NotNull(format);
 
-    try {
-        StringBuilder_AppendFormatStringV(&sb, format, args);
-        StringBuilder_Append(&sb, '\n');
-
-        TextWriter_WriteBuffer(writer, StringBuilder_GetBuffer(&sb), 0, StringBuilder_GetLength(&sb));
-    }
-    finally {
-        release(&sb);
-    }
-    endtry;
+    WriteWithStringBuilder(writer, sb, {
+        StringBuilder_AppendFormatStringV(sb, format, args);
+        StringBuilder_Append(sb, '\n');
+    });
 }
 
 /**************************************/
 /* Private function definitions       */
 /**************************************/
+
+private void WriteStringBuilder(TextWriter *writer, const StringBuilder *sb)
+{
+    assert(writer != null);
+    assert(sb != null);
+
+    TextWriter_WriteBuffer(writer, StringBuilder_GetBuffer(sb), 0, StringBuilder_GetLength(sb));
+}
 
 /// <summary>
 /// Gets the virtual method table of a <see cref="TextWriter"/>.
