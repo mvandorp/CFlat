@@ -232,6 +232,100 @@ void TextWriter_Write_CString(TextWriter *writer, const char *value);
 void TextWriter_Write_String(TextWriter *writer, const struct String *value);
 
 /// <summary>
+/// Writes a the string representation of the given number to a <see cref="TextWriter"/>.
+/// </summary>
+/// <param name="writer">Pointer to a <see cref="TextWriter"/>.</param>
+/// <param name="value">The number to write.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="writer"/> is <see cref="null"/>.</exception>
+/// <exception cref="::IOException">An I/O error occurs.</exception>
+void TextWriter_Write_Int(TextWriter *writer, int value);
+
+/// <summary>
+/// Writes a the string representation of the given number to a <see cref="TextWriter"/>.
+/// </summary>
+/// <param name="writer">Pointer to a <see cref="TextWriter"/>.</param>
+/// <param name="value">The number to write.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="writer"/> is <see cref="null"/>.</exception>
+/// <exception cref="::IOException">An I/O error occurs.</exception>
+void TextWriter_Write_IntMax(TextWriter *writer, intmax value);
+
+#ifdef CFLAT_INTPTR
+/// <summary>
+/// Writes a the string representation of the given number to a <see cref="TextWriter"/>.
+/// </summary>
+/// <param name="writer">Pointer to a <see cref="TextWriter"/>.</param>
+/// <param name="value">The number to write.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="writer"/> is <see cref="null"/>.</exception>
+/// <exception cref="::IOException">An I/O error occurs.</exception>
+void TextWriter_Write_IntPtr(TextWriter *writer, intptr value);
+#endif
+
+/// <summary>
+/// Writes a the string representation of the given number to a <see cref="TextWriter"/>.
+/// </summary>
+/// <param name="writer">Pointer to a <see cref="TextWriter"/>.</param>
+/// <param name="value">The number to write.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="writer"/> is <see cref="null"/>.</exception>
+/// <exception cref="::IOException">An I/O error occurs.</exception>
+void TextWriter_Write_IntFSize(TextWriter *writer, intfsize value);
+
+/// <summary>
+/// Writes a the string representation of the given number to a <see cref="TextWriter"/>.
+/// </summary>
+/// <param name="writer">Pointer to a <see cref="TextWriter"/>.</param>
+/// <param name="value">The number to write.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="writer"/> is <see cref="null"/>.</exception>
+/// <exception cref="::IOException">An I/O error occurs.</exception>
+void TextWriter_Write_UInt(TextWriter *writer, uint value);
+
+/// <summary>
+/// Writes a the string representation of the given number to a <see cref="TextWriter"/>.
+/// </summary>
+/// <param name="writer">Pointer to a <see cref="TextWriter"/>.</param>
+/// <param name="value">The number to write.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="writer"/> is <see cref="null"/>.</exception>
+/// <exception cref="::IOException">An I/O error occurs.</exception>
+void TextWriter_Write_UIntMax(TextWriter *writer, uintmax value);
+
+#ifdef CFLAT_INTPTR
+/// <summary>
+/// Writes a the string representation of the given number to a <see cref="TextWriter"/>.
+/// </summary>
+/// <param name="writer">Pointer to a <see cref="TextWriter"/>.</param>
+/// <param name="value">The number to write.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="writer"/> is <see cref="null"/>.</exception>
+/// <exception cref="::IOException">An I/O error occurs.</exception>
+void TextWriter_Write_UIntPtr(TextWriter *writer, uintptr value);
+#endif
+
+/// <summary>
+/// Writes a the string representation of the given number to a <see cref="TextWriter"/>.
+/// </summary>
+/// <param name="writer">Pointer to a <see cref="TextWriter"/>.</param>
+/// <param name="value">The number to write.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="writer"/> is <see cref="null"/>.</exception>
+/// <exception cref="::IOException">An I/O error occurs.</exception>
+void TextWriter_Write_UIntSize(TextWriter *writer, uintsize value);
+
+/// <summary>
+/// Writes a the string representation of the given number to a <see cref="TextWriter"/>.
+/// </summary>
+/// <param name="writer">Pointer to a <see cref="TextWriter"/>.</param>
+/// <param name="value">The number to write.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="writer"/> is <see cref="null"/>.</exception>
+/// <exception cref="::IOException">An I/O error occurs.</exception>
+void TextWriter_Write_Single(TextWriter *writer, float value);
+
+/// <summary>
+/// Writes a the string representation of the given number to a <see cref="TextWriter"/>.
+/// </summary>
+/// <param name="writer">Pointer to a <see cref="TextWriter"/>.</param>
+/// <param name="value">The number to write.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="writer"/> is <see cref="null"/>.</exception>
+/// <exception cref="::IOException">An I/O error occurs.</exception>
+void TextWriter_Write_Double(TextWriter *writer, double value);
+
+/// <summary>
 /// Writes a formatted string to a <see cref="TextWriter"/>, the formatting is performed as if done by
 /// String_FormatCString().
 /// </summary>
@@ -310,6 +404,15 @@ void TextWriter_WriteFormat_StringV(TextWriter *writer, const struct String *for
 void TextWriter_WriteLine(TextWriter *writer);
 
 /// <summary>
+/// Writes a character followed by a line terminator to a <see cref="TextWriter"/>.
+/// </summary>
+/// <param name="writer">Pointer to a <see cref="TextWriter"/>.</param>
+/// <param name="value">The character to write.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="writer"/> is <see cref="null"/>.</exception>
+/// <exception cref="::IOException">An I/O error occurs.</exception>
+void TextWriter_WriteLine_Char(TextWriter *writer, char value);
+
+/// <summary>
 /// Writes a null-terminated string followed by a line terminator to a <see cref="TextWriter"/>.
 /// </summary>
 /// <remarks>If <paramref name="value"/> is <see cref="null"/>, only the line terminator is written.</remarks>
@@ -328,6 +431,100 @@ void TextWriter_WriteLine_CString(TextWriter *writer, const char *value);
 /// <exception cref="::ArgumentNullException"><paramref name="writer"/> is <see cref="null"/>.</exception>
 /// <exception cref="::IOException">An I/O error occurs.</exception>
 void TextWriter_WriteLine_String(TextWriter *writer, const struct String *value);
+
+/// <summary>
+/// Writes a the string representation of the given number followed by a line terminator to a <see cref="TextWriter"/>.
+/// </summary>
+/// <param name="writer">Pointer to a <see cref="TextWriter"/>.</param>
+/// <param name="value">The number to write.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="writer"/> is <see cref="null"/>.</exception>
+/// <exception cref="::IOException">An I/O error occurs.</exception>
+void TextWriter_WriteLine_Int(TextWriter *writer, int value);
+
+/// <summary>
+/// Writes a the string representation of the given number followed by a line terminator to a <see cref="TextWriter"/>.
+/// </summary>
+/// <param name="writer">Pointer to a <see cref="TextWriter"/>.</param>
+/// <param name="value">The number to write.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="writer"/> is <see cref="null"/>.</exception>
+/// <exception cref="::IOException">An I/O error occurs.</exception>
+void TextWriter_WriteLine_IntMax(TextWriter *writer, intmax value);
+
+#ifdef CFLAT_INTPTR
+/// <summary>
+/// Writes a the string representation of the given number followed by a line terminator to a <see cref="TextWriter"/>.
+/// </summary>
+/// <param name="writer">Pointer to a <see cref="TextWriter"/>.</param>
+/// <param name="value">The number to write.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="writer"/> is <see cref="null"/>.</exception>
+/// <exception cref="::IOException">An I/O error occurs.</exception>
+void TextWriter_WriteLine_IntPtr(TextWriter *writer, intptr value);
+#endif
+
+/// <summary>
+/// Writes a the string representation of the given number followed by a line terminator to a <see cref="TextWriter"/>.
+/// </summary>
+/// <param name="writer">Pointer to a <see cref="TextWriter"/>.</param>
+/// <param name="value">The number to write.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="writer"/> is <see cref="null"/>.</exception>
+/// <exception cref="::IOException">An I/O error occurs.</exception>
+void TextWriter_WriteLine_IntFSize(TextWriter *writer, intfsize value);
+
+/// <summary>
+/// Writes a the string representation of the given number followed by a line terminator to a <see cref="TextWriter"/>.
+/// </summary>
+/// <param name="writer">Pointer to a <see cref="TextWriter"/>.</param>
+/// <param name="value">The number to write.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="writer"/> is <see cref="null"/>.</exception>
+/// <exception cref="::IOException">An I/O error occurs.</exception>
+void TextWriter_WriteLine_UInt(TextWriter *writer, uint value);
+
+/// <summary>
+/// Writes a the string representation of the given number followed by a line terminator to a <see cref="TextWriter"/>.
+/// </summary>
+/// <param name="writer">Pointer to a <see cref="TextWriter"/>.</param>
+/// <param name="value">The number to write.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="writer"/> is <see cref="null"/>.</exception>
+/// <exception cref="::IOException">An I/O error occurs.</exception>
+void TextWriter_WriteLine_UIntMax(TextWriter *writer, uintmax value);
+
+#ifdef CFLAT_UINTPTR
+/// <summary>
+/// Writes a the string representation of the given number followed by a line terminator to a <see cref="TextWriter"/>.
+/// </summary>
+/// <param name="writer">Pointer to a <see cref="TextWriter"/>.</param>
+/// <param name="value">The number to write.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="writer"/> is <see cref="null"/>.</exception>
+/// <exception cref="::IOException">An I/O error occurs.</exception>
+void TextWriter_WriteLine_UIntPtr(TextWriter *writer, uintptr value);
+#endif
+
+/// <summary>
+/// Writes a the string representation of the given number followed by a line terminator to a <see cref="TextWriter"/>.
+/// </summary>
+/// <param name="writer">Pointer to a <see cref="TextWriter"/>.</param>
+/// <param name="value">The number to write.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="writer"/> is <see cref="null"/>.</exception>
+/// <exception cref="::IOException">An I/O error occurs.</exception>
+void TextWriter_WriteLine_UIntSize(TextWriter *writer, uintsize value);
+
+/// <summary>
+/// Writes a the string representation of the given number followed by a line terminator to a <see cref="TextWriter"/>.
+/// </summary>
+/// <param name="writer">Pointer to a <see cref="TextWriter"/>.</param>
+/// <param name="value">The number to write.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="writer"/> is <see cref="null"/>.</exception>
+/// <exception cref="::IOException">An I/O error occurs.</exception>
+void TextWriter_WriteLine_Single(TextWriter *writer, float value);
+
+/// <summary>
+/// Writes a the string representation of the given number followed by a line terminator to a <see cref="TextWriter"/>.
+/// </summary>
+/// <param name="writer">Pointer to a <see cref="TextWriter"/>.</param>
+/// <param name="value">The number to write.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="writer"/> is <see cref="null"/>.</exception>
+/// <exception cref="::IOException">An I/O error occurs.</exception>
+void TextWriter_WriteLine_Double(TextWriter *writer, double value);
 
 /// <summary>
 /// Writes a formatted string followed by a line terminator to a <see cref="TextWriter"/>, the formatting is performed

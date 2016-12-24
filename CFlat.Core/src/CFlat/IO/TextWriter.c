@@ -150,6 +150,60 @@ public void TextWriter_Write_String(TextWriter *writer, const String *value)
     TextWriter_WriteBuffer(writer, String_GetCString(value), 0, String_GetLength(value));
 }
 
+public void TextWriter_Write_Int(TextWriter *writer, int value)
+{
+    WriteWithStringBuilder(writer, sb, StringBuilder_AppendInt(sb, value));
+}
+
+public void TextWriter_Write_IntMax(TextWriter *writer, intmax value)
+{
+    WriteWithStringBuilder(writer, sb, StringBuilder_AppendIntMax(sb, value));
+}
+
+#ifdef CFLAT_INTPTR
+public void TextWriter_Write_IntPtr(TextWriter *writer, intptr value)
+{
+    WriteWithStringBuilder(writer, sb, StringBuilder_AppendIntPtr(sb, value));
+}
+#endif
+
+public void TextWriter_Write_IntFSize(TextWriter *writer, intfsize value)
+{
+    WriteWithStringBuilder(writer, sb, StringBuilder_AppendIntFSize(sb, value));
+}
+
+public void TextWriter_Write_UInt(TextWriter *writer, uint value)
+{
+    WriteWithStringBuilder(writer, sb, StringBuilder_AppendUInt(sb, value));
+}
+
+public void TextWriter_Write_UIntMax(TextWriter *writer, uintmax value)
+{
+    WriteWithStringBuilder(writer, sb, StringBuilder_AppendUIntMax(sb, value));
+}
+
+#ifdef CFLAT_UINTPTR
+public void TextWriter_Write_UIntPtr(TextWriter *writer, uintptr value)
+{
+    WriteWithStringBuilder(writer, sb, StringBuilder_AppendUIntPtr(sb, value));
+}
+#endif
+
+public void TextWriter_Write_UIntSize(TextWriter *writer, uintsize value)
+{
+    WriteWithStringBuilder(writer, sb, StringBuilder_AppendUIntSize(sb, value));
+}
+
+public void TextWriter_Write_Single(TextWriter *writer, float value)
+{
+    WriteWithStringBuilder(writer, sb, StringBuilder_AppendSingle(sb, value));
+}
+
+public void TextWriter_Write_Double(TextWriter *writer, double value)
+{
+    WriteWithStringBuilder(writer, sb, StringBuilder_AppendDouble(sb, value));
+}
+
 public void TextWriter_WriteFormat_CString(TextWriter *writer, const char *format, ...)
 {
     VarArgsList args;
@@ -164,9 +218,7 @@ public void TextWriter_WriteFormat_CStringV(TextWriter *writer, const char *form
 {
     Validate_NotNull(format);
 
-    WriteWithStringBuilder(writer, sb, {
-        StringBuilder_AppendFormatCStringV(sb, format, args);
-    });
+    WriteWithStringBuilder(writer, sb, StringBuilder_AppendFormatCStringV(sb, format, args));
 }
 
 public void TextWriter_WriteFormat_String(TextWriter *writer, const String *format, ...)
@@ -183,14 +235,18 @@ public void TextWriter_WriteFormat_StringV(TextWriter *writer, const String *for
 {
     Validate_NotNull(format);
 
-    WriteWithStringBuilder(writer, sb, {
-        StringBuilder_AppendFormatStringV(sb, format, args);
-    });
+    WriteWithStringBuilder(writer, sb, StringBuilder_AppendFormatStringV(sb, format, args));
 }
 
 public void TextWriter_WriteLine(TextWriter *writer)
 {
     TextWriter_Write(writer, '\n');
+}
+
+public void TextWriter_WriteLine_Char(TextWriter *writer, char value)
+{
+    TextWriter_Write(writer, value);
+    TextWriter_WriteLine(writer);
 }
 
 public void TextWriter_WriteLine_CString(TextWriter *writer, const char *value)
@@ -203,6 +259,90 @@ public void TextWriter_WriteLine_String(TextWriter *writer, const String *value)
 {
     TextWriter_Write_String(writer, value);
     TextWriter_WriteLine(writer);
+}
+
+public void TextWriter_WriteLine_Int(TextWriter *writer, int value)
+{
+    WriteWithStringBuilder(writer, sb, {
+        StringBuilder_AppendInt(sb, value);
+        StringBuilder_Append(sb, '\n');
+    });
+}
+
+public void TextWriter_WriteLine_IntMax(TextWriter *writer, intmax value)
+{
+    WriteWithStringBuilder(writer, sb, {
+        StringBuilder_AppendIntMax(sb, value);
+        StringBuilder_Append(sb, '\n');
+    });
+}
+
+#ifdef CFLAT_INTPTR
+public void TextWriter_WriteLine_IntPtr(TextWriter *writer, intptr value)
+{
+    WriteWithStringBuilder(writer, sb, {
+        StringBuilder_AppendIntPtr(sb, value);
+        StringBuilder_Append(sb, '\n');
+    });
+}
+#endif
+
+public void TextWriter_WriteLine_IntFSize(TextWriter *writer, intfsize value)
+{
+    WriteWithStringBuilder(writer, sb, {
+        StringBuilder_AppendIntFSize(sb, value);
+        StringBuilder_Append(sb, '\n');
+    });
+}
+
+public void TextWriter_WriteLine_UInt(TextWriter *writer, uint value)
+{
+    WriteWithStringBuilder(writer, sb, {
+        StringBuilder_AppendUInt(sb, value);
+        StringBuilder_Append(sb, '\n');
+    });
+}
+
+public void TextWriter_WriteLine_UIntMax(TextWriter *writer, uintmax value)
+{
+    WriteWithStringBuilder(writer, sb, {
+        StringBuilder_AppendUIntMax(sb, value);
+        StringBuilder_Append(sb, '\n');
+    });
+}
+
+#ifdef CFLAT_UINTPTR
+public void TextWriter_WriteLine_UIntPtr(TextWriter *writer, uintptr value)
+{
+    WriteWithStringBuilder(writer, sb, {
+        StringBuilder_AppendUIntPtr(sb, value);
+        StringBuilder_Append(sb, '\n');
+    });
+}
+#endif
+
+public void TextWriter_WriteLine_UIntSize(TextWriter *writer, uintsize value)
+{
+    WriteWithStringBuilder(writer, sb, {
+        StringBuilder_AppendUIntSize(sb, value);
+        StringBuilder_Append(sb, '\n');
+    });
+}
+
+public void TextWriter_WriteLine_Single(TextWriter *writer, float value)
+{
+    WriteWithStringBuilder(writer, sb, {
+        StringBuilder_AppendSingle(sb, value);
+        StringBuilder_Append(sb, '\n');
+    });
+}
+
+public void TextWriter_WriteLine_Double(TextWriter *writer, double value)
+{
+    WriteWithStringBuilder(writer, sb, {
+        StringBuilder_AppendDouble(sb, value);
+        StringBuilder_Append(sb, '\n');
+    });
 }
 
 public void TextWriter_WriteLineFormat_CString(TextWriter *writer, const char *format, ...)
