@@ -85,10 +85,26 @@ public TextWriter *StreamWriter_New(Stream *stream)
     return (TextWriter*)writer;
 }
 
-public TextWriter *StreamWriter_New_FromFile(const char *path, bool append)
+public TextWriter *StreamWriter_New_FromFile(const String *path, bool append)
 {
     TextWriter *writer = null;
     Stream *stream = FileStream_New(path, append ? FileMode_Append : FileMode_Create);
+
+    try {
+        writer = StreamWriter_New(stream);
+    }
+    finally {
+        release(stream);
+    }
+    endtry;
+
+    return writer;
+}
+
+public TextWriter *StreamWriter_New_FromFile_CString(const char *path, bool append)
+{
+    TextWriter *writer = null;
+    Stream *stream = FileStream_New_CString(path, append ? FileMode_Append : FileMode_Create);
 
     try {
         writer = StreamWriter_New(stream);

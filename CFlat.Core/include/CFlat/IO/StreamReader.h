@@ -24,6 +24,7 @@
 
 /* Forward declarations */
 struct Stream;
+struct String;
 struct TextReader;
 
 /* Types */
@@ -56,6 +57,19 @@ struct TextReader *StreamReader_New(struct Stream *stream);
 /// <exception cref="::ArgumentNullException"><paramref name="path"/> is <see cref="null"/>.</exception>
 /// <exception cref="::IOException">An I/O error occurs.</exception>
 /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct TextReader *StreamReader_New_FromFile(const char *path);
+struct TextReader *StreamReader_New_FromFile(const struct String *path);
+
+/// <summary>
+/// Allocates and initializes a new <see cref="StreamReader"/> for the specified file.
+/// </summary>
+/// <remarks>
+///     The lifetime of the <see cref="StreamWriter"/> should be managed with retain() and release().
+/// </remarks>
+/// <param name="path">The file path to read from.</param>
+/// <returns>A pointer to the newly allocated stream reader.</returns>
+/// <exception cref="::ArgumentNullException"><paramref name="path"/> is <see cref="null"/>.</exception>
+/// <exception cref="::IOException">An I/O error occurs.</exception>
+/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+struct TextReader *StreamReader_New_FromFile_CString(const char *path);
 
 #endif

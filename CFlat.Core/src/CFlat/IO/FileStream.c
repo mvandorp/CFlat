@@ -22,6 +22,7 @@
 #include "CFlat.h"
 #include "CFlat/Memory.h"
 #include "CFlat/Object.h"
+#include "CFlat/String.h"
 #include "CFlat/Validate.h"
 #include "CFlat/IO/FileAccess.h"
 #include "CFlat/IO/FileMode.h"
@@ -135,12 +136,22 @@ private const StreamVTable VTable = StreamVTable_Initializer(
 /* Public function definitions        */
 /**************************************/
 
-public Stream *FileStream_New(const char *path, FileMode mode)
+public Stream *FileStream_New(const String *path, FileMode mode)
 {
-    return FileStream_New_WithAccess(path, mode, mode == FileMode_Append ? FileAccess_Write : FileAccess_ReadWrite);
+    return FileStream_New_CString(String_GetCString(path), mode);
 }
 
-public Stream *FileStream_New_WithAccess(const char *path, FileMode mode, FileAccess fileAccess)
+public Stream *FileStream_New_CString(const char *path, FileMode mode)
+{
+    return FileStream_New_WithAccess_CString(path, mode, mode == FileMode_Append ? FileAccess_Write : FileAccess_ReadWrite);
+}
+
+public Stream *FileStream_New_WithAccess(const String *path, FileMode mode, FileAccess fileAccess)
+{
+    return FileStream_New_WithAccess_CString(String_GetCString(path), mode, fileAccess);
+}
+
+public Stream *FileStream_New_WithAccess_CString(const char *path, FileMode mode, FileAccess fileAccess)
 {
     FileStream *stream = Memory_Allocate(sizeof(FileStream));
 

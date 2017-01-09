@@ -86,10 +86,26 @@ public TextReader *StreamReader_New(Stream *stream)
     return (TextReader*)reader;
 }
 
-public TextReader *StreamReader_New_FromFile(const char *path)
+public TextReader *StreamReader_New_FromFile(const String *path)
 {
     TextReader *reader = null;
     Stream *stream = FileStream_New(path, FileMode_Open);
+
+    try {
+        reader = StreamReader_New(stream);
+    }
+    finally {
+        release(stream);
+    }
+    endtry;
+
+    return reader;
+}
+
+public TextReader *StreamReader_New_FromFile_CString(const char *path)
+{
+    TextReader *reader = null;
+    Stream *stream = FileStream_New_CString(path, FileMode_Open);
 
     try {
         reader = StreamReader_New(stream);
