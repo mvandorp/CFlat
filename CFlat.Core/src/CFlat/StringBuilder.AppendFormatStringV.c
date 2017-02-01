@@ -149,9 +149,9 @@ private void ProcessFormatItem(StringBuilder *sb, StringReader *reader, StringBu
             StringBuilder_Append(sb, '0');
             StringBuilder_Append(sb, 'x');
 #ifdef CFLAT_UINTPTR
-            uintptr_ToStringBuffered(sb, (uintptr)VarArg(*args, void*), String_WrapCString("x8", &formatBuffer));
+            uintptr_ToStringBuffered(sb, (uintptr)VarArg(*args, const void*), String_WrapCString("x8", &formatBuffer));
 #else
-            uintmax_ToStringBuffered(sb, (uintmax)VarArg(*args, void*), String_WrapCString("x8", &formatBuffer));
+            uintmax_ToStringBuffered(sb, (uintmax)VarArg(*args, const void*), String_WrapCString("x8", &formatBuffer));
 #endif
             break;
 
@@ -196,11 +196,11 @@ private void ProcessFormatItem(StringBuilder *sb, StringReader *reader, StringBu
             break;
 
         case ArgumentType_CString:
-            StringBuilder_AppendCString(sb, VarArg(*args, char*));
+            StringBuilder_AppendCString(sb, VarArg(*args, const char*));
             break;
 
         case ArgumentType_String:
-            StringBuilder_AppendString(sb, VarArg(*args, String*));
+            StringBuilder_AppendString(sb, VarArg(*args, const String*));
             break;
 
         case ArgumentType_Char:

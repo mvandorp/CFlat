@@ -101,7 +101,7 @@ typedef enum StringSplitOptions {
 /// <summary>
 /// Represents an empty string.
 /// </summary>
-extern String * const String_Empty;
+extern const String * const String_Empty;
 
 /* Functions */
 /// <summary>

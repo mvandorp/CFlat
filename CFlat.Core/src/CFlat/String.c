@@ -36,13 +36,13 @@
 /// <summary>
 /// Represents an empty string.
 /// </summary>
-private String Empty = String_Initializer("");
+private const String Empty = String_Initializer("");
 
 /* Public constants */
 /// <summary>
 /// Represents an empty string.
 /// </summary>
-public String * const String_Empty = &Empty;
+public const String * const String_Empty = &Empty;
 
 /// <summary>
 /// The virtual method table for the <see cref="String"/> class.
@@ -300,7 +300,7 @@ public String *String_ConcatEnumerable(const IEnumerable *strings)
 
         try {
             while (IEnumerator_MoveNext(enumerator)) {
-                StringBuilder_AppendString(&sb, (String*)IEnumerator_GetCurrent(enumerator));
+                StringBuilder_AppendString(&sb, (const String*)IEnumerator_GetCurrent(enumerator));
             }
         }
         finally {
@@ -657,7 +657,7 @@ public String *String_Join(const String *separator, const String * const *string
 {
     Validate_NotNull(strings);
 
-    if (count == 0 || (count == 1 && strings[0] == null)) return String_Empty;
+    if (count == 0 || (count == 1 && strings[0] == null)) return const_cast(String_Empty);
     if (count == 1) return const_cast(retain_const(strings[0]));
 
     uintsize capacity = 0;
@@ -713,7 +713,7 @@ public String *String_JoinEnumerable(const String *separator, const IEnumerable 
             while (IEnumerator_MoveNext(enumerator)) {
                 if (!first) StringBuilder_AppendString(&sb, separator);
 
-                StringBuilder_AppendString(&sb, (String*)IEnumerator_GetCurrent(enumerator));
+                StringBuilder_AppendString(&sb, (const String*)IEnumerator_GetCurrent(enumerator));
 
                 if (first) first = false;
             }
@@ -1078,7 +1078,7 @@ public IList *String_Split_AtMost_WithOptions(
 
             if (separatorIndex == offset) {
                 if ((options & StringSplitOptions_RemoveEmptyEntries) == 0) {
-                    IList_Add(list, String_Empty);
+                    IList_Add(list, const_cast(String_Empty));
                 }
             }
             else {
@@ -1099,7 +1099,7 @@ public IList *String_Split_AtMost_WithOptions(
         if (i <= count) {
             if (offset == String_GetLength(str)) {
                 if ((options & StringSplitOptions_RemoveEmptyEntries) == 0) {
-                    IList_Add(list, String_Empty);
+                    IList_Add(list, const_cast(String_Empty));
                 }
             }
             else if (offset < String_GetLength(str)) {
@@ -1173,7 +1173,7 @@ public String *String_Substring_WithLength(const String *str, uintsize startInde
     Validate_ArgumentRange(length <= str->Length - startIndex,
         "StartIndex and length must refer to a location within the string.", "length");
 
-    if (length == 0) return String_Empty;
+    if (length == 0) return const_cast(String_Empty);
 
     if (startIndex == 0 && length == str->Length) return const_cast(retain_const(str));
 
