@@ -262,15 +262,18 @@ private void PrintUnhandledException(const CFlatException *ex)
     try {
         if (message == null || String_GetLength(message) == 0) {
             TextWriter_WriteFormat_CString(Console_GetError(),
-                "An unhandled exception of type '{string}' occurred\n   at {cstring}:{int}\n",
+                "An unhandled exception of type '{string}' occurred" Environment_NewLine_CString
+                "   at {cstring}:{int}" Environment_NewLine_CString,
                 name,
                 ex->File,
                 ex->Line);
         }
         else {
             TextWriter_WriteFormat_CString(Console_GetError(),
-                "An unhandled exception of type '{string}' occurred\n   at {cstring}:{int}\n\n"
-                "Additional information: {string}\n",
+                "An unhandled exception of type '{string}' occurred" Environment_NewLine_CString
+                "   at {cstring}:{int}" Environment_NewLine_CString
+                Environment_NewLine_CString
+                "Additional information: {string}" Environment_NewLine_CString,
                 name,
                 ex->File,
                 ex->Line,

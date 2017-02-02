@@ -24,11 +24,26 @@
 
 #include "CFlat/Event.h"
 
+/* Forward declarations*/
+struct String;
+
+/* Macros */
+/// <summary>
+/// Represents the newline string.
+/// </summary>
+#define Environment_NewLine_CString "\r\n"
+
 /* Types */
 /// <summary>
 /// A function that performs clean up of static resources.
 /// </summary>
 typedef void (*StaticDestructorFunc)(void);
+
+/* Constants */
+/// <summary>
+/// Represents the newline string.
+/// </summary>
+extern const struct String * const Environment_NewLine;
 
 /* Events */
 /// <summary>

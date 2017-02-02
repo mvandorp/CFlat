@@ -25,6 +25,7 @@
 #ifndef CFLAT_CORE_ARGUMENT_H
 #define CFLAT_CORE_ARGUMENT_H
 
+#include "CFlat/Environment.h"
 #include "CFlat/Language/Exceptions.h"
 
 /// <summary>
@@ -70,7 +71,7 @@
 /// <param name="param">Pointer to a null-terminated string representing the name of the parameter to validate.</param>
 /// <exception cref="::ArgumentException"><paramref name="condition"/> is <see cref="false"/>.</exception>
 #define Validate_Argument(condition, message, param) \
-    Validate_IsTrue(condition, ArgumentException, message "\nParameter name: " param)
+    Validate_IsTrue(condition, ArgumentException, message Environment_NewLine_CString "Parameter name: " param)
 
 /// <summary>
 /// Validates that an argument satisfies the specified condition; otherwise throws an
@@ -83,8 +84,11 @@
 /// </param>
 /// <param name="param">Pointer to a null-terminated string representing the name of the parameter to validate.</param>
 /// <exception cref="::ArgumentOutOfRangeException"><paramref name="condition"/> is <see cref="false"/>.</exception>
-#define Validate_ArgumentRange(condition, message, param) \
-    Validate_IsTrue(condition, ArgumentOutOfRangeException, message "\nParameter name: " param)
+#define Validate_ArgumentRange(condition, message, param)               \
+    Validate_IsTrue(                                                    \
+        condition,                                                      \
+        ArgumentOutOfRangeException,                                    \
+        message Environment_NewLine_CString "Parameter name: " param)
 
 /// <summary>
 /// Validates that the specified condition involving the state of an object is true; otherwise throws an

@@ -21,6 +21,7 @@
 
 #include "CFlat.h"
 #include "CFlat/CString.h"
+#include "CFlat/Environment.h"
 #include "CFlat/Memory.h"
 #include "CFlat/Object.h"
 #include "CFlat/String.h"
@@ -334,7 +335,7 @@ public void StringBuilder_AppendFormatString(StringBuilder *sb, const String *fo
 
 public void StringBuilder_AppendLine(StringBuilder *sb)
 {
-    StringBuilder_Append(sb, '\n');
+    StringBuilder_AppendString(sb, Environment_NewLine);
 }
 
 public void StringBuilder_AppendLineCString(StringBuilder *sb, const char *value)
@@ -342,7 +343,7 @@ public void StringBuilder_AppendLineCString(StringBuilder *sb, const char *value
     Validate_NotNull(sb);
 
     StringBuilder_AppendCString(sb, value);
-    StringBuilder_Append(sb, '\n');
+    StringBuilder_AppendString(sb, Environment_NewLine);
 }
 
 public void StringBuilder_AppendLineString(StringBuilder *sb, const String *value)
@@ -350,7 +351,7 @@ public void StringBuilder_AppendLineString(StringBuilder *sb, const String *valu
     Validate_NotNull(sb);
 
     StringBuilder_AppendString(sb, value);
-    StringBuilder_Append(sb, '\n');
+    StringBuilder_AppendString(sb, Environment_NewLine);
 }
 
 public void StringBuilder_Clear(StringBuilder *sb)

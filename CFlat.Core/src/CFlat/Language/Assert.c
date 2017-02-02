@@ -34,7 +34,8 @@ public void __CFLAT_ASSERT_FAIL(const char *condition, const char *file, int lin
     try {
         TextWriter_WriteFormat_CString(
             Console_GetError(),
-            "Assertion failed: {cstring}\n   at {cstring}:{int}\n",
+            "Assertion failed: {cstring}" Environment_NewLine_CString
+            "   at {cstring}:{int}" Environment_NewLine_CString,
             condition,
             file,
             line);

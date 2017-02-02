@@ -25,6 +25,7 @@
 #include "CFlat/String.h"
 #include "CFlat/StringBuilder.h"
 #include "CFlat/Validate.h"
+#include "CFlat/Environment.h"
 
 /* Macros */
 #define WriteWithStringBuilder(writer, bufferName, write)           \
@@ -240,7 +241,7 @@ public void TextWriter_WriteFormat_StringV(TextWriter *writer, const String *for
 
 public void TextWriter_WriteLine(TextWriter *writer)
 {
-    TextWriter_Write(writer, '\n');
+    TextWriter_Write_String(writer, Environment_NewLine);
 }
 
 public void TextWriter_WriteLine_Char(TextWriter *writer, char value)
@@ -265,7 +266,7 @@ public void TextWriter_WriteLine_Int(TextWriter *writer, int value)
 {
     WriteWithStringBuilder(writer, sb, {
         StringBuilder_AppendInt(sb, value);
-        StringBuilder_Append(sb, '\n');
+        StringBuilder_AppendString(sb, Environment_NewLine);
     });
 }
 
@@ -273,7 +274,7 @@ public void TextWriter_WriteLine_IntMax(TextWriter *writer, intmax value)
 {
     WriteWithStringBuilder(writer, sb, {
         StringBuilder_AppendIntMax(sb, value);
-        StringBuilder_Append(sb, '\n');
+        StringBuilder_AppendString(sb, Environment_NewLine);
     });
 }
 
@@ -282,7 +283,7 @@ public void TextWriter_WriteLine_IntPtr(TextWriter *writer, intptr value)
 {
     WriteWithStringBuilder(writer, sb, {
         StringBuilder_AppendIntPtr(sb, value);
-        StringBuilder_Append(sb, '\n');
+        StringBuilder_AppendString(sb, Environment_NewLine);
     });
 }
 #endif
@@ -291,7 +292,7 @@ public void TextWriter_WriteLine_IntFSize(TextWriter *writer, intfsize value)
 {
     WriteWithStringBuilder(writer, sb, {
         StringBuilder_AppendIntFSize(sb, value);
-        StringBuilder_Append(sb, '\n');
+        StringBuilder_AppendString(sb, Environment_NewLine);
     });
 }
 
@@ -299,7 +300,7 @@ public void TextWriter_WriteLine_UInt(TextWriter *writer, uint value)
 {
     WriteWithStringBuilder(writer, sb, {
         StringBuilder_AppendUInt(sb, value);
-        StringBuilder_Append(sb, '\n');
+        StringBuilder_AppendString(sb, Environment_NewLine);
     });
 }
 
@@ -307,7 +308,7 @@ public void TextWriter_WriteLine_UIntMax(TextWriter *writer, uintmax value)
 {
     WriteWithStringBuilder(writer, sb, {
         StringBuilder_AppendUIntMax(sb, value);
-        StringBuilder_Append(sb, '\n');
+        StringBuilder_AppendString(sb, Environment_NewLine);
     });
 }
 
@@ -316,7 +317,7 @@ public void TextWriter_WriteLine_UIntPtr(TextWriter *writer, uintptr value)
 {
     WriteWithStringBuilder(writer, sb, {
         StringBuilder_AppendUIntPtr(sb, value);
-        StringBuilder_Append(sb, '\n');
+        StringBuilder_AppendString(sb, Environment_NewLine);
     });
 }
 #endif
@@ -325,7 +326,7 @@ public void TextWriter_WriteLine_UIntSize(TextWriter *writer, uintsize value)
 {
     WriteWithStringBuilder(writer, sb, {
         StringBuilder_AppendUIntSize(sb, value);
-        StringBuilder_Append(sb, '\n');
+        StringBuilder_AppendString(sb, Environment_NewLine);
     });
 }
 
@@ -333,7 +334,7 @@ public void TextWriter_WriteLine_Single(TextWriter *writer, float value)
 {
     WriteWithStringBuilder(writer, sb, {
         StringBuilder_AppendSingle(sb, value);
-        StringBuilder_Append(sb, '\n');
+        StringBuilder_AppendString(sb, Environment_NewLine);
     });
 }
 
@@ -341,7 +342,7 @@ public void TextWriter_WriteLine_Double(TextWriter *writer, double value)
 {
     WriteWithStringBuilder(writer, sb, {
         StringBuilder_AppendDouble(sb, value);
-        StringBuilder_Append(sb, '\n');
+        StringBuilder_AppendString(sb, Environment_NewLine);
     });
 }
 
@@ -361,7 +362,7 @@ public void TextWriter_WriteLineFormat_CStringV(TextWriter *writer, const char *
 
     WriteWithStringBuilder(writer, sb, {
         StringBuilder_AppendFormatCStringV(sb, format, args);
-        StringBuilder_Append(sb, '\n');
+        StringBuilder_AppendString(sb, Environment_NewLine);
     });
 }
 
@@ -381,7 +382,7 @@ public void TextWriter_WriteLineFormat_StringV(TextWriter *writer, const String 
 
     WriteWithStringBuilder(writer, sb, {
         StringBuilder_AppendFormatStringV(sb, format, args);
-        StringBuilder_Append(sb, '\n');
+        StringBuilder_AppendString(sb, Environment_NewLine);
     });
 }
 

@@ -23,6 +23,7 @@
 #include "CFlat/Console.h"
 #include "CFlat/Event.h"
 #include "CFlat/Memory.h"
+#include "CFlat/String.h"
 #include "CFlat/Validate.h"
 
 #include <stdlib.h>
@@ -43,6 +44,12 @@ public Event Environment_Destroy = Event_Empty;
 
 /* Private variables */
 private bool Initialized = false;
+
+/* Private constants */
+private const String NewLine = String_Initializer(Environment_NewLine_CString);
+
+/* Public constants */
+public const String * const Environment_NewLine = &NewLine;
 
 /**************************************/
 /* Private functions                  */
