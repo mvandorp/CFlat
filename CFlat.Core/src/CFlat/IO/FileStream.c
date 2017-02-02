@@ -143,7 +143,10 @@ public Stream *FileStream_New(const String *path, FileMode mode)
 
 public Stream *FileStream_New_CString(const char *path, FileMode mode)
 {
-    return FileStream_New_WithAccess_CString(path, mode, mode == FileMode_Append ? FileAccess_Write : FileAccess_ReadWrite);
+    return FileStream_New_WithAccess_CString(
+        path,
+        mode,
+        mode == FileMode_Append ? FileAccess_Write : FileAccess_ReadWrite);
 }
 
 public Stream *FileStream_New_WithAccess(const String *path, FileMode mode, FileAccess fileAccess)
@@ -194,9 +197,9 @@ private void FileStream_Destructor(FileStream *stream)
         }
         catch (Exception);
         endtry;
-
-        fclose(stream->File);
     }
+
+    fclose(stream->File);
 }
 
 private override bool FileStream_CanRead(const FileStream *stream)
