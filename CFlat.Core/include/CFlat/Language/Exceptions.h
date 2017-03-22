@@ -116,6 +116,57 @@ struct String;
 #define throw_new_with_inner(type, message, innerException) \
     __CFLAT_EXCEPTION_THROW_NEW(type, message, __FILE__, __LINE__, innerException)
 
+/// <summary>
+/// Throws an exception of the given type.
+/// </summary>
+/// <param name="type">The type of exception thrown.</param>
+/// <param name="message">
+///     Pointer to a <see cref="String"/> that describes the exception, or <see cref="null"/> to use the default
+///     exception message.
+/// </param>
+#define throw_new_string(type, message) __CFLAT_EXCEPTION_THROW_NEW_STRING(type, message, __FILE__, __LINE__, null)
+
+/// <summary>
+/// Throws an exception of the given type with the given inner exception.
+/// </summary>
+/// <param name="type">The type of exception thrown.</param>
+/// <param name="message">
+///     Pointer to a <see cref="String"/> that describes the exception, or <see cref="null"/> to use the default
+///     exception message.
+/// </param>
+/// <param name="innerException">
+///     Pointer to the <see cref="CFlatException"/> that caused the current exception, or <see cref="null"/> if no
+///     inner exception is specified.
+/// </param>
+#define throw_new_string_with_inner(type, message, innerException) \
+    __CFLAT_EXCEPTION_THROW_NEW_STRING(type, message, __FILE__, __LINE__, innerException)
+
+/// <summary>
+/// Throws an exception of the given type.
+/// </summary>
+/// <param name="type">The type of exception thrown.</param>
+/// <param name="message">
+///     Pointer to a <see cref="String"/> that describes the exception, or <see cref="null"/> to use the default
+///     exception message.
+/// </param>
+#define throw_new_tempstring(type, message) \
+    __CFLAT_EXCEPTION_THROW_NEW_TEMPSTRING(type, message, __FILE__, __LINE__, null)
+
+/// <summary>
+/// Throws an exception of the given type with the given inner exception.
+/// </summary>
+/// <param name="type">The type of exception thrown.</param>
+/// <param name="message">
+///     Pointer to a <see cref="String"/> that describes the exception, or <see cref="null"/> to use the default
+///     exception message.
+/// </param>
+/// <param name="innerException">
+///     Pointer to the <see cref="CFlatException"/> that caused the current exception, or <see cref="null"/> if no
+///     inner exception is specified.
+/// </param>
+#define throw_new_tempstring_with_inner(type, message, innerException) \
+    __CFLAT_EXCEPTION_THROW_NEW_TEMPSTRING(type, message, __FILE__, __LINE__, innerException)
+
 /* Types */
 /// <summary>
 /// Holds state information required for exception handling.
@@ -214,6 +265,48 @@ void __CFLAT_EXCEPTION_THROW_AGAIN(CFlatException *ex);
 void __CFLAT_EXCEPTION_THROW_NEW(
     ExceptionType type,
     const char *message,
+    const char *file,
+    int line,
+    CFlatException *innerException);
+
+/// <summary>
+/// Throws an exception of the given type.
+/// </summary>
+/// <remarks>This function is intended for internal use only.</remarks>
+/// <param name="type">The type of exception thrown.</param>
+/// <param name="message">
+///     Pointer to a string that describes the exception, or <see cref="null"/> to use the default exception message.
+/// </param>
+/// <param name="file">Pointer to a string that contains the filename where the exception occured.</param>
+/// <param name="line">The line number where the exception occured.</param>
+/// <param name="innerException">
+///     Pointer to the <see cref="CFlatException"/> that caused the current exception, or <see cref="null"/> if no
+///     inner exception is specified.
+/// </param>
+void __CFLAT_EXCEPTION_THROW_NEW_STRING(
+    ExceptionType type,
+    const struct String *message,
+    const char *file,
+    int line,
+    CFlatException *innerException);
+
+/// <summary>
+/// Throws an exception of the given type.
+/// </summary>
+/// <remarks>This function is intended for internal use only.</remarks>
+/// <param name="type">The type of exception thrown.</param>
+/// <param name="message">
+///     Pointer to a string that describes the exception, or <see cref="null"/> to use the default exception message.
+/// </param>
+/// <param name="file">Pointer to a string that contains the filename where the exception occured.</param>
+/// <param name="line">The line number where the exception occured.</param>
+/// <param name="innerException">
+///     Pointer to the <see cref="CFlatException"/> that caused the current exception, or <see cref="null"/> if no
+///     inner exception is specified.
+/// </param>
+void __CFLAT_EXCEPTION_THROW_NEW_TEMPSTRING(
+    ExceptionType type,
+    const struct String *message,
     const char *file,
     int line,
     CFlatException *innerException);

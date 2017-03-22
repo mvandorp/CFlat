@@ -154,7 +154,7 @@ public void __CFLAT_EXCEPTION_THROW(void)
         try {
             Environment_OnFirstChanceException(exception);
         }
-        catch_ex(Exception, ex) {
+        catch_ex (Exception, ex) {
             // If an exception occurs in the exception handler, overwrite the original exception and propagate the
             // exception.
             release(exception);
@@ -202,7 +202,43 @@ public void __CFLAT_EXCEPTION_THROW_NEW(
     assert(file != null);
     assert(line > 0);
 
-    __CFLAT_EXCEPTION_THROW_AGAIN(Exception_New(type, String_New(message), file, line, innerException));
+    __CFLAT_EXCEPTION_THROW_AGAIN(Exception_New_CString(type, message, file, line, innerException));
+}
+
+public void __CFLAT_EXCEPTION_THROW_NEW_STRING(
+    ExceptionType type,
+    const String *message,
+    const char *file,
+    int line,
+    CFlatException *innerException)
+{
+    assert(file != null);
+    assert(line > 0);
+
+    __CFLAT_EXCEPTION_THROW_AGAIN(Exception_New(type, message, file, line, innerException));
+}
+
+public void __CFLAT_EXCEPTION_THROW_NEW_TEMPSTRING(
+    ExceptionType type,
+    const String *message,
+    const char *file,
+    int line,
+    CFlatException *innerException)
+{
+    assert(file != null);
+    assert(line > 0);
+
+    CFlatException *exception = null;
+
+    try {
+        exception = Exception_New(type, message, file, line, innerException);
+    }
+    finally {
+        release(message);
+    }
+    endtry;
+
+    __CFLAT_EXCEPTION_THROW_AGAIN(exception);
 }
 
 /**************************************/
