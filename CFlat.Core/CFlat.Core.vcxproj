@@ -33,6 +33,7 @@
     <ClInclude Include="include\CFlat\IO\FileAccess.h" />
     <ClInclude Include="include\CFlat\IO\FileMode.h" />
     <ClInclude Include="include\CFlat\IO\FileStream.h" />
+    <ClInclude Include="include\CFlat\IO\Path.h" />
     <ClInclude Include="include\CFlat\IO\SeekOrigin.h" />
     <ClInclude Include="include\CFlat\IO\Stream.h" />
     <ClInclude Include="include\CFlat\IO\StreamReader.h" />
@@ -125,6 +126,7 @@
     <ClCompile Include="src\CFlat\IO\FileAccess.c" />
     <ClCompile Include="src\CFlat\IO\FileMode.c" />
     <ClCompile Include="src\CFlat\IO\FileStream.c" />
+    <ClCompile Include="src\CFlat\IO\Path.c" />
     <ClCompile Include="src\CFlat\IO\SeekOrigin.c" />
     <ClCompile Include="src\CFlat\IO\Stream.c" />
     <ClCompile Include="src\CFlat\IO\Stream.NullStream.c" />
