@@ -129,7 +129,6 @@ typedef enum ExceptionType {
     DivideByZeroException = CFLAT_EXCEPTIONTYPE_VALUE(13) | Exception,
 } ExceptionType;
 
-#undef CFLAT_EXCEPTIONTYPE_BASE_BITS
 #undef CFLAT_EXCEPTIONTYPE_BASE_VALUE
 #undef CFLAT_EXCEPTIONTYPE_VALUE
 

@@ -64,7 +64,7 @@ public CFlatException *Exception_New_CString(
 {
     CFlatException *ex = null;
 
-    String *message = String_New(userMessage);
+    String *message = userMessage == null ? null : String_New(userMessage);
 
     try {
         ex = Exception_New(type, message, file, line, innerException);

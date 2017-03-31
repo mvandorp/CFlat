@@ -22,6 +22,9 @@
 #include "CFlat.h"
 #include "CFlat/String.h"
 
+/* Macros */
+#define CFLAT_EXCEPTIONTYPE_BASE_BITMASK ((1 << CFLAT_EXCEPTIONTYPE_BASE_BITS) - 1)
+
 #define EXCEPTION(name, message)
 #define EXCEPTIONS \
     EXCEPTION(Exception,                    "")                                                                     \
@@ -63,7 +66,12 @@ EXCEPTIONS
 
 public bool ExceptionType_IsAssignableFrom(ExceptionType type1, ExceptionType type2)
 {
-    return (type1 & type2) == type1;
+    // Check if type1 represents a base type.
+    if ((type1 & (ExceptionType)~CFLAT_EXCEPTIONTYPE_BASE_BITMASK) == 0) {
+        return (type1 & type2) == type1;
+    }
+
+    return type1 == type2;
 }
 
 public const String *ExceptionType_GetName(ExceptionType type)
