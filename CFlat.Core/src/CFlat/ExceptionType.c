@@ -40,7 +40,7 @@
     EXCEPTION(FileNotFoundException,        "Unable to find the specified file.")                                   \
     EXCEPTION(FormatException,              "One of the identified items was in an invalid format.")                \
     EXCEPTION(NotImplementedException,      "The method or operation is not implemented.")                          \
-    EXCEPTION(NotSupportedException,        "The method or operation is not suppoted.")                             \
+    EXCEPTION(NotSupportedException,        "The method or operation is not supported.")                            \
     EXCEPTION(OverflowException,            "Arithmetic operation resulted in an overflow.")                        \
     EXCEPTION(DivideByZeroException,        "Attempted to divide by zero.")
 #undef EXCEPTION
