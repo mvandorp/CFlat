@@ -561,65 +561,89 @@ public char *CString_Remove_Substring(const char *str, uintsize startIndex, uint
 
     uintsize endIndex = startIndex + count;
 
+    char *result = null;
     StringBuilder sb;
     StringBuilder_Constructor_WithCapacity(&sb, length - count);
 
-    StringBuilder_AppendBuffer(&sb, str, 0, startIndex);
-    StringBuilder_AppendBuffer(&sb, str, endIndex, length - endIndex);
+    try {
+        StringBuilder_AppendBuffer(&sb, str, 0, startIndex);
+        StringBuilder_AppendBuffer(&sb, str, endIndex, length - endIndex);
 
-    return StringBuilder_DeleteAndToCString(&sb);
+        result = StringBuilder_DeleteAndToCString(&sb);
+    }
+    catch (Exception) {
+        release(&sb);
+        throw;
+    }
+    endtry;
+
+    return result;
 }
 
 public char *CString_Replace(const char *str, char oldValue, char newValue)
 {
     Validate_NotNull(str);
 
+    char *result = null;
     StringBuilder sb;
     StringBuilder_Constructor_WithInitialCStringValue(&sb, str);
 
-    StringBuilder_Replace(&sb, oldValue, newValue);
+    try {
+        StringBuilder_Replace(&sb, oldValue, newValue);
 
-    return StringBuilder_DeleteAndToCString(&sb);
+        result = StringBuilder_DeleteAndToCString(&sb);
+    }
+    catch (Exception) {
+        release(&sb);
+        throw;
+    }
+    endtry;
+
+    return result;
 }
 
 public char *CString_ReplaceCString(const char *str, const char *oldValue, const char *newValue)
 {
     Validate_NotNull(str);
 
+    char *result = null;
     StringBuilder sb;
     StringBuilder_Constructor_WithInitialCStringValue(&sb, str);
 
     try {
         StringBuilder_ReplaceCString(&sb, oldValue, newValue);
+
+        result = StringBuilder_DeleteAndToCString(&sb);
     }
     catch (Exception) {
         release(&sb);
-
         throw;
     }
     endtry;
 
-    return StringBuilder_DeleteAndToCString(&sb);
+    return result;
 }
 
 public char *CString_ReplaceString(const char *str, const String *oldValue, const String *newValue)
 {
     Validate_NotNull(str);
 
+    char *result = null;
     StringBuilder sb;
     StringBuilder_Constructor_WithInitialCStringValue(&sb, str);
 
     try {
         StringBuilder_ReplaceString(&sb, oldValue, newValue);
+
+        result = StringBuilder_DeleteAndToCString(&sb);
     }
     catch (Exception) {
         release(&sb);
-
         throw;
     }
     endtry;
 
-    return StringBuilder_DeleteAndToCString(&sb);
+    return result;
 }
 
 public bool CString_StartsWith(const char *str, char value)

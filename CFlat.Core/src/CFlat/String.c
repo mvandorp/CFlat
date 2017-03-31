@@ -81,7 +81,6 @@ public String *String_New(const char *value)
     }
     catch (Exception) {
         Memory_Deallocate(str);
-
         throw;
     }
     endtry;
@@ -100,7 +99,6 @@ public String *String_New_Substring(const char *value, uintsize startIndex, uint
     }
     catch (Exception) {
         Memory_Deallocate(str);
-
         throw;
     }
     endtry;
@@ -146,8 +144,9 @@ public void String_Destructor(String *str)
 {
     Validate_NotNull(str);
 
-    // Prevent freeing the "" constant.
-    if (str->Length == 0) return;
+    // Prevent freeing the empty string constant.
+    if (str == String_Empty)
+        return;
 
     Memory_Deallocate(str->Value);
 }
@@ -275,23 +274,34 @@ public String *String_ConcatArray(const String * const *strings, uintsize count)
         capacity += strings[i]->Length;
     }
 
+    String*result = null;
     StringBuilder sb;
     StringBuilder_Constructor_WithCapacity(&sb, capacity);
 
-    // Concatenate the strings.
-    for (uintsize i = 0; i < count; i++) {
-        if (strings[i] == null) continue;
+    try {
+        // Concatenate the strings.
+        for (uintsize i = 0; i < count; i++) {
+            if (strings[i] == null) continue;
 
-        StringBuilder_AppendString(&sb, strings[i]);
+            StringBuilder_AppendString(&sb, strings[i]);
+        }
+
+        result = StringBuilder_DeleteAndToString(&sb);
     }
+    catch (Exception) {
+        release(&sb);
+        throw;
+    }
+    endtry;
 
-    return StringBuilder_DeleteAndToString(&sb);
+    return result;
 }
 
 public String *String_ConcatEnumerable(const IEnumerable *strings)
 {
     Validate_NotNull(strings);
 
+    String *result = null;
     StringBuilder sb;
     StringBuilder_Constructor(&sb);
 
@@ -307,15 +317,16 @@ public String *String_ConcatEnumerable(const IEnumerable *strings)
             release(enumerator);
         }
         endtry;
+
+        result = StringBuilder_DeleteAndToString(&sb);;
     }
     catch (Exception) {
         release(&sb);
-
         throw;
     }
     endtry;
 
-    return StringBuilder_DeleteAndToString(&sb);
+    return result;
 }
 
 public bool String_Contains(const String *str, char value)
@@ -337,10 +348,7 @@ public String *String_Copy(const String *str)
 {
     Validate_NotNull(str);
 
-    StringBuilder sb;
-    StringBuilder_Constructor_WithInitialStringValueAndCapacity(&sb, str, 0);
-
-    return StringBuilder_DeleteAndToString(&sb);
+    return String_New(String_GetCString(str));
 }
 
 public void String_CopyTo(
@@ -472,20 +480,22 @@ public String *String_FormatStringV(const String *format, VarArgsList args)
 {
     Validate_NotNull(format);
 
+    String *result = null;
     StringBuilder sb;
     StringBuilder_Constructor(&sb);
 
     try {
         StringBuilder_AppendFormatStringV(&sb, format, args);
+
+        result = StringBuilder_DeleteAndToString(&sb);
     }
     catch (Exception) {
         release(&sb);
-
         throw;
     }
     endtry;
 
-    return StringBuilder_DeleteAndToString(&sb);
+    return result;
 }
 
 public int String_GetHashCode(const String *str)
@@ -625,13 +635,23 @@ public String *String_Insert(const String *str, uintsize startIndex, const Strin
 
     uintsize capacity = uintsize_CheckedAddition(str->Length, value->Length);
 
+    String *result = null;
     StringBuilder sb;
     StringBuilder_Constructor_WithCapacity(&sb, capacity);
 
-    StringBuilder_AppendString(&sb, str);
-    StringBuilder_InsertString(&sb, startIndex, value);
+    try {
+        StringBuilder_AppendString(&sb, str);
+        StringBuilder_InsertString(&sb, startIndex, value);
 
-    return StringBuilder_DeleteAndToString(&sb);
+        result = StringBuilder_DeleteAndToString(&sb);
+    }
+    catch (Exception) {
+        release(&sb);
+        throw;
+    }
+    endtry;
+
+    return result;
 }
 
 public bool String_IsNullOrEmpty(const String *str)
@@ -673,6 +693,7 @@ public String *String_Join(const String *separator, const String * const *string
         capacity = uintsize_CheckedAddition(capacity, strings[i]->Length);
     }
 
+    String *result = null;
     StringBuilder sb;
     StringBuilder_Constructor_WithCapacity(&sb, capacity);
 
@@ -686,21 +707,23 @@ public String *String_Join(const String *separator, const String * const *string
         }
 
         StringBuilder_AppendString(&sb, strings[count - 1]);
+
+        result = StringBuilder_DeleteAndToString(&sb);
     }
     catch (Exception) {
         release(&sb);
-
         throw;
     }
     endtry;
 
-    return StringBuilder_DeleteAndToString(&sb);
+    return result;
 }
 
 public String *String_JoinEnumerable(const String *separator, const IEnumerable *strings)
 {
     Validate_NotNull(strings);
 
+    String *result = null;
     StringBuilder sb;
     StringBuilder_Constructor(&sb);
 
@@ -722,15 +745,16 @@ public String *String_JoinEnumerable(const String *separator, const IEnumerable 
             release(enumerator);
         }
         endtry;
+
+        result = StringBuilder_DeleteAndToString(&sb);;
     }
     catch (Exception) {
         release(&sb);
-
         throw;
     }
     endtry;
 
-    return StringBuilder_DeleteAndToString(&sb);
+    return result;
 }
 
 public uintsize String_LastIndexOf(const String *str, char value)
@@ -907,6 +931,7 @@ public String *String_PadLeft(const String *str, uintsize totalWidth, char paddi
 
     if (totalWidth <= str->Length) return const_cast(retain_const(str));
 
+    String *result = null;
     StringBuilder sb;
     StringBuilder_Constructor_WithCapacity(&sb, totalWidth);
 
@@ -916,15 +941,16 @@ public String *String_PadLeft(const String *str, uintsize totalWidth, char paddi
         }
 
         StringBuilder_AppendString(&sb, str);
+
+        result = StringBuilder_DeleteAndToString(&sb);
     }
     catch (Exception) {
         release(&sb);
-
         throw;
     }
     endtry;
 
-    return StringBuilder_DeleteAndToString(&sb);
+    return result;
 }
 
 public String *String_PadRight(const String *str, uintsize totalWidth, char paddingChar)
@@ -933,6 +959,7 @@ public String *String_PadRight(const String *str, uintsize totalWidth, char padd
 
     if (totalWidth <= str->Length) return const_cast(retain_const(str));
 
+    String *result = null;
     StringBuilder sb;
     StringBuilder_Constructor_WithCapacity(&sb, totalWidth);
 
@@ -942,15 +969,16 @@ public String *String_PadRight(const String *str, uintsize totalWidth, char padd
         for (uintsize i = str->Length; i < totalWidth; i++) {
             StringBuilder_Append(&sb, paddingChar);
         }
+
+        result = StringBuilder_DeleteAndToString(&sb);
     }
     catch (Exception) {
         release(&sb);
-
         throw;
     }
     endtry;
 
-    return StringBuilder_DeleteAndToString(&sb);
+    return result;
 }
 
 public String *String_Remove(const String *str, uintsize startIndex)
@@ -968,65 +996,89 @@ public String *String_Remove_Substring(const String *str, uintsize startIndex, u
 
     uintsize endIndex = startIndex + count;
 
+    String *result = null;
     StringBuilder sb;
     StringBuilder_Constructor_WithCapacity(&sb, str->Length - count);
 
-    StringBuilder_AppendBuffer(&sb, str->Value, 0, startIndex);
-    StringBuilder_AppendBuffer(&sb, str->Value, endIndex, str->Length - endIndex);
+    try {
+        StringBuilder_AppendBuffer(&sb, str->Value, 0, startIndex);
+        StringBuilder_AppendBuffer(&sb, str->Value, endIndex, str->Length - endIndex);
 
-    return StringBuilder_DeleteAndToString(&sb);
+        result = StringBuilder_DeleteAndToString(&sb);
+    }
+    catch (Exception) {
+        release(&sb);
+        throw;
+    }
+    endtry;
+
+    return result;
 }
 
 public String *String_Replace(const String *str, char oldValue, char newValue)
 {
     Validate_NotNull(str);
 
+    String *result = null;
     StringBuilder sb;
     StringBuilder_Constructor_WithInitialStringValue(&sb, str);
 
-    StringBuilder_Replace(&sb, oldValue, newValue);
+    try {
+        StringBuilder_Replace(&sb, oldValue, newValue);
 
-    return StringBuilder_DeleteAndToString(&sb);
+        result = StringBuilder_DeleteAndToString(&sb);
+    }
+    catch (Exception) {
+        release(&sb);
+        throw;
+    }
+    endtry;
+
+    return result;
 }
 
 public String *String_ReplaceCString(const String *str, const char *oldValue, const char *newValue)
 {
     Validate_NotNull(str);
 
+    String *result = null;
     StringBuilder sb;
     StringBuilder_Constructor_WithInitialStringValue(&sb, str);
 
     try {
         StringBuilder_ReplaceCString(&sb, oldValue, newValue);
+
+        result = StringBuilder_DeleteAndToString(&sb);
     }
     catch (Exception) {
         release(&sb);
-
         throw;
     }
     endtry;
 
-    return StringBuilder_DeleteAndToString(&sb);
+    return result;
 }
 
 public String *String_ReplaceString(const String *str, const String *oldValue, const String *newValue)
 {
     Validate_NotNull(str);
 
+    String *result = null;
     StringBuilder sb;
     StringBuilder_Constructor_WithInitialStringValue(&sb, str);
 
     try {
         StringBuilder_ReplaceString(&sb, oldValue, newValue);
+
+        result = StringBuilder_DeleteAndToString(&sb);
     }
     catch (Exception) {
         release(&sb);
-
         throw;
     }
     endtry;
 
-    return StringBuilder_DeleteAndToString(&sb);
+    return result;
 }
 
 public IList *String_Split(const String *str, const char *separators)
@@ -1117,7 +1169,6 @@ public IList *String_Split_AtMost_WithOptions(
     }
     catch (Exception) {
         release(list);
-
         throw;
     }
     endtry;
@@ -1177,12 +1228,22 @@ public String *String_Substring_WithLength(const String *str, uintsize startInde
 
     if (startIndex == 0 && length == str->Length) return const_cast(retain_const(str));
 
+    String *result = null;
     StringBuilder sb;
     StringBuilder_Constructor_WithCapacity(&sb, length);
 
-    StringBuilder_AppendBuffer(&sb, str->Value, startIndex, length);
+    try {
+        StringBuilder_AppendBuffer(&sb, str->Value, startIndex, length);
 
-    return StringBuilder_DeleteAndToString(&sb);
+        result = StringBuilder_DeleteAndToString(&sb);
+    }
+    catch (Exception) {
+        release(&sb);
+        throw;
+    }
+    endtry;
+
+    return result;
 }
 
 public char *String_ToCString(const String *str)
@@ -1196,28 +1257,48 @@ public String *String_ToLower(const String *str)
 {
     Validate_NotNull(str);
 
+    String *result = null;
     StringBuilder sb;
     StringBuilder_Constructor_WithCapacity(&sb, str->Length);
 
-    for (uintsize i = 0; i < str->Length; i++) {
-        StringBuilder_Append(&sb, (char)char_ToLower(str->Value[i]));
-    }
+    try {
+        for (uintsize i = 0; i < str->Length; i++) {
+            StringBuilder_Append(&sb, (char)char_ToLower(str->Value[i]));
+        }
 
-    return StringBuilder_DeleteAndToString(&sb);
+        result = StringBuilder_DeleteAndToString(&sb);
+    }
+    catch (Exception) {
+        release(&sb);
+        throw;
+    }
+    endtry;
+
+    return result;
 }
 
 public String *String_ToUpper(const String *str)
 {
     Validate_NotNull(str);
 
+    String *result = null;
     StringBuilder sb;
     StringBuilder_Constructor_WithCapacity(&sb, str->Length);
 
-    for (uintsize i = 0; i < str->Length; i++) {
-        StringBuilder_Append(&sb, (char)char_ToUpper(str->Value[i]));
-    }
+    try {
+        for (uintsize i = 0; i < str->Length; i++) {
+            StringBuilder_Append(&sb, (char)char_ToUpper(str->Value[i]));
+        }
 
-    return StringBuilder_DeleteAndToString(&sb);
+        result = StringBuilder_DeleteAndToString(&sb);
+    }
+    catch (Exception) {
+        release(&sb);
+        throw;
+    }
+    endtry;
+
+    return result;
 }
 
 public String *String_Trim(const String *str, const char *trimChars)

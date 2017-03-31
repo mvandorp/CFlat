@@ -134,6 +134,8 @@ private IEnumerable *GetEnumerators(const IEnumerable *enumerables)
     }
     catch (Exception) {
         release(enumerators);
+        release(enumerablesEnumerator);
+        throw;
     }
     finally {
         release(enumerablesEnumerator);

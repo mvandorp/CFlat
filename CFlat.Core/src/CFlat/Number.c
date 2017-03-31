@@ -175,12 +175,22 @@ private String *FormatNumber(NumberBuffer *value, const String *format)
 {
     assert(value != null);
 
+    String *result = null;
     StringBuilder sb;
     StringBuilder_Constructor(&sb);
 
-    FormatNumberBuffered(&sb, value, format);
+    try {
+        FormatNumberBuffered(&sb, value, format);
 
-    return StringBuilder_DeleteAndToString(&sb);
+        result = StringBuilder_DeleteAndToString(&sb);
+    }
+    catch (Exception) {
+        release(&sb);
+        throw;
+    }
+    endtry;
+
+    return result;
 }
 
 /// <summary>
