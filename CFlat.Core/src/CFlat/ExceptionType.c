@@ -45,7 +45,11 @@
     EXCEPTION(NotImplementedException,      "The method or operation is not implemented.")                          \
     EXCEPTION(NotSupportedException,        "The method or operation is not supported.")                            \
     EXCEPTION(OverflowException,            "Arithmetic operation resulted in an overflow.")                        \
-    EXCEPTION(DivideByZeroException,        "Attempted to divide by zero.")
+    EXCEPTION(DivideByZeroException,        "Attempted to divide by zero.")                                         \
+    EXCEPTION(AssertionException,           "Assert failed.")                                                       \
+    EXCEPTION(SuccessException,             "Passed.")                                                              \
+    EXCEPTION(IgnoreException,              "Ignored.")                                                             \
+    EXCEPTION(InconclusiveException,        "Inconclusive.")
 #undef EXCEPTION
 
 // Define strings containing the exception names.
