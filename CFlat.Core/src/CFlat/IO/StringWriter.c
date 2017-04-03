@@ -57,16 +57,6 @@ private const TextWriterVTable VTable = TextWriterVTable_Initializer(
     (TextWriter_ToStringFunc)StringWriter_ToString,
     (TextWriter_WriteBufferFunc)StringWriter_WriteBuffer);
 
-/// <summary>
-/// The virtual method table for the <see cref="StringWriter"/> class, without a destructor set so that the internal
-/// string builder is not automatically destroyed.
-/// </summary>
-private const TextWriterVTable VTableNoDestructor = TextWriterVTable_Initializer(
-    null,
-    (TextWriter_FlushFunc)null,
-    (TextWriter_ToStringFunc)StringWriter_ToString,
-    (TextWriter_WriteBufferFunc)StringWriter_WriteBuffer);
-
 /**************************************/
 /* Public function definitions        */
 /**************************************/
@@ -110,23 +100,20 @@ public TextWriter *StringWriter_New_FromStringBuilder(StringBuilder *sb)
 public String *StringWriter_DeleteAndToString(StringWriter *writer)
 {
     Validate_NotNull(writer);
+    Validate_IsTrue(
+        Object_GetRefCount(writer) == 1,
+        InvalidOperationException,
+        "Could not delete the object because there are still references to the object.");
 
-    StringBuilder *buffer = writer->StringBuilder;
+    String *result = StringBuilder_DeleteAndToString(writer->StringBuilder);
 
-    // Prevent the destructor from being invoked so that the buffer remains valid.
-    Object_SetVTable(writer, (const ObjectVTable*)&VTableNoDestructor);
+    // Set the StringBuilder to null so that it is not deleted (again) when the StringWriter's destructor is invoked.
+    writer->StringBuilder = null;
 
-    // If the StringWriter was not deleted as a result of release(), throw an InvalidOperationException.
-    if (!release(writer)) {
-        Object_SetVTable(writer, (const ObjectVTable*)&VTable);
-        retain(writer);
+    // Delete the StringWriter.
+    release(writer);
 
-        throw_new(
-            InvalidOperationException,
-            "Could not delete the object because there are still references to the object.");
-    }
-
-    return StringBuilder_DeleteAndToString(buffer);
+    return result;
 }
 
 /**************************************/

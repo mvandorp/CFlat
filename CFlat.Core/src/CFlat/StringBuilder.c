@@ -38,12 +38,6 @@ private const uintsize DefaultCapacity = 16;
 /// </summary>
 private const ObjectVTable VTable = ObjectVTable_Initializer((DestructorFunc)StringBuilder_Destructor);
 
-/// <summary>
-/// The virtual method table for the <see cref="StringBuilder"/> class, without a destructor set so that the internal
-/// null-terminated string is not automatically destroyed.
-/// </summary>
-private const ObjectVTable VTableNoDestructor = ObjectVTable_Initializer(null);
-
 /**************************************/
 /* Private functions                  */
 /**************************************/
@@ -365,6 +359,10 @@ public void StringBuilder_Clear(StringBuilder *sb)
 public String *StringBuilder_DeleteAndToString(StringBuilder *sb)
 {
     Validate_NotNull(sb);
+    Validate_IsTrue(
+        Object_GetRefCount(sb) == 1,
+        InvalidOperationException,
+        "Could not delete the object because there are still references to the object.");
 
     // Manually allocate a String wrapper for the C-string.
     String *str = Memory_Allocate(sizeof(String));
@@ -390,20 +388,19 @@ public String *StringBuilder_DeleteAndToString(StringBuilder *sb)
 
 public char *StringBuilder_DeleteAndToCString(StringBuilder *sb)
 {
+    Validate_NotNull(sb);
+    Validate_IsTrue(
+        Object_GetRefCount(sb) == 1,
+        InvalidOperationException,
+        "Could not delete the object because there are still references to the object.");
+
     char *buffer = StringBuilder_GetBuffer(sb);
 
-    // Prevent the destructor from being invoked so that the buffer remains valid.
-    Object_SetVTable(sb, &VTableNoDestructor);
+    // Set the buffer to null so that it is not deallocated when the StringBuilder's destructor is invoked.
+    sb->Value = null;
 
-    // If the StringBuilder was not deleted as a result of release(), throw an InvalidOperationException.
-    if (!release(sb)) {
-        Object_SetVTable(sb, &VTable);
-        retain(sb);
-
-        throw_new(
-            InvalidOperationException,
-            "Could not delete the object because there are still references to the object.");
-    }
+    // Delete the StringBuilder.
+    release(sb);
 
     return buffer;
 }
