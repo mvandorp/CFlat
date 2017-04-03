@@ -106,6 +106,14 @@ typedef struct Object {
 void Object_Constructor(void *obj, const ObjectVTable *vtable);
 
 /// <summary>
+/// Gets the number of references to an <see cref="Object"/>.
+/// </summary>
+/// <param name="obj">Pointer to an <see cref="Object"/>.</param>
+/// <returns>The number of references to the <see cref="Object"/>.</returns>
+/// <exception cref="::ArgumentNullException"><paramref name="obj"/> is <see cref="null"/>.</exception>
+uintsize Object_GetRefCount(const void *obj);
+
+/// <summary>
 /// Sets the deallocator of an <see cref="Object"/>.
 /// </summary>
 /// <param name="obj">Pointer to an <see cref="Object"/>.</param>

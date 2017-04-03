@@ -45,6 +45,13 @@ public void Object_Constructor(void *obj, const ObjectVTable *vtable)
     object->VTable = vtable;
 }
 
+public uintsize Object_GetRefCount(const void *obj)
+{
+    Validate_NotNull(obj);
+
+    return ((const Object*)obj)->RefCount;
+}
+
 public void Object_SetDeallocator(void *obj, DeallocatorFunc dealloc)
 {
     Validate_NotNull(obj);
