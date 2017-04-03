@@ -127,6 +127,26 @@ typedef enum ExceptionType {
     /// Throw when an there is an attempt to divide by zero in checked context.
     /// </summary>
     DivideByZeroException = CFLAT_EXCEPTIONTYPE_VALUE(13) | Exception,
+
+    /// <summary>
+    /// Throw by the CFlat.Testing framework when an assertion fails.
+    /// </summary>
+    AssertionException = CFLAT_EXCEPTIONTYPE_VALUE(14) | Exception,
+
+    /// <summary>
+    /// Throw by the CFlat.Testing framework when <see cref="Assert_Pass()"\> is called.
+    /// </summary>
+    SuccessException = CFLAT_EXCEPTIONTYPE_VALUE(15) | Exception,
+
+    /// <summary>
+    /// Throw by the CFlat.Testing framework when <see cref="Assert_Ignore()"\> is called.
+    /// </summary>
+    IgnoreException = CFLAT_EXCEPTIONTYPE_VALUE(16) | Exception,
+
+    /// <summary>
+    /// Throw by the CFlat.Testing framework when <see cref="Assert_Inconclusive()"\> is called.
+    /// </summary>
+    InconclusiveException = CFLAT_EXCEPTIONTYPE_VALUE(17) | Exception,
 } ExceptionType;
 
 #undef CFLAT_EXCEPTIONTYPE_BASE_VALUE

@@ -26,6 +26,11 @@
 
 /* Types */
 /// <summary>
+/// A function that has no parameters and does not return a value.
+/// </summary>
+typedef void(*Action)(void);
+
+/// <summary>
 /// A function that determines whether the given object meets certain criteria.
 /// </summary>
 /// <param name="x">The object to compare against the criteria.</param>

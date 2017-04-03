@@ -1,0 +1,41 @@
+#!/usr/bin/make -f
+
+# General
+OutputFile              := libcbtesting.a
+OutputType              := StaticLibrary
+# Options:
+#   - None
+#   - Application
+#   - SharedLibrary (.so)
+#   - StaticLibrary (.a)
+
+# Directories
+OutputDirectory         := bin/
+BuildDirectory          := obj/
+
+# Input
+SourceFiles             := VCXPROJ_SOURCES
+HeaderFiles             := VCXPROJ_HEADERS
+
+# Dependencies
+ProjectDependencies     := CFlat.Core
+
+# Preprocessor options
+IncludeDirectories      := src/ include/ $(SolutionDir)CFlat.Core/include
+PreprocessorDefinitions :=
+
+# Linker options
+LibraryDirectories      := $(SolutionDir)CFlat.Core/bin
+Libraries               := cb
+
+# Advanced Options
+CFLAGS                  := -std=c99 -Wall -Wextra
+CPPFLAGS                :=
+LDFLAGS                 :=
+LDLIBS                  :=
+
+# Doxygen config file
+Doxyfile                := default.doxygen
+
+# Auxiliary distribution files
+AuxDistributionFiles    := CFlat.Testing.vcxproj LICENSE.md
