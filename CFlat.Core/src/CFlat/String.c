@@ -114,7 +114,7 @@ public void String_Constructor(String *str, const char *value)
 
     if (value == null) {
         *(uintsize*)const_cast(&str->Length) = 0;
-        *(const char**)const_cast(&str->Value) = "";
+        *(const char**)const_cast(&str->Value) = CString_Empty;
     }
     else {
         *(uintsize*)const_cast(&str->Length) = CString_Length(value);
@@ -130,7 +130,7 @@ public void String_Constructor_Substring(String *str, const char *value, uintsiz
 
     if (length == 0) {
         *(uintsize*)const_cast(&str->Length) = 0;
-        *(const char**)const_cast(&str->Value) = "";
+        *(const char**)const_cast(&str->Value) = CString_Empty;
     }
     else {
         Validate_NotNull(value);
@@ -145,7 +145,7 @@ public void String_Destructor(String *str)
     Validate_NotNull(str);
 
     // Prevent freeing the empty string constant.
-    if (str == String_Empty)
+    if (str == String_Empty || str->Value == CString_Empty)
         return;
 
     Memory_Deallocate(str->Value);
