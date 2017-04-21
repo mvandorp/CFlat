@@ -167,4 +167,12 @@ void Memory_CopyOffset(
     uintsize destinationOffset,
     uintsize length);
 
+/// <summary>
+/// Sets the first <paramref name="length"/> bytes of the memory block pointed to by <paramref name="memory"/> to zero.
+/// </summary>
+/// <param name="memory">Pointer to the memory to be zeroed.</param>
+/// <param name="length">The number of bytes to zero.</param>
+/// <exception cref="::ArgumentNullException"><paramref name="memory"/> is <see cref="null"/>.</exception>
+void Memory_Zero(void *memory, uintsize length);
+
 #endif

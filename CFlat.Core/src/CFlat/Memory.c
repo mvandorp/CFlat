@@ -129,3 +129,10 @@ public void Memory_CopyOffset(
 
     memmove(dest, src, length);
 }
+
+public void Memory_Zero(void *memory, uintsize length)
+{
+    Validate_NotNull(memory);
+
+    memset(memory, 0, length);
+}
