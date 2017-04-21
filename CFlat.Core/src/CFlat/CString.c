@@ -25,6 +25,12 @@
 #include "CFlat/StringBuilder.h"
 #include "CFlat/Validate.h"
 
+/* Public constants */
+/// <summary>
+/// Represents an empty string.
+/// </summary>
+public const char * const CString_Empty = "";
+
 /**************************************/
 /* Private functions                  */
 /**************************************/

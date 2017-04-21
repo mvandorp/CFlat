@@ -28,6 +28,12 @@
 /* Forward declarations */
 struct String;
 
+/* Constants */
+/// <summary>
+/// Represents an empty string.
+/// </summary>
+extern const char * const CString_Empty;
+
 /* Functions */
 /// <summary>
 /// Gets the length of a null-terminated string.
