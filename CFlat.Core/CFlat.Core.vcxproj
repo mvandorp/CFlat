@@ -52,6 +52,7 @@
     <ClInclude Include="include\CFlat\Language\Functions.h" />
     <ClInclude Include="include\CFlat\Language\Integer.h" />
     <ClInclude Include="include\CFlat\Language\Keywords.h" />
+    <ClInclude Include="include\CFlat\Language\Macros.h" />
     <ClInclude Include="include\CFlat\Language\Null.h" />
     <ClInclude Include="include\CFlat\Language\VarArgs.h" />
     <ClInclude Include="include\CFlat\Math.h" />
@@ -213,6 +214,7 @@
       <CompileAs>CompileAsC</CompileAs>
       <DisableSpecificWarnings>4001; 4479; 4710; 4711; 4820</DisableSpecificWarnings>
       <PreprocessorDefinitions>CFLAT_CORE_INTERNAL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -235,6 +237,7 @@
       <CompileAs>CompileAsC</CompileAs>
       <DisableSpecificWarnings>4001; 4479; 4710; 4711; 4820</DisableSpecificWarnings>
       <PreprocessorDefinitions>CFLAT_CORE_INTERNAL;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
