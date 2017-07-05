@@ -32,6 +32,7 @@
 #include "CFlat/Language/Functions.h"
 #include "CFlat/Language/Integer.h"
 #include "CFlat/Language/Keywords.h"
+#include "CFlat/Language/Macros.h"
 #include "CFlat/Language/Null.h"
 #include "CFlat/Language/VarArgs.h"
 
