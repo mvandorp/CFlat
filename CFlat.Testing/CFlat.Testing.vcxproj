@@ -14,6 +14,11 @@
     <ClInclude Include="include\CFlat\Testing\Assert.h" />
     <ClInclude Include="include\CFlat\Testing\ConsoleTestRunner.h" />
     <ClInclude Include="include\CFlat\Testing\ITestListener.h" />
+    <ClInclude Include="include\CFlat\Testing\Mock.h" />
+    <ClInclude Include="include\CFlat\Testing\Mock.hidden.h" />
+    <ClInclude Include="include\CFlat\Testing\Mock.Matchers.h" />
+    <ClInclude Include="include\CFlat\Testing\Mock.Verify.h" />
+    <ClInclude Include="include\CFlat\Testing\Mock.When.h" />
     <ClInclude Include="include\CFlat\Testing\Test.h" />
     <ClInclude Include="include\CFlat\Testing\TestCase.h" />
     <ClInclude Include="include\CFlat\Testing\TestCaseResult.h" />
@@ -27,6 +32,7 @@
     <ClCompile Include="src\CFlat\Testing\Assert.c" />
     <ClCompile Include="src\CFlat\Testing\ConsoleTestRunner.c" />
     <ClCompile Include="src\CFlat\Testing\ITestListener.c" />
+    <ClCompile Include="src\CFlat\Testing\Mock.c" />
     <ClCompile Include="src\CFlat\Testing\Test.c" />
     <ClCompile Include="src\CFlat\Testing\TestCase.c" />
     <ClCompile Include="src\CFlat\Testing\TestCaseResult.c" />
