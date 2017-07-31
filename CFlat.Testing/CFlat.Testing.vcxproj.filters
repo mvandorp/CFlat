@@ -48,6 +48,21 @@
     <ClInclude Include="src\CFlat\Testing\OutputCapture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\CFlat\Testing\Mock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CFlat\Testing\Mock.When.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CFlat\Testing\Mock.Verify.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CFlat\Testing\Mock.Matchers.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CFlat\Testing\Mock.hidden.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CFlat\Testing\Assert.c">
@@ -81,6 +96,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\CFlat\Testing\TestStatus.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\CFlat\Testing\Mock.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
