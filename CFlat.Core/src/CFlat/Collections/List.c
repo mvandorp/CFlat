@@ -326,7 +326,7 @@ public bool List_RemoveRef(List *list, const void *item)
 public void *List_GetItemRef(const List *list, uintsize index)
 {
     Validate_NotNull(list);
-    Validate_ArgumentRange(index <= list->Count,
+    Validate_ArgumentRange(index < list->Count,
         "Index must be within the bounds of the List.", "index");
 
     return &list->Array[index * list->ElementSize];
