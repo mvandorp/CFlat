@@ -154,7 +154,7 @@ public void String_Destructor(String *str)
 public char String_GetCharAt(const String *str, uintsize index)
 {
     Validate_NotNull(str);
-    Validate_Argument(index < str->Length,
+    Validate_ArgumentRange(index < str->Length,
         "Index must be less than the size of the string/array/collection.", "index");
 
     return str->Value[index];
