@@ -88,7 +88,7 @@ public TextWriter *StreamWriter_New(Stream *stream)
 public TextWriter *StreamWriter_New_FromFile(const String *path, bool append)
 {
     TextWriter *writer = null;
-    Stream *stream = FileStream_New(path, append ? FileMode_Append : FileMode_Create);
+    Stream *stream = FileStream_New_WithAccess(path, append ? FileMode_Append : FileMode_Create, FileAccess_Write);
 
     try {
         writer = StreamWriter_New(stream);
@@ -104,7 +104,10 @@ public TextWriter *StreamWriter_New_FromFile(const String *path, bool append)
 public TextWriter *StreamWriter_New_FromFile_CString(const char *path, bool append)
 {
     TextWriter *writer = null;
-    Stream *stream = FileStream_New_CString(path, append ? FileMode_Append : FileMode_Create);
+    Stream *stream = FileStream_New_WithAccess_CString(
+        path,
+        append ? FileMode_Append : FileMode_Create,
+        FileAccess_Write);
 
     try {
         writer = StreamWriter_New(stream);
