@@ -89,7 +89,7 @@ public TextReader *StreamReader_New(Stream *stream)
 public TextReader *StreamReader_New_FromFile(const String *path)
 {
     TextReader *reader = null;
-    Stream *stream = FileStream_New(path, FileMode_Open);
+    Stream *stream = FileStream_New_WithAccess(path, FileMode_Open, FileAccess_Read);
 
     try {
         reader = StreamReader_New(stream);
@@ -105,7 +105,7 @@ public TextReader *StreamReader_New_FromFile(const String *path)
 public TextReader *StreamReader_New_FromFile_CString(const char *path)
 {
     TextReader *reader = null;
-    Stream *stream = FileStream_New_CString(path, FileMode_Open);
+    Stream *stream = FileStream_New_WithAccess_CString(path, FileMode_Open, FileAccess_Read);
 
     try {
         reader = StreamReader_New(stream);
