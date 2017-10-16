@@ -231,23 +231,23 @@ private override intfsize FileStream_GetLength(const FileStream *stream)
         ValidateSeekSupported(stream);
     }
 
+    intfsize length = 0;
+
     try {
         intfsize cur = FileTell(stream->File);
 
         FileSeek(stream->File, 0, SeekOrigin_End);
 
-        intfsize length = FileTell(stream->File);
+        length = FileTell(stream->File);
 
         FileSeek(stream->File, cur, SeekOrigin_Begin);
-
-        return length;
     }
     catch (Exception) {
         throw_new(IOException, "Failed to get the length of the file.");
     }
     endtry;
 
-    return 0;
+    return length;
 }
 
 private override void FileStream_SetLength(FileStream *stream, intfsize length)
