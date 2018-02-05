@@ -22,139 +22,145 @@
 #ifndef CFLAT_CORE_LANGUAGE_CHAR_H
 #define CFLAT_CORE_LANGUAGE_CHAR_H
 
-#include "CFlat/Language/Bool.h"
+#include "CFlat/String.h"
 
-struct String;
+namespace CFlat {
+    class Char {
+    public:
+        /* Static class */
+        Char() = delete;
 
-/* Macros */
-/// <summary>
-/// Represents the smallest possible value of <see cref="char"/>.
-/// </summary>
-#define char_MinValue ((char)CHAR_MIN)
+        /* Constants */
+        /// <summary>
+        /// Represents the smallest possible value of <see cref="char"/>.
+        /// </summary>
+        static const char MinValue;
 
-/// <summary>
-/// Represents the largest possible value of <see cref="char"/>.
-/// </summary>
-#define char_MaxValue ((char)CHAR_MAX)
+        /// <summary>
+        /// Represents the largest possible value of <see cref="char"/>.
+        /// </summary>
+        static const char MaxValue;
 
-/* Functions */
-/// <summary>
-/// Determines whether a character is catagorized as a binary digit.
-/// </summary>
-/// <param name="c">The character to check.</param>
-/// <returns><see cref="true"/> if the character is a binary digit; otherwise, <see cref="false"/>.</returns>
-bool char_IsBinaryDigit(int c);
+        /* Functions */
+        /// <summary>
+        /// Determines whether a character is catagorized as a binary digit.
+        /// </summary>
+        /// <param name="c">The character to check.</param>
+        /// <returns><see cref="true"/> if the character is a binary digit; otherwise, <see cref="false"/>.</returns>
+        static bool IsBinaryDigit(int c);
 
-/// <summary>
-/// Determines whether a character is catagorized as a control character.
-/// </summary>
-/// <param name="c">The character to check.</param>
-/// <returns><see cref="true"/> if the character is a control character; otherwise, <see cref="false"/>.</returns>
-bool char_IsControl(int c);
+        /// <summary>
+        /// Determines whether a character is catagorized as a control character.
+        /// </summary>
+        /// <param name="c">The character to check.</param>
+        /// <returns><see cref="true"/> if the character is a control character; otherwise, <see cref="false"/>.</returns>
+        static bool IsControl(int c);
 
-/// <summary>
-/// Determines whether a character is catagorized as a decimal digit.
-/// </summary>
-/// <param name="c">The character to check.</param>
-/// <returns><see cref="true"/> if the character is a decimal digit; otherwise, <see cref="false"/>.</returns>
-bool char_IsDigit(int c);
+        /// <summary>
+        /// Determines whether a character is catagorized as a decimal digit.
+        /// </summary>
+        /// <param name="c">The character to check.</param>
+        /// <returns><see cref="true"/> if the character is a decimal digit; otherwise, <see cref="false"/>.</returns>
+        static bool IsDigit(int c);
 
-/// <summary>
-/// Determines whether a character is catagorized as a graphical character.
-/// </summary>
-/// <param name="c">The character to check.</param>
-/// <returns><see cref="true"/> if the character is a graphical character; otherwise, <see cref="false"/>.</returns>
-bool char_IsGraphic(int c);
+        /// <summary>
+        /// Determines whether a character is catagorized as a graphical character.
+        /// </summary>
+        /// <param name="c">The character to check.</param>
+        /// <returns><see cref="true"/> if the character is a graphical character; otherwise, <see cref="false"/>.</returns>
+        static bool IsGraphic(int c);
 
-/// <summary>
-/// Determines whether a character is catagorized as a hexadecimal digit.
-/// </summary>
-/// <param name="c">The character to check.</param>
-/// <returns><see cref="true"/> if the character is a hexadecimal digit; otherwise, <see cref="false"/>.</returns>
-bool char_IsHexadecimalDigit(int c);
+        /// <summary>
+        /// Determines whether a character is catagorized as a hexadecimal digit.
+        /// </summary>
+        /// <param name="c">The character to check.</param>
+        /// <returns><see cref="true"/> if the character is a hexadecimal digit; otherwise, <see cref="false"/>.</returns>
+        static bool IsHexadecimalDigit(int c);
 
-/// <summary>
-/// Determines whether a character is catagorized as a letter.
-/// </summary>
-/// <param name="c">The character to check.</param>
-/// <returns><see cref="true"/> if the character is a letter; otherwise, <see cref="false"/>.</returns>
-bool char_IsLetter(int c);
+        /// <summary>
+        /// Determines whether a character is catagorized as a letter.
+        /// </summary>
+        /// <param name="c">The character to check.</param>
+        /// <returns><see cref="true"/> if the character is a letter; otherwise, <see cref="false"/>.</returns>
+        static bool IsLetter(int c);
 
-/// <summary>
-/// Determines whether a character is catagorized as a letter or decimal digit.
-/// </summary>
-/// <param name="c">The character to check.</param>
-/// <returns><see cref="true"/> if the character is a letter or decimal digit; otherwise, <see cref="false"/>.</returns>
-bool char_IsLetterOrDigit(int c);
+        /// <summary>
+        /// Determines whether a character is catagorized as a letter or decimal digit.
+        /// </summary>
+        /// <param name="c">The character to check.</param>
+        /// <returns><see cref="true"/> if the character is a letter or decimal digit; otherwise, <see cref="false"/>.</returns>
+        static bool IsLetterOrDigit(int c);
 
-/// <summary>
-/// Determines whether a character is catagorized as a lowercase letter.
-/// </summary>
-/// <param name="c">The character to check.</param>
-/// <returns><see cref="true"/> if the character is a lowercase letter; otherwise, <see cref="false"/>.</returns>
-bool char_IsLower(int c);
+        /// <summary>
+        /// Determines whether a character is catagorized as a lowercase letter.
+        /// </summary>
+        /// <param name="c">The character to check.</param>
+        /// <returns><see cref="true"/> if the character is a lowercase letter; otherwise, <see cref="false"/>.</returns>
+        static bool IsLower(int c);
 
-/// <summary>
-/// Determines whether a character is catagorized as a printable character.
-/// </summary>
-/// <param name="c">The character to check.</param>
-/// <returns><see cref="true"/> if the character is a printable character; otherwise, <see cref="false"/>.</returns>
-bool char_IsPrintable(int c);
+        /// <summary>
+        /// Determines whether a character is catagorized as a printable character.
+        /// </summary>
+        /// <param name="c">The character to check.</param>
+        /// <returns><see cref="true"/> if the character is a printable character; otherwise, <see cref="false"/>.</returns>
+        static bool IsPrintable(int c);
 
-/// <summary>
-/// Determines whether a character is catagorized as punctation.
-/// </summary>
-/// <param name="c">The character to check.</param>
-/// <returns><see cref="true"/> if the character is punctation; otherwise, <see cref="false"/>.</returns>
-bool char_IsPunctation(int c);
+        /// <summary>
+        /// Determines whether a character is catagorized as punctation.
+        /// </summary>
+        /// <param name="c">The character to check.</param>
+        /// <returns><see cref="true"/> if the character is punctation; otherwise, <see cref="false"/>.</returns>
+        static bool IsPunctation(int c);
 
-/// <summary>
-/// Determines whether a character is catagorized as a separator character.
-/// </summary>
-/// <param name="c">The character to check.</param>
-/// <returns><see cref="true"/> if the character is a separator character; otherwise, <see cref="false"/>.</returns>
-bool char_IsSeparator(int c);
+        /// <summary>
+        /// Determines whether a character is catagorized as a separator character.
+        /// </summary>
+        /// <param name="c">The character to check.</param>
+        /// <returns><see cref="true"/> if the character is a separator character; otherwise, <see cref="false"/>.</returns>
+        static bool IsSeparator(int c);
 
-/// <summary>
-/// Determines whether a character is catagorized as an uppercase letter.
-/// </summary>
-/// <param name="c">The character to check.</param>
-/// <returns><see cref="true"/> if the character is an uppercase letter; otherwise, <see cref="false"/>.</returns>
-bool char_IsUpper(int c);
+        /// <summary>
+        /// Determines whether a character is catagorized as an uppercase letter.
+        /// </summary>
+        /// <param name="c">The character to check.</param>
+        /// <returns><see cref="true"/> if the character is an uppercase letter; otherwise, <see cref="false"/>.</returns>
+        static bool IsUpper(int c);
 
-/// <summary>
-/// Determines whether a character is catagorized as white space.
-/// </summary>
-/// <param name="c">The character to check.</param>
-/// <returns><see cref="true"/> if the character is white space; otherwise, <see cref="false"/>.</returns>
-bool char_IsWhiteSpace(int c);
+        /// <summary>
+        /// Determines whether a character is catagorized as white space.
+        /// </summary>
+        /// <param name="c">The character to check.</param>
+        /// <returns><see cref="true"/> if the character is white space; otherwise, <see cref="false"/>.</returns>
+        static bool IsWhiteSpace(int c);
 
-/// <summary>
-/// Converts a character to its lowercase equivalent.
-/// </summary>
-/// <param name="c">The character to convert.</param>
-/// <returns>
-///     The lowercase equivalent of <paramref name="c"/> if <paramref name="c"/> is an uppercase letter;
-///     otherwise, returns <paramref name="c"/>.
-/// </returns>
-int char_ToLower(int c);
+        /// <summary>
+        /// Converts a character to its lowercase equivalent.
+        /// </summary>
+        /// <param name="c">The character to convert.</param>
+        /// <returns>
+        ///     The lowercase equivalent of <paramref name="c"/> if <paramref name="c"/> is an uppercase letter;
+        ///     otherwise, returns <paramref name="c"/>.
+        /// </returns>
+        static int ToLower(int c);
 
-/// <summary>
-/// Converts a character to its upercase equivalent.
-/// </summary>
-/// <param name="c">The character to convert.</param>
-/// <returns>
-///     The uppercase equivalent of <paramref name="c"/> if <paramref name="c"/> is a lowercase letter;
-///     otherwise, returns <paramref name="c"/>.
-/// </returns>
-int char_ToUpper(int c);
+        /// <summary>
+        /// Converts a character to its upercase equivalent.
+        /// </summary>
+        /// <param name="c">The character to convert.</param>
+        /// <returns>
+        ///     The uppercase equivalent of <paramref name="c"/> if <paramref name="c"/> is a lowercase letter;
+        ///     otherwise, returns <paramref name="c"/>.
+        /// </returns>
+        static int ToUpper(int c);
 
-/// <summary>
-/// Converts a character to a string representation.
-/// </summary>
-/// <param name="c">The value to be converted to a string.</param>
-/// <returns>The string representation of the character.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *char_ToString(char c);
+        /// <summary>
+        /// Converts a character to a string representation.
+        /// </summary>
+        /// <param name="c">The value to be converted to a string.</param>
+        /// <returns>The string representation of the character.</returns>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        static String ToString(char c);
+    };
+}
 
 #endif

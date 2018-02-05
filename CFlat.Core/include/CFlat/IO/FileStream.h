@@ -24,101 +24,141 @@
 
 #include "CFlat/IO/FileAccess.h"
 #include "CFlat/IO/FileMode.h"
+#include "CFlat/IO/Stream.h"
 
-/* Forward declarations */
-struct Stream;
-struct String;
-struct TextReader;
+#include <cstdio>
 
-/* Types */
-/// <summary>
-/// Implements a <see cref="Stream"/> for reading/writing to a file.
-/// </summary>
-typedef struct FileStream FileStream;
+namespace CFlat {
+    /* Forward declarations */
+    class String;
 
-/* Functions */
-/// <summary>
-/// Allocates and initializes a new <see cref="FileStream"/>.
-/// </summary>
-/// <remarks>
-///     The lifetime of the <see cref="FileStream"/> should be managed with retain() and release().
-/// </remarks>
-/// <returns>A pointer to the newly allocated stream.</returns>
-/// <param name="path">Pointer to a <see cref="String"/> containing the path of the file.</param>
-/// <param name="mode">A <see cref="FileMode"/> value that determines how to open or create the file.</param>
-/// <exception cref="::ArgumentNullException">
-///     <paramref name="stream"/> is <see cref="null"/> <b>-or-</b>
-///     <paramref name="path"/> is <see cref="null"/>.
-/// </exception>
-/// <exception cref="::ArgumentException"><paramref name="mode"/> is not a valid <see cref="FileMode"/>.</exception>
-/// <exception cref="::IOException">An I/O error occurs.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct Stream *FileStream_New(const struct String *path, FileMode mode);
+    /* Types */
+    /// <summary>
+    /// Implements a <see cref="Stream"/> for reading/writing to a file.
+    /// </summary>
+    class FileStream : public Stream {
+    private:
+        std::FILE *_file;
+        FileAccess::Enum _access;
+        FileMode::Enum _mode;
 
-/// <summary>
-/// Allocates and initializes a new <see cref="FileStream"/>.
-/// </summary>
-/// <remarks>
-///     The lifetime of the <see cref="FileStream"/> should be managed with retain() and release().
-/// </remarks>
-/// <returns>A pointer to the newly allocated stream.</returns>
-/// <param name="path">Pointer to a null-terminated string containing the path of the file.</param>
-/// <param name="mode">A <see cref="FileMode"/> value that determines how to open or create the file.</param>
-/// <exception cref="::ArgumentNullException">
-///     <paramref name="stream"/> is <see cref="null"/> <b>-or-</b>
-///     <paramref name="path"/> is <see cref="null"/>.
-/// </exception>
-/// <exception cref="::ArgumentException"><paramref name="mode"/> is not a valid <see cref="FileMode"/>.</exception>
-/// <exception cref="::IOException">An I/O error occurs.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct Stream *FileStream_New_CString(const char *path, FileMode mode);
+        void ValidateReadSupported() const;
 
-/// <summary>
-/// Allocates and initializes a new <see cref="FileStream"/>.
-/// </summary>
-/// <remarks>
-///     The lifetime of the <see cref="FileStream"/> should be managed with retain() and release().
-/// </remarks>
-/// <returns>A pointer to the newly allocated stream.</returns>
-/// <param name="path">Pointer to a <see cref="String"/> containing the path of the file.</param>
-/// <param name="mode">A <see cref="FileMode"/> value that determines how to open or create the file.</param>
-/// <param name="fileAccess">
-///     A <see cref="FileAccess"/> value that indicates the desired permissions on the file.
-/// </param>
-/// <exception cref="::ArgumentNullException">
-///     <paramref name="stream"/> is <see cref="null"/> <b>-or-</b>
-///     <paramref name="path"/> is <see cref="null"/>.
-/// </exception>
-/// <exception cref="::ArgumentException">
-///     <paramref name="mode"/> is not a valid <see cref="FileMode"/> <b>-or-</b>
-///     <paramref name="fileAccess"/> is not a valid <see cref="FileAccess"/>.
-/// </exception>
-/// <exception cref="::IOException">An I/O error occurs.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct Stream *FileStream_New_WithAccess(const struct String *path, FileMode mode, FileAccess fileAccess);
+        void ValidateSeekSupported() const;
 
-/// <summary>
-/// Allocates and initializes a new <see cref="FileStream"/>.
-/// </summary>
-/// <remarks>
-///     The lifetime of the <see cref="FileStream"/> should be managed with retain() and release().
-/// </remarks>
-/// <returns>A pointer to the newly allocated stream.</returns>
-/// <param name="path">Pointer to a null-terminated string containing the path of the file.</param>
-/// <param name="mode">A <see cref="FileMode"/> value that determines how to open or create the file.</param>
-/// <param name="fileAccess">
-///     A <see cref="FileAccess"/> value that indicates the desired permissions on the file.
-/// </param>
-/// <exception cref="::ArgumentNullException">
-///     <paramref name="stream"/> is <see cref="null"/> <b>-or-</b>
-///     <paramref name="path"/> is <see cref="null"/>.
-/// </exception>
-/// <exception cref="::ArgumentException">
-///     <paramref name="mode"/> is not a valid <see cref="FileMode"/> <b>-or-</b>
-///     <paramref name="fileAccess"/> is not a valid <see cref="FileAccess"/>.
-/// </exception>
-/// <exception cref="::IOException">An I/O error occurs.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct Stream *FileStream_New_WithAccess_CString(const char *path, FileMode mode, FileAccess fileAccess);
+        void ValidateWriteSupported() const;
+
+    public:
+        /// <summary>
+        /// Allocates and initializes a new <see cref="FileStream"/>.
+        /// </summary>
+        /// <remarks>
+        ///     The lifetime of the <see cref="FileStream"/> should be managed with retain() and release().
+        /// </remarks>
+        /// <returns>A pointer to the newly allocated stream.</returns>
+        /// <param name="path">Pointer to a <see cref="String"/> containing the path of the file.</param>
+        /// <param name="mode">A <see cref="FileMode"/> value that determines how to open or create the file.</param>
+        /// <exception cref="::ArgumentNullException">
+        ///     <paramref name="stream"/> is <see cref="null"/> <b>-or-</b>
+        ///     <paramref name="path"/> is <see cref="null"/>.
+        /// </exception>
+        /// <exception cref="::ArgumentException"><paramref name="mode"/> is not a valid <see cref="FileMode"/>.</exception>
+        /// <exception cref="::IOException">An I/O error occurs.</exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        FileStream(const String &path, FileMode::Enum mode);
+
+        /// <summary>
+        /// Allocates and initializes a new <see cref="FileStream"/>.
+        /// </summary>
+        /// <remarks>
+        ///     The lifetime of the <see cref="FileStream"/> should be managed with retain() and release().
+        /// </remarks>
+        /// <returns>A pointer to the newly allocated stream.</returns>
+        /// <param name="path">Pointer to a null-terminated string containing the path of the file.</param>
+        /// <param name="mode">A <see cref="FileMode"/> value that determines how to open or create the file.</param>
+        /// <exception cref="::ArgumentNullException">
+        ///     <paramref name="stream"/> is <see cref="null"/> <b>-or-</b>
+        ///     <paramref name="path"/> is <see cref="null"/>.
+        /// </exception>
+        /// <exception cref="::ArgumentException"><paramref name="mode"/> is not a valid <see cref="FileMode"/>.</exception>
+        /// <exception cref="::IOException">An I/O error occurs.</exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        FileStream(const char *path, FileMode::Enum mode);
+
+        /// <summary>
+        /// Allocates and initializes a new <see cref="FileStream"/>.
+        /// </summary>
+        /// <remarks>
+        ///     The lifetime of the <see cref="FileStream"/> should be managed with retain() and release().
+        /// </remarks>
+        /// <returns>A pointer to the newly allocated stream.</returns>
+        /// <param name="path">Pointer to a <see cref="String"/> containing the path of the file.</param>
+        /// <param name="mode">A <see cref="FileMode"/> value that determines how to open or create the file.</param>
+        /// <param name="fileAccess">
+        ///     A <see cref="FileAccess"/> value that indicates the desired permissions on the file.
+        /// </param>
+        /// <exception cref="::ArgumentNullException">
+        ///     <paramref name="stream"/> is <see cref="null"/> <b>-or-</b>
+        ///     <paramref name="path"/> is <see cref="null"/>.
+        /// </exception>
+        /// <exception cref="::ArgumentException">
+        ///     <paramref name="mode"/> is not a valid <see cref="FileMode"/> <b>-or-</b>
+        ///     <paramref name="fileAccess"/> is not a valid <see cref="FileAccess"/>.
+        /// </exception>
+        /// <exception cref="::IOException">An I/O error occurs.</exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        FileStream(const String &path, FileMode::Enum mode, FileAccess::Enum fileAccess);
+
+        /// <summary>
+        /// Allocates and initializes a new <see cref="FileStream"/>.
+        /// </summary>
+        /// <remarks>
+        ///     The lifetime of the <see cref="FileStream"/> should be managed with retain() and release().
+        /// </remarks>
+        /// <returns>A pointer to the newly allocated stream.</returns>
+        /// <param name="path">Pointer to a null-terminated string containing the path of the file.</param>
+        /// <param name="mode">A <see cref="FileMode"/> value that determines how to open or create the file.</param>
+        /// <param name="fileAccess">
+        ///     A <see cref="FileAccess"/> value that indicates the desired permissions on the file.
+        /// </param>
+        /// <exception cref="::ArgumentNullException">
+        ///     <paramref name="stream"/> is <see cref="null"/> <b>-or-</b>
+        ///     <paramref name="path"/> is <see cref="null"/>.
+        /// </exception>
+        /// <exception cref="::ArgumentException">
+        ///     <paramref name="mode"/> is not a valid <see cref="FileMode"/> <b>-or-</b>
+        ///     <paramref name="fileAccess"/> is not a valid <see cref="FileAccess"/>.
+        /// </exception>
+        /// <exception cref="::IOException">An I/O error occurs.</exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        FileStream(const char *path, FileMode::Enum mode, FileAccess::Enum fileAccess);
+
+        ~FileStream();
+
+        /* Properties */
+        bool CanRead() const override;
+
+        bool CanSeek() const override;
+
+        bool CanWrite() const override;
+
+        /* Methods */
+        intfsize GetLength() const override;
+
+        void SetLength(intfsize length) override;
+
+        intfsize GetPosition() const override;
+
+        void SetPosition(intfsize position) override;
+
+        void Flush() override;
+
+        uintsize Read(byte *buffer, uintsize offset, uintsize count) override;
+
+        intfsize Seek(intfsize offset, SeekOrigin::Enum origin) override;
+
+        void Write(const byte *buffer, uintsize offset, uintsize count) override;
+    };
+}
 
 #endif

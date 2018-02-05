@@ -22,152 +22,217 @@
 #ifndef CFLAT_CORE_EXCEPTIONTYPE_H
 #define CFLAT_CORE_EXCEPTIONTYPE_H
 
-#include "CFlat/Language/Bool.h"
+#include "CFlat/Language/Pointers.h"
 
-/* Forward declarations */
-struct String;
+#include "CFlat/String.h"
 
-/* Macros */
-#define CFLAT_EXCEPTIONTYPE_BASE_BITS 8
-#define CFLAT_EXCEPTIONTYPE_BASE_VALUE(value) (1 << ((value) - 1))
-#define CFLAT_EXCEPTIONTYPE_VALUE(value) ((value) << CFLAT_EXCEPTIONTYPE_BASE_BITS)
+namespace CFlat {
+    class Exception {
+    private:
+        String _message;
+        shared_ptr<Exception> _innerException;
 
-/* Types */
-/// <summary>
-/// Specifies the type of an exception.
-/// </summary>
-typedef enum ExceptionType {
-    /// <summary>
-    /// Base class for all exceptions.
-    /// </summary>
-    Exception = CFLAT_EXCEPTIONTYPE_BASE_VALUE(1),
+    public:
+        static const String Name;
 
-    /// <summary>
-    /// Base class for all runtime-generated errors.
-    /// </summary>
-    SystemException = CFLAT_EXCEPTIONTYPE_BASE_VALUE(2) | Exception,
+        Exception();
+        Exception(const String &message);
+        Exception(const String &message, shared_ptr<Exception> innerException);
+        virtual ~Exception();
 
-    /// <summary>
-    /// Base class for all argument exceptions.
-    /// </summary>
-    ArgumentException = CFLAT_EXCEPTIONTYPE_BASE_VALUE(3) | SystemException,
+        shared_ptr<Exception> GetInnerException() const;
 
-    /// <summary>
-    /// Base class for all I/O exceptions.
-    /// </summary>
-    IOException = CFLAT_EXCEPTIONTYPE_BASE_VALUE(4) | SystemException,
+        virtual String GetName() const;
 
-    /// <summary>
-    /// Base class for all arithmetic exceptions.
-    /// </summary>
-    ArithmeticException = CFLAT_EXCEPTIONTYPE_BASE_VALUE(5) | SystemException,
+        virtual String GetMessage() const;
+    };
 
-    /// <summary>
-    /// Thrown by the runtime only when an array is indexed improperly.
-    /// </summary>
-    IndexOutOfRangeException = CFLAT_EXCEPTIONTYPE_VALUE(1) | SystemException,
+    class SystemException : public Exception {
+    public:
+        static const String Name;
 
-    /// <summary>
-    /// Thrown by the runtime only when a null object is referenced.
-    /// </summary>
-    NullReferenceException = CFLAT_EXCEPTIONTYPE_VALUE(2) | SystemException,
+        SystemException();
+        SystemException(const String &message);
+        SystemException(const String &message, shared_ptr<Exception> innerException);
 
-    /// <summary>
-    /// Thrown by the runtime only when invalid memory is accessed.
-    /// </summary>
-    AccessViolationException = CFLAT_EXCEPTIONTYPE_VALUE(3) | SystemException,
+        String GetName() const override;
+    };
 
-    /// <summary>
-    /// Thrown by methods when in an invalid state.
-    /// </summary>
-    InvalidOperationException = CFLAT_EXCEPTIONTYPE_VALUE(4) | SystemException,
+    class ArgumentException : public SystemException {
+    public:
+        static const String Name;
 
-    /// <summary>
-    /// Thrown by methods that do not allow an argument to be null.
-    /// </summary>
-    ArgumentNullException = CFLAT_EXCEPTIONTYPE_VALUE(5) | ArgumentException,
+        ArgumentException();
+        ArgumentException(const String &message);
+        ArgumentException(const String &message, shared_ptr<Exception> innerException);
 
-    /// <summary>
-    /// Thrown by methods that verify that arguments are in a given range.
-    /// </summary>
-    ArgumentOutOfRangeException = CFLAT_EXCEPTIONTYPE_VALUE(6) | ArgumentException,
+        String GetName() const override;
+    };
 
-    /// <summary>
-    /// Thrown by methods when there is not enough memory to complete a certain operation
-    /// </summary>
-    OutOfMemoryException = CFLAT_EXCEPTIONTYPE_VALUE(7) | SystemException,
+    class IOException : public SystemException {
+    public:
+        static const String Name;
 
-    /// <summary>
-    /// Thrown by methods when an attempt to access a file that does not exist on disk fails.
-    /// </summary>
-    FileNotFoundException = CFLAT_EXCEPTIONTYPE_VALUE(8) | IOException,
+        IOException();
+        IOException(const String &message);
+        IOException(const String &message, shared_ptr<Exception> innerException);
 
-    /// <summary>
-    /// Throw by methods when the format of an argument is invalid, or when a composite format string is not well
-    /// formed.
-    /// </summary>
-    FormatException = CFLAT_EXCEPTIONTYPE_VALUE(9) | SystemException,
+        String GetName() const override;
+    };
 
-    /// <summary>
-    /// Thrown when a method or operation is not implemented.
-    /// </summary>
-    NotImplementedException = CFLAT_EXCEPTIONTYPE_VALUE(10) | SystemException,
+    class ArithmeticException : public SystemException {
+    public:
+        static const String Name;
 
-    /// <summary>
-    /// Thrown when a method or operation is not supported.
-    /// </summary>
-    NotSupportedException = CFLAT_EXCEPTIONTYPE_VALUE(11) | SystemException,
+        ArithmeticException();
+        ArithmeticException(const String &message);
+        ArithmeticException(const String &message, shared_ptr<Exception> innerException);
 
-    /// <summary>
-    /// Throw when an arithmetic, casting or conversion operation in a checked context results in an overflow.
-    /// </summary>
-    OverflowException = CFLAT_EXCEPTIONTYPE_VALUE(12) | Exception,
+        String GetName() const override;
+    };
 
-    /// <summary>
-    /// Throw when an there is an attempt to divide by zero in checked context.
-    /// </summary>
-    DivideByZeroException = CFLAT_EXCEPTIONTYPE_VALUE(13) | Exception,
-} ExceptionType;
+    class IndexOutOfRangeException : public SystemException {
+    public:
+        static const String Name;
 
-#undef CFLAT_EXCEPTIONTYPE_BASE_VALUE
-#undef CFLAT_EXCEPTIONTYPE_VALUE
+        IndexOutOfRangeException();
+        IndexOutOfRangeException(const String &message);
+        IndexOutOfRangeException(const String &message, shared_ptr<Exception> innerException);
 
-/* Functions */
-/// <summary>
-/// Determines whether an instance of the second type can be assigned to an instance of the first type.
-/// </summary>
-/// <param name="type1">An <see cref="ExceptionType"/>.</param>
-/// <param name="type2">The <see cref="ExceptionType"/> to compare with.</param>
-/// <returns>
-///     <see cref="true"/> if one of the following coniditions is true:
-///     <list type="bullet">
-///         <item>
-///             <description>
-///                 <paramref name="type2"/> and <paramref name="type1"/> represent the same type.
-///             </description>
-///         </item>
-///         <item>
-///             <description>
-///                 <paramref name="type2"/> is derived either directly or indirectly from <paramref name="type1"/>.
-///             </description>
-///         </item>
-///     </list>
-///     <see cref="false"/> if none of these conditions are true.
-/// </returns>
-bool ExceptionType_IsAssignableFrom(ExceptionType type1, ExceptionType type2);
+        String GetName() const override;
+    };
 
-/// <summary>
-/// Gets the name of the given <see cref="ExceptionType"/>.
-/// </summary>
-/// <param name="type">An <see cref="ExceptionType"/>.</param>
-/// <returns>The name of the given <see cref="ExceptionType"/>.</returns>
-const struct String *ExceptionType_GetName(ExceptionType type);
+    class NullReferenceException : public SystemException {
+    public:
+        static const String Name;
 
-/// <summary>
-/// Gets a message describing an exception of the given <see cref="ExceptionType"/>.
-/// </summary>
-/// <param name="type">An <see cref="ExceptionType"/>.</param>
-/// <returns>A message describing an exception of the given <see cref="ExceptionType"/>.</returns>
-const struct String *ExceptionType_GetDefaultMessage(ExceptionType type);
+        NullReferenceException();
+        NullReferenceException(const String &message);
+        NullReferenceException(const String &message, shared_ptr<Exception> innerException);
+
+        String GetName() const override;
+    };
+
+    class AccessViolationException : public SystemException {
+    public:
+        static const String Name;
+
+        AccessViolationException();
+        AccessViolationException(const String &message);
+        AccessViolationException(const String &message, shared_ptr<Exception> innerException);
+
+        String GetName() const override;
+    };
+
+    class InvalidOperationException : public SystemException {
+    public:
+        static const String Name;
+
+        InvalidOperationException();
+        InvalidOperationException(const String &message);
+        InvalidOperationException(const String &message, shared_ptr<Exception> innerException);
+
+        String GetName() const override;
+    };
+
+    class ArgumentNullException : public ArgumentException {
+    public:
+        static const String Name;
+
+        ArgumentNullException();
+        ArgumentNullException(const String &message);
+        ArgumentNullException(const String &message, shared_ptr<Exception> innerException);
+
+        String GetName() const override;
+    };
+
+    class ArgumentOutOfRangeException : public ArgumentException {
+    public:
+        static const String Name;
+
+        ArgumentOutOfRangeException();
+        ArgumentOutOfRangeException(const String &message);
+        ArgumentOutOfRangeException(const String &message, shared_ptr<Exception> innerException);
+
+        String GetName() const override;
+    };
+
+    class OutOfMemoryException : public SystemException {
+    public:
+        static const String Name;
+
+        OutOfMemoryException();
+        OutOfMemoryException(const String &message);
+        OutOfMemoryException(const String &message, shared_ptr<Exception> innerException);
+
+        String GetName() const override;
+    };
+
+    class FileNotFoundException : public IOException {
+    public:
+        static const String Name;
+
+        FileNotFoundException();
+        FileNotFoundException(const String &message);
+        FileNotFoundException(const String &message, shared_ptr<Exception> innerException);
+
+        String GetName() const override;
+    };
+
+    class FormatException : public SystemException {
+    public:
+        static const String Name;
+
+        FormatException();
+        FormatException(const String &message);
+        FormatException(const String &message, shared_ptr<Exception> innerException);
+
+        String GetName() const override;
+    };
+
+    class NotImplementedException : public SystemException {
+    public:
+        static const String Name;
+
+        NotImplementedException();
+        NotImplementedException(const String &message);
+        NotImplementedException(const String &message, shared_ptr<Exception> innerException);
+
+        String GetName() const override;
+    };
+
+    class NotSupportedException : public SystemException {
+    public:
+        static const String Name;
+
+        NotSupportedException();
+        NotSupportedException(const String &message);
+        NotSupportedException(const String &message, shared_ptr<Exception> innerException);
+
+        String GetName() const override;
+    };
+
+    class OverflowException : public ArithmeticException {
+    public:
+        static const String Name;
+
+        OverflowException();
+        OverflowException(const String &message);
+        OverflowException(const String &message, shared_ptr<Exception> innerException);
+
+        String GetName() const override;
+    };
+
+    class DivideByZeroException : public ArithmeticException {
+    public:
+        static const String Name;
+
+        DivideByZeroException();
+        DivideByZeroException(const String &message);
+        DivideByZeroException(const String &message, shared_ptr<Exception> innerException);
+
+        String GetName() const override;
+    };
+}
 
 #endif

@@ -360,8 +360,8 @@ else ifeq ($(MODE),LOAD_PROJECT)
 
         # Find files
         Makefiles           := $(SolutionDir)Makefile $(ProjectDir)$(ProjectName).mkproj
-        ObjectFiles         := $(patsubst $(RelativeProjectDir)%.c,$(BuildDirectory)/%.o,$(SourceFiles))
-        DependencyFiles     := $(patsubst $(RelativeProjectDir)%.c,$(BuildDirectory)/%.d,$(SourceFiles))
+        ObjectFiles         := $(patsubst $(RelativeProjectDir)%.cpp,$(BuildDirectory)/%.o,$(SourceFiles))
+        DependencyFiles     := $(patsubst $(RelativeProjectDir)%.cpp,$(BuildDirectory)/%.d,$(SourceFiles))
 
         # Find all build directories so that they can be created
         BuildDirectories    := $(patsubst ./%,%,$(sort $(foreach FILE,$(ObjectFiles),$(dir $(FILE)))))
@@ -422,7 +422,7 @@ else ifeq ($(MODE),LOAD_PROJECT)
         $(BuildDirectory)/%.o: .CFLAGS          :=$(CFLAGS)
         $(BuildDirectory)/%.o: .CPPFLAGS        :=$(CPPFLAGS)
         $(BuildDirectory)/%.o: .BuildDirectory  :=$(BuildDirectory)
-        $(BuildDirectory)/%.o: $(RelativeProjectDir)%.c $(Makefiles) | $(BuildDirectories)
+        $(BuildDirectory)/%.o: $(RelativeProjectDir)%.cpp $(Makefiles) | $(BuildDirectories)
 			$(eval LogFile := $(shell rm -f $@; mktemp))
 			$(eval ExitCode := $(shell $(COMPILE) > $(LogFile) 2>&1; echo $$?; ))
 			$(eval HasWarnings := $(shell test -s $(LogFile); echo $$?; ))

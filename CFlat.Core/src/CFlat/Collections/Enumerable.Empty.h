@@ -20,19 +20,22 @@
 #ifndef CFLAT_CORE_COLLECTIONS_ENUMERABLE_EMPTY_H
 #define CFLAT_CORE_COLLECTIONS_ENUMERABLE_EMPTY_H
 
-#include "CFlat/Language/Keywords.h"
+#include "CFlat/Collections/IEnumerable.h"
 
-/* Forward declarations */
-struct IEnumerable;
+namespace CFlat {
+    template <typename T>
+    class IEnumerator;
 
-/* Functions */
-/// <summary>
-/// Allocates and initializes a new <see cref="IEnumerable"/> exposing an enumerator which supports iteration over an
-/// empty collection.
-///
-/// The lifetime of the <see cref="IEnumerable"/> should be managed with retain() and release().
-/// </summary>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal struct IEnumerable *Empty_New(void);
+    template <typename T>
+    class Enumerable::EmptyEnumerable : public IEnumerable<T> {
+    private:
+        class Enumerator;
+
+    public:
+        EmptyEnumerable();
+
+        unique_ptr<IEnumerator<T>> GetEnumerator() const;
+    };
+}
 
 #endif

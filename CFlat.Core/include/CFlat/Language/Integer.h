@@ -25,2061 +25,1030 @@
 #include <stddef.h>
 #include <limits.h>
 
-/* Forward declarations */
-struct String;
+namespace CFlat {
+    /* Forward declarations */
+    class StringBuilder;
 
-/* Standard integer types */
-//! @name Standard integer types
-//! @{
+    /* Standard integer types */
+    //! @name Standard integer types
+    //! @{
 
-/// <summary>
-/// Represents the smallest signed integer with a width of at least 8 bits.
-/// </summary>
-typedef signed char sbyte;
-
-/// <summary>
-/// Represents the smallest unsigned integer with a width of at least 8 bits.
-/// </summary>
-typedef unsigned char byte;
-
-/// <summary>
-/// Represents the fastest unsigned integer with a width of at least 16 bits.
-/// </summary>
-typedef unsigned short ushort;
-
-/// <summary>
-/// Represents an unsigned integer with a width of at least 16 bits.
-/// </summary>
-typedef unsigned int uint;
-
-/// <summary>
-/// Represents an unsigned integer with a width of at least 32 bits.
-/// </summary>
-typedef unsigned long ulong;
-
-/// <summary>
-/// Represents the smallest possible value of <see cref="sbyte"/>.
-/// </summary>
-#define sbyte_MinValue ((sbyte)SCHAR_MIN)
-
-/// <summary>
-/// Represents the largest possible value of <see cref="sbyte"/>.
-/// </summary>
-#define sbyte_MaxValue ((sbyte)SCHAR_MAX)
-
-/// <summary>
-/// Represents the smallest possible value of <see cref="byte"/>.
-/// </summary>
-/// <remarks>The value of this constant is 0.</remarks>
-#define byte_MinValue ((byte)0)
-
-/// <summary>
-/// Represents the largest possible value of <see cref="byte"/>.
-/// </summary>
-#define byte_MaxValue ((byte)UCHAR_MAX)
-
-/// <summary>
-/// Represents the smallest possible value of <see cref="short"/>.
-/// </summary>
-#define short_MinValue ((short)SHRT_MIN)
-
-/// <summary>
-/// Represents the largest possible value of <see cref="short"/>.
-/// </summary>
-#define short_MaxValue ((short)SHRT_MAX)
-
-/// <summary>
-/// Represents the smallest possible value of <see cref="ushort"/>.
-/// </summary>
-/// <remarks>The value of this constant is 0.</remarks>
-#define ushort_MinValue ((ushort)0)
-
-/// <summary>
-/// Represents the largest possible value of <see cref="ushort"/>.
-/// </summary>
-#define ushort_MaxValue ((ushort)USHRT_MAX)
-
-/// <summary>
-/// Represents the smallest possible value of <see cref="int"/>.
-/// </summary>
-#define int_MinValue ((int)INT_MIN)
-
-/// <summary>
-/// Represents the largest possible value of <see cref="int"/>.
-/// </summary>
-#define int_MaxValue ((int)INT_MAX)
-
-/// <summary>
-/// Represents the smallest possible value of <see cref="uint"/>.
-/// </summary>
-/// <remarks>The value of this constant is 0.</remarks>
-#define uint_MinValue ((uint)0)
-
-/// <summary>
-/// Represents the largest possible value of <see cref="uint"/>.
-/// </summary>
-#define uint_MaxValue ((uint)UINT_MAX)
-
-/// <summary>
-/// Represents the smallest possible value of <see cref="long"/>.
-/// </summary>
-#define long_MinValue ((long)LONG_MIN)
-
-/// <summary>
-/// Represents the largest possible value of <see cref="long"/>.
-/// </summary>
-#define long_MaxValue ((long)LONG_MAX)
-
-/// <summary>
-/// Represents the smallest possible value of <see cref="ulong"/>.
-/// </summary>
-/// <remarks>The value of this constant is 0.</remarks>
-#define ulong_MinValue ((ulong)0)
-
-/// <summary>
-/// Represents the largest possible value of <see cref="ulong"/>.
-/// </summary>
-#define ulong_MaxValue ((ulong)ULONG_MAX)
-
-/* Max-width integer types */
-//! @}
-//! @name Max-width integer types
-//! @{
-
-#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L || _MSC_VER >= 1700
-    #include <stdint.h>
-
-    #define CFLAT_INTMAX        intmax_t
-    #define CFLAT_UINTMAX       uintmax_t
-
-    #define CFLAT_INTMAX_MIN    INTMAX_MIN
-    #define CFLAT_INTMAX_MAX    INTMAX_MAX
-    #define CFLAT_UINTMAX_MAX   UINTMAX_MAX
-#else
-    #define CFLAT_INTMAX        long
-    #define CFLAT_UINTMAX       unsigned long
-
-    #define CFLAT_INTMAX_MIN    LONG_MIN
-    #define CFLAT_INTMAX_MAX    LONG_MAX
-    #define CFLAT_UINTMAX_MAX   ULONG_MAX
-#endif
-
-/// <summary>
-/// Represents a signed integer with the largest possible width.
-/// </summary>
-typedef CFLAT_INTMAX intmax;
-
-/// <summary>
-/// Represents an unsigned integer with the largest possible width.
-/// </summary>
-typedef CFLAT_UINTMAX uintmax;
-
-/// <summary>
-/// Represents the smallest possible value of <see cref="intmax"/>.
-/// </summary>
-#define intmax_MinValue CFLAT_INTMAX_MIN
-
-/// <summary>
-/// Represents the largest possible value of <see cref="intmax"/>.
-/// </summary>
-#define intmax_MaxValue CFLAT_INTMAX_MAX
-
-/// <summary>
-/// Represents the smallest possible value of <see cref="uintmax"/>.
-/// </summary>
-/// <remarks>The value of this constant is 0.</remarks>
-#define uintmax_MinValue 0
-
-/// <summary>
-/// Represents the largest possible value of <see cref="uintmax"/>.
-/// </summary>
-#define uintmax_MaxValue CFLAT_UINTMAX_MAX
-
-/* Exact-width integer types */
-//! @}
-//! @name Exact-width integer types
-//! @{
-
-#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L || _MSC_VER >= 1700
-    #include <stdint.h>
-
-    #ifdef INT8_MAX
-        #define CFLAT_INT8      int8_t
-        #define CFLAT_UINT8     uint8_t
-    #endif
-
-    #ifdef INT16_MAX
-        #define CFLAT_INT16     int16_t
-        #define CFLAT_UINT16    uint16_t
-    #endif
-
-    #ifdef INT32_MAX
-        #define CFLAT_INT32     int32_t
-        #define CFLAT_UINT32    uint32_t
-    #endif
-
-    #ifdef INT64_MAX
-        #define CFLAT_INT64     int64_t
-        #define CFLAT_UINT64    uint64_t
-    #endif
-#else
-    #if SCHAR_MAX == 0x7F && UCHAR_MAX == 0xFF
-        #define CFLAT_INT8      signed char
-        #define CFLAT_UINT8     unsigned char
-    #elif SCHAR_MAX == 0x7FFF && UCHAR_MAX == 0xFFFF
-        #define CFLAT_INT16     signed char
-        #define CFLAT_UINT16    unsigned char
-    #elif SCHAR_MAX == 0x7FFFFFFF && UCHAR_MAX == 0xFFFFFFFF
-        #define CFLAT_INT32     signed char
-        #define CFLAT_UINT32    unsigned char
-    #elif SCHAR_MAX == 0x7FFFFFFFFFFFFFFF && UCHAR_MAX == 0xFFFFFFFFFFFFFFFF
-        #define CFLAT_INT64     signed char
-        #define CFLAT_UINT64    unsigned char
-    #endif
-
-    #if !defined(CFLAT_INT16) && SHRT_MAX == 0x7FFF && USHRT_MAX == 0xFFFF
-        #define CFLAT_INT16     short
-        #define CFLAT_UINT16    unsigned short
-    #elif !defined(CFLAT_INT32) && SHRT_MAX == 0x7FFFFFFF && USHRT_MAX == 0xFFFFFFFF
-        #define CFLAT_INT32     short
-        #define CFLAT_UINT32    unsigned short
-    #elif !defined(CFLAT_INT64) && SHRT_MAX == 0x7FFFFFFFFFFFFFFF && USHRT_MAX == 0xFFFFFFFFFFFFFFFF
-        #define CFLAT_INT64     short
-        #define CFLAT_UINT64    unsigned short
-    #endif
-
-    #if !defined(CFLAT_INT16) && INT_MAX == 0x7FFF && UINT_MAX == 0xFFFF
-        #define CFLAT_INT16     int
-        #define CFLAT_UINT16    unsigned int
-    #elif !defined(CFLAT_INT32) && INT_MAX == 0x7FFFFFFF && UINT_MAX == 0xFFFFFFFF
-        #define CFLAT_INT32     int
-        #define CFLAT_UINT32    unsigned int
-    #elif !defined(CFLAT_INT64) && INT_MAX == 0x7FFFFFFFFFFFFFFF && UINT_MAX == 0xFFFFFFFFFFFFFFFF
-        #define CFLAT_INT64     int
-        #define CFLAT_UINT64    unsigned int
-    #endif
-
-    #if !defined(CFLAT_INT32) && LONG_MAX == 0x7FFFFFFF && ULONG_MAX == 0xFFFFFFFF
-        #define CFLAT_INT32     long
-        #define CFLAT_UINT32    unsigned long
-    #elif !defined(CFLAT_INT64) && LONG_MAX == 0x7FFFFFFFFFFFFFFF && ULONG_MAX == 0xFFFFFFFFFFFFFFFF
-        #define CFLAT_INT64     long
-        #define CFLAT_UINT64    unsigned long
-    #elif !defined(CFLAT_INT64) && defined(_MSC_VER) && defined(_INTEGRAL_MAX_BITS) && _INTEGRAL_MAX_BITS >= 64
-        #define CFLAT_INT64     __int64
-        #define CFLAT_UINT64    unsigned __int64
-    #endif
-#endif
-
-#ifdef CFLAT_INT8
     /// <summary>
-    /// Represents a signed integer with a width of exactly 8 bits.
+    /// Represents the smallest signed integer with a width of at least 8 bits.
     /// </summary>
-    typedef CFLAT_INT8 int8;
+    typedef signed char sbyte;
 
     /// <summary>
-    /// Represents an unsigned integer with a width of exactly 8 bits.
+    /// Represents the smallest unsigned integer with a width of at least 8 bits.
     /// </summary>
-    typedef CFLAT_UINT8 uint8;
-#endif
+    typedef unsigned char byte;
 
-#ifdef CFLAT_INT16
     /// <summary>
-    /// Represents a signed integer with a width of exactly 16 bits.
+    /// Represents the fastest unsigned integer with a width of at least 16 bits.
     /// </summary>
-    typedef CFLAT_INT16 int16;
+    typedef unsigned short ushort;
 
     /// <summary>
-    /// Represents an unsigned integer with a width of exactly 16 bits.
+    /// Represents an unsigned integer with a width of at least 16 bits.
     /// </summary>
-    typedef CFLAT_UINT16 uint16;
-#endif
+    typedef unsigned int uint;
 
-#ifdef CFLAT_INT32
     /// <summary>
-    /// Represents a signed integer with a width of exactly 32 bits.
+    /// Represents an unsigned integer with a width of at least 32 bits.
     /// </summary>
-    typedef CFLAT_INT32 int32;
+    typedef unsigned long ulong;
 
     /// <summary>
-    /// Represents an unsigned integer with a width of exactly 32 bits.
+    /// Represents the smallest possible value of <see cref="sbyte"/>.
     /// </summary>
-    typedef CFLAT_UINT32 uint32;
-#endif
+    #define SBYTE_MINVALUE static_cast<sbyte>(SCHAR_MIN)
 
-#ifdef CFLAT_INT64
     /// <summary>
-    /// Represents a signed integer with a width of exactly 64 bits.
+    /// Represents the largest possible value of <see cref="sbyte"/>.
     /// </summary>
-    typedef CFLAT_INT64 int64;
+    #define SBYTE_MAXVALUE static_cast<sbyte>(SCHAR_MAX)
 
     /// <summary>
-    /// Represents an unsigned integer with a width of exactly 64 bits.
-    /// </summary>
-    typedef CFLAT_UINT64 uint64;
-#endif
-
-#ifdef CFLAT_INT8
-    /// <summary>
-    /// Represents the smallest possible value of <see cref="int8"/>.
-    /// </summary>
-    /// <remarks>The value of this constant is -128 (hexadecimal 0x80).</remarks>
-    #define int8_MinValue ((int8)0x80)
-
-    /// <summary>
-    /// Represents the largest possible value of <see cref="int8"/>.
-    /// </summary>
-    /// <remarks>The value of this constant is 127 (hexadecimal 0x7F).</remarks>
-    #define int8_MaxValue ((int8)0x7F)
-
-    /// <summary>
-    /// Represents the smallest possible value of <see cref="uint8"/>.
+    /// Represents the smallest possible value of <see cref="byte"/>.
     /// </summary>
     /// <remarks>The value of this constant is 0.</remarks>
-    #define uint8_MinValue ((int8)0)
+    #define BYTE_MINVALUE static_cast<byte>(0)
 
     /// <summary>
-    /// Represents the largest possible value of <see cref="uint8"/>.
+    /// Represents the largest possible value of <see cref="byte"/>.
     /// </summary>
-    /// <remarks>The value of this constant is 255 (hexadecimal 0xFF).</remarks>
-    #define uint8_MaxValue ((int8)0xFF)
-#endif
+    #define BYTE_MAXVALUE static_cast<byte>(UCHAR_MAX)
 
-#ifdef CFLAT_INT16
     /// <summary>
-    /// Represents the smallest possible value of <see cref="int16"/>.
+    /// Represents the smallest possible value of <see cref="short"/>.
     /// </summary>
-    /// <remarks>The value of this constant is -32768 (hexadecimal 0x8000).</remarks>
-    #define int16_MinValue ((int16)0x8000)
+    #define SHORT_MINVALUE static_cast<short>(SHRT_MIN)
 
     /// <summary>
-    /// Represents the largest possible value of <see cref="int16"/>.
+    /// Represents the largest possible value of <see cref="short"/>.
     /// </summary>
-    /// <remarks>The value of this constant is 32767 (hexadecimal 0x7FFF).</remarks>
-    #define int16_MaxValue ((int16)0x7FFF)
+    #define SHORT_MAXVALUE static_cast<short>(SHRT_MAX)
 
     /// <summary>
-    /// Represents the smallest possible value of <see cref="uint16"/>.
+    /// Represents the smallest possible value of <see cref="ushort"/>.
     /// </summary>
     /// <remarks>The value of this constant is 0.</remarks>
-    #define uint16_MinValue ((uint16)0)
+    #define USHORT_MINVALUE static_cast<ushort>(0)
 
     /// <summary>
-    /// Represents the largest possible value of <see cref="uint16"/>.
+    /// Represents the largest possible value of <see cref="ushort"/>.
     /// </summary>
-    /// <remarks>The value of this constant is 65535 (hexadecimal 0xFFFF).</remarks>
-    #define uint16_MaxValue ((uint16)0xFFFF)
-#endif
+    #define USHORT_MAXVALUE static_cast<ushort>(USHRT_MAX)
 
-#ifdef CFLAT_INT32
     /// <summary>
-    /// Represents the smallest possible value of <see cref="int32"/>.
+    /// Represents the smallest possible value of <see cref="int"/>.
     /// </summary>
-    /// <remarks>The value of this constant is -2147483648 (hexadecimal 0x80000000).</remarks>
-    #define int32_MinValue ((int32)0x80000000)
+    #define INT_MINVALUE static_cast<int>(INT_MIN)
 
     /// <summary>
-    /// Represents the largest possible value of <see cref="int32"/>.
+    /// Represents the largest possible value of <see cref="int"/>.
     /// </summary>
-    /// <remarks>The value of this constant is 2147483647 (hexadecimal 0x7FFFFFFF).</remarks>
-    #define int32_MaxValue ((int32)0x7FFFFFFF)
+    #define INT_MAXVALUE static_cast<int>(INT_MAX)
 
     /// <summary>
-    /// Represents the smallest possible value of <see cref="uint32"/>.
+    /// Represents the smallest possible value of <see cref="uint"/>.
     /// </summary>
     /// <remarks>The value of this constant is 0.</remarks>
-    #define uint32_MinValue ((uint32)0)
+    #define UINT_MINVALUE static_cast<uint>(0)
 
     /// <summary>
-    /// Represents the largest possible value of <see cref="uint32"/>.
+    /// Represents the largest possible value of <see cref="uint"/>.
     /// </summary>
-    /// <remarks>The value of this constant is 4294967295 (hexadecimal 0xFFFFFFFF).</remarks>
-    #define uint32_MaxValue ((uint32)0xFFFFFFFF)
-#endif
+    #define UINT_MAXVALUE static_cast<uint>(UINT_MAX)
 
-#ifdef CFLAT_INT64
     /// <summary>
-    /// Represents the smallest possible value of <see cref="int64"/>.
+    /// Represents the smallest possible value of <see cref="long"/>.
     /// </summary>
-    /// <remarks>The value of this constant is -9223372036854775808 (hexadecimal 0x8000000000000000).</remarks>
-    #define int64_MinValue ((int64)0x8000000000000000)
+    #define LONG_MINVALUE static_cast<long>(LONG_MIN)
 
     /// <summary>
-    /// Represents the largest possible value of <see cref="int64"/>.
+    /// Represents the largest possible value of <see cref="long"/>.
     /// </summary>
-    /// <remarks>The value of this constant is 9223372036854775807 (hexadecimal 0x7FFFFFFFFFFFFFFF).</remarks>
-    #define int64_MaxValue ((int64)0x7FFFFFFFFFFFFFFF)
+    #define LONG_MAXVALUE static_cast<long>(LONG_MAX)
 
     /// <summary>
-    /// Represents the smallest possible value of <see cref="uint64"/>.
+    /// Represents the smallest possible value of <see cref="ulong"/>.
     /// </summary>
     /// <remarks>The value of this constant is 0.</remarks>
-    #define uint64_MinValue ((uint64)0)
+    #define ULONG_MINVALUE static_cast<ulong>(0)
 
     /// <summary>
-    /// Represents the largest possible value of <see cref="uint64"/>.
+    /// Represents the largest possible value of <see cref="ulong"/>.
     /// </summary>
-    /// <remarks>The value of this constant is 18446744073709551613 (hexadecimal 0xFFFFFFFFFFFFFFFF).</remarks>
-    #define uint64_MaxValue ((uint64)0xFFFFFFFFFFFFFFFF)
-#endif
+    #define ULONG_MAXVALUE static_cast<ulong>(ULONG_MAX)
 
-/* Least-width integer types */
-//! @}
-//! @name Least-width integer types
-//! @{
+    /* Max-width integer types */
+    //! @}
+    //! @name Max-width integer types
+    //! @{
 
-#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L || defined(_MSC_VER) && _MSC_VER >= 1700
-    #include <stdint.h>
+    #if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L || defined(_MSC_VER) && _MSC_VER >= 1700
+        #include <stdint.h>
 
-    #define CFLAT_INT8_LEAST        int_least8_t
-    #define CFLAT_UINT8_LEAST       uint_least8_t
-    #define CFLAT_INT16_LEAST       int_least16_t
-    #define CFLAT_UINT16_LEAST      uint_least16_t
-    #define CFLAT_INT32_LEAST       int_least32_t
-    #define CFLAT_UINT32_LEAST      uint_least32_t
-    #define CFLAT_INT64_LEAST       int_least64_t
-    #define CFLAT_UINT64_LEAST      uint_least64_t
+        #define CFLAT_INTMAX        intmax_t
+        #define CFLAT_UINTMAX       uintmax_t
 
-    #define CFLAT_INT8_LEAST_MIN    INT_LEAST8_MIN
-    #define CFLAT_INT8_LEAST_MAX    INT_LEAST8_MAX
-    #define CFLAT_UINT8_LEAST_MAX   UINT_LEAST8_MAX
-    #define CFLAT_INT16_LEAST_MIN   INT_LEAST16_MIN
-    #define CFLAT_INT16_LEAST_MAX   INT_LEAST16_MAX
-    #define CFLAT_UINT16_LEAST_MAX  UINT_LEAST16_MAX
-    #define CFLAT_INT32_LEAST_MIN   INT_LEAST32_MIN
-    #define CFLAT_INT32_LEAST_MAX   INT_LEAST32_MAX
-    #define CFLAT_UINT32_LEAST_MAX  UINT_LEAST32_MAX
-    #define CFLAT_INT64_LEAST_MIN   INT_LEAST64_MIN
-    #define CFLAT_INT64_LEAST_MAX   INT_LEAST64_MAX
-    #define CFLAT_UINT64_LEAST_MAX  UINT_LEAST64_MAX
-#else
+        #define CFLAT_INTMAX_MIN    INTMAX_MIN
+        #define CFLAT_INTMAX_MAX    INTMAX_MAX
+        #define CFLAT_UINTMAX_MAX   UINTMAX_MAX
+    #else
+        #define CFLAT_INTMAX        long
+        #define CFLAT_UINTMAX       unsigned long
+
+        #define CFLAT_INTMAX_MIN    LONG_MIN
+        #define CFLAT_INTMAX_MAX    LONG_MAX
+        #define CFLAT_UINTMAX_MAX   ULONG_MAX
+    #endif
+
+    /// <summary>
+    /// Represents a signed integer with the largest possible width.
+    /// </summary>
+    typedef CFLAT_INTMAX intmax;
+
+    /// <summary>
+    /// Represents an unsigned integer with the largest possible width.
+    /// </summary>
+    typedef CFLAT_UINTMAX uintmax;
+
+    /// <summary>
+    /// Represents the smallest possible value of <see cref="intmax"/>.
+    /// </summary>
+    #define INTMAX_MINVALUE static_cast<intmax>(CFLAT_INTMAX_MIN)
+
+    /// <summary>
+    /// Represents the largest possible value of <see cref="intmax"/>.
+    /// </summary>
+    #define INTMAX_MAXVALUE static_cast<intmax>(CFLAT_INTMAX_MAX)
+
+    /// <summary>
+    /// Represents the smallest possible value of <see cref="uintmax"/>.
+    /// </summary>
+    /// <remarks>The value of this constant is 0.</remarks>
+    #define UINTMAX_MINVALUE static_cast<uintmax>(0)
+
+    /// <summary>
+    /// Represents the largest possible value of <see cref="uintmax"/>.
+    /// </summary>
+    #define UINTMAX_MAXVALUE static_cast<uintmax>(CFLAT_UINTMAX_MAX)
+
+    /* Exact-width integer types */
+    //! @}
+    //! @name Exact-width integer types
+    //! @{
+
+    #if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L || defined(_MSC_VER) && _MSC_VER >= 1700
+        #include <stdint.h>
+
+        #ifdef INT8_MAX
+            #define CFLAT_INT8      int8_t
+            #define CFLAT_UINT8     uint8_t
+        #endif
+
+        #ifdef INT16_MAX
+            #define CFLAT_INT16     int16_t
+            #define CFLAT_UINT16    uint16_t
+        #endif
+
+        #ifdef INT32_MAX
+            #define CFLAT_INT32     int32_t
+            #define CFLAT_UINT32    uint32_t
+        #endif
+
+        #ifdef INT64_MAX
+            #define CFLAT_INT64     int64_t
+            #define CFLAT_UINT64    uint64_t
+        #endif
+    #else
+        #if SCHAR_MAX == 0x7F && UCHAR_MAX == 0xFF
+            #define CFLAT_INT8      signed char
+            #define CFLAT_UINT8     unsigned char
+        #elif SCHAR_MAX == 0x7FFF && UCHAR_MAX == 0xFFFF
+            #define CFLAT_INT16     signed char
+            #define CFLAT_UINT16    unsigned char
+        #elif SCHAR_MAX == 0x7FFFFFFF && UCHAR_MAX == 0xFFFFFFFF
+            #define CFLAT_INT32     signed char
+            #define CFLAT_UINT32    unsigned char
+        #elif SCHAR_MAX == 0x7FFFFFFFFFFFFFFF && UCHAR_MAX == 0xFFFFFFFFFFFFFFFF
+            #define CFLAT_INT64     signed char
+            #define CFLAT_UINT64    unsigned char
+        #endif
+
+        #if !defined(CFLAT_INT16) && SHRT_MAX == 0x7FFF && USHRT_MAX == 0xFFFF
+            #define CFLAT_INT16     short
+            #define CFLAT_UINT16    unsigned short
+        #elif !defined(CFLAT_INT32) && SHRT_MAX == 0x7FFFFFFF && USHRT_MAX == 0xFFFFFFFF
+            #define CFLAT_INT32     short
+            #define CFLAT_UINT32    unsigned short
+        #elif !defined(CFLAT_INT64) && SHRT_MAX == 0x7FFFFFFFFFFFFFFF && USHRT_MAX == 0xFFFFFFFFFFFFFFFF
+            #define CFLAT_INT64     short
+            #define CFLAT_UINT64    unsigned short
+        #endif
+
+        #if !defined(CFLAT_INT16) && INT_MAX == 0x7FFF && UINT_MAX == 0xFFFF
+            #define CFLAT_INT16     int
+            #define CFLAT_UINT16    unsigned int
+        #elif !defined(CFLAT_INT32) && INT_MAX == 0x7FFFFFFF && UINT_MAX == 0xFFFFFFFF
+            #define CFLAT_INT32     int
+            #define CFLAT_UINT32    unsigned int
+        #elif !defined(CFLAT_INT64) && INT_MAX == 0x7FFFFFFFFFFFFFFF && UINT_MAX == 0xFFFFFFFFFFFFFFFF
+            #define CFLAT_INT64     int
+            #define CFLAT_UINT64    unsigned int
+        #endif
+
+        #if !defined(CFLAT_INT32) && LONG_MAX == 0x7FFFFFFF && ULONG_MAX == 0xFFFFFFFF
+            #define CFLAT_INT32     long
+            #define CFLAT_UINT32    unsigned long
+        #elif !defined(CFLAT_INT64) && LONG_MAX == 0x7FFFFFFFFFFFFFFF && ULONG_MAX == 0xFFFFFFFFFFFFFFFF
+            #define CFLAT_INT64     long
+            #define CFLAT_UINT64    unsigned long
+        #elif !defined(CFLAT_INT64) && defined(_MSC_VER) && defined(_INTEGRAL_MAX_BITS) && _INTEGRAL_MAX_BITS >= 64
+            #define CFLAT_INT64     __int64
+            #define CFLAT_UINT64    unsigned __int64
+        #endif
+    #endif
+
     #ifdef CFLAT_INT8
-        #define CFLAT_INT8_LEAST        CFLAT_INT8
-        #define CFLAT_INT8_LEAST_MIN    0x80
-        #define CFLAT_INT8_LEAST_MAX    0x7F
-    #else
-        #define CFLAT_INT8_LEAST        signed char
-        #define CFLAT_INT8_LEAST_MIN    SCHAR_MIN
-        #define CFLAT_INT8_LEAST_MAX    SCHAR_MAX
-    #endif
+        /// <summary>
+        /// Represents a signed integer with a width of exactly 8 bits.
+        /// </summary>
+        typedef CFLAT_INT8 int8;
 
-    #ifdef CFLAT_UINT8
-        #define CFLAT_UINT8_LEAST       CFLAT_UINT8
-        #define CFLAT_UINT8_LEAST_MAX   0xFF
-    #else
-        #define CFLAT_UINT8_LEAST       unsigned char
-        #define CFLAT_UINT8_LEAST_MAX   UCHAR_MAX
+        /// <summary>
+        /// Represents an unsigned integer with a width of exactly 8 bits.
+        /// </summary>
+        typedef CFLAT_UINT8 uint8;
     #endif
 
     #ifdef CFLAT_INT16
-        #define CFLAT_INT16_LEAST       CFLAT_INT16
-        #define CFLAT_INT16_LEAST_MIN   0x8000
-        #define CFLAT_INT16_LEAST_MAX   0x7FFF
-    #elif SCHAR_MAX >= 0x7FFF
-        #define CFLAT_INT16_LEAST       signed char
-        #define CFLAT_INT16_LEAST_MIN   SCHAR_MIN
-        #define CFLAT_INT16_LEAST_MAX   SCHAR_MAX
-    #else
-        #define CFLAT_INT16_LEAST       short
-        #define CFLAT_INT16_LEAST_MIN   SHRT_MIN
-        #define CFLAT_INT16_LEAST_MAX   SHRT_MAX
-    #endif
+        /// <summary>
+        /// Represents a signed integer with a width of exactly 16 bits.
+        /// </summary>
+        typedef CFLAT_INT16 int16;
 
-    #ifdef CFLAT_UINT16
-        #define CFLAT_UINT16_LEAST      CFLAT_UINT16
-        #define CFLAT_UINT16_LEAST_MAX  0xFFFF
-    #elif UCHAR_MAX >= 0xFFFF
-        #define CFLAT_UINT16_LEAST      unsigned char
-        #define CFLAT_UINT16_LEAST_MAX  UCHAR_MAX
-    #else
-        #define CFLAT_UINT16_LEAST      unsigned short
-        #define CFLAT_UINT16_LEAST_MAX  USHRT_MAX
+        /// <summary>
+        /// Represents an unsigned integer with a width of exactly 16 bits.
+        /// </summary>
+        typedef CFLAT_UINT16 uint16;
     #endif
 
     #ifdef CFLAT_INT32
-        #define CFLAT_INT32_LEAST       CFLAT_INT32
-        #define CFLAT_INT32_LEAST_MIN   0x80000000
-        #define CFLAT_INT32_LEAST_MAX   0x7FFFFFFF
-    #elif SCHAR_MAX >= 0x7FFFFFFF
-        #define CFLAT_INT32_LEAST       signed char
-        #define CFLAT_INT32_LEAST_MIN   SCHAR_MIN
-        #define CFLAT_INT32_LEAST_MAX   SCHAR_MAX
-    #elif SHRT_MAX >= 0x7FFFFFFF
-        #define CFLAT_INT32_LEAST       short
-        #define CFLAT_INT32_LEAST_MIN   SHRT_MIN
-        #define CFLAT_INT32_LEAST_MAX   SHRT_MAX
-    #elif INT_MAX >= 0x7FFFFFFF
-        #define CFLAT_INT32_LEAST       int
-        #define CFLAT_INT32_LEAST_MIN   INT_MIN
-        #define CFLAT_INT32_LEAST_MAX   INT_MAX
-    #else
-        #define CFLAT_INT32_LEAST       long
-        #define CFLAT_INT32_LEAST_MIN   LONG_MIN
-        #define CFLAT_INT32_LEAST_MAX   LONG_MAX
-    #endif
+        /// <summary>
+        /// Represents a signed integer with a width of exactly 32 bits.
+        /// </summary>
+        typedef CFLAT_INT32 int32;
 
-    #ifdef CFLAT_UINT32
-        #define CFLAT_UINT32_LEAST      CFLAT_UINT32
-        #define CFLAT_UINT32_LEAST_MAX  0xFFFFFFFF
-    #elif UCHAR_MAX >= 0xFFFFFFFF
-        #define CFLAT_UINT32_LEAST      unsigned char
-        #define CFLAT_UINT32_LEAST_MAX  UCHAR_MAX
-    #elif USHRT_MAX >= 0xFFFFFFFF
-        #define CFLAT_UINT32_LEAST      unsigned short
-        #define CFLAT_UINT32_LEAST_MAX  USHRT_MAX
-    #elif UINT_MAX >= 0xFFFFFFFF
-        #define CFLAT_UINT32_LEAST      unsigned int
-        #define CFLAT_UINT32_LEAST_MAX  UINT_MAX
-    #else
-        #define CFLAT_UINT32_LEAST      unsigned long
-        #define CFLAT_UINT32_LEAST_MAX  ULONG_MAX
+        /// <summary>
+        /// Represents an unsigned integer with a width of exactly 32 bits.
+        /// </summary>
+        typedef CFLAT_UINT32 uint32;
     #endif
 
     #ifdef CFLAT_INT64
-        #define CFLAT_INT64_LEAST       CFLAT_INT64
-        #define CFLAT_INT64_LEAST_MIN   0x8000000000000000
-        #define CFLAT_INT64_LEAST_MAX   0x7FFFFFFFFFFFFFFF
-    #elif SCHAR_MAX >= 0x7FFFFFFFFFFFFFFF
-        #define CFLAT_INT64_LEAST       signed char
-        #define CFLAT_INT64_LEAST_MIN   SCHAR_MIN
-        #define CFLAT_INT64_LEAST_MAX   SCHAR_MAX
-    #elif SHRT_MAX >= 0x7FFFFFFFFFFFFFFF
-        #define CFLAT_INT64_LEAST       short
-        #define CFLAT_INT64_LEAST_MIN   SHRT_MIN
-        #define CFLAT_INT64_LEAST_MAX   SHRT_MAX
-    #elif INT_MAX >= 0x7FFFFFFFFFFFFFFF
-        #define CFLAT_INT64_LEAST       int
-        #define CFLAT_INT64_LEAST_MIN   INT_MIN
-        #define CFLAT_INT64_LEAST_MAX   INT_MAX
-    #else LONG_MAX >= 0x7FFFFFFFFFFFFFFF
-        #define CFLAT_INT64_LEAST       long
-        #define CFLAT_INT64_LEAST_MIN   LONG_MIN
-        #define CFLAT_INT64_LEAST_MAX   LONG_MAX
+        /// <summary>
+        /// Represents a signed integer with a width of exactly 64 bits.
+        /// </summary>
+        typedef CFLAT_INT64 int64;
+
+        /// <summary>
+        /// Represents an unsigned integer with a width of exactly 64 bits.
+        /// </summary>
+        typedef CFLAT_UINT64 uint64;
     #endif
 
-    #ifdef CFLAT_UINT64
-        #define CFLAT_UINT64_LEAST      CFLAT_UINT64
-        #define CFLAT_UINT64_LEAST_MAX  0xFFFFFFFFFFFFFFFF
-    #elif UCHAR_MAX >= 0xFFFFFFFFFFFFFFFF
-        #define CFLAT_UINT64_LEAST      unsigned char
-        #define CFLAT_UINT64_LEAST_MAX  UCHAR_MAX
-    #elif USHRT_MAX >= 0xFFFFFFFFFFFFFFFF
-        #define CFLAT_UINT64_LEAST      unsigned short
-        #define CFLAT_UINT64_LEAST_MAX  USHRT_MAX
-    #elif UINT_MAX >= 0xFFFFFFFFFFFFFFFF
-        #define CFLAT_UINT64_LEAST      unsigned int
-        #define CFLAT_UINT64_LEAST_MAX  UINT_MAX
-    #else ULONG_MAX >= 0xFFFFFFFFFFFFFFFF
-        #define CFLAT_UINT64_LEAST      unsigned long
-        #define CFLAT_UINT64_LEAST_MAX  ULONG_MAX
+    #ifdef CFLAT_INT8
+        /// <summary>
+        /// Represents the smallest possible value of <see cref="int8"/>.
+        /// </summary>
+        /// <remarks>The value of this constant is -128 (hexadecimal 0x80).</remarks>
+        #define int8_MinValue static_cast<int8>(0x80)
+
+        /// <summary>
+        /// Represents the largest possible value of <see cref="int8"/>.
+        /// </summary>
+        /// <remarks>The value of this constant is 127 (hexadecimal 0x7F).</remarks>
+        #define int8_MaxValue static_cast<int8>(0x7F)
+
+        /// <summary>
+        /// Represents the smallest possible value of <see cref="uint8"/>.
+        /// </summary>
+        /// <remarks>The value of this constant is 0.</remarks>
+        #define uint8_MinValue static_cast<int8>(0)
+
+        /// <summary>
+        /// Represents the largest possible value of <see cref="uint8"/>.
+        /// </summary>
+        /// <remarks>The value of this constant is 255 (hexadecimal 0xFF).</remarks>
+        #define uint8_MaxValue static_cast<int8>(0xFF)
     #endif
-#endif
 
-/// <summary>
-/// Represents the smallest signed integer with a width of at least 8 bits.
-/// </summary>
-typedef CFLAT_INT8_LEAST int8_least;
+    #ifdef CFLAT_INT16
+        /// <summary>
+        /// Represents the smallest possible value of <see cref="int16"/>.
+        /// </summary>
+        /// <remarks>The value of this constant is -32768 (hexadecimal 0x8000).</remarks>
+        #define int16_MinValue static_cast<int16>(0x8000)
 
-/// <summary>
-/// Represents the smallest unsigned integer with a width of at least 8 bits.
-/// </summary>
-typedef CFLAT_UINT8_LEAST uint8_least;
+        /// <summary>
+        /// Represents the largest possible value of <see cref="int16"/>.
+        /// </summary>
+        /// <remarks>The value of this constant is 32767 (hexadecimal 0x7FFF).</remarks>
+        #define int16_MaxValue static_cast<int16>(0x7FFF)
 
-/// <summary>
-/// Represents the smallest signed integer with a width of at least 16 bits.
-/// </summary>
-typedef CFLAT_INT16_LEAST int16_least;
+        /// <summary>
+        /// Represents the smallest possible value of <see cref="uint16"/>.
+        /// </summary>
+        /// <remarks>The value of this constant is 0.</remarks>
+        #define uint16_MinValue static_cast<uint16>(0)
 
-/// <summary>
-/// Represents the smallest unsigned integer with a width of at least 16 bits.
-/// </summary>
-typedef CFLAT_UINT16_LEAST uint16_least;
+        /// <summary>
+        /// Represents the largest possible value of <see cref="uint16"/>.
+        /// </summary>
+        /// <remarks>The value of this constant is 65535 (hexadecimal 0xFFFF).</remarks>
+        #define uint16_MaxValue static_cast<uint16>(0xFFFF)
+    #endif
 
-/// <summary>
-/// Represents the smallest signed integer with a width of at least 32 bits.
-/// </summary>
-typedef CFLAT_INT32_LEAST int32_least;
+    #ifdef CFLAT_INT32
+        /// <summary>
+        /// Represents the smallest possible value of <see cref="int32"/>.
+        /// </summary>
+        /// <remarks>The value of this constant is -2147483648 (hexadecimal 0x80000000).</remarks>
+        #define int32_MinValue static_cast<int32>(0x80000000)
 
-/// <summary>
-/// Represents the smallest unsigned integer with a width of at least 32 bits.
-/// </summary>
-typedef CFLAT_UINT32_LEAST uint32_least;
+        /// <summary>
+        /// Represents the largest possible value of <see cref="int32"/>.
+        /// </summary>
+        /// <remarks>The value of this constant is 2147483647 (hexadecimal 0x7FFFFFFF).</remarks>
+        #define int32_MaxValue static_cast<int32>(0x7FFFFFFF)
 
-#ifdef CFLAT_INT64_LEAST
-    /// <summary>
-    /// Represents the smallest signed integer with a width of at least 64 bits.
-    /// </summary>
-    typedef CFLAT_INT64_LEAST int64_least;
-#endif
+        /// <summary>
+        /// Represents the smallest possible value of <see cref="uint32"/>.
+        /// </summary>
+        /// <remarks>The value of this constant is 0.</remarks>
+        #define uint32_MinValue static_cast<uint32>(0)
 
-#ifdef CFLAT_UINT64_LEAST
-    /// <summary>
-    /// Represents the smallest unsigned integer with a width of at least 64 bits.
-    /// </summary>
-    typedef CFLAT_UINT64_LEAST uint64_least;
-#endif
+        /// <summary>
+        /// Represents the largest possible value of <see cref="uint32"/>.
+        /// </summary>
+        /// <remarks>The value of this constant is 4294967295 (hexadecimal 0xFFFFFFFF).</remarks>
+        #define uint32_MaxValue static_cast<uint32>(0xFFFFFFFF)
+    #endif
 
-/// <summary>
-/// Represents the smallest possible value of <see cref="int8_least"/>.
-/// </summary>
-#define int8_least_MinValue ((int8_least)CFLAT_INT8_LEAST_MIN)
+    #ifdef CFLAT_INT64
+        /// <summary>
+        /// Represents the smallest possible value of <see cref="int64"/>.
+        /// </summary>
+        /// <remarks>The value of this constant is -9223372036854775808 (hexadecimal 0x8000000000000000).</remarks>
+        #define int64_MinValue static_cast<int64>(0x8000000000000000)
 
-/// <summary>
-/// Represents the largest possible value of <see cref="int8_least"/>.
-/// </summary>
-#define int8_least_MaxValue ((int8_least)CFLAT_INT8_LEAST_MAX)
+        /// <summary>
+        /// Represents the largest possible value of <see cref="int64"/>.
+        /// </summary>
+        /// <remarks>The value of this constant is 9223372036854775807 (hexadecimal 0x7FFFFFFFFFFFFFFF).</remarks>
+        #define int64_MaxValue static_cast<int64>(0x7FFFFFFFFFFFFFFF)
 
-/// <summary>
-/// Represents the smallest possible value of <see cref="uint8_least"/>.
-/// </summary>
-/// <remarks>The value of this constant is 0.</remarks>
-#define uint8_least_MinValue ((uint8_least)0)
+        /// <summary>
+        /// Represents the smallest possible value of <see cref="uint64"/>.
+        /// </summary>
+        /// <remarks>The value of this constant is 0.</remarks>
+        #define uint64_MinValue static_cast<uint64>(0)
 
-/// <summary>
-/// Represents the largest possible value of <see cref="uint8_least"/>.
-/// </summary>
-#define uint8_least_MaxValue ((uint8_least)CFLAT_UINT8_LEAST_MAX)
+        /// <summary>
+        /// Represents the largest possible value of <see cref="uint64"/>.
+        /// </summary>
+        /// <remarks>The value of this constant is 18446744073709551613 (hexadecimal 0xFFFFFFFFFFFFFFFF).</remarks>
+        #define uint64_MaxValue static_cast<uint64>(0xFFFFFFFFFFFFFFFF)
+    #endif
 
-/// <summary>
-/// Represents the smallest possible value of <see cref="int16_least"/>.
-/// </summary>
-#define int16_least_MinValue ((int16_least)CFLAT_INT16_LEAST_MIN)
+    /* Least-width integer types */
+    //! @}
+    //! @name Least-width integer types
+    //! @{
 
-/// <summary>
-/// Represents the largest possible value of <see cref="int16_least"/>.
-/// </summary>
-#define int16_least_MaxValue ((int16_least)CFLAT_INT16_LEAST_MAX)
+    #if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L || defined(_MSC_VER) && _MSC_VER >= 1700
+        #include <stdint.h>
 
-/// <summary>
-/// Represents the smallest possible value of <see cref="uint16_least"/>.
-/// </summary>
-/// <remarks>The value of this constant is 0.</remarks>
-#define uint16_least_MinValue ((uint16_least)0)
+        #define CFLAT_INT8_LEAST        int_least8_t
+        #define CFLAT_UINT8_LEAST       uint_least8_t
+        #define CFLAT_INT16_LEAST       int_least16_t
+        #define CFLAT_UINT16_LEAST      uint_least16_t
+        #define CFLAT_INT32_LEAST       int_least32_t
+        #define CFLAT_UINT32_LEAST      uint_least32_t
+        #define CFLAT_INT64_LEAST       int_least64_t
+        #define CFLAT_UINT64_LEAST      uint_least64_t
 
-/// <summary>
-/// Represents the largest possible value of <see cref="uint16_least"/>.
-/// </summary>
-#define uint16_least_MaxValue ((uint16_least)CFLAT_UINT16_LEAST_MAX)
-
-/// <summary>
-/// Represents the smallest possible value of <see cref="int32_least"/>.
-/// </summary>
-#define int32_least_MinValue ((int32_least)CFLAT_INT32_LEAST_MIN)
-
-/// <summary>
-/// Represents the largest possible value of <see cref="int32_least"/>.
-/// </summary>
-#define int32_least_MaxValue ((int32_least)CFLAT_INT32_LEAST_MAX)
-
-/// <summary>
-/// Represents the smallest possible value of <see cref="uint32_least"/>.
-/// </summary>
-/// <remarks>The value of this constant is 0.</remarks>
-#define uint32_least_MinValue ((uint32_least)0)
-
-/// <summary>
-/// Represents the largest possible value of <see cref="uint32_least"/>.
-/// </summary>
-#define uint32_least_MaxValue ((uint32_least)CFLAT_UINT32_LEAST_MAX)
-
-#ifdef CFLAT_INT64_LEAST
-    /// <summary>
-    /// Represents the smallest possible value of <see cref="int64_least"/>.
-    /// </summary>
-    #define int64_least_MinValue ((int64_least)CFLAT_INT64_LEAST_MIN)
-
-    /// <summary>
-    /// Represents the largest possible value of <see cref="int64_least"/>.
-    /// </summary>
-    #define int64_least_MaxValue ((int64_least)CFLAT_INT64_LEAST_MAX)
-#endif
-
-#ifdef CFLAT_UINT64_LEAST
-    /// <summary>
-    /// Represents the smallest possible value of <see cref="uint64_least"/>.
-    /// </summary>
-    /// <remarks>The value of this constant is 0.</remarks>
-    #define uint64_least_MinValue ((uint64_least)0)
-
-    /// <summary>
-    /// Represents the largest possible value of <see cref="uint64_least"/>.
-    /// </summary>
-    #define uint64_least_MaxValue ((uint64_least)CFLAT_UINT64_LEAST_MAX)
-#endif
-
-/* Fast integer types */
-//! @}
-//! @name Fast integer types
-//! @{
-
-#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L || defined(_MSC_VER) && _MSC_VER >= 1700
-    #include <stdint.h>
-
-    #define CFLAT_INT8_FAST        int_fast8_t
-    #define CFLAT_UINT8_FAST       uint_fast8_t
-    #define CFLAT_INT16_FAST       int_fast16_t
-    #define CFLAT_UINT16_FAST      uint_fast16_t
-    #define CFLAT_INT32_FAST       int_fast32_t
-    #define CFLAT_UINT32_FAST      uint_fast32_t
-    #define CFLAT_INT64_FAST       int_fast64_t
-    #define CFLAT_UINT64_FAST      uint_fast64_t
-
-    #define CFLAT_INT8_FAST_MIN    INT_FAST8_MIN
-    #define CFLAT_INT8_FAST_MAX    INT_FAST8_MAX
-    #define CFLAT_UINT8_FAST_MAX   UINT_FAST8_MAX
-    #define CFLAT_INT16_FAST_MIN   INT_FAST16_MIN
-    #define CFLAT_INT16_FAST_MAX   INT_FAST16_MAX
-    #define CFLAT_UINT16_FAST_MAX  UINT_FAST16_MAX
-    #define CFLAT_INT32_FAST_MIN   INT_FAST32_MIN
-    #define CFLAT_INT32_FAST_MAX   INT_FAST32_MAX
-    #define CFLAT_UINT32_FAST_MAX  UINT_FAST32_MAX
-    #define CFLAT_INT64_FAST_MIN   INT_FAST64_MIN
-    #define CFLAT_INT64_FAST_MAX   INT_FAST64_MAX
-    #define CFLAT_UINT64_FAST_MAX  UINT_FAST64_MAX
-#else
-    #define CFLAT_INT8_FAST         signed char
-    #define CFLAT_INT8_FAST_MIN     SCHAR_MIN
-    #define CFLAT_INT8_FAST_MAX     SCHAR_MAX
-
-    #define CFLAT_UINT8_FAST        unsigned char
-    #define CFLAT_UINT8_FAST_MAX    UCHAR_MAX
-
-    #define CFLAT_INT16_FAST        int
-    #define CFLAT_INT16_FAST_MIN    INT_MIN
-    #define CFLAT_INT16_FAST_MAX    INT_MAX
-
-    #define CFLAT_UINT16_FAST       unsigned int
-    #define CFLAT_UINT16_FAST_MAX   UINT_MAX
-
-    #if INT_MAX >= 0x7FFFFFFF
-        #define CFLAT_INT32_FAST        int
-        #define CFLAT_INT32_FAST_MIN    INT_MIN
-        #define CFLAT_INT32_FAST_MAX    INT_MAX
+        #define CFLAT_INT8_LEAST_MIN    INT_LEAST8_MIN
+        #define CFLAT_INT8_LEAST_MAX    INT_LEAST8_MAX
+        #define CFLAT_UINT8_LEAST_MAX   UINT_LEAST8_MAX
+        #define CFLAT_INT16_LEAST_MIN   INT_LEAST16_MIN
+        #define CFLAT_INT16_LEAST_MAX   INT_LEAST16_MAX
+        #define CFLAT_UINT16_LEAST_MAX  UINT_LEAST16_MAX
+        #define CFLAT_INT32_LEAST_MIN   INT_LEAST32_MIN
+        #define CFLAT_INT32_LEAST_MAX   INT_LEAST32_MAX
+        #define CFLAT_UINT32_LEAST_MAX  UINT_LEAST32_MAX
+        #define CFLAT_INT64_LEAST_MIN   INT_LEAST64_MIN
+        #define CFLAT_INT64_LEAST_MAX   INT_LEAST64_MAX
+        #define CFLAT_UINT64_LEAST_MAX  UINT_LEAST64_MAX
     #else
-        #define CFLAT_INT32_FAST        long
-        #define CFLAT_INT32_FAST_MIN    LONG_MIN
-        #define CFLAT_INT32_FAST_MAX    LONG_MAX
+        #ifdef CFLAT_INT8
+            #define CFLAT_INT8_LEAST        CFLAT_INT8
+            #define CFLAT_INT8_LEAST_MIN    0x80
+            #define CFLAT_INT8_LEAST_MAX    0x7F
+        #else
+            #define CFLAT_INT8_LEAST        signed char
+            #define CFLAT_INT8_LEAST_MIN    SCHAR_MIN
+            #define CFLAT_INT8_LEAST_MAX    SCHAR_MAX
+        #endif
+
+        #ifdef CFLAT_UINT8
+            #define CFLAT_UINT8_LEAST       CFLAT_UINT8
+            #define CFLAT_UINT8_LEAST_MAX   0xFF
+        #else
+            #define CFLAT_UINT8_LEAST       unsigned char
+            #define CFLAT_UINT8_LEAST_MAX   UCHAR_MAX
+        #endif
+
+        #ifdef CFLAT_INT16
+            #define CFLAT_INT16_LEAST       CFLAT_INT16
+            #define CFLAT_INT16_LEAST_MIN   0x8000
+            #define CFLAT_INT16_LEAST_MAX   0x7FFF
+        #elif SCHAR_MAX >= 0x7FFF
+            #define CFLAT_INT16_LEAST       signed char
+            #define CFLAT_INT16_LEAST_MIN   SCHAR_MIN
+            #define CFLAT_INT16_LEAST_MAX   SCHAR_MAX
+        #else
+            #define CFLAT_INT16_LEAST       short
+            #define CFLAT_INT16_LEAST_MIN   SHRT_MIN
+            #define CFLAT_INT16_LEAST_MAX   SHRT_MAX
+        #endif
+
+        #ifdef CFLAT_UINT16
+            #define CFLAT_UINT16_LEAST      CFLAT_UINT16
+            #define CFLAT_UINT16_LEAST_MAX  0xFFFF
+        #elif UCHAR_MAX >= 0xFFFF
+            #define CFLAT_UINT16_LEAST      unsigned char
+            #define CFLAT_UINT16_LEAST_MAX  UCHAR_MAX
+        #else
+            #define CFLAT_UINT16_LEAST      unsigned short
+            #define CFLAT_UINT16_LEAST_MAX  USHRT_MAX
+        #endif
+
+        #ifdef CFLAT_INT32
+            #define CFLAT_INT32_LEAST       CFLAT_INT32
+            #define CFLAT_INT32_LEAST_MIN   0x80000000
+            #define CFLAT_INT32_LEAST_MAX   0x7FFFFFFF
+        #elif SCHAR_MAX >= 0x7FFFFFFF
+            #define CFLAT_INT32_LEAST       signed char
+            #define CFLAT_INT32_LEAST_MIN   SCHAR_MIN
+            #define CFLAT_INT32_LEAST_MAX   SCHAR_MAX
+        #elif SHRT_MAX >= 0x7FFFFFFF
+            #define CFLAT_INT32_LEAST       short
+            #define CFLAT_INT32_LEAST_MIN   SHRT_MIN
+            #define CFLAT_INT32_LEAST_MAX   SHRT_MAX
+        #elif INT_MAX >= 0x7FFFFFFF
+            #define CFLAT_INT32_LEAST       int
+            #define CFLAT_INT32_LEAST_MIN   INT_MIN
+            #define CFLAT_INT32_LEAST_MAX   INT_MAX
+        #else
+            #define CFLAT_INT32_LEAST       long
+            #define CFLAT_INT32_LEAST_MIN   LONG_MIN
+            #define CFLAT_INT32_LEAST_MAX   LONG_MAX
+        #endif
+
+        #ifdef CFLAT_UINT32
+            #define CFLAT_UINT32_LEAST      CFLAT_UINT32
+            #define CFLAT_UINT32_LEAST_MAX  0xFFFFFFFF
+        #elif UCHAR_MAX >= 0xFFFFFFFF
+            #define CFLAT_UINT32_LEAST      unsigned char
+            #define CFLAT_UINT32_LEAST_MAX  UCHAR_MAX
+        #elif USHRT_MAX >= 0xFFFFFFFF
+            #define CFLAT_UINT32_LEAST      unsigned short
+            #define CFLAT_UINT32_LEAST_MAX  USHRT_MAX
+        #elif UINT_MAX >= 0xFFFFFFFF
+            #define CFLAT_UINT32_LEAST      unsigned int
+            #define CFLAT_UINT32_LEAST_MAX  UINT_MAX
+        #else
+            #define CFLAT_UINT32_LEAST      unsigned long
+            #define CFLAT_UINT32_LEAST_MAX  ULONG_MAX
+        #endif
+
+        #ifdef CFLAT_INT64
+            #define CFLAT_INT64_LEAST       CFLAT_INT64
+            #define CFLAT_INT64_LEAST_MIN   0x8000000000000000
+            #define CFLAT_INT64_LEAST_MAX   0x7FFFFFFFFFFFFFFF
+        #elif SCHAR_MAX >= 0x7FFFFFFFFFFFFFFF
+            #define CFLAT_INT64_LEAST       signed char
+            #define CFLAT_INT64_LEAST_MIN   SCHAR_MIN
+            #define CFLAT_INT64_LEAST_MAX   SCHAR_MAX
+        #elif SHRT_MAX >= 0x7FFFFFFFFFFFFFFF
+            #define CFLAT_INT64_LEAST       short
+            #define CFLAT_INT64_LEAST_MIN   SHRT_MIN
+            #define CFLAT_INT64_LEAST_MAX   SHRT_MAX
+        #elif INT_MAX >= 0x7FFFFFFFFFFFFFFF
+            #define CFLAT_INT64_LEAST       int
+            #define CFLAT_INT64_LEAST_MIN   INT_MIN
+            #define CFLAT_INT64_LEAST_MAX   INT_MAX
+        #elif LONG_MAX >= 0x7FFFFFFFFFFFFFFF
+            #define CFLAT_INT64_LEAST       long
+            #define CFLAT_INT64_LEAST_MIN   LONG_MIN
+            #define CFLAT_INT64_LEAST_MAX   LONG_MAX
+        #endif
+
+        #ifdef CFLAT_UINT64
+            #define CFLAT_UINT64_LEAST      CFLAT_UINT64
+            #define CFLAT_UINT64_LEAST_MAX  0xFFFFFFFFFFFFFFFF
+        #elif UCHAR_MAX >= 0xFFFFFFFFFFFFFFFF
+            #define CFLAT_UINT64_LEAST      unsigned char
+            #define CFLAT_UINT64_LEAST_MAX  UCHAR_MAX
+        #elif USHRT_MAX >= 0xFFFFFFFFFFFFFFFF
+            #define CFLAT_UINT64_LEAST      unsigned short
+            #define CFLAT_UINT64_LEAST_MAX  USHRT_MAX
+        #elif UINT_MAX >= 0xFFFFFFFFFFFFFFFF
+            #define CFLAT_UINT64_LEAST      unsigned int
+            #define CFLAT_UINT64_LEAST_MAX  UINT_MAX
+        #elif ULONG_MAX >= 0xFFFFFFFFFFFFFFFF
+            #define CFLAT_UINT64_LEAST      unsigned long
+            #define CFLAT_UINT64_LEAST_MAX  ULONG_MAX
+        #endif
     #endif
 
-    #if UINT_MAX >= 0xFFFFFFFF
-        #define CFLAT_UINT32_FAST       unsigned int
-        #define CFLAT_UINT32_FAST_MAX   UINT_MAX
+    /// <summary>
+    /// Represents the smallest signed integer with a width of at least 8 bits.
+    /// </summary>
+    typedef CFLAT_INT8_LEAST int8_least;
+
+    /// <summary>
+    /// Represents the smallest unsigned integer with a width of at least 8 bits.
+    /// </summary>
+    typedef CFLAT_UINT8_LEAST uint8_least;
+
+    /// <summary>
+    /// Represents the smallest signed integer with a width of at least 16 bits.
+    /// </summary>
+    typedef CFLAT_INT16_LEAST int16_least;
+
+    /// <summary>
+    /// Represents the smallest unsigned integer with a width of at least 16 bits.
+    /// </summary>
+    typedef CFLAT_UINT16_LEAST uint16_least;
+
+    /// <summary>
+    /// Represents the smallest signed integer with a width of at least 32 bits.
+    /// </summary>
+    typedef CFLAT_INT32_LEAST int32_least;
+
+    /// <summary>
+    /// Represents the smallest unsigned integer with a width of at least 32 bits.
+    /// </summary>
+    typedef CFLAT_UINT32_LEAST uint32_least;
+
+    #ifdef CFLAT_INT64_LEAST
+        /// <summary>
+        /// Represents the smallest signed integer with a width of at least 64 bits.
+        /// </summary>
+        typedef CFLAT_INT64_LEAST int64_least;
+    #endif
+
+    #ifdef CFLAT_UINT64_LEAST
+        /// <summary>
+        /// Represents the smallest unsigned integer with a width of at least 64 bits.
+        /// </summary>
+        typedef CFLAT_UINT64_LEAST uint64_least;
+    #endif
+
+    /// <summary>
+    /// Represents the smallest possible value of <see cref="int8_least"/>.
+    /// </summary>
+    #define int8_least_MinValue static_cast<int8_least>(CFLAT_INT8_LEAST_MIN)
+
+    /// <summary>
+    /// Represents the largest possible value of <see cref="int8_least"/>.
+    /// </summary>
+    #define int8_least_MaxValue static_cast<int8_least>(CFLAT_INT8_LEAST_MAX)
+
+    /// <summary>
+    /// Represents the smallest possible value of <see cref="uint8_least"/>.
+    /// </summary>
+    /// <remarks>The value of this constant is 0.</remarks>
+    #define uint8_least_MinValue static_cast<uint8_least>(0)
+
+    /// <summary>
+    /// Represents the largest possible value of <see cref="uint8_least"/>.
+    /// </summary>
+    #define uint8_least_MaxValue static_cast<uint8_least>(CFLAT_UINT8_LEAST_MAX)
+
+    /// <summary>
+    /// Represents the smallest possible value of <see cref="int16_least"/>.
+    /// </summary>
+    #define int16_least_MinValue static_cast<int16_least>(CFLAT_INT16_LEAST_MIN)
+
+    /// <summary>
+    /// Represents the largest possible value of <see cref="int16_least"/>.
+    /// </summary>
+    #define int16_least_MaxValue static_cast<int16_least>(CFLAT_INT16_LEAST_MAX)
+
+    /// <summary>
+    /// Represents the smallest possible value of <see cref="uint16_least"/>.
+    /// </summary>
+    /// <remarks>The value of this constant is 0.</remarks>
+    #define uint16_least_MinValue static_cast<uint16_least>(0)
+
+    /// <summary>
+    /// Represents the largest possible value of <see cref="uint16_least"/>.
+    /// </summary>
+    #define uint16_least_MaxValue static_cast<uint16_least>(CFLAT_UINT16_LEAST_MAX)
+
+    /// <summary>
+    /// Represents the smallest possible value of <see cref="int32_least"/>.
+    /// </summary>
+    #define int32_least_MinValue static_cast<int32_least>(CFLAT_INT32_LEAST_MIN)
+
+    /// <summary>
+    /// Represents the largest possible value of <see cref="int32_least"/>.
+    /// </summary>
+    #define int32_least_MaxValue static_cast<int32_least>(CFLAT_INT32_LEAST_MAX)
+
+    /// <summary>
+    /// Represents the smallest possible value of <see cref="uint32_least"/>.
+    /// </summary>
+    /// <remarks>The value of this constant is 0.</remarks>
+    #define uint32_least_MinValue static_cast<uint32_least>(0)
+
+    /// <summary>
+    /// Represents the largest possible value of <see cref="uint32_least"/>.
+    /// </summary>
+    #define uint32_least_MaxValue static_cast<uint32_least>(CFLAT_UINT32_LEAST_MAX)
+
+    #ifdef CFLAT_INT64_LEAST
+        /// <summary>
+        /// Represents the smallest possible value of <see cref="int64_least"/>.
+        /// </summary>
+        #define int64_least_MinValue static_cast<int64_least>(CFLAT_INT64_LEAST_MIN)
+
+        /// <summary>
+        /// Represents the largest possible value of <see cref="int64_least"/>.
+        /// </summary>
+        #define int64_least_MaxValue static_cast<int64_least>(CFLAT_INT64_LEAST_MAX)
+    #endif
+
+    #ifdef CFLAT_UINT64_LEAST
+        /// <summary>
+        /// Represents the smallest possible value of <see cref="uint64_least"/>.
+        /// </summary>
+        /// <remarks>The value of this constant is 0.</remarks>
+        #define uint64_least_MinValue static_cast<uint64_least>(0)
+
+        /// <summary>
+        /// Represents the largest possible value of <see cref="uint64_least"/>.
+        /// </summary>
+        #define uint64_least_MaxValue static_cast<uint64_least>(CFLAT_UINT64_LEAST_MAX)
+    #endif
+
+    /* Fast integer types */
+    //! @}
+    //! @name Fast integer types
+    //! @{
+
+    #if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L || defined(_MSC_VER) && _MSC_VER >= 1700
+        #include <stdint.h>
+
+        #define CFLAT_INT8_FAST        int_fast8_t
+        #define CFLAT_UINT8_FAST       uint_fast8_t
+        #define CFLAT_INT16_FAST       int_fast16_t
+        #define CFLAT_UINT16_FAST      uint_fast16_t
+        #define CFLAT_INT32_FAST       int_fast32_t
+        #define CFLAT_UINT32_FAST      uint_fast32_t
+        #define CFLAT_INT64_FAST       int_fast64_t
+        #define CFLAT_UINT64_FAST      uint_fast64_t
+
+        #define CFLAT_INT8_FAST_MIN    INT_FAST8_MIN
+        #define CFLAT_INT8_FAST_MAX    INT_FAST8_MAX
+        #define CFLAT_UINT8_FAST_MAX   UINT_FAST8_MAX
+        #define CFLAT_INT16_FAST_MIN   INT_FAST16_MIN
+        #define CFLAT_INT16_FAST_MAX   INT_FAST16_MAX
+        #define CFLAT_UINT16_FAST_MAX  UINT_FAST16_MAX
+        #define CFLAT_INT32_FAST_MIN   INT_FAST32_MIN
+        #define CFLAT_INT32_FAST_MAX   INT_FAST32_MAX
+        #define CFLAT_UINT32_FAST_MAX  UINT_FAST32_MAX
+        #define CFLAT_INT64_FAST_MIN   INT_FAST64_MIN
+        #define CFLAT_INT64_FAST_MAX   INT_FAST64_MAX
+        #define CFLAT_UINT64_FAST_MAX  UINT_FAST64_MAX
     #else
-        #define CFLAT_UINT32_FAST       unsigned long
-        #define CFLAT_UINT32_FAST_MAX   ULONG_MAX
+        #define CFLAT_INT8_FAST         signed char
+        #define CFLAT_INT8_FAST_MIN     SCHAR_MIN
+        #define CFLAT_INT8_FAST_MAX     SCHAR_MAX
+
+        #define CFLAT_UINT8_FAST        unsigned char
+        #define CFLAT_UINT8_FAST_MAX    UCHAR_MAX
+
+        #define CFLAT_INT16_FAST        int
+        #define CFLAT_INT16_FAST_MIN    INT_MIN
+        #define CFLAT_INT16_FAST_MAX    INT_MAX
+
+        #define CFLAT_UINT16_FAST       unsigned int
+        #define CFLAT_UINT16_FAST_MAX   UINT_MAX
+
+        #if INT_MAX >= 0x7FFFFFFF
+            #define CFLAT_INT32_FAST        int
+            #define CFLAT_INT32_FAST_MIN    INT_MIN
+            #define CFLAT_INT32_FAST_MAX    INT_MAX
+        #else
+            #define CFLAT_INT32_FAST        long
+            #define CFLAT_INT32_FAST_MIN    LONG_MIN
+            #define CFLAT_INT32_FAST_MAX    LONG_MAX
+        #endif
+
+        #if UINT_MAX >= 0xFFFFFFFF
+            #define CFLAT_UINT32_FAST       unsigned int
+            #define CFLAT_UINT32_FAST_MAX   UINT_MAX
+        #else
+            #define CFLAT_UINT32_FAST       unsigned long
+            #define CFLAT_UINT32_FAST_MAX   ULONG_MAX
+        #endif
+
+        #if INT_MAX >= 0x7FFFFFFFFFFFFFFF
+            #define CFLAT_INT64_FAST        int
+            #define CFLAT_INT64_FAST_MIN    INT_MIN
+            #define CFLAT_INT64_FAST_MAX    INT_MAX
+        #elif LONG_MAX >= 0x7FFFFFFFFFFFFFFF
+            #define CFLAT_INT64_FAST        long
+            #define CFLAT_INT64_FAST_MIN    LONG_MIN
+            #define CFLAT_INT64_FAST_MAX    LONG_MAX
+        #elif defined(_MSC_VER) && defined(_INTEGRAL_MAX_BITS) && _INTEGRAL_MAX_BITS >= 64
+            #define CFLAT_INT64_FAST        __int64
+            #define CFLAT_INT64_FAST_MIN    0x8000000000000000
+            #define CFLAT_INT64_FAST_MAX    0x7FFFFFFFFFFFFFFF
+        #endif
+
+        #if UINT_MAX >= 0xFFFFFFFFFFFFFFFF
+            #define CFLAT_UINT64_FAST       unsigned int
+            #define CFLAT_UINT64_FAST_MAX   UINT_MAX
+        #elif ULONG_MAX >= 0xFFFFFFFFFFFFFFFF
+            #define CFLAT_UINT64_FAST       unsigned long
+            #define CFLAT_UINT64_FAST_MAX   ULONG_MAX
+        #elif defined(_MSC_VER) && defined(_INTEGRAL_MAX_BITS) && _INTEGRAL_MAX_BITS >= 64
+            #define CFLAT_UINT64_FAST       unsigned __int64
+            #define CFLAT_UINT64_FAST_MAX   0xFFFFFFFFFFFFFFFF
+        #endif
     #endif
 
-    #if INT_MAX >= 0x7FFFFFFFFFFFFFFF
-        #define CFLAT_INT64_FAST        int
-        #define CFLAT_INT64_FAST_MIN    INT_MIN
-        #define CFLAT_INT64_FAST_MAX    INT_MAX
-    #elif LONG_MAX >= 0x7FFFFFFFFFFFFFFF
-        #define CFLAT_INT64_FAST        long
-        #define CFLAT_INT64_FAST_MIN    LONG_MIN
-        #define CFLAT_INT64_FAST_MAX    LONG_MAX
-    #elif defined(_MSC_VER) && defined(_INTEGRAL_MAX_BITS) && _INTEGRAL_MAX_BITS >= 64
-        #define CFLAT_INT64_FAST        __int64
-        #define CFLAT_INT64_FAST_MIN    0x8000000000000000
-        #define CFLAT_INT64_FAST_MAX    0x7FFFFFFFFFFFFFFF
+    /// <summary>
+    /// Represents the fastest signed integer with a width of at least 8 bits.
+    /// </summary>
+    typedef CFLAT_INT8_FAST int8_fast;
+
+    /// <summary>
+    /// Represents the fastest unsigned integer with a width of at least 8 bits.
+    /// </summary>
+    typedef CFLAT_UINT8_FAST uint8_fast;
+
+    /// <summary>
+    /// Represents the fastest signed integer with a width of at least 16 bits.
+    /// </summary>
+    typedef CFLAT_INT16_FAST int16_fast;
+
+    /// <summary>
+    /// Represents the fastest unsigned integer with a width of at least 16 bits.
+    /// </summary>
+    typedef CFLAT_UINT16_FAST uint16_fast;
+
+    /// <summary>
+    /// Represents the fastest signed integer with a width of at least 32 bits.
+    /// </summary>
+    typedef CFLAT_INT32_FAST int32_fast;
+
+    /// <summary>
+    /// Represents the fastest unsigned integer with a width of at least 32 bits.
+    /// </summary>
+    typedef CFLAT_UINT32_FAST uint32_fast;
+
+    #ifdef CFLAT_INT64_FAST
+        /// <summary>
+        /// Represents the fastest signed integer with a width of at least 64 bits.
+        /// </summary>
+        typedef CFLAT_INT64_FAST int64_fast;
     #endif
 
-    #if UINT_MAX >= 0xFFFFFFFFFFFFFFFF
-        #define CFLAT_UINT64_FAST       unsigned int
-        #define CFLAT_UINT64_FAST_MAX   UINT_MAX
-    #elif ULONG_MAX >= 0xFFFFFFFFFFFFFFFF
-        #define CFLAT_UINT64_FAST       unsigned long
-        #define CFLAT_UINT64_FAST_MAX   ULONG_MAX
-    #elif defined(_MSC_VER) && defined(_INTEGRAL_MAX_BITS) && _INTEGRAL_MAX_BITS >= 64
-        #define CFLAT_UINT64_FAST       unsigned __int64
-        #define CFLAT_UINT64_FAST_MAX   0xFFFFFFFFFFFFFFFF
+    #ifdef CFLAT_UINT64_FAST
+        /// <summary>
+        /// Represents the fastest unsigned integer with a width of at least 64 bits.
+        /// </summary>
+        typedef CFLAT_UINT64_FAST uint64_fast;
     #endif
-#endif
 
-/// <summary>
-/// Represents the fastest signed integer with a width of at least 8 bits.
-/// </summary>
-typedef CFLAT_INT8_FAST int8_fast;
-
-/// <summary>
-/// Represents the fastest unsigned integer with a width of at least 8 bits.
-/// </summary>
-typedef CFLAT_UINT8_FAST uint8_fast;
-
-/// <summary>
-/// Represents the fastest signed integer with a width of at least 16 bits.
-/// </summary>
-typedef CFLAT_INT16_FAST int16_fast;
-
-/// <summary>
-/// Represents the fastest unsigned integer with a width of at least 16 bits.
-/// </summary>
-typedef CFLAT_UINT16_FAST uint16_fast;
-
-/// <summary>
-/// Represents the fastest signed integer with a width of at least 32 bits.
-/// </summary>
-typedef CFLAT_INT32_FAST int32_fast;
-
-/// <summary>
-/// Represents the fastest unsigned integer with a width of at least 32 bits.
-/// </summary>
-typedef CFLAT_UINT32_FAST uint32_fast;
-
-#ifdef CFLAT_INT64_FAST
     /// <summary>
-    /// Represents the fastest signed integer with a width of at least 64 bits.
+    /// Represents the smallest possible value of <see cref="int8_fast"/>.
     /// </summary>
-    typedef CFLAT_INT64_FAST int64_fast;
-#endif
+    #define int8_fast_MinValue static_cast<int8_fast>(CFLAT_INT8_FAST_MIN)
 
-#ifdef CFLAT_UINT64_FAST
     /// <summary>
-    /// Represents the fastest unsigned integer with a width of at least 64 bits.
+    /// Represents the largest possible value of <see cref="int8_fast"/>.
     /// </summary>
-    typedef CFLAT_UINT64_FAST uint64_fast;
-#endif
-
-/// <summary>
-/// Represents the smallest possible value of <see cref="int8_fast"/>.
-/// </summary>
-#define int8_fast_MinValue ((int8_fast)CFLAT_INT8_FAST_MIN)
-
-/// <summary>
-/// Represents the largest possible value of <see cref="int8_fast"/>.
-/// </summary>
-#define int8_fast_MaxValue ((int8_fast)CFLAT_INT8_FAST_MAX)
-
-/// <summary>
-/// Represents the smallest possible value of <see cref="uint8_fast"/>.
-/// </summary>
-/// <remarks>The value of this constant is 0.</remarks>
-#define uint8_fast_MinValue ((uint8_fast)0)
-
-/// <summary>
-/// Represents the largest possible value of <see cref="uint8_fast"/>.
-/// </summary>
-#define uint8_fast_MaxValue ((uint8_fast)CFLAT_UINT8_FAST_MAX)
-
-/// <summary>
-/// Represents the smallest possible value of <see cref="int16_fast"/>.
-/// </summary>
-#define int16_fast_MinValue ((int16_fast)CFLAT_INT16_FAST_MIN)
-
-/// <summary>
-/// Represents the largest possible value of <see cref="int16_fast"/>.
-/// </summary>
-#define int16_fast_MaxValue ((int16_fast)CFLAT_INT16_FAST_MAX)
-
-/// <summary>
-/// Represents the smallest possible value of <see cref="uint16_fast"/>.
-/// </summary>
-/// <remarks>The value of this constant is 0.</remarks>
-#define uint16_fast_MinValue ((uint16_fast)0)
-
-/// <summary>
-/// Represents the largest possible value of <see cref="uint16_fast"/>.
-/// </summary>
-#define uint16_fast_MaxValue ((uint16_fast)CFLAT_UINT16_FAST_MAX)
-
-/// <summary>
-/// Represents the smallest possible value of <see cref="int32_fast"/>.
-/// </summary>
-#define int32_fast_MinValue ((int32_fast)CFLAT_INT32_FAST_MIN)
-
-/// <summary>
-/// Represents the largest possible value of <see cref="int32_fast"/>.
-/// </summary>
-#define int32_fast_MaxValue ((int32_fast)CFLAT_INT32_FAST_MAX)
-
-/// <summary>
-/// Represents the smallest possible value of <see cref="uint32_fast"/>.
-/// </summary>
-/// <remarks>The value of this constant is 0.</remarks>
-#define uint32_fast_MinValue ((uint32_fast)0)
-
-/// <summary>
-/// Represents the largest possible value of <see cref="uint32_fast"/>.
-/// </summary>
-#define uint32_fast_MaxValue ((uint32_fast)CFLAT_UINT32_FAST_MAX)
-
-#ifdef CFLAT_INT64_FAST
-    /// <summary>
-    /// Represents the smallest possible value of <see cref="int64_fast"/>.
-    /// </summary>
-    #define int64_fast_MinValue ((int64_fast)CFLAT_INT64_FAST_MIN)
+    #define int8_fast_MaxValue static_cast<int8_fast>(CFLAT_INT8_FAST_MAX)
 
     /// <summary>
-    /// Represents the largest possible value of <see cref="int64_fast"/>.
-    /// </summary>
-    #define int64_fast_MaxValue ((int64_fast)CFLAT_INT64_FAST_MAX)
-#endif
-
-#ifdef CFLAT_UINT64_FAST
-    /// <summary>
-    /// Represents the smallest possible value of <see cref="uint64_fast"/>.
+    /// Represents the smallest possible value of <see cref="uint8_fast"/>.
     /// </summary>
     /// <remarks>The value of this constant is 0.</remarks>
-    #define uint64_fast_MinValue ((uint64_fast)0)
+    #define uint8_fast_MinValue static_cast<uint8_fast>(0)
 
     /// <summary>
-    /// Represents the largest possible value of <see cref="uint64_fast"/>.
+    /// Represents the largest possible value of <see cref="uint8_fast"/>.
     /// </summary>
-    #define uint64_fast_MaxValue ((uint64_fast)CFLAT_UINT64_FAST_MAX)
-#endif
+    #define uint8_fast_MaxValue static_cast<uint8_fast>(CFLAT_UINT8_FAST_MAX)
 
-/* Special integer types */
-//! @}
-//! @name Special integer types
-//! @{
-
-#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L || _MSC_VER >= 1700
-    #include <stdint.h>
-
-    #ifdef INTPTR_MAX
-        #define CFLAT_INTPTR        intptr_t
-        #define CFLAT_INTPTR_MIN    INTPTR_MIN
-        #define CFLAT_INTPTR_MAX    INTPTR_MAX
-    #endif
-
-    #ifdef INTPTR_MAX
-        #define CFLAT_UINTPTR       uintptr_t
-        #define CFLAT_UINTPTR_MAX   UINTPTR_MAX
-    #endif
-#endif
-
-#if defined(__unix__) || (defined (__APPLE__) && defined (__MACH__))
- #include <unistd.h>
-#endif
-
-#if defined(_LARGEFILE_SOURCE) || \
-    defined(_XOPEN_SOURCE) && _XOPEN_SOURCE >= 500 || \
-    defined(_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200112L
-    // POSIX.1-2001
-
-    // Copied from: https://mail-index.netbsd.org/tech-misc/2007/02/05/0000.html
-    // These macros determine the maximum/minimum value of the given integer type
-    // "t". This works for signed as well as unsigned types. This code does
-    // carefully avoid integer overflows and undefined behaviour.
-    // However, it's assumed the type consists of exactly sizeof(type) * CHAR_BIT
-    // bits.
-    #define __CFLAT_MAX_INT_VAL_STEP(t)    ((t) 1 << (CHAR_BIT * sizeof(t) - 1 - ((t) -1 < 1)))
-    #define __CFLAT_MAX_INT_VAL(t)         ((__CFLAT_MAX_INT_VAL_STEP(t) - 1) + __CFLAT_MAX_INT_VAL_STEP(t))
-    #define __CFLAT_MIN_INT_VAL(t)         ((t) -__CFLAT_MAX_INT_VAL(t) - 1)
-
-    #define CFLAT_INTFSIZE      off_t
-    #define CFLAT_INTFSIZE_MIN  __CFLAT_MIN_INT_VAL(off_t)
-    #define CFLAT_INTFSIZE_MAX  __CFLAT_MAX_INT_VAL(off_t)
-#elif defined(_MSC_VER) && _MSC_VER >= 1400
-    // MSVC++ 8.0 or newer
-
-    #define CFLAT_INTFSIZE      __int64
-    #define CFLAT_INTFSIZE_MIN  _I64_MIN
-    #define CFLAT_INTFSIZE_MAX  _I64_MAX
-#else
-    #define CFLAT_INTFSIZE      long
-    #define CFLAT_INTFSIZE_MIN  long_MinValue
-    #define CFLAT_INTFSIZE_MAX  long_MaxValue
-#endif
-
-#ifdef CFLAT_INTPTR
     /// <summary>
-    /// Represents a signed integer capable of holding a void pointer.
+    /// Represents the smallest possible value of <see cref="int16_fast"/>.
     /// </summary>
-    typedef CFLAT_INTPTR intptr;
+    #define int16_fast_MinValue static_cast<int16_fast>(CFLAT_INT16_FAST_MIN)
 
     /// <summary>
-    /// Represents the smallest possible value of <see cref="intptr"/>.
+    /// Represents the largest possible value of <see cref="int16_fast"/>.
     /// </summary>
-    #define intptr_MinValue CFLAT_INTPTR_MIN
+    #define int16_fast_MaxValue static_cast<int16_fast>(CFLAT_INT16_FAST_MAX)
 
     /// <summary>
-    /// Represents the largest possible value of <see cref="intptr"/>.
-    /// </summary>
-    #define intptr_MaxValue CFLAT_INTPTR_MAX
-#endif
-
-#ifdef CFLAT_UINTPTR
-    /// <summary>
-    /// Represents an unsigned integer capable of holding a void pointer.
-    /// </summary>
-    typedef CFLAT_UINTPTR uintptr;
-
-    /// <summary>
-    /// Represents the smallest possible value of <see cref="uintptr"/>.
+    /// Represents the smallest possible value of <see cref="uint16_fast"/>.
     /// </summary>
     /// <remarks>The value of this constant is 0.</remarks>
-    #define uintptr_MinValue 0
+    #define uint16_fast_MinValue static_cast<uint16_fast>(0)
 
     /// <summary>
-    /// Represents the largest possible value of <see cref="uintptr"/>.
+    /// Represents the largest possible value of <see cref="uint16_fast"/>.
     /// </summary>
-    #define uintptr_MaxValue CFLAT_UINTPTR_MAX
-#endif
-
-/// <summary>
-/// Represents an unsigned integer with a width of at least 16 bits
-/// that is large enough to store the size of any array or object.
-/// </summary>
-typedef size_t uintsize;
-
-/// <summary>
-/// Represents the smallest possible value of <see cref="uintsize"/>.
-/// </summary>
-#define uintsize_MinValue ((uintsize)0)
-
-/// <summary>
-/// Represents the largest possible value of <see cref="uintsize"/>.
-/// </summary>
-#define uintsize_MaxValue ((uintsize)-1)
-
-/// <summary>
-/// Represents a signed integer used to represent the size of a file.
-/// </summary>
-typedef CFLAT_INTFSIZE intfsize;
-
-/// <summary>
-/// Represents the smallest possible value of <see cref="intfsize"/>.
-/// </summary>
-#define intfsize_MinValue ((intfsize)CFLAT_INTFSIZE_MIN)
-
-/// <summary>
-/// Represents the largest possible value of <see cref="intfsize"/>.
-/// </summary>
-#define intfsize_MaxValue ((intfsize)CFLAT_INTFSIZE_MAX)
-
-//! @}
-
-/* Functions */
-#ifdef CFLAT_INTPTR
-/// <summary>
-/// Returns the sum of two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The sum of two numbers.</returns>
-/// <exception cref="::OverflowException">The addition results in an overflow.</exception>
-intptr intptr_CheckedAddition(intptr x, intptr y);
-
-/// <summary>
-/// Returns the difference between two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The difference between two numbers.</returns>
-/// <exception cref="::OverflowException">The subtraction results in an overflow.</exception>
-intptr intptr_CheckedSubtraction(intptr x, intptr y);
-
-/// <summary>
-/// Converts the given number to a string representation.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <returns>The string representation of the given number.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *intptr_ToString(intptr value);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *intptr_ToStringFormat(intptr value, const struct String *format);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *intptr_ToStringFormatC(intptr value, const char *format);
-#endif
-
-#ifdef CFLAT_UINTPTR
-/// <summary>
-/// Returns the sum of two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The sum of two numbers.</returns>
-/// <exception cref="::OverflowException">The addition results in an overflow.</exception>
-uintptr uintptr_CheckedAddition(uintptr x, uintptr y);
-
-/// <summary>
-/// Returns the difference between two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The difference between two numbers.</returns>
-/// <exception cref="::OverflowException">The subtraction results in an overflow.</exception>
-uintptr uintptr_CheckedSubtraction(uintptr x, uintptr y);
-
-/// <summary>
-/// Converts the given number to a string representation.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <returns>The string representation of the given number.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *uintptr_ToString(uintptr value);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *uintptr_ToStringFormat(uintptr value, const struct String *format);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *uintptr_ToStringFormatC(uintptr value, const char *format);
-#endif
-
-/// <summary>
-/// Returns the sum of two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The sum of two numbers.</returns>
-/// <exception cref="::OverflowException">The addition results in an overflow.</exception>
-uintsize uintsize_CheckedAddition(uintsize x, uintsize y);
-
-/// <summary>
-/// Returns the difference between two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The difference between two numbers.</returns>
-/// <exception cref="::OverflowException">The subtraction results in an overflow.</exception>
-uintsize uintsize_CheckedSubtraction(uintsize x, uintsize y);
-
-/// <summary>
-/// Returns the product of two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The product of two numbers.</returns>
-/// <exception cref="::OverflowException">The multiplication results in an overflow.</exception>
-uintsize uintsize_CheckedMultiplication(uintsize x, uintsize y);
-
-/// <summary>
-/// Returns the quotient of two numbers and checks for division by zero.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The quotient of two numbers.</returns>
-/// <exception cref="::DivideByZeroException"><paramref name="y"/> is zero.</exception>
-uintsize uintsize_CheckedDivision(uintsize x, uintsize y);
-
-/// <summary>
-/// Returns the larger of two numbers.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The larger of two numbers.</returns>
-uintsize uintsize_Max(uintsize x, uintsize y);
-
-/// <summary>
-/// Returns the smaller of two numbers.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The smaller of two numbers.</returns>
-uintsize uintsize_Min(uintsize x, uintsize y);
-
-/// <summary>
-/// Converts the given number to a string representation.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <returns>The string representation of the given number.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *uintsize_ToString(uintsize value);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *uintsize_ToStringFormat(uintsize value, const struct String *format);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *uintsize_ToStringFormatC(uintsize value, const char *format);
-
-/// <summary>
-/// Returns the sum of two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The sum of two numbers.</returns>
-/// <exception cref="::OverflowException">The addition results in an overflow.</exception>
-intfsize intfsize_CheckedAddition(intfsize x, intfsize y);
-
-/// <summary>
-/// Returns the difference between two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The difference between two numbers.</returns>
-/// <exception cref="::OverflowException">The subtraction results in an overflow.</exception>
-intfsize intfsize_CheckedSubtraction(intfsize x, intfsize y);
-
-/// <summary>
-/// Returns the product of two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The product of two numbers.</returns>
-/// <exception cref="::OverflowException">The multiplication results in an overflow.</exception>
-intfsize intfsize_CheckedMultiplication(intfsize x, intfsize y);
-
-/// <summary>
-/// Returns the quotient of two numbers and checks for division by zero.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The quotient of two numbers.</returns>
-/// <exception cref="::DivideByZeroException"><paramref name="y"/> is zero.</exception>
-intfsize intfsize_CheckedDivision(intfsize x, intfsize y);
-
-/// <summary>
-/// Returns the larger of two numbers.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The larger of two numbers.</returns>
-intfsize intfsize_Max(intfsize x, intfsize y);
-
-/// <summary>
-/// Returns the smaller of two numbers.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The smaller of two numbers.</returns>
-intfsize intfsize_Min(intfsize x, intfsize y);
-
-/// <summary>
-/// Converts the given number to a string representation.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <returns>The string representation of the given number.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *intfsize_ToString(intfsize value);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *intfsize_ToStringFormat(intfsize value, const struct String *format);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *intfsize_ToStringFormatC(intfsize value, const char *format);
-
-/// <summary>
-/// Returns the sum of two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The sum of two numbers.</returns>
-/// <exception cref="::OverflowException">The addition results in an overflow.</exception>
-sbyte sbyte_CheckedAddition(sbyte x, sbyte y);
-
-/// <summary>
-/// Returns the difference between two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The difference between two numbers.</returns>
-/// <exception cref="::OverflowException">The subtraction results in an overflow.</exception>
-sbyte sbyte_CheckedSubtraction(sbyte x, sbyte y);
-
-/// <summary>
-/// Returns the product of two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The product of two numbers.</returns>
-/// <exception cref="::OverflowException">The multiplication results in an overflow.</exception>
-sbyte sbyte_CheckedMultiplication(sbyte x, sbyte y);
-
-/// <summary>
-/// Returns the quotient of two numbers and checks for division by zero.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The quotient of two numbers.</returns>
-/// <exception cref="::DivideByZeroException"><paramref name="y"/> is zero.</exception>
-sbyte sbyte_CheckedDivision(sbyte x, sbyte y);
-
-/// <summary>
-/// Returns the larger of two numbers.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The larger of two numbers.</returns>
-sbyte sbyte_Max(sbyte x, sbyte y);
-
-/// <summary>
-/// Returns the smaller of two numbers.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The smaller of two numbers.</returns>
-sbyte sbyte_Min(sbyte x, sbyte y);
-
-/// <summary>
-/// Converts the given number to a string representation.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <returns>The string representation of the given number.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *sbyte_ToString(sbyte value);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *sbyte_ToStringFormat(sbyte value, const struct String *format);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *sbyte_ToStringFormatC(sbyte value, const char *format);
-
-/// <summary>
-/// Returns the sum of two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The sum of two numbers.</returns>
-/// <exception cref="::OverflowException">The addition results in an overflow.</exception>
-byte byte_CheckedAddition(byte x, byte y);
-
-/// <summary>
-/// Returns the difference between two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The difference between two numbers.</returns>
-/// <exception cref="::OverflowException">The subtraction results in an overflow.</exception>
-byte byte_CheckedSubtraction(byte x, byte y);
-
-/// <summary>
-/// Returns the product of two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The product of two numbers.</returns>
-/// <exception cref="::OverflowException">The multiplication results in an overflow.</exception>
-byte byte_CheckedMultiplication(byte x, byte y);
-
-/// <summary>
-/// Returns the quotient of two numbers and checks for division by zero.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The quotient of two numbers.</returns>
-/// <exception cref="::DivideByZeroException"><paramref name="y"/> is zero.</exception>
-byte byte_CheckedDivision(byte x, byte y);
-
-/// <summary>
-/// Returns the larger of two numbers.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The larger of two numbers.</returns>
-byte byte_Max(byte x, byte y);
-
-/// <summary>
-/// Returns the smaller of two numbers.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The smaller of two numbers.</returns>
-byte byte_Min(byte x, byte y);
-
-/// <summary>
-/// Converts the given number to a string representation.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <returns>The string representation of the given number.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *byte_ToString(byte value);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *byte_ToStringFormat(byte value, const struct String *format);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *byte_ToStringFormatC(byte value, const char *format);
-
-/// <summary>
-/// Returns the sum of two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The sum of two numbers.</returns>
-/// <exception cref="::OverflowException">The addition results in an overflow.</exception>
-short short_CheckedAddition(short x, short y);
-
-/// <summary>
-/// Returns the difference between two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The difference between two numbers.</returns>
-/// <exception cref="::OverflowException">The subtraction results in an overflow.</exception>
-short short_CheckedSubtraction(short x, short y);
-
-/// <summary>
-/// Returns the product of two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The product of two numbers.</returns>
-/// <exception cref="::OverflowException">The multiplication results in an overflow.</exception>
-short short_CheckedMultiplication(short x, short y);
-
-/// <summary>
-/// Returns the quotient of two numbers and checks for division by zero.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The quotient of two numbers.</returns>
-/// <exception cref="::DivideByZeroException"><paramref name="y"/> is zero.</exception>
-short short_CheckedDivision(short x, short y);
-
-/// <summary>
-/// Returns the larger of two numbers.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The larger of two numbers.</returns>
-short short_Max(short x, short y);
-
-/// <summary>
-/// Returns the smaller of two numbers.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The smaller of two numbers.</returns>
-short short_Min(short x, short y);
-
-/// <summary>
-/// Converts the given number to a string representation.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <returns>The string representation of the given number.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *short_ToString(short value);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *short_ToStringFormat(short value, const struct String *format);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *short_ToStringFormatC(short value, const char *format);
-
-/// <summary>
-/// Returns the sum of two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The sum of two numbers.</returns>
-/// <exception cref="::OverflowException">The addition results in an overflow.</exception>
-ushort ushort_CheckedAddition(ushort x, ushort y);
-
-/// <summary>
-/// Returns the difference between two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The difference between two numbers.</returns>
-/// <exception cref="::OverflowException">The subtraction results in an overflow.</exception>
-ushort ushort_CheckedSubtraction(ushort x, ushort y);
-
-/// <summary>
-/// Returns the product of two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The product of two numbers.</returns>
-/// <exception cref="::OverflowException">The multiplication results in an overflow.</exception>
-ushort ushort_CheckedMultiplication(ushort x, ushort y);
-
-/// <summary>
-/// Returns the quotient of two numbers and checks for division by zero.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The quotient of two numbers.</returns>
-/// <exception cref="::DivideByZeroException"><paramref name="y"/> is zero.</exception>
-ushort ushort_CheckedDivision(ushort x, ushort y);
-
-/// <summary>
-/// Returns the larger of two numbers.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The larger of two numbers.</returns>
-ushort ushort_Max(ushort x, ushort y);
-
-/// <summary>
-/// Returns the smaller of two numbers.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The smaller of two numbers.</returns>
-ushort ushort_Min(ushort x, ushort y);
-
-/// <summary>
-/// Converts the given number to a string representation.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <returns>The string representation of the given number.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *ushort_ToString(ushort value);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *ushort_ToStringFormat(ushort value, const struct String *format);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *ushort_ToStringFormatC(ushort value, const char *format);
-
-/// <summary>
-/// Returns the sum of two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The sum of two numbers.</returns>
-/// <exception cref="::OverflowException">The addition results in an overflow.</exception>
-int int_CheckedAddition(int x, int y);
-
-/// <summary>
-/// Returns the difference between two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The difference between two numbers.</returns>
-/// <exception cref="::OverflowException">The subtraction results in an overflow.</exception>
-int int_CheckedSubtraction(int x, int y);
-
-/// <summary>
-/// Returns the product of two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The product of two numbers.</returns>
-/// <exception cref="::OverflowException">The multiplication results in an overflow.</exception>
-int int_CheckedMultiplication(int x, int y);
-
-/// <summary>
-/// Returns the quotient of two numbers and checks for division by zero.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The quotient of two numbers.</returns>
-/// <exception cref="::DivideByZeroException"><paramref name="y"/> is zero.</exception>
-int int_CheckedDivision(int x, int y);
-
-/// <summary>
-/// Returns the larger of two numbers.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The larger of two numbers.</returns>
-int int_Max(int x, int y);
-
-/// <summary>
-/// Returns the smaller of two numbers.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The smaller of two numbers.</returns>
-int int_Min(int x, int y);
-
-/// <summary>
-/// Converts the given number to a string representation.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <returns>The string representation of the given number.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *int_ToString(int value);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *int_ToStringFormat(int value, const struct String *format);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *int_ToStringFormatC(int value, const char *format);
-
-/// <summary>
-/// Returns the sum of two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The sum of two numbers.</returns>
-/// <exception cref="::OverflowException">The addition results in an overflow.</exception>
-uint uint_CheckedAddition(uint x, uint y);
-
-/// <summary>
-/// Returns the difference between two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The difference between two numbers.</returns>
-/// <exception cref="::OverflowException">The subtraction results in an overflow.</exception>
-uint uint_CheckedSubtraction(uint x, uint y);
-
-/// <summary>
-/// Returns the product of two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The product of two numbers.</returns>
-/// <exception cref="::OverflowException">The multiplication results in an overflow.</exception>
-uint uint_CheckedMultiplication(uint x, uint y);
-
-/// <summary>
-/// Returns the quotient of two numbers and checks for division by zero.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The quotient of two numbers.</returns>
-/// <exception cref="::DivideByZeroException"><paramref name="y"/> is zero.</exception>
-uint uint_CheckedDivision(uint x, uint y);
-
-/// <summary>
-/// Returns the larger of two numbers.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The larger of two numbers.</returns>
-uint uint_Max(uint x, uint y);
-
-/// <summary>
-/// Returns the smaller of two numbers.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The smaller of two numbers.</returns>
-uint uint_Min(uint x, uint y);
-
-/// <summary>
-/// Converts the given number to a string representation.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <returns>The string representation of the given number.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *uint_ToString(uint value);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *uint_ToStringFormat(uint value, const struct String *format);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *uint_ToStringFormatC(uint value, const char *format);
-
-/// <summary>
-/// Returns the sum of two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The sum of two numbers.</returns>
-/// <exception cref="::OverflowException">The addition results in an overflow.</exception>
-long long_CheckedAddition(long x, long y);
-
-/// <summary>
-/// Returns the difference between two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The difference between two numbers.</returns>
-/// <exception cref="::OverflowException">The subtraction results in an overflow.</exception>
-long long_CheckedSubtraction(long x, long y);
-
-/// <summary>
-/// Returns the product of two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The product of two numbers.</returns>
-/// <exception cref="::OverflowException">The multiplication results in an overflow.</exception>
-long long_CheckedMultiplication(long x, long y);
-
-/// <summary>
-/// Returns the quotient of two numbers and checks for division by zero.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The quotient of two numbers.</returns>
-/// <exception cref="::DivideByZeroException"><paramref name="y"/> is zero.</exception>
-long long_CheckedDivision(long x, long y);
-
-/// <summary>
-/// Returns the larger of two numbers.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The larger of two numbers.</returns>
-long long_Max(long x, long y);
-
-/// <summary>
-/// Returns the smaller of two numbers.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The smaller of two numbers.</returns>
-long long_Min(long x, long y);
-
-/// <summary>
-/// Converts the given number to a string representation.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <returns>The string representation of the given number.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *long_ToString(long value);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *long_ToStringFormat(long value, const struct String *format);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *long_ToStringFormatC(long value, const char *format);
-
-/// <summary>
-/// Returns the sum of two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The sum of two numbers.</returns>
-/// <exception cref="::OverflowException">The addition results in an overflow.</exception>
-ulong ulong_CheckedAddition(ulong x, ulong y);
-
-/// <summary>
-/// Returns the difference between two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The difference between two numbers.</returns>
-/// <exception cref="::OverflowException">The subtraction results in an overflow.</exception>
-ulong ulong_CheckedSubtraction(ulong x, ulong y);
-
-/// <summary>
-/// Returns the product of two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The product of two numbers.</returns>
-/// <exception cref="::OverflowException">The multiplication results in an overflow.</exception>
-ulong ulong_CheckedMultiplication(ulong x, ulong y);
-
-/// <summary>
-/// Returns the quotient of two numbers and checks for division by zero.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The quotient of two numbers.</returns>
-/// <exception cref="::DivideByZeroException"><paramref name="y"/> is zero.</exception>
-ulong ulong_CheckedDivision(ulong x, ulong y);
-
-/// <summary>
-/// Returns the larger of two numbers.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The larger of two numbers.</returns>
-ulong ulong_Max(ulong x, ulong y);
-
-/// <summary>
-/// Returns the smaller of two numbers.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The smaller of two numbers.</returns>
-ulong ulong_Min(ulong x, ulong y);
-
-/// <summary>
-/// Converts the given number to a string representation.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <returns>The string representation of the given number.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *ulong_ToString(ulong value);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *ulong_ToStringFormat(ulong value, const struct String *format);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *ulong_ToStringFormatC(ulong value, const char *format);
-
-/// <summary>
-/// Returns the sum of two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The sum of two numbers.</returns>
-/// <exception cref="::OverflowException">The addition results in an overflow.</exception>
-intmax intmax_CheckedAddition(intmax x, intmax y);
-
-/// <summary>
-/// Returns the difference between two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The difference between two numbers.</returns>
-/// <exception cref="::OverflowException">The subtraction results in an overflow.</exception>
-intmax intmax_CheckedSubtraction(intmax x, intmax y);
-
-/// <summary>
-/// Returns the product of two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The product of two numbers.</returns>
-/// <exception cref="::OverflowException">The multiplication results in an overflow.</exception>
-intmax intmax_CheckedMultiplication(intmax x, intmax y);
-
-/// <summary>
-/// Returns the quotient of two numbers and checks for division by zero.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The quotient of two numbers.</returns>
-/// <exception cref="::DivideByZeroException"><paramref name="y"/> is zero.</exception>
-intmax intmax_CheckedDivision(intmax x, intmax y);
-
-/// <summary>
-/// Returns the larger of two numbers.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The larger of two numbers.</returns>
-intmax intmax_Max(intmax x, intmax y);
-
-/// <summary>
-/// Returns the smaller of two numbers.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The smaller of two numbers.</returns>
-intmax intmax_Min(intmax x, intmax y);
-
-/// <summary>
-/// Converts the given number to a string representation.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <returns>The string representation of the given number.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *intmax_ToString(intmax value);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *intmax_ToStringFormat(intmax value, const struct String *format);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *intmax_ToStringFormatC(intmax value, const char *format);
-
-/// <summary>
-/// Returns the sum of two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The sum of two numbers.</returns>
-/// <exception cref="::OverflowException">The addition results in an overflow.</exception>
-uintmax uintmax_CheckedAddition(uintmax x, uintmax y);
-
-/// <summary>
-/// Returns the difference between two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The difference between two numbers.</returns>
-/// <exception cref="::OverflowException">The subtraction results in an overflow.</exception>
-uintmax uintmax_CheckedSubtraction(uintmax x, uintmax y);
-
-/// <summary>
-/// Returns the product of two numbers and checks if overflow occurs.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The product of two numbers.</returns>
-/// <exception cref="::OverflowException">The multiplication results in an overflow.</exception>
-uintmax uintmax_CheckedMultiplication(uintmax x, uintmax y);
-
-/// <summary>
-/// Returns the quotient of two numbers and checks for division by zero.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The quotient of two numbers.</returns>
-/// <exception cref="::DivideByZeroException"><paramref name="y"/> is zero.</exception>
-uintmax uintmax_CheckedDivision(uintmax x, uintmax y);
-
-/// <summary>
-/// Returns the larger of two numbers.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The larger of two numbers.</returns>
-uintmax uintmax_Max(uintmax x, uintmax y);
-
-/// <summary>
-/// Returns the smaller of two numbers.
-/// </summary>
-/// <param name="x">The first number.</param>
-/// <param name="y">The second number.</param>
-/// <returns>The smaller of two numbers.</returns>
-uintmax uintmax_Min(uintmax x, uintmax y);
-
-/// <summary>
-/// Converts the given number to a string representation.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <returns>The string representation of the given number.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *uintmax_ToString(uintmax value);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *uintmax_ToStringFormat(uintmax value, const struct String *format);
-
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *uintmax_ToStringFormatC(uintmax value, const char *format);
-
-#ifdef CFLAT_CORE_INTERNAL
- #include "CFlat/Language/Integer.internal.h"
-#endif
+    #define uint16_fast_MaxValue static_cast<uint16_fast>(CFLAT_UINT16_FAST_MAX)
+
+    /// <summary>
+    /// Represents the smallest possible value of <see cref="int32_fast"/>.
+    /// </summary>
+    #define int32_fast_MinValue static_cast<int32_fast>(CFLAT_INT32_FAST_MIN)
+
+    /// <summary>
+    /// Represents the largest possible value of <see cref="int32_fast"/>.
+    /// </summary>
+    #define int32_fast_MaxValue static_cast<int32_fast>(CFLAT_INT32_FAST_MAX)
+
+    /// <summary>
+    /// Represents the smallest possible value of <see cref="uint32_fast"/>.
+    /// </summary>
+    /// <remarks>The value of this constant is 0.</remarks>
+    #define uint32_fast_MinValue static_cast<uint32_fast>(0)
+
+    /// <summary>
+    /// Represents the largest possible value of <see cref="uint32_fast"/>.
+    /// </summary>
+    #define uint32_fast_MaxValue static_cast<uint32_fast>(CFLAT_UINT32_FAST_MAX)
+
+    #ifdef CFLAT_INT64_FAST
+        /// <summary>
+        /// Represents the smallest possible value of <see cref="int64_fast"/>.
+        /// </summary>
+        #define int64_fast_MinValue static_cast<int64_fast>(CFLAT_INT64_FAST_MIN)
+
+        /// <summary>
+        /// Represents the largest possible value of <see cref="int64_fast"/>.
+        /// </summary>
+        #define int64_fast_MaxValue static_cast<int64_fast>(CFLAT_INT64_FAST_MAX)
+    #endif
+
+    #ifdef CFLAT_UINT64_FAST
+        /// <summary>
+        /// Represents the smallest possible value of <see cref="uint64_fast"/>.
+        /// </summary>
+        /// <remarks>The value of this constant is 0.</remarks>
+        #define uint64_fast_MinValue static_cast<uint64_fast>(0)
+
+        /// <summary>
+        /// Represents the largest possible value of <see cref="uint64_fast"/>.
+        /// </summary>
+        #define uint64_fast_MaxValue static_cast<uint64_fast>(CFLAT_UINT64_FAST_MAX)
+    #endif
+
+    /* Special integer types */
+    //! @}
+    //! @name Special integer types
+    //! @{
+
+    #if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L || defined(_MSC_VER) && _MSC_VER >= 1700
+        #include <stdint.h>
+
+        #ifdef INTPTR_MAX
+            #define CFLAT_INTPTR        intptr_t
+            #define CFLAT_INTPTR_MIN    INTPTR_MIN
+            #define CFLAT_INTPTR_MAX    INTPTR_MAX
+        #endif
+
+        #ifdef INTPTR_MAX
+            #define CFLAT_UINTPTR       uintptr_t
+            #define CFLAT_UINTPTR_MAX   UINTPTR_MAX
+        #endif
+    #endif
+
+    #if defined(__unix__) || (defined (__APPLE__) && defined (__MACH__))
+     #include <unistd.h>
+    #endif
+
+    #if defined(_LARGEFILE_SOURCE) || \
+        defined(_XOPEN_SOURCE) && _XOPEN_SOURCE >= 500 || \
+        defined(_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200112L
+        // POSIX.1-2001
+
+        // Copied from: https://mail-index.netbsd.org/tech-misc/2007/02/05/0000.html
+        // These macros determine the maximum/minimum value of the given integer type
+        // "t". This works for signed as well as unsigned types. This code does
+        // carefully avoid integer overflows and undefined behaviour.
+        // However, it's assumed the type consists of exactly sizeof(type) * CHAR_BIT
+        // bits.
+        #define __CFLAT_MAX_INT_VAL_STEP(t)    ((t) 1 << (CHAR_BIT * sizeof(t) - 1 - ((t) -1 < 1)))
+        #define __CFLAT_MAX_INT_VAL(t)         ((__CFLAT_MAX_INT_VAL_STEP(t) - 1) + __CFLAT_MAX_INT_VAL_STEP(t))
+        #define __CFLAT_MIN_INT_VAL(t)         ((t) -__CFLAT_MAX_INT_VAL(t) - 1)
+
+        #define CFLAT_INTFSIZE      off_t
+        #define CFLAT_INTFSIZE_MIN  __CFLAT_MIN_INT_VAL(off_t)
+        #define CFLAT_INTFSIZE_MAX  __CFLAT_MAX_INT_VAL(off_t)
+    #elif defined(_MSC_VER) && _MSC_VER >= 1400
+        // MSVC++ 8.0 or newer
+
+        #define CFLAT_INTFSIZE      __int64
+        #define CFLAT_INTFSIZE_MIN  _I64_MIN
+        #define CFLAT_INTFSIZE_MAX  _I64_MAX
+    #else
+        #define CFLAT_INTFSIZE      long
+        #define CFLAT_INTFSIZE_MIN  long_MinValue
+        #define CFLAT_INTFSIZE_MAX  long_MaxValue
+    #endif
+
+    #ifdef CFLAT_INTPTR
+        /// <summary>
+        /// Represents a signed integer capable of holding a void pointer.
+        /// </summary>
+        typedef CFLAT_INTPTR intptr;
+
+        /// <summary>
+        /// Represents the smallest possible value of <see cref="intptr"/>.
+        /// </summary>
+        #define INTPTR_MINVALUE static_cast<intmax>(CFLAT_INTPTR_MIN)
+
+        /// <summary>
+        /// Represents the largest possible value of <see cref="intptr"/>.
+        /// </summary>
+        #define INTPTR_MAXVALUE static_cast<intmax>(CFLAT_INTPTR_MAX)
+    #endif
+
+    #ifdef CFLAT_UINTPTR
+        /// <summary>
+        /// Represents an unsigned integer capable of holding a void pointer.
+        /// </summary>
+        typedef CFLAT_UINTPTR uintptr;
+
+        /// <summary>
+        /// Represents the smallest possible value of <see cref="uintptr"/>.
+        /// </summary>
+        /// <remarks>The value of this constant is 0.</remarks>
+        #define UINTPTR_MINVALUE static_cast<uintmax>(0)
+
+        /// <summary>
+        /// Represents the largest possible value of <see cref="uintptr"/>.
+        /// </summary>
+        #define UINTPTR_MAXVALUE static_cast<uintmax>(CFLAT_UINTPTR_MAX)
+    #endif
+
+    /// <summary>
+    /// Represents an unsigned integer with a width of at least 16 bits
+    /// that is large enough to store the size of any array or object.
+    /// </summary>
+    typedef size_t uintsize;
+
+    /// <summary>
+    /// Represents the smallest possible value of <see cref="uintsize"/>.
+    /// </summary>
+    #define UINTSIZE_MINVALUE static_cast<uintsize>(0)
+
+    /// <summary>
+    /// Represents the largest possible value of <see cref="uintsize"/>.
+    /// </summary>
+    #define UINTSIZE_MAXVALUE static_cast<uintsize>(-1)
+
+    /// <summary>
+    /// Represents a signed integer used to represent the size of a file.
+    /// </summary>
+    typedef CFLAT_INTFSIZE intfsize;
+
+    /// <summary>
+    /// Represents the smallest possible value of <see cref="intfsize"/>.
+    /// </summary>
+    #define INTFSIZE_MINVALUE static_cast<intfsize>(CFLAT_INTFSIZE_MIN)
+
+    /// <summary>
+    /// Represents the largest possible value of <see cref="intfsize"/>.
+    /// </summary>
+    #define INTFSIZE_MAXVALUE static_cast<intfsize>(CFLAT_INTFSIZE_MAX)
+
+    //! @}
+}
 
 #endif

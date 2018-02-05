@@ -22,66 +22,110 @@
 #ifndef CFLAT_CORE_IO_STREAMWRITER_H
 #define CFLAT_CORE_IO_STREAMWRITER_H
 
-#include "CFlat/Language/Bool.h"
+#include "CFlat/Language/Pointers.h"
 
-/* Forward declarations */
-struct Stream;
-struct String;
-struct TextWriter;
+#include "CFlat/IO/TextWriter.h"
 
-/* Types */
-/// <summary>
-/// Implements a <see cref="TextWriter"/> for writing characters to a <see cref="Stream"/>.
-/// </summary>
-typedef struct StreamWriter StreamWriter;
+namespace CFlat {
+    /* Forward declarations */
+    class Stream;
 
-/* Functions */
-/// <summary>
-/// Allocates and initializes a new <see cref="StreamWriter"/>.
-/// </summary>
-/// <remarks>
-///     The lifetime of the <see cref="StreamWriter"/> should be managed with retain() and release().
-/// </remarks>
-/// <param name="stream">Pointer to the <see cref="Stream"/> to write to.</param>
-/// <returns>A pointer to the newly allocated stream writer.</returns>
-/// <exception cref="::ArgumentNullException"><paramref name="stream"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct TextWriter *StreamWriter_New(struct Stream *stream);
+    /// <summary>
+    /// Implements a <see cref="TextWriter"/> for writing characters to a <see cref="Stream"/>.
+    /// </summary>
+    class StreamWriter : public TextWriter {
+    private:
+        bool _autoFlush;
+        unique_ptr<Stream> _stream;
 
-/// <summary>
-/// Allocates and initializes a new <see cref="StreamWriter"/> for the specified file. If the file exists, it can be
-/// either overriden or appended to. If the file does not exist, a new file is created.
-/// </summary>
-/// <remarks>
-///     The lifetime of the <see cref="StreamWriter"/> should be managed with retain() and release().
-/// </remarks>
-/// <param name="path">The file path to write to.</param>
-/// <param name="append">
-///     <see cref="true"/> to append data to the file; <see cref="false"/> to overwrite the file. If the specified file
-///     does not exist, this parameter has no effect since a new file is created.
-/// </param>
-/// <returns>A pointer to the newly allocated stream writer.</returns>
-/// <exception cref="::ArgumentNullException"><paramref name="path"/> is <see cref="null"/>.</exception>
-/// <exception cref="::IOException">An I/O error occurs.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct TextWriter *StreamWriter_New_FromFile(const struct String *path, bool append);
+    public:
+        StreamWriter() = delete;
 
-/// <summary>
-/// Allocates and initializes a new <see cref="StreamWriter"/> for the specified file. If the file exists, it can be
-/// either overriden or appended to. If the file does not exist, a new file is created.
-/// </summary>
-/// <remarks>
-///     The lifetime of the <see cref="StreamWriter"/> should be managed with retain() and release().
-/// </remarks>
-/// <param name="path">The file path to write to.</param>
-/// <param name="append">
-///     <see cref="true"/> to append data to the file; <see cref="false"/> to overwrite the file. If the specified file
-///     does not exist, this parameter has no effect since a new file is created.
-/// </param>
-/// <returns>A pointer to the newly allocated stream writer.</returns>
-/// <exception cref="::ArgumentNullException"><paramref name="path"/> is <see cref="null"/>.</exception>
-/// <exception cref="::IOException">An I/O error occurs.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct TextWriter *StreamWriter_New_FromFile_CString(const char *path, bool append);
+        StreamWriter(const StreamWriter &writer) = delete;
+
+        StreamWriter(StreamWriter &&writer);
+
+        /// <summary>
+        /// Allocates and initializes a new <see cref="StreamWriter"/>.
+        /// </summary>
+        /// <remarks>
+        ///     The lifetime of the <see cref="StreamWriter"/> should be managed with retain() and release().
+        /// </remarks>
+        /// <param name="stream">Pointer to the <see cref="Stream"/> to write to.</param>
+        /// <returns>A pointer to the newly allocated stream writer.</returns>
+        /// <exception cref="::ArgumentNullException"><paramref name="stream"/> is <see cref="null"/>.</exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        StreamWriter(unique_ptr<Stream> stream);
+
+        /// <summary>
+        /// Allocates and initializes a new <see cref="StreamWriter"/> for the specified file. If the file exists, it can be
+        /// either overriden or appended to. If the file does not exist, a new file is created.
+        /// </summary>
+        /// <remarks>
+        ///     The lifetime of the <see cref="StreamWriter"/> should be managed with retain() and release().
+        /// </remarks>
+        /// <param name="path">The file path to write to.</param>
+        /// <param name="append">
+        ///     <see cref="true"/> to append data to the file; <see cref="false"/> to overwrite the file. If the specified file
+        ///     does not exist, this parameter has no effect since a new file is created.
+        /// </param>
+        /// <returns>A pointer to the newly allocated stream writer.</returns>
+        /// <exception cref="::ArgumentNullException"><paramref name="path"/> is <see cref="null"/>.</exception>
+        /// <exception cref="::IOException">An I/O error occurs.</exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        StreamWriter(const String &path, bool append);
+
+        /// <summary>
+        /// Allocates and initializes a new <see cref="StreamWriter"/> for the specified file. If the file exists, it can be
+        /// either overriden or appended to. If the file does not exist, a new file is created.
+        /// </summary>
+        /// <remarks>
+        ///     The lifetime of the <see cref="StreamWriter"/> should be managed with retain() and release().
+        /// </remarks>
+        /// <param name="path">The file path to write to.</param>
+        /// <param name="append">
+        ///     <see cref="true"/> to append data to the file; <see cref="false"/> to overwrite the file. If the specified file
+        ///     does not exist, this parameter has no effect since a new file is created.
+        /// </param>
+        /// <returns>A pointer to the newly allocated stream writer.</returns>
+        /// <exception cref="::ArgumentNullException"><paramref name="path"/> is <see cref="null"/>.</exception>
+        /// <exception cref="::IOException">An I/O error occurs.</exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        StreamWriter(const char *path, bool append);
+
+        virtual ~StreamWriter();
+
+        StreamWriter &operator=(const StreamWriter &writer) = delete;
+
+        StreamWriter &operator=(StreamWriter &&writer);
+
+        /// <summary>
+        /// Gets whether or not a <see cref="TextWriter"/> will automatically flush its buffer to the underlying device after
+        /// every call to Write().
+        /// </summary>
+        /// <returns>
+        ///     <see cref="true"/> if automatic flushing of the buffer is enabled; otherwise, <see cref="false"/>.
+        /// </returns>
+        /// <param name="writer">Pointer to a <see cref="TextWriter"/>.</param>
+        /// <exception cref="::ArgumentNullException"><paramref name="writer"/> is <see cref="null"/>.</exception>
+        bool GetAutoFlush() const;
+
+        /// <summary>
+        /// Sets whether or not a <see cref="TextWriter"/> will automatically flush its buffer to the underlying device after
+        /// every call to Write().
+        /// </summary>
+        /// <param name="writer">Pointer to a <see cref="TextWriter"/>.</param>
+        /// <param name="value">
+        ///     <see cref="true"/> to enable automatic flushing of the buffer is enabled; otherwise, <see cref="false"/>.
+        /// </param>
+        /// <exception cref="::ArgumentNullException"><paramref name="writer"/> is <see cref="null"/>.</exception>
+        /// <exception cref="::IOException">An I/O error occurs.</exception>
+        void SetAutoFlush(bool value);
+
+        void Flush() override;
+
+        void Write(const char *buffer, uintsize offset, uintsize count) override;
+    };
+}
 
 #endif

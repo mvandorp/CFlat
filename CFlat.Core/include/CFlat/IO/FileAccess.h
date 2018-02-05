@@ -22,47 +22,54 @@
 #ifndef CFLAT_CORE_IO_FILEACCESS_H
 #define CFLAT_CORE_IO_FILEACCESS_H
 
-#include "CFlat/Language/Bool.h"
+#include "CFlat/Validate.h"
 
-/* Types */
-/// <summary>
-/// Defines constants for read, write, or read/write access to a file.
-/// </summary>
-typedef enum FileAccess {
-    /// <summary>
-    /// Specifies read access to a file. Combine with <see cref="FileAccess_Write"/> for read/write access.
-    /// </summary>
-    FileAccess_Read = 1 << 0,
+namespace CFlat {
+    namespace FileAccess {
+        /// <summary>
+        /// Defines constants for read, write, or read/write access to a file.
+        /// </summary>
+        enum Enum {
+            /// <summary>
+            /// Specifies read access to a file. Combine with <see cref="FileAccess_Write"/> for read/write access.
+            /// </summary>
+            Read = 1 << 0,
 
-    /// <summary>
-    /// Specifies write access to a file. Combine with <see cref="FileAccess_Read"/> for read/write access.
-    /// </summary>
-    FileAccess_Write = 1 << 1,
+            /// <summary>
+            /// Specifies write access to a file. Combine with <see cref="FileAccess_Read"/> for read/write access.
+            /// </summary>
+            Write = 1 << 1,
 
-    /// <summary>
-    /// Specifies read/write access to a file.
-    /// </summary>
-    FileAccess_ReadWrite = FileAccess_Read | FileAccess_Write,
-} FileAccess;
+            /// <summary>
+            /// Specifies read/write access to a file.
+            /// </summary>
+            ReadWrite = Read | Write
+        };
 
-/* Functions */
-/// <summary>
-/// Determines whether or not <paramref name="fileAccess"/> is a valid <see cref="FileAccess"/>.
-/// </summary>
-/// <param name="fileAccess">The <see cref="FileAccess"/> to validate.</param>
-/// <returns>
-///     <see cref="true"/> if <paramref name="fileAccess"/> is a valid <see cref="FileAccess"/>;
-///     otherwise <see cref="false"/>.
-/// </returns>
-bool FileAccess_IsValid(FileAccess fileAccess);
+        inline bool HasFlag(FileAccess::Enum fileAccess, FileAccess::Enum flag)
+        {
+            return (fileAccess & flag) == flag;
+        }
 
-/// <summary>
-/// Validates that <paramref name="fileAccess"/> is a valid <see cref="FileAccess"/>.
-/// </summary>
-/// <param name="fileAccess">The <see cref="FileAccess"/> to validate.</param>
-/// <exception cref="::ArgumentException">
-///     <paramref name="fileAccess"/> is not a valid <see cref="FileAccess"/>.
-/// </exception>
-void FileAccess_Validate(FileAccess fileAccess);
+        /// <summary>
+        /// Determines whether or not <paramref name="fileAccess"/> is a valid <see cref="FileAccess"/>.
+        /// </summary>
+        /// <param name="fileAccess">The <see cref="FileAccess"/> to validate.</param>
+        /// <returns>
+        ///     <see cref="true"/> if <paramref name="fileAccess"/> is a valid <see cref="FileAccess"/>;
+        ///     otherwise <see cref="false"/>.
+        /// </returns>
+        bool IsValid(FileAccess::Enum fileAccess);
+
+        /// <summary>
+        /// Validates that <paramref name="fileAccess"/> is a valid <see cref="FileAccess"/>.
+        /// </summary>
+        /// <param name="fileAccess">The <see cref="FileAccess"/> to validate.</param>
+        /// <exception cref="::ArgumentException">
+        ///     <paramref name="fileAccess"/> is not a valid <see cref="FileAccess"/>.
+        /// </exception>
+        void Validate(FileAccess::Enum fileAccess);
+    }
+}
 
 #endif

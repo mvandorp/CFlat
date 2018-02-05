@@ -20,99 +20,107 @@
 #ifndef CFLAT_CORE_NUMBER_H
 #define CFLAT_CORE_NUMBER_H
 
-#include "CFlat/Language/Bool.h"
 #include "CFlat/Language/Integer.h"
-#include "CFlat/Language/Keywords.h"
 
-/* Forward declarations */
-struct String;
-struct StringBuilder;
+#include "CFlat/String.h"
 
-/* Functions */
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal struct String *Number_FormatIntMax(intmax value, const struct String *format);
+namespace CFlat {
+    /* Forward declarations */
+    class String;
+    class StringBuilder;
 
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal struct String *Number_FormatUIntMax(uintmax value, const struct String *format);
+    class Number {
+    public:
+        /* Static class*/
+        Number() = delete;
 
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal struct String *Number_FormatSingle(float value, const struct String *format);
+        /* Functions */
+        /// <summary>
+        /// Converts the given number to a string representation, using the specified format.
+        /// </summary>
+        /// <param name="value">The value to be converted to a string.</param>
+        /// <param name="format">A standard or custom numeric format string.</param>
+        /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        static String Format(intmax value, const String *format);
 
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal struct String *Number_FormatDouble(double value, const struct String *format);
+        /// <summary>
+        /// Converts the given number to a string representation, using the specified format.
+        /// </summary>
+        /// <param name="value">The value to be converted to a string.</param>
+        /// <param name="format">A standard or custom numeric format string.</param>
+        /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        static String Format(uintmax value, const String *format);
 
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="sb">The <see cref="StringBuilder"/> onto which to append the resulting string.</param>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal void Number_FormatIntMaxBuffered(struct StringBuilder *sb, intmax value, const struct String *format);
+        /// <summary>
+        /// Converts the given number to a string representation, using the specified format.
+        /// </summary>
+        /// <param name="value">The value to be converted to a string.</param>
+        /// <param name="format">A standard or custom numeric format string.</param>
+        /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        static String Format(float value, const String *format);
 
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="sb">The <see cref="StringBuilder"/> onto which to append the resulting string.</param>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal void Number_FormatUIntMaxBuffered(struct StringBuilder *sb, uintmax value, const struct String *format);
+        /// <summary>
+        /// Converts the given number to a string representation, using the specified format.
+        /// </summary>
+        /// <param name="value">The value to be converted to a string.</param>
+        /// <param name="format">A standard or custom numeric format string.</param>
+        /// <returns>The string representation of the given number as specified by <paramref name="format"/>.</returns>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        static String Format(double value, const String *format);
 
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="sb">The <see cref="StringBuilder"/> onto which to append the resulting string.</param>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal void Number_FormatSingleBuffered(struct StringBuilder *sb, float value, const struct String *format);
+        /// <summary>
+        /// Converts the given number to a string representation, using the specified format.
+        /// </summary>
+        /// <param name="sb">The <see cref="StringBuilder"/> onto which to append the resulting string.</param>
+        /// <param name="value">The value to be converted to a string.</param>
+        /// <param name="format">A standard or custom numeric format string.</param>
+        /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        static void Format(StringBuilder &sb, intmax value, const String *format);
 
-/// <summary>
-/// Converts the given number to a string representation, using the specified format.
-/// </summary>
-/// <param name="sb">The <see cref="StringBuilder"/> onto which to append the resulting string.</param>
-/// <param name="value">The value to be converted to a string.</param>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-internal void Number_FormatDoubleBuffered(struct StringBuilder *sb, double value, const struct String *format);
+        /// <summary>
+        /// Converts the given number to a string representation, using the specified format.
+        /// </summary>
+        /// <param name="sb">The <see cref="StringBuilder"/> onto which to append the resulting string.</param>
+        /// <param name="value">The value to be converted to a string.</param>
+        /// <param name="format">A standard or custom numeric format string.</param>
+        /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        static void Format(StringBuilder &sb, uintmax value, const String *format);
 
-/// <summary>
-/// Determines whether the given number format will cause the number to be formatted in a numeral system other than
-/// the decimal system, for example hexadecimal or binary.
-/// </summary>
-/// <param name="format">A standard or custom numeric format string.</param>
-/// <returns>
-///     <see cref="true"/> if <paramref name="value"/> is a non-decimal format; otherwise, <see cref="false"/>.
-/// </returns>
-internal bool Number_IsNonDecimalFormat(const struct String *format);
+        /// <summary>
+        /// Converts the given number to a string representation, using the specified format.
+        /// </summary>
+        /// <param name="sb">The <see cref="StringBuilder"/> onto which to append the resulting string.</param>
+        /// <param name="value">The value to be converted to a string.</param>
+        /// <param name="format">A standard or custom numeric format string.</param>
+        /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        static void Format(StringBuilder &sb, float value, const String *format);
+
+        /// <summary>
+        /// Converts the given number to a string representation, using the specified format.
+        /// </summary>
+        /// <param name="sb">The <see cref="StringBuilder"/> onto which to append the resulting string.</param>
+        /// <param name="value">The value to be converted to a string.</param>
+        /// <param name="format">A standard or custom numeric format string.</param>
+        /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        static void Format(StringBuilder &sb, double value, const String *format);
+
+        /// <summary>
+        /// Determines whether the given number format will cause the number to be formatted in a numeral system other than
+        /// the decimal system, for example hexadecimal or binary.
+        /// </summary>
+        /// <param name="format">A standard or custom numeric format string.</param>
+        /// <returns>
+        ///     <see cref="true"/> if <paramref name="value"/> is a non-decimal format; otherwise, <see cref="false"/>.
+        /// </returns>
+        static bool IsNonDecimalFormat(const String *format);
+    };
+}
 
 #endif

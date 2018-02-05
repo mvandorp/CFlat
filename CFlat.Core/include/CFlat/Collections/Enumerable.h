@@ -22,120 +22,218 @@
 #ifndef CFLAT_CORE_COLLECTIONS_ENUMERABLE_H
 #define CFLAT_CORE_COLLECTIONS_ENUMERABLE_H
 
-#include "CFlat/Object.h"
 #include "CFlat/Language/Functions.h"
+#include "CFlat/Language/Integer.h"
+#include "CFlat/Language/Pointers.h"
 
-/* Forward declarations */
-struct IEnumerable;
+#include "CFlat/Collections/IEnumerable.h"
+#include "CFlat/Collections/IEnumerator.h"
 
-/* Functions */
-/// <summary>
-/// Determines whether all elements of an <see cref="IEnumerable"/> satisfy a given predicate.
-/// </summary>
-/// <param name="enumerable">Pointer to an <see cref="IEnumerable"/>.</param>
-/// <param name="predicate">A <see cref="Predicate"/> to test each element for a condition.</param>
-/// <returns>
-///     <see cref="true"/> if all elements of <paramref name="enumerable"/> satisfy <paramref name="predicate"/>;
-///     otherwise <see cref="false"/>.
-/// </returns>
-/// <exception cref="::ArgumentNullException">
-///     <paramref name="enumerable"/> is <see cref="null"/> <b>-or-</b>
-///     <paramref name="predicate"/> is <see cref="null"/>.
-/// </exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-bool Enumerable_All(const struct IEnumerable *enumerable, Predicate predicate);
+namespace CFlat {
+    /* Forward declarations */
+    template <typename T>
+    class IReadOnlyCollection;
 
-/// <summary>
-/// Determines whether any element of an <see cref="IEnumerable"/> satisfies a given predicate.
-/// </summary>
-/// <param name="enumerable">Pointer to an <see cref="IEnumerable"/>.</param>
-/// <param name="predicate">A <see cref="Predicate"/> to test each element for a condition.</param>
-/// <returns>
-///     <see cref="true"/> if any element of <paramref name="enumerable"/> satisfies <paramref name="predicate"/>;
-///     otherwise <see cref="false"/>.
-/// </returns>
-/// <exception cref="::ArgumentNullException">
-///     <paramref name="enumerable"/> is <see cref="null"/> <b>-or-</b>
-///     <paramref name="predicate"/> is <see cref="null"/>.
-/// </exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-bool Enumerable_Any(const struct IEnumerable *enumerable, Predicate predicate);
+    /* Types */
+    class Enumerable {
+    public:
+        /* Types */
+        template <typename T>
+        class EmptyEnumerable : public IEnumerable<T> {
+        private:
+            class Enumerator : public IEnumerator<T> {
+            public:
+                /* Constructors */
+                inline Enumerator();
 
-/// <summary>
-/// Determines the number of elements in an <see cref="IEnumerable"/>.
-/// </summary>
-/// <param name="enumerable">Pointer to an <see cref="IEnumerable"/>.</param>
-/// <returns>The number of elements in the <see cref="IEnumerable"/>.</returns>
-/// <exception cref="::ArgumentNullException"><paramref name="enumerable"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-uintsize Enumerable_Count(const struct IEnumerable *enumerable);
+                /* Methods */
+                inline const T &GetCurrent() const override;
+                inline bool MoveNext() override;
+                inline void Reset() override;
+            };
 
-/// <summary>
-/// Returns an empty <see cref="IEnumerable"/>.
-/// </summary>
-/// <returns>An empty <see cref="IEnumerable"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct IEnumerable *Enumerable_Empty(void);
+        public:
+            /* Constructors */
+            inline EmptyEnumerable();
 
-/// <summary>
-/// Returns an <see cref="IEnumerable"/> containing a single pointer.
-/// </summary>
-/// <param name="item">The pointer contained in the <see cref="IEnumerable"/>.</param>
-/// <param name="itemDestructor">
-///     Pointer to a <see cref="DestructorFunc"/> to call when <paramref name="item"/> needs to be destroyed, or
-///     <see cref="null"/> if <paramref name="item"/> should not automatically be destroyed.
-/// </param>
-/// <returns>An <see cref="IEnumerable"/> containing a single pointer.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct IEnumerable *Enumerable_FromSinglePointer(void *item, DestructorFunc itemDestructor);
+            /* Methods */
+            inline unique_ptr<IEnumerator<T>> GetEnumerator() const;
+        };
 
-/// <summary>
-/// Returns an <see cref="IEnumerable"/> containing a single <see cref="Object"/>.
-/// </summary>
-/// <param name="item">The <see cref="Object"/> contained in the <see cref="IEnumerable"/>.</param>
-/// <returns>An <see cref="IEnumerable"/> containing a single <see cref="Object"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct IEnumerable *Enumerable_FromSingleObject(Object *item);
+        template <typename T>
+        class YieldEnumerable : public IEnumerable<T> {
+        private:
+            /* Fields */
+            T _value;
 
-/// <summary>
-/// Concatenates two sequences.
-/// </summary>
-/// <param name="first">The first sequence to concatenate.</param>
-/// <param name="second">The second sequence to concatenate.</param>
-/// <returns>An <see cref="IEnumerable"/> that contains the concatenated elements of the two input sequences.</returns>
-/// <exception cref="::ArgumentNullException">
-///     <paramref name="first"/> is <see cref="null"/> <b>-or-</b>
-///     <paramref name="second"/> is <see cref="null"/>.
-/// </exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct IEnumerable *Enumerable_Concat(const struct IEnumerable *first, const struct IEnumerable *second);
+            /* Types */
+            class Enumerator : public IEnumerator<T> {
+            private:
+                int _index;
+                T _value;
 
-/// <summary>
-/// Concatenates the given sequences.
-/// </summary>
-/// <param name="enumerables">An array of sequences to concatenate.</param>
-/// <param name="count">The number of sequences to concatenate.</param>
-/// <returns>An <see cref="IEnumerable"/> that contains the concatenated elements of the input sequences.</returns>
-/// <exception cref="::ArgumentNullException">
-///     <paramref name="count"/> is greater than 0 and <paramref name="enumerables"/> is <see cref="null"/>.
-/// </exception>
-/// <exception cref="::ArgumentException">
-///     <paramref name="count"/> is greater than 0 and <paramref name="enumerables"/> contains a <see cref="null"/>
-///     pointer.
-/// </exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct IEnumerable *Enumerable_ConcatArray(const struct IEnumerable * const *enumerables, uintsize count);
+            public:
+                /* Constructors */
+                inline Enumerator(T value);
 
-/// <summary>
-/// Concatenates the sequences contained in the given <see cref="IEnumerable"/>.
-/// </summary>
-/// <param name="enumerables">An <see cref="IEnumerable"/> containing the sequences to concatenate.</param>
-/// <returns>An <see cref="IEnumerable"/> that contains the concatenated elements of the input sequences.</returns>
-/// <exception cref="::ArgumentNullException"><paramref name="enumerables"/> is <see cref="null"/>.</exception>
-/// <exception cref="::ArgumentException">
-///     <paramref name="enumerables"/> contains a <see cref="null"/> pointer.
-/// </exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct IEnumerable *Enumerable_ConcatEnumerable(const struct IEnumerable *enumerables);
+                /* Methods */
+                inline const T &GetCurrent() const override;
+                inline bool MoveNext() override;
+                inline void Reset() override;
+            };
+
+        public:
+            /* Constructors */
+            inline YieldEnumerable(T value);
+
+            /* Methods */
+            inline unique_ptr<IEnumerator<T>> GetEnumerator() const;
+        };
+
+        template <typename T>
+        class ConcatTwoEnumerable : public IEnumerable<T> {
+        private:
+            /* Fields */
+            shared_ptr<IEnumerable<T>> _first;
+            shared_ptr<IEnumerable<T>> _second;
+
+            /* Types */
+            class Enumerator : public IEnumerator<T> {
+            private:
+                /* Fields */
+                unique_ptr<IEnumerator<T>> _enumerators[2];
+                int _index;
+
+                /* Methods */
+                inline bool NextEnumerator();
+
+            public:
+                /* Constructors */
+                inline Enumerator(shared_ptr<IEnumerable<T>> first, shared_ptr<IEnumerable<T>> second);
+
+                /* Methods */
+                inline const T &GetCurrent() const override;
+                inline bool MoveNext() override;
+                inline void Reset() override;
+            };
+
+        public:
+            /* Constructors */
+            inline ConcatTwoEnumerable(shared_ptr<IEnumerable<T>> first, shared_ptr<IEnumerable<T>> second);
+
+            /* Methods */
+            inline unique_ptr<IEnumerator<T>> GetEnumerator() const;
+        };
+
+    public:
+        /* Constructors */
+        Enumerable() = delete;
+
+        /* Methods */
+        /// <summary>
+        /// Determines whether all elements of an <see cref="IEnumerable"/> satisfy a given predicate.
+        /// </summary>
+        /// <param name="enumerable">Pointer to an <see cref="IEnumerable"/>.</param>
+        /// <param name="predicate">A <see cref="Predicate"/> to test each element for a condition.</param>
+        /// <returns>
+        ///     <see cref="true"/> if all elements of <paramref name="enumerable"/> satisfy <paramref name="predicate"/>;
+        ///     otherwise <see cref="false"/>.
+        /// </returns>
+        /// <exception cref="::ArgumentNullException">
+        ///     <paramref name="enumerable"/> is <see cref="null"/> <b>-or-</b>
+        ///     <paramref name="predicate"/> is <see cref="null"/>.
+        /// </exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        template <typename T>
+        static inline bool All(const IEnumerable<T> &enumerable, typename Functions<T>::Predicate predicate);
+
+        /// <summary>
+        /// Determines whether any element of an <see cref="IEnumerable"/> satisfies a given predicate.
+        /// </summary>
+        /// <param name="enumerable">Pointer to an <see cref="IEnumerable"/>.</param>
+        /// <param name="predicate">A <see cref="Predicate"/> to test each element for a condition.</param>
+        /// <returns>
+        ///     <see cref="true"/> if any element of <paramref name="enumerable"/> satisfies <paramref name="predicate"/>;
+        ///     otherwise <see cref="false"/>.
+        /// </returns>
+        /// <exception cref="::ArgumentNullException">
+        ///     <paramref name="enumerable"/> is <see cref="null"/> <b>-or-</b>
+        ///     <paramref name="predicate"/> is <see cref="null"/>.
+        /// </exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        template <typename T>
+        static inline bool Any(const IEnumerable<T> &enumerable, typename  Functions<T>::Predicate predicate);
+
+        /// <summary>
+        /// Determines the number of elements in an <see cref="IEnumerable"/>.
+        /// </summary>
+        /// <param name="enumerable">Pointer to an <see cref="IEnumerable"/>.</param>
+        /// <returns>The number of elements in the <see cref="IEnumerable"/>.</returns>
+        /// <exception cref="::ArgumentNullException"><paramref name="enumerable"/> is <see cref="null"/>.</exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        template <typename T>
+        static inline uintsize Count(const IEnumerable<T> &enumerable);
+
+        /// <summary>
+        /// Determines the number of elements in an <see cref="IEnumerable"/>.
+        /// </summary>
+        /// <param name="enumerable">Pointer to an <see cref="IEnumerable"/>.</param>
+        /// <returns>The number of elements in the <see cref="IEnumerable"/>.</returns>
+        /// <exception cref="::ArgumentNullException"><paramref name="enumerable"/> is <see cref="null"/>.</exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        template <typename T>
+        static inline uintsize Count(const IReadOnlyCollection<T> &collection);
+
+        /// <summary>
+        /// Returns an empty <see cref="IEnumerable"/>.
+        /// </summary>
+        /// <returns>An empty <see cref="IEnumerable"/>.</returns>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        template <typename T>
+        static inline unique_ptr<IEnumerable<T>> Empty();
+
+        /// <summary>
+        /// Returns an <see cref="IEnumerable"/> containing a single <see cref="Object"/>.
+        /// </summary>
+        /// <param name="item">The <see cref="Object"/> contained in the <see cref="IEnumerable"/>.</param>
+        /// <returns>An <see cref="IEnumerable"/> containing a single <see cref="Object"/>.</returns>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        template <typename T>
+        static inline unique_ptr<IEnumerable<T>> Yield(T item);
+
+        /// <summary>
+        /// Concatenates two sequences.
+        /// </summary>
+        /// <param name="first">The first sequence to concatenate.</param>
+        /// <param name="second">The second sequence to concatenate.</param>
+        /// <returns>An <see cref="IEnumerable"/> that contains the concatenated elements of the two input sequences.</returns>
+        /// <exception cref="::ArgumentNullException">
+        ///     <paramref name="first"/> is <see cref="null"/> <b>-or-</b>
+        ///     <paramref name="second"/> is <see cref="null"/>.
+        /// </exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        template <typename T, typename TDeleter>
+        static inline unique_ptr<IEnumerable<T>> Concat(unique_ptr<IEnumerable<T>, TDeleter> &&first, unique_ptr<IEnumerable<T>, TDeleter> &&second);
+
+        /// <summary>
+        /// Concatenates two sequences.
+        /// </summary>
+        /// <param name="first">The first sequence to concatenate.</param>
+        /// <param name="second">The second sequence to concatenate.</param>
+        /// <returns>An <see cref="IEnumerable"/> that contains the concatenated elements of the two input sequences.</returns>
+        /// <exception cref="::ArgumentNullException">
+        ///     <paramref name="first"/> is <see cref="null"/> <b>-or-</b>
+        ///     <paramref name="second"/> is <see cref="null"/>.
+        /// </exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        template <typename T>
+        static inline unique_ptr<IEnumerable<T>> Concat(shared_ptr<IEnumerable<T>> first, shared_ptr<IEnumerable<T>> second);
+
+        template <typename TSource, typename TResult>
+        static inline unique_ptr<IEnumerable<TResult>> SelectMany(IEnumerable<TSource> &enumerable, unique_ptr<IEnumerable<TResult>>(*selector)(const TSource&));
+    };
+}
+
+#include "Enumerable.hpp"
 
 #endif

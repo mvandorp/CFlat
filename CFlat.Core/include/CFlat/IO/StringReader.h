@@ -23,133 +23,84 @@
 #define CFLAT_CORE_IO_STRINGREADER_H
 
 #include "CFlat/Language/Integer.h"
-#include "CFlat/Language/Keywords.h"
 
-/* Forward declarations */
-struct String;
+#include "CFlat/String.h"
 
-/* Types */
-/// <summary>
-/// Implements a reader that reads from a string of characters.
-/// </summary>
-typedef struct StringReader StringReader;
+#include "CFlat/IO/TextReader.h"
 
-/* Functions */
-/// <summary>
-/// Allocates and initializes a new <see cref="StringReader"/> that reads from the given <see cref="String"/>.
-/// </summary>
-/// <remarks>
-///     The lifetime of the <see cref="StringReader"/> should be managed with retain() and release().
-/// </remarks>
-/// <param name="str">Pointer to a string.</param>
-/// <returns>A pointer to the newly allocated <see cref="StringReader"/>.</returns>
-/// <exception cref="::ArgumentNullException"><paramref name="str"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-StringReader *StringReader_New(const struct String *str);
+namespace CFlat {
+    /// <summary>
+    /// Implements a reader that reads from a string of characters.
+    /// </summary>
+    class StringReader : public TextReader {
+    private:
+        String _value;
+        uintsize _position;
 
-/// <summary>
-/// Initializes a <see cref="StringReader"/> so that reads from the given <see cref="String"/>.
-/// </summary>
-/// <param name="reader">Pointer to an uninitialized <see cref="StringReader"/>.</param>
-/// <param name="str">Pointer to a string.</param>
-/// <exception cref="::ArgumentNullException">
-///     <paramref name="reader"/> is <see cref="null"/> <b>-or-</b>
-///     <paramref name="str"/> is <see cref="null"/>.
-/// </exception>
-void StringReader_Constructor(StringReader *reader, const struct String *str);
+    public:
+        /// <summary>
+        /// Initializes a <see cref="StringReader"/> so that reads from the given <see cref="String"/>.
+        /// </summary>
+        /// <param name="str">Pointer to a string.</param>
+        StringReader(String str);
 
-/// <summary>
-/// Destroys a <see cref="StringReader"/>.
-/// </summary>
-/// <param name="reader">Pointer to a <see cref="StringReader"/>.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="reader"/> is <see cref="null"/>.</exception>
-void StringReader_Destructor(StringReader *reader);
+        /// <summary>
+        /// Returns the next available character of a <see cref="StringReader"/>.
+        /// </summary>
+        /// <param name="reader">Pointer to a <see cref="StringReader"/>.</param>
+        /// <returns>An integer representing the next character, or -1 if no more characters are available.</returns>
+        /// <exception cref="::ArgumentNullException"><paramref name="reader"/> is <see cref="null"/>.</exception>
+        int Peek() const override;
 
-/// <summary>
-/// Returns the next available character of a <see cref="StringReader"/>.
-/// </summary>
-/// <param name="reader">Pointer to a <see cref="StringReader"/>.</param>
-/// <returns>An integer representing the next character, or -1 if no more characters are available.</returns>
-/// <exception cref="::ArgumentNullException"><paramref name="reader"/> is <see cref="null"/>.</exception>
-override int StringReader_Peek(const StringReader *reader);
+        /// <summary>
+        /// Returns the character at the given offset of a <see cref="StringReader"/>.
+        /// </summary>
+        /// <param name="reader">Pointer to a <see cref="StringReader"/>.</param>
+        /// <param name="offset">The offset at which to peek.</param>
+        /// <returns>
+        ///     An integer representing the character at the given offset, or -1 if no more characters are available.
+        /// </returns>
+        /// <exception cref="::ArgumentNullException"><paramref name="reader"/> is <see cref="null"/>.</exception>
+        int Peek(uintsize offset) const;
 
-/// <summary>
-/// Returns the character at the given offset of a <see cref="StringReader"/>.
-/// </summary>
-/// <param name="reader">Pointer to a <see cref="StringReader"/>.</param>
-/// <param name="offset">The offset at which to peek.</param>
-/// <returns>
-///     An integer representing the character at the given offset, or -1 if no more characters are available.
-/// </returns>
-/// <exception cref="::ArgumentNullException"><paramref name="reader"/> is <see cref="null"/>.</exception>
-int StringReader_PeekOffset(const StringReader *reader, uintsize offset);
+        /// <summary>
+        /// Reads the next available character from the input string of a <see cref="StringReader"/> and advances the character
+        /// position to the next character.
+        /// </summary>
+        /// <param name="reader">Pointer to a <see cref="StringReader"/>.</param>
+        /// <returns>An integer representing the next character, or -1 if no more characters are available.</returns>
+        /// <exception cref="::ArgumentNullException"><paramref name="reader"/> is <see cref="null"/>.</exception>
+        int Read() override;
 
-/// <summary>
-/// Reads the next available character from the input string of a <see cref="StringReader"/> and advances the character
-/// position to the next character.
-/// </summary>
-/// <param name="reader">Pointer to a <see cref="StringReader"/>.</param>
-/// <returns>An integer representing the next character, or -1 if no more characters are available.</returns>
-/// <exception cref="::ArgumentNullException"><paramref name="reader"/> is <see cref="null"/>.</exception>
-override int StringReader_Read(StringReader *reader);
+        /// <summary>
+        /// Reads a given maximum number of characters from the input string of a <see cref="StringReader"/> and advances the
+        /// character position by the number of characters read.
+        /// </summary>
+        /// <param name="reader">Pointer to a <see cref="StringReader"/>.</param>
+        /// <param name="buffer">The array to which the characters should be read.</param>
+        /// <param name="offset">
+        ///     The offset in <paramref name="buffer"/> at which to begin storing characters read from
+        ///     <paramref name="reader"/>.
+        /// </param>
+        /// <param name="count">The maximum number of characters to read.</param>
+        /// <returns>
+        ///     The total number of characters read into the buffer. This can be less than the number of bytes requested if
+        ///     that many characters are currently not available, or zero if all characters have been read.
+        /// </returns>
+        /// <exception cref="::ArgumentNullException">
+        ///     <paramref name="reader"/> is <see cref="null"/> <b>-or-</b>
+        ///     <paramref name="buffer"/> is <see cref="null"/>.
+        /// </exception>>
+        uintsize Read(char *buffer, uintsize offset, uintsize count) override;
 
-/// <summary>
-/// Reads a given maximum number of characters from the input string of a <see cref="StringReader"/> and advances the
-/// character position by the number of characters read.
-/// </summary>
-/// <param name="reader">Pointer to a <see cref="StringReader"/>.</param>
-/// <param name="buffer">The array to which the characters should be read.</param>
-/// <param name="offset">
-///     The offset in <paramref name="buffer"/> at which to begin storing characters read from
-///     <paramref name="reader"/>.
-/// </param>
-/// <param name="count">The maximum number of characters to read.</param>
-/// <returns>
-///     The total number of characters read into the buffer. This can be less than the number of bytes requested if
-///     that many characters are currently not available, or zero if all characters have been read.
-/// </returns>
-/// <exception cref="::ArgumentNullException">
-///     <paramref name="reader"/> is <see cref="null"/> <b>-or-</b>
-///     <paramref name="buffer"/> is <see cref="null"/>.
-/// </exception>>
-override uintsize StringReader_ReadBuffer(StringReader *reader, char *buffer, uintsize offset, uintsize count);
-
-/// <summary>
-/// Reads a line of characters from the input string of a <see cref="StringReader"/> and returns the data as a
-/// <see cref="String"/>.
-/// </summary>
-/// <param name="reader">Pointer to a <see cref="StringReader"/>.</param>
-/// <returns>
-///     A pointer to a <see cref="String"/> containing the next line of the reader, or <see cref="null"/> if all
-///     characters have been read.
-/// </returns>
-/// <exception cref="::ArgumentNullException"><paramref name="reader"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *StringReader_ReadLine(StringReader *reader);
-
-/// <summary>
-/// Reads all characters from the input string of a <see cref="StringReader"/> and returns the data as a
-/// <see cref="String"/>.
-/// </summary>
-/// <param name="reader">Pointer to a <see cref="StringReader"/>.</param>
-/// <returns>
-///     A pointer to a <see cref="String"/> containing all remaining characters of the reader, or <see cref="null"/>
-///     if all characters have been read.
-/// </returns>
-/// <exception cref="::ArgumentNullException"><paramref name="reader"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *StringReader_ReadToEnd(StringReader *reader);
-
-/// <summary>
-/// Advances the position of a <see cref="StringReader"/> by the given number of characters.
-/// </summary>
-/// <param name="reader">Pointer to a <see cref="StringReader"/>.</param>
-/// <param name="amount">The number of characters to skip.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="reader"/> is <see cref="null"/>.</exception>
-void StringReader_Skip(StringReader *reader, uintsize amount);
-
-#ifdef CFLAT_CORE_INTERNAL
- #include "CFlat/IO/StringReader.internal.h"
-#endif
+        /// <summary>
+        /// Advances the position of a <see cref="StringReader"/> by the given number of characters.
+        /// </summary>
+        /// <param name="reader">Pointer to a <see cref="StringReader"/>.</param>
+        /// <param name="amount">The number of characters to skip.</param>
+        /// <exception cref="::ArgumentNullException"><paramref name="reader"/> is <see cref="null"/>.</exception>
+        void Skip(uintsize amount);
+    };
+}
 
 #endif

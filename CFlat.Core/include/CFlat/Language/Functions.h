@@ -22,46 +22,72 @@
 #ifndef CFLAT_CORE_LANGUAGE_FUNCTIONS_H
 #define CFLAT_CORE_LANGUAGE_FUNCTIONS_H
 
-#include "CFlat/Language/Bool.h"
+namespace CFlat {
+    /* Types */
+    template <typename T>
+    class Functions {
+    public:
+        Functions() = delete;
 
-/* Types */
-/// <summary>
-/// A function that determines whether the given object meets certain criteria.
-/// </summary>
-/// <param name="x">The object to compare against the criteria.</param>
-/// <returns>
-///     <see cref="true"/> if <paramref name="x"/> meets the criteria set by the predicate;
-///     otherwise <see cref="false"/>.
-/// </returns>
-typedef bool (*Predicate)(const void *x);
+        /// <summary>
+        /// A function that has no parameters and does not return a value.
+        /// </summary>
+        typedef void(*Action)();
 
-/// <summary>
-/// A function that determines whether two given objects compare equal.
-/// </summary>
-/// <param name="x">The first object to compare.</param>
-/// <param name="x">The second object to compare.</param>
-/// <returns><see cref="true"/> if the objects compare equal; otherwise, <see cref="false"/>.</returns>
-typedef bool (*EqualityPredicate)(const void *x, const void *y);
+        /// <summary>
+        /// A function that determines whether the given object meets certain criteria.
+        /// </summary>
+        /// <param name="x">The object to compare against the criteria.</param>
+        /// <returns>
+        ///     <see cref="true"/> if <paramref name="x"/> meets the criteria set by the predicate;
+        ///     otherwise <see cref="false"/>.
+        /// </returns>
+        typedef bool(*Predicate)(const T &x);
 
-/* Functions */
-/// <summary>
-/// Determines whether the given pointer is <see cref="null"/>.
-/// </summary>
-/// <param name="x">The object to test.</param>
-/// <returns>
-///     <see cref="true"/> if <paramref name="x"/> is <see cref="null"/>;
-///     otherwise <see cref="false"/>.
-/// </returns>
-bool Predicate_IsNull(const void *x);
+        /// <summary>
+        /// A function that determines whether two given objects compare equal.
+        /// </summary>
+        /// <param name="x">The first object to compare.</param>
+        /// <param name="x">The second object to compare.</param>
+        /// <returns><see cref="true"/> if the objects compare equal; otherwise, <see cref="false"/>.</returns>
+        typedef bool(*EqualityPredicate)(const T &x, const T &y);
+    };
 
-/// <summary>
-/// Determines whether the given pointer is <see cref="null"/>.
-/// </summary>
-/// <param name="x">The object to test.</param>
-/// <returns>
-///     <see cref="true"/> if <paramref name="x"/> is not <see cref="null"/>;
-///     otherwise <see cref="false"/>.
-/// </returns>
-bool Predicate_IsNotNull(const void *x);
+    /* Types */
+    class Predicates {
+    public:
+        /* Static class */
+        Predicates() = delete;
+
+        /* Functions */
+        /// <summary>
+        /// Determines whether the given pointer is <see cref="null"/>.
+        /// </summary>
+        /// <param name="x">The object to test.</param>
+        /// <returns>
+        ///     <see cref="true"/> if <paramref name="x"/> is <see cref="null"/>;
+        ///     otherwise <see cref="false"/>.
+        /// </returns>
+        template <typename T>
+        static inline bool IsNull(const T &x)
+        {
+            return x == nullptr;
+        }
+
+        /// <summary>
+        /// Determines whether the given pointer is <see cref="null"/>.
+        /// </summary>
+        /// <param name="x">The object to test.</param>
+        /// <returns>
+        ///     <see cref="true"/> if <paramref name="x"/> is not <see cref="null"/>;
+        ///     otherwise <see cref="false"/>.
+        /// </returns>
+        template <typename T>
+        static inline bool IsNotNull(const T &x)
+        {
+            return x != nullptr;
+        }
+    };
+}
 
 #endif

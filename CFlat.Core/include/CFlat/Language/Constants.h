@@ -27,6 +27,6 @@
 /// <summary>
 /// An <see cref="uintsize"/> value that represents an invalid index.
 /// </summary>
-#define InvalidIndex uintsize_MaxValue
+#define InvalidIndex static_cast<uintsize>(-1)
 
 #endif
