@@ -20,8 +20,6 @@
 #ifndef CFLAT_CORE_COLLECTIONS_ENUMERABLE_CONCATMANY_H
 #define CFLAT_CORE_COLLECTIONS_ENUMERABLE_CONCATMANY_H
 
-#include "CFlat/Language/Keywords.h"
-
 /* Forward declarations */
 struct IEnumerable;
 

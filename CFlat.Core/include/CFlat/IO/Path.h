@@ -22,38 +22,44 @@
 #ifndef CFLAT_CORE_IO_PATH_H
 #define CFLAT_CORE_IO_PATH_H
 
-/* Forward declarations */
-struct String;
+namespace CFlat {
+    /* Forward declarations */
+    class String;
 
-/* Functions */
-/// <summary>
-/// Returns a new <see cref="String"/> with the file name of the given path.
-/// </summary>
-/// <remarks>
-///     If <paramref name="path"/> is <see cref="null"/>, <see cref="null"/> is returned.
-/// </remarks>
-/// <param name="path">Pointer to a <see cref="String"/> containing the path for which to obtain the file name.</param>
-/// <returns>
-///     A new <see cref="String"/> with the file name of the given path;
-///     or <see cref="null"/> if <paramref name="path"/> is <see cref="null"/>.
-/// </returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *Path_GetFileName(const struct String *path);
+    class Path {
+    public:
+        Path() = delete;
 
-/// <summary>
-/// Returns a new <see cref="String"/> with the file name of the given path.
-/// </summary>
-/// <remarks>
-///     If <paramref name="path"/> is <see cref="null"/>, <see cref="null"/> is returned.
-/// </remarks>
-/// <param name="path">
-///     Pointer to a null-terminated string containing the path for which to obtain the file name.
-/// </param>
-/// <returns>
-///     A new <see cref="String"/> with the file name of the given path;
-///     or <see cref="null"/> if <paramref name="path"/> is <see cref="null"/>.
-/// </returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *Path_GetFileName_CString(const char *path);
+        /// <summary>
+        /// Returns a new <see cref="String"/> with the file name of the given path.
+        /// </summary>
+        /// <remarks>
+        ///     If <paramref name="path"/> is <see cref="null"/>, <see cref="null"/> is returned.
+        /// </remarks>
+        /// <param name="path">Pointer to a <see cref="String"/> containing the path for which to obtain the file name.</param>
+        /// <returns>
+        ///     A new <see cref="String"/> with the file name of the given path;
+        ///     or <see cref="null"/> if <paramref name="path"/> is <see cref="null"/>.
+        /// </returns>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        static String GetFileName(const String &path);
+
+        /// <summary>
+        /// Returns a new <see cref="String"/> with the file name of the given path.
+        /// </summary>
+        /// <remarks>
+        ///     If <paramref name="path"/> is <see cref="null"/>, <see cref="null"/> is returned.
+        /// </remarks>
+        /// <param name="path">
+        ///     Pointer to a null-terminated string containing the path for which to obtain the file name.
+        /// </param>
+        /// <returns>
+        ///     A new <see cref="String"/> with the file name of the given path;
+        ///     or <see cref="null"/> if <paramref name="path"/> is <see cref="null"/>.
+        /// </returns>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        static String GetFileName(const char *path);
+    };
+}
 
 #endif

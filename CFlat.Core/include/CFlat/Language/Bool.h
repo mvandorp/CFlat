@@ -22,44 +22,35 @@
 #ifndef CFLAT_CORE_LANGUAGE_BOOL_H
 #define CFLAT_CORE_LANGUAGE_BOOL_H
 
-#if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L || defined(_MSC_VER) && (_MSC_VER >= 1800)
-    // The compiler supports C99 or later, use the C99 _Bool type.
-    #define CFLAT_BOOL _Bool
-#else
-    // Otherwise use the int type.
-    #define CFLAT_BOOL int
-#endif
+#include "CFlat/String.h"
 
-/* Macros */
-/// <summary>
-/// The <see cref="bool"/> value <c>true</c>.
-/// </summary>
-#define true ((bool)1)
+namespace CFlat {
+    /* Forward declarations */
+    class StringBuilder;
 
-/// <summary>
-/// The <see cref="bool"/> value <c>false</c>.
-/// </summary>
-#define false ((bool)0)
+    class Bool {
+    public:
+        /* Static class */
+        Bool() = delete;
 
-/* Types */
-/// <summary>
-/// Represents a boolean value, which can be either <see cref="true"/> or <see cref="false"/>.
-/// </summary>
-typedef CFLAT_BOOL bool;
+        /* Functions */
+        /// <summary>
+        /// Converts the given boolean to a string representation.
+        /// </summary>
+        /// <param name="value">The value to be converted to a string.</param>
+        /// <returns>The string representation of the given boolean.</returns>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        static String ToString(bool value);
 
-/* Functions */
-/// <summary>
-/// Converts the given boolean to a string representation.
-/// </summary>
-/// <param name="value">The value to be converted to a string.</param>
-/// <returns>The string representation of the given boolean.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *bool_ToString(bool value);
-
-#ifdef CFLAT_CORE_INTERNAL
- #include "CFlat/Language/Bool.internal.h"
-#endif
-
-#undef CFLAT_BOOL
+        /// <summary>
+        /// Converts the given boolean to a string representation.
+        /// </summary>
+        /// <param name="value">The value to be converted to a string.</param>
+        /// <param name="sb">The <see cref="StringBuilder"/> onto which to append the resulting string.</param>
+        /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        static void ToString(StringBuilder &sb, bool value);
+    };
+}
 
 #endif

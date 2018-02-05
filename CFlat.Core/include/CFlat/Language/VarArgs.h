@@ -55,11 +55,12 @@
 /// <summary>
 /// Represents a variable arguments list.
 /// </summary>
-typedef struct VarArgsList {
+class VarArgsList {
+public:
     /// <summary>
     /// Do not touch.
     /// </summary>
     va_list List;
-} VarArgsList;
+};
 
 #endif

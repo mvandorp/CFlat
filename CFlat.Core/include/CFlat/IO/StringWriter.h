@@ -22,54 +22,88 @@
 #ifndef CFLAT_CORE_IO_STRINGWRITER_H
 #define CFLAT_CORE_IO_STRINGWRITER_H
 
-/* Forward declarations */
-struct String;
-struct StringBuilder;
-struct TextWriter;
+#include "CFlat/IO/TextWriter.h"
 
-/* Types */
-/// <summary>
-/// Implements a <see cref="TextWriter"/> for writing characters to a string. The information is stored in an underlying
-/// <see cref="StringBuilder"/>. The resulting string can be retrieved via TextWriter_ToString().
-/// </summary>
-typedef struct StringWriter StringWriter;
+#include "CFlat/StringBuilder.h"
 
-/* Functions */
-/// <summary>
-/// Allocates and initializes a new <see cref="StringWriter"/>.
-/// </summary>
-/// <remarks>
-///     The lifetime of the <see cref="StringWriter"/> should be managed with retain() and release().
-/// </remarks>
-/// <returns>A pointer to the newly allocated string writer.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct TextWriter *StringWriter_New(void);
+namespace CFlat {
+    /// <summary>
+    /// Implements a <see cref="TextWriter"/> for writing characters to a string. The information is stored in an underlying
+    /// <see cref="StringBuilder"/>. The resulting string can be retrieved via TextWriter_ToString().
+    /// </summary>
+    class StringWriter : public TextWriter {
+    private:
+        StringBuilder _writer;
 
-/// <summary>
-/// Allocates and initializes a new <see cref="StringWriter"/> that writes to a given <see cref="StringBuilder"/>.
-/// </summary>
-/// <remarks>
-///     The lifetime of the <see cref="StringWriter"/> should be managed with retain() and release().
-/// </remarks>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/> that the <see cref="StringWriter"/> will write to.</param>
-/// <returns>A pointer to the newly allocated string writer.</returns>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct TextWriter *StringWriter_New_FromStringBuilder(struct StringBuilder *sb);
+    public:
+        /// <summary>
+        /// Allocates and initializes a new <see cref="StringWriter"/>.
+        /// </summary>
+        /// <remarks>
+        ///     The lifetime of the <see cref="StringWriter"/> should be managed with retain() and release().
+        /// </remarks>
+        /// <returns>A pointer to the newly allocated string writer.</returns>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        StringWriter();
 
-/// <summary>
-/// Deletes a <see cref="StringWriter"/> and returns its value as a <see cref="String"/>.
-/// </summary>
-/// <remarks>
-///     This operation can only be performed if there are no other references to <paramref name="writer"/>.
-/// </remarks>
-/// <param name="writer">Pointer to a <see cref="StringWriter"/>.</param>
-/// <returns>
-///     A pointer to a <see cref="String"/> with the same value as the <see cref="StringBuilder"/>.
-/// </returns>
-/// <exception cref="::ArgumentNullException"><paramref name="writer"/> is <see cref="null"/>.</exception>
-/// <exception cref="::InvalidOperationException">There are still references to <paramref name="writer"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *StringWriter_DeleteAndToString(StringWriter *writer);
+        /// <summary>
+        /// Allocates and initializes a new <see cref="StringWriter"/> that writes to a given <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <remarks>
+        ///     The lifetime of the <see cref="StringWriter"/> should be managed with retain() and release().
+        /// </remarks>
+        /// <param name="sb">Pointer to a <see cref="StringBuilder"/> that the <see cref="StringWriter"/> will write to.</param>
+        /// <returns>A pointer to the newly allocated string writer.</returns>
+        /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        StringWriter(const StringBuilder &sb);
+
+        /// <summary>
+        /// Allocates and initializes a new <see cref="StringWriter"/> that writes to a given <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <remarks>
+        ///     The lifetime of the <see cref="StringWriter"/> should be managed with retain() and release().
+        /// </remarks>
+        /// <param name="sb">Pointer to a <see cref="StringBuilder"/> that the <see cref="StringWriter"/> will write to.</param>
+        /// <returns>A pointer to the newly allocated string writer.</returns>
+        /// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        StringWriter(StringBuilder &&sb);
+
+        String ToString() const;
+
+        /// <summary>
+        /// Deletes a <see cref="StringWriter"/> and returns its value as a <see cref="String"/>.
+        /// </summary>
+        /// <remarks>
+        ///     This operation can only be performed if there are no other references to <paramref name="writer"/>.
+        /// </remarks>
+        /// <param name="writer">Pointer to a <see cref="StringWriter"/>.</param>
+        /// <returns>
+        ///     A pointer to a <see cref="String"/> with the same value as the <see cref="StringBuilder"/>.
+        /// </returns>
+        /// <exception cref="::ArgumentNullException"><paramref name="writer"/> is <see cref="null"/>.</exception>
+        /// <exception cref="::InvalidOperationException">There are still references to <paramref name="writer"/>.</exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        static String ToString(const StringWriter &writer);
+
+        /// <summary>
+        /// Deletes a <see cref="StringWriter"/> and returns its value as a <see cref="String"/>.
+        /// </summary>
+        /// <remarks>
+        ///     This operation can only be performed if there are no other references to <paramref name="writer"/>.
+        /// </remarks>
+        /// <param name="writer">Pointer to a <see cref="StringWriter"/>.</param>
+        /// <returns>
+        ///     A pointer to a <see cref="String"/> with the same value as the <see cref="StringBuilder"/>.
+        /// </returns>
+        /// <exception cref="::ArgumentNullException"><paramref name="writer"/> is <see cref="null"/>.</exception>
+        /// <exception cref="::InvalidOperationException">There are still references to <paramref name="writer"/>.</exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        static String ToString(StringWriter &&writer);
+
+        void Write(const char *buffer, uintsize offset, uintsize count) override;
+    };
+}
 
 #endif

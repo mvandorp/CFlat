@@ -22,10 +22,7 @@
 #ifndef CFLAT_CORE_ENVIRONMENT_H
 #define CFLAT_CORE_ENVIRONMENT_H
 
-#include "CFlat/Event.h"
-
-/* Forward declarations*/
-struct String;
+#include "CFlat/String.h"
 
 /* Macros */
 /// <summary>
@@ -33,68 +30,35 @@ struct String;
 /// </summary>
 #define Environment_NewLine_CString "\r\n"
 
-/* Types */
-/// <summary>
-/// A function that performs clean up of static resources.
-/// </summary>
-typedef void (*StaticDestructorFunc)(void);
+namespace CFlat {
+    /* Forward declarations*/
+    class String;
 
-/* Constants */
-/// <summary>
-/// Represents the newline string.
-/// </summary>
-extern const struct String * const Environment_NewLine;
+    class Environment {
+    public:
+        /* Static class */
+        Environment() = delete;
 
-/* Events */
-/// <summary>
-/// Occurs when the process is about to exit.
-/// </summary>
-extern Event Environment_AtExit;
+        /* Constants */
+        /// <summary>
+        /// Represents the newline string.
+        /// </summary>
+        static const String NewLine;
 
-/// <summary>
-/// Occurs when an exception is thrown, before the runtime searches the call stack for an exception handler.
-/// </summary>
-extern Event Environment_FirstChanceException;
+        /* Functions */
+        /// <summary>
+        /// Exits the process and returns the given exit code to the operating system.
+        /// </summary>
+        /// <param name="exitCode">The exit code to return to the operating system.</param>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        static void Exit(int exitCode);
 
-/// <summary>
-/// Occurs when an exception is not caught.
-/// </summary>
-extern Event Environment_UnhandledException;
-
-/* Functions */
-/// <summary>
-/// Initializes the environment. To ensure proper cleanup, this function must be called before <c>main()</c> returns.
-/// </summary>
-/// <remarks>
-///     The environment is automatically initialized when any of the other <c>Environment</c> functions are used. If an
-///     unhandled exception occurs, the environment is also automatically initialized before the process terminates.
-/// </remarks>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void Environment_Initialize(void);
-
-/// <summary>
-/// Exits the process and returns the given exit code to the operating system.
-/// </summary>
-/// <param name="exitCode">The exit code to return to the operating system.</param>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void Environment_Exit(int exitCode);
-
-/// <summary>
-/// Terminates the process and signals failure to the operating system.
-/// </summary>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void Environment_FailFast(void);
-
-/// <summary>
-/// Registers a static destructor that will be called before the process exits.
-/// </summary>
-/// <param name="dtor">A <see cref="StaticDestructorFunc"/> that is called before the process exits.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="dtor"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void Environment_RegisterStaticDestructor(StaticDestructorFunc dtor);
-
-#ifdef CFLAT_CORE_INTERNAL
- #include "CFlat/Environment.internal.h"
-#endif
+        /// <summary>
+        /// Terminates the process and signals failure to the operating system.
+        /// </summary>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        static void FailFast();
+    };
+}
 
 #endif

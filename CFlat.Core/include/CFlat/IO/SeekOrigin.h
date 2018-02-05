@@ -22,43 +22,43 @@
 #ifndef CFLAT_CORE_IO_SEEKORIGIN_H
 #define CFLAT_CORE_IO_SEEKORIGIN_H
 
-#include "CFlat/Language/Bool.h"
+namespace CFlat {
+    namespace SeekOrigin {
+        /// <summary>
+        /// Specifies the position in a stream to use for seeking.
+        /// </summary>
+        enum Enum {
+            /// <summary>
+            /// Specifies the beginning of a stream.
+            /// </summary>
+            Begin,
+            /// <summary>
+            /// Specifies the current position within a stream.
+            /// </summary>
+            Current,
+            /// <summary>
+            /// Specifies the end of a stream.
+            /// </summary>
+            End
+        };
 
-/* Types */
-/// <summary>
-/// Specifies the position in a stream to use for seeking.
-/// </summary>
-typedef enum SeekOrigin {
-    /// <summary>
-    /// Specifies the beginning of a stream.
-    /// </summary>
-    SeekOrigin_Begin,
-    /// <summary>
-    /// Specifies the current position within a stream.
-    /// </summary>
-    SeekOrigin_Current,
-    /// <summary>
-    /// Specifies the end of a stream.
-    /// </summary>
-    SeekOrigin_End
-} SeekOrigin;
+        /// <summary>
+        /// Determines whether or not <paramref name="origin"/> is a valid <see cref="SeekOrigin"/>.
+        /// </summary>
+        /// <param name="origin">The <see cref="SeekOrigin"/> to validate.</param>
+        /// <returns>
+        ///     <see cref="true"/> if <paramref name="origin"/> is a valid <see cref="SeekOrigin"/>;
+        ///     otherwise <see cref="false"/>.
+        /// </returns>
+        bool IsValid(SeekOrigin::Enum origin);
 
-/* Functions */
-/// <summary>
-/// Determines whether or not <paramref name="origin"/> is a valid <see cref="SeekOrigin"/>.
-/// </summary>
-/// <param name="origin">The <see cref="SeekOrigin"/> to validate.</param>
-/// <returns>
-///     <see cref="true"/> if <paramref name="origin"/> is a valid <see cref="SeekOrigin"/>;
-///     otherwise <see cref="false"/>.
-/// </returns>
-bool SeekOrigin_IsValid(SeekOrigin origin);
-
-/// <summary>
-/// Validates that <paramref name="origin"/> is a valid <see cref="SeekOrigin"/>.
-/// </summary>
-/// <param name="origin">The <see cref="SeekOrigin"/> to validate.</param>
-/// <exception cref="::ArgumentException"><paramref name="origin"/> is not a valid <see cref="SeekOrigin"/>.</exception>
-void SeekOrigin_Validate(SeekOrigin origin);
+        /// <summary>
+        /// Validates that <paramref name="origin"/> is a valid <see cref="SeekOrigin"/>.
+        /// </summary>
+        /// <param name="origin">The <see cref="SeekOrigin"/> to validate.</param>
+        /// <exception cref="::ArgumentException"><paramref name="origin"/> is not a valid <see cref="SeekOrigin"/>.</exception>
+        void Validate(SeekOrigin::Enum origin);
+    }
+}
 
 #endif

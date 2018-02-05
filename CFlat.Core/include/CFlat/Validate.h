@@ -26,7 +26,8 @@
 #define CFLAT_CORE_ARGUMENT_H
 
 #include "CFlat/Environment.h"
-#include "CFlat/Language/Exceptions.h"
+#include "CFlat/ExceptionType.h"
+#include "CFlat/String.h"
 
 /// <summary>
 /// Validates that the specified condition is true; otherwise throws an exception of the given
@@ -39,8 +40,8 @@
 ///     exception message.
 /// </param>
 /// <exception cref="::Exception"><paramref name="condition"/> is <see cref="false"/>.</exception>
-#define Validate_IsTrue(condition, exception, message) \
-    ((void)((condition) ? 0 : (throw_new(exception, message), 0)))
+#define Validate_IsTrue(condition, exception) \
+    ((void)((condition) ? 0 : (throw exception, 0)))
 
 /// <summary>
 /// Validates that the specified argument is not <see cref="null"/>; otherwise throws an
@@ -49,7 +50,7 @@
 /// <param name="param">The object to check, this should be a parameter.</param>
 /// <exception cref="::ArgumentNullException"><paramref name="param"/> is <see cref="null"/>.</exception>
 #define Validate_NotNull(param) \
-    Validate_IsTrue((param) != null, ArgumentNullException, "Parameter '" #param "' cannot be null.")
+    Validate_IsTrue((param) != nullptr, CFlat::ArgumentNullException(String::Wrap("Parameter '" #param "' cannot be null.")))
 
 /// <summary>
 /// Validates that the specified argument is not negative; otherwise throws an
@@ -58,7 +59,7 @@
 /// <param name="param">The object to check, this should be a parameter.</param>
 /// <exception cref="::ArgumentOutOfRangeException"><paramref name="param"/> is negative.</exception>
 #define Validate_NotNegative(param) \
-    Validate_IsTrue((param) >= 0, ArgumentOutOfRangeException, "Parameter '" #param "' cannot be negative.")
+    Validate_IsTrue((param) >= 0, CFlat::ArgumentOutOfRangeException(String::Wrap("Parameter '" #param "' cannot be negative.")))
 
 /// <summary>
 /// Validates that an argument satisfies the specified condition; otherwise throws an <see cref="ArgumentException"/>.
@@ -71,7 +72,7 @@
 /// <param name="param">Pointer to a null-terminated string representing the name of the parameter to validate.</param>
 /// <exception cref="::ArgumentException"><paramref name="condition"/> is <see cref="false"/>.</exception>
 #define Validate_Argument(condition, message, param) \
-    Validate_IsTrue(condition, ArgumentException, message Environment_NewLine_CString "Parameter name: " param)
+    Validate_IsTrue(condition, CFlat::ArgumentException(String::Wrap(message Environment_NewLine_CString "Parameter name: " param)))
 
 /// <summary>
 /// Validates that an argument satisfies the specified condition; otherwise throws an
@@ -84,11 +85,8 @@
 /// </param>
 /// <param name="param">Pointer to a null-terminated string representing the name of the parameter to validate.</param>
 /// <exception cref="::ArgumentOutOfRangeException"><paramref name="condition"/> is <see cref="false"/>.</exception>
-#define Validate_ArgumentRange(condition, message, param)               \
-    Validate_IsTrue(                                                    \
-        condition,                                                      \
-        ArgumentOutOfRangeException,                                    \
-        message Environment_NewLine_CString "Parameter name: " param)
+#define Validate_ArgumentRange(condition, message, param) \
+    Validate_IsTrue(condition, CFlat::ArgumentOutOfRangeException(String::Wrap(message Environment_NewLine_CString "Parameter name: " param)))
 
 /// <summary>
 /// Validates that the specified condition involving the state of an object is true; otherwise throws an
@@ -101,6 +99,6 @@
 /// </param>
 /// <exception cref="::InvalidOperationException"><paramref name="condition"/> is <see cref="false"/>.</exception>
 #define Validate_State(condition, message) \
-    Validate_IsTrue((condition), InvalidOperationException, message)
+    Validate_IsTrue((condition), CFlat::InvalidOperationException(String::Wrap(message)))
 
 #endif

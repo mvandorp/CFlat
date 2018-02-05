@@ -23,572 +23,421 @@
 #define CFLAT_CORE_STRINGBUILDER_H
 
 #include "CFlat/Language/Integer.h"
+#include "CFlat/Language/Pointers.h"
 #include "CFlat/Language/VarArgs.h"
 
-/* Forward declarations */
-struct String;
+namespace CFlat {
+    /* Forward declarations */
+    class String;
 
-/* Types */
-/// <summary>
-/// Represents a mutable string of characters.
-/// </summary>
-typedef struct StringBuilder StringBuilder;
+    /* Types */
+    /// <summary>
+    /// Represents a mutable string of characters.
+    /// </summary>
+    class StringBuilder {
+    private:
+        mutable unique_ptr<char[]> _buffer;
+        mutable uintsize _capacity;
+        uintsize _length;
 
-/* Functions */
-/// <summary>
-/// Allocates and initializes a new <see cref="StringBuilder"/>.
-/// </summary>
-/// <remarks>
-///     The lifetime of the <see cref="StringBuilder"/> should be managed with retain() and release().
-/// </remarks>
-/// <returns>A pointer to the newly allocated <see cref="StringBuilder"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-StringBuilder *StringBuilder_New(void);
+        void EnsureBufferIsString() const;
+        void EnsureCapacity(uintsize minCapacity) const;
 
-/// <summary>
-/// Allocates and initializes a new <see cref="StringBuilder"/> with the given capacity.
-/// </summary>
-/// <remarks>
-///     The lifetime of the <see cref="StringBuilder"/> should be managed with retain() and release().
-/// </remarks>
-/// <param name="capacity">The initial capacity of the <see cref="StringBuilder"/>.</param>
-/// <returns>A pointer to the newly allocated <see cref="StringBuilder"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-StringBuilder *StringBuilder_New_WithCapacity(uintsize capacity);
+    public:
+        /// <summary>
+        /// Initializes a <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        StringBuilder();
 
-/// <summary>
-/// Allocates and initializes a new <see cref="StringBuilder"/> with the given initial value.
-/// </summary>
-/// <remarks>
-///     The lifetime of the <see cref="StringBuilder"/> should be managed with retain() and release().
-/// </remarks>
-/// <param name="value">Pointer to a null-terminated string used as the initial value.</param>
-/// <returns>A pointer to the newly allocated <see cref="StringBuilder"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-StringBuilder *StringBuilder_New_WithInitialCStringValue(const char *value);
+        StringBuilder(const StringBuilder &sb);
 
-/// <summary>
-/// Allocates and initializes a new <see cref="StringBuilder"/> with the given initial value and capacity.
-/// </summary>
-/// <remarks>
-///     The lifetime of the <see cref="StringBuilder"/> should be managed with retain() and release().
-/// </remarks>
-/// <param name="value">Pointer to a null-terminated string used as the initial value.</param>
-/// <param name="capacity">The initial capacity of the <see cref="StringBuilder"/>.</param>
-/// <returns>A pointer to the newly allocated <see cref="StringBuilder"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-StringBuilder *StringBuilder_New_WithInitialCStringValueAndCapacity(const char *value, uintsize capacity);
+        StringBuilder(StringBuilder &&sb);
 
-/// <summary>
-/// Allocates and initializes a new <see cref="StringBuilder"/> with the given initial value.
-/// </summary>
-/// <remarks>
-///     The lifetime of the <see cref="StringBuilder"/> should be managed with retain() and release().
-/// </remarks>
-/// <param name="value">Pointer to a <see cref="String"/> used as the initial value.</param>
-/// <returns>A pointer to the newly allocated <see cref="StringBuilder"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-StringBuilder *StringBuilder_New_WithInitialStringValue(const struct String *value);
+        /// <summary>
+        /// Initializes a <see cref="StringBuilder"/> with the given capacity.
+        /// </summary>
+        /// <param name="capacity">The initial capacity of the <see cref="StringBuilder"/>.</param>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        StringBuilder(uintsize capacity);
 
-/// <summary>
-/// Allocates and initializes a new <see cref="StringBuilder"/> with the given initial value and capacity.
-/// </summary>
-/// <remarks>
-///     The lifetime of the <see cref="StringBuilder"/> should be managed with retain() and release().
-/// </remarks>
-/// <param name="value">Pointer to a <see cref="String"/> used as the initial value.</param>
-/// <param name="capacity">The initial capacity of the <see cref="StringBuilder"/>.</param>
-/// <returns>A pointer to the newly allocated <see cref="StringBuilder"/>.</returns>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-StringBuilder *StringBuilder_New_WithInitialStringValueAndCapacity(const struct String *value, uintsize capacity);
+        /// <summary>
+        /// Initializes a <see cref="StringBuilder"/> with the given initial value.
+        /// </summary>
+        /// <param name="value">Pointer to a null-terminated string used as the initial value.</param>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        StringBuilder(const char *value);
 
-/// <summary>
-/// Initializes a <see cref="StringBuilder"/>.
-/// </summary>
-/// <param name="sb">Pointer to an uninitialized <see cref="StringBuilder"/>.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_Constructor(StringBuilder *sb);
+        /// <summary>
+        /// Initializes a <see cref="StringBuilder"/> with the given initial value and capacity.
+        /// </summary>
+        /// <param name="value">Pointer to a null-terminated string used as the initial value.</param>
+        /// <param name="capacity">The initial capacity of the <see cref="StringBuilder"/>.</param>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        StringBuilder(const char *value, uintsize capacity);
 
-/// <summary>
-/// Initializes a <see cref="StringBuilder"/> with the given capacity.
-/// </summary>
-/// <param name="sb">Pointer to an uninitialized <see cref="StringBuilder"/>.</param>
-/// <param name="capacity">The initial capacity of the <see cref="StringBuilder"/>.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_Constructor_WithCapacity(StringBuilder *sb, uintsize capacity);
+        /// <summary>
+        /// Initializes a <see cref="StringBuilder"/> with the given initial value.
+        /// </summary>
+        /// <param name="value">Pointer to a <see cref="String"/> used as the initial value.</param>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        StringBuilder(const String &value);
 
-/// <summary>
-/// Initializes a <see cref="StringBuilder"/> with the given initial value.
-/// </summary>
-/// <param name="sb">Pointer to an uninitialized <see cref="StringBuilder"/>.</param>
-/// <param name="value">Pointer to a null-terminated string used as the initial value.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_Constructor_WithInitialCStringValue(StringBuilder *sb, const char *value);
+        /// <summary>
+        /// Initializes a <see cref="StringBuilder"/> with the given initial value and capacity.
+        /// </summary>
+        /// <param name="value">Pointer to a <see cref="String"/> used as the initial value.</param>
+        /// <param name="capacity">The initial capacity of the <see cref="StringBuilder"/>.</param>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        StringBuilder(const String &value, uintsize capacity);
 
-/// <summary>
-/// Initializes a <see cref="StringBuilder"/> with the given initial value and capacity.
-/// </summary>
-/// <param name="sb">Pointer to an uninitialized <see cref="StringBuilder"/>.</param>
-/// <param name="value">Pointer to a null-terminated string used as the initial value.</param>
-/// <param name="capacity">The initial capacity of the <see cref="StringBuilder"/>.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_Constructor_WithInitialCStringValueAndCapacity(
-    StringBuilder *sb,
-    const char *value,
-    uintsize capacity);
+        StringBuilder &operator=(const StringBuilder &sb);
 
-/// <summary>
-/// Initializes a <see cref="StringBuilder"/> with the given initial value.
-/// </summary>
-/// <param name="sb">Pointer to an uninitialized <see cref="StringBuilder"/>.</param>
-/// <param name="value">Pointer to a <see cref="String"/> used as the initial value.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_Constructor_WithInitialStringValue(StringBuilder *sb, const struct String *value);
+        StringBuilder &operator=(StringBuilder &&sb);
 
-/// <summary>
-/// Initializes a <see cref="StringBuilder"/> with the given initial value and capacity.
-/// </summary>
-/// <param name="sb">Pointer to an uninitialized <see cref="StringBuilder"/>.</param>
-/// <param name="value">Pointer to a <see cref="String"/> used as the initial value.</param>
-/// <param name="capacity">The initial capacity of the <see cref="StringBuilder"/>.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_Constructor_WithInitialStringValueAndCapacity(
-    StringBuilder *sb,
-    const struct String *value,
-    uintsize capacity);
+        static String ToString(const StringBuilder &sb);
 
-/// <summary>
-/// Destroys a <see cref="StringBuilder"/>.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-void StringBuilder_Destructor(StringBuilder *sb);
+        static String ToString(StringBuilder &&sb);
 
-/// <summary>
-/// Gets the length of a <see cref="StringBuilder"/>.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <returns>The length of the <see cref="StringBuilder"/>.</returns>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-uintsize StringBuilder_GetLength(const StringBuilder *sb);
+        static unique_ptr<char[]> ToCString(const StringBuilder &sb);
 
-/// <summary>
-/// Gets the capacity of a <see cref="StringBuilder"/>.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <returns>The capacity of the <see cref="StringBuilder"/>.</returns>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-uintsize StringBuilder_GetCapacity(const StringBuilder *sb);
+        static unique_ptr<char[]> ToCString(StringBuilder &&sb);
 
-/// <summary>
-/// Sets the capacity of a <see cref="StringBuilder"/>.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="capacity">The new capacity of the <see cref="StringBuilder"/>.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::ArgumentOutOfRangeException">
-///     <paramref name="capacity"/> is less than the length of <paramref name="sb"/>.
-/// </exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_SetCapacity(StringBuilder *sb, uintsize capacity);
+        char *GetData() const;
 
-/// <summary>
-/// Appends the given character to a <see cref="StringBuilder"/>.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="value">The character to append.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_Append(StringBuilder *sb, char value);
+        /// <summary>
+        /// Gets the length of a <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <returns>The length of the <see cref="StringBuilder"/>.</returns>
+        uintsize GetLength() const;
 
-/// <summary>
-/// Appends the contents of the given buffer to a <see cref="StringBuilder"/>.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="buffer">An array of characters.</param>
-/// <param name="offset">The starting position in <paramref name="buffer"/>.</param>
-/// <param name="count">The number of characters to append.</param>
-/// <exception cref="::ArgumentNullException">
-///     <paramref name="sb"/> is <see cref="null"/> <b>-or-</b>
-///     <paramref name="buffer"/> is <see cref="null"/>.
-/// </exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_AppendBuffer(StringBuilder *sb, const char *buffer, uintsize offset, uintsize count);
+        /// <summary>
+        /// Gets the capacity of a <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <returns>The capacity of the <see cref="StringBuilder"/>.</returns>
+        uintsize GetCapacity() const;
 
-/// <summary>
-/// Appends the given string to a <see cref="StringBuilder"/>.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="value">Pointer to the string to append.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_AppendCString(StringBuilder *sb, const char *value);
+        /// <summary>
+        /// Sets the capacity of a <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <param name="capacity">The new capacity of the <see cref="StringBuilder"/>.</param>
+        /// <exception cref="::ArgumentOutOfRangeException">
+        ///     <paramref name="capacity"/> is less than the length of <paramref name="sb"/>.
+        /// </exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        void SetCapacity(uintsize capacity) const;
 
-/// <summary>
-/// Appends the given string to a <see cref="StringBuilder"/>.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="value">Pointer to the string to append.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_AppendString(StringBuilder *sb, const struct String *value);
+        /// <summary>
+        /// Appends the given character to a <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <param name="value">The character to append.</param>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        void Append(char value);
 
-/// <summary>
-/// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="value">The value to append.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_AppendInt(StringBuilder *sb, int value);
+        /// <summary>
+        /// Appends the contents of the given buffer to a <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <param name="buffer">An array of characters.</param>
+        /// <param name="offset">The starting position in <paramref name="buffer"/>.</param>
+        /// <param name="count">The number of characters to append.</param>
+        /// <exception cref="::ArgumentNullException">
+        ///     <paramref name="sb"/> is <see cref="null"/> <b>-or-</b>
+        ///     <paramref name="buffer"/> is <see cref="null"/>.
+        /// </exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        void Append(const char *buffer, uintsize offset, uintsize count);
 
-/// <summary>
-/// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="value">The value to append.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_AppendIntMax(StringBuilder *sb, intmax value);
+        /// <summary>
+        /// Appends the given string to a <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <param name="value">Pointer to the string to append.</param>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        void Append(const char *value);
+
+        /// <summary>
+        /// Appends the given string to a <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <param name="value">Pointer to the string to append.</param>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        void Append(const String &value);
+
+        /// <summary>
+        /// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <param name="value">The value to append.</param>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        void Append(int value);
+
+        /// <summary>
+        /// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <param name="value">The value to append.</param>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        void Append(intmax value);
 
 #ifdef CFLAT_INTPTR
-/// <summary>
-/// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="value">The value to append.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_AppendIntPtr(StringBuilder *sb, intptr value);
+        /// <summary>
+        /// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <param name="value">The value to append.</param>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        //void Append(intptr value);
 #endif
 
-/// <summary>
-/// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="value">The value to append.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_AppendIntFSize(StringBuilder *sb, intfsize value);
+        /// <summary>
+        /// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <param name="value">The value to append.</param>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        //void Append(intfsize value);
 
-/// <summary>
-/// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="value">The value to append.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_AppendUInt(StringBuilder *sb, uint value);
+        /// <summary>
+        /// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <param name="value">The value to append.</param>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        void Append(uint value);
 
-/// <summary>
-/// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="value">The value to append.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_AppendUIntMax(StringBuilder *sb, uintmax value);
+        /// <summary>
+        /// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <param name="value">The value to append.</param>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        void Append(uintmax value);
 
 #ifdef CFLAT_UINTPTR
-/// <summary>
-/// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="value">The value to append.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_AppendUIntPtr(StringBuilder *sb, uintptr value);
+        /// <summary>
+        /// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <param name="value">The value to append.</param>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        //void Append(uintptr value);
 #endif
 
-/// <summary>
-/// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="value">The value to append.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_AppendUIntSize(StringBuilder *sb, uintsize value);
+        /// <summary>
+        /// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <param name="value">The value to append.</param>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        //void Append(uintsize value);
 
-/// <summary>
-/// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="value">The value to append.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_AppendSingle(StringBuilder *sb, float value);
+        /// <summary>
+        /// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <param name="value">The value to append.</param>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        void Append(float value);
 
-/// <summary>
-/// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="value">The value to append.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_AppendDouble(StringBuilder *sb, double value);
+        /// <summary>
+        /// Appends the string representation of the given number to a <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <param name="value">The value to append.</param>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        void Append(double value);
 
-/// <summary>
-/// Appends a string that is formatted according to the given format string, to a <see cref="StringBuilder"/>.
-/// Each format specifier replaced with a string representation of the corresponding argument.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="format">Pointer to a format string.</param>
-/// <param name="...">Objects to format according to the format specifiers in the format string.</param>
-/// <exception cref="::ArgumentNullException">
-///     <paramref name="sb"/> is <see cref="null"/> <b>-or-</b>
-///     <paramref name="format"/> is <see cref="null"/>.
-/// </exception>
-/// <exception cref="::FormatException"><paramref name="format"/> is invalid.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_AppendFormatCString(StringBuilder *sb, const char *format, ...);
+        /// <summary>
+        /// Appends a string that is formatted according to the given format string, to a <see cref="StringBuilder"/>.
+        /// Each format specifier replaced with a string representation of the corresponding argument.
+        /// </summary>
+        /// <param name="format">Pointer to a format string.</param>
+        /// <param name="...">Objects to format according to the format specifiers in the format string.</param>
+        /// <exception cref="::ArgumentNullException">
+        ///     <paramref name="sb"/> is <see cref="null"/> <b>-or-</b>
+        ///     <paramref name="format"/> is <see cref="null"/>.
+        /// </exception>
+        /// <exception cref="::FormatException"><paramref name="format"/> is invalid.</exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        void AppendFormat(const char *format, ...);
 
-/// <summary>
-/// Appends a string that is formatted according to the given format string, to a <see cref="StringBuilder"/>.
-/// Each format specifier replaced with a string representation of the corresponding argument.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="format">Pointer to a format string.</param>
-/// <param name="args">
-///     A variable argument list containing the objects to format according to the format specifiers in the format
-///     string.
-/// </param>
-/// <exception cref="::ArgumentNullException">
-///     <paramref name="sb"/> is <see cref="null"/> <b>-or-</b>
-///     <paramref name="format"/> is <see cref="null"/>.
-/// </exception>
-/// <exception cref="::FormatException"><paramref name="format"/> is invalid.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_AppendFormatCStringV(StringBuilder *sb, const char *format, VarArgsList args);
+        /// <summary>
+        /// Appends a string that is formatted according to the given format string, to a <see cref="StringBuilder"/>.
+        /// Each format specifier replaced with a string representation of the corresponding argument.
+        /// </summary>
+        /// <param name="format">Pointer to a format string.</param>
+        /// <param name="args">
+        ///     A variable argument list containing the objects to format according to the format specifiers in the format
+        ///     string.
+        /// </param>
+        /// <exception cref="::ArgumentNullException">
+        ///     <paramref name="sb"/> is <see cref="null"/> <b>-or-</b>
+        ///     <paramref name="format"/> is <see cref="null"/>.
+        /// </exception>
+        /// <exception cref="::FormatException"><paramref name="format"/> is invalid.</exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        void AppendFormatVA(const char *format, VarArgsList args);
 
-/// <summary>
-/// Appends a string that is formatted according to the given format string, to a <see cref="StringBuilder"/>.
-/// Each format specifier replaced with a string representation of the corresponding argument.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="format">Pointer to a format string.</param>
-/// <param name="...">Objects to format according to the format specifiers in the format string.</param>
-/// <exception cref="::ArgumentNullException">
-///     <paramref name="sb"/> is <see cref="null"/> <b>-or-</b>
-///     <paramref name="format"/> is <see cref="null"/>.
-/// </exception>
-/// <exception cref="::FormatException"><paramref name="format"/> is invalid.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_AppendFormatString(StringBuilder *sb, const struct String *format, ...);
+        /// <summary>
+        /// Appends a string that is formatted according to the given format string, to a <see cref="StringBuilder"/>.
+        /// Each format specifier replaced with a string representation of the corresponding argument.
+        /// </summary>
+        /// <param name="format">Pointer to a format string.</param>
+        /// <param name="...">Objects to format according to the format specifiers in the format string.</param>
+        /// <exception cref="::ArgumentNullException">
+        ///     <paramref name="sb"/> is <see cref="null"/> <b>-or-</b>
+        ///     <paramref name="format"/> is <see cref="null"/>.
+        /// </exception>
+        /// <exception cref="::FormatException"><paramref name="format"/> is invalid.</exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        void AppendFormat(String format, ...);
 
-/// <summary>
-/// Appends a string that is formatted according to the given format string, to a <see cref="StringBuilder"/>.
-/// Each format specifier replaced with a string representation of the corresponding argument.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="format">Pointer to a format string.</param>
-/// <param name="args">
-///     A variable argument list containing the objects to format according to the format specifiers in the format
-///     string.
-/// </param>
-/// <exception cref="::ArgumentNullException">
-///     <paramref name="sb"/> is <see cref="null"/> <b>-or-</b>
-///     <paramref name="format"/> is <see cref="null"/>.
-/// </exception>
-/// <exception cref="::FormatException"><paramref name="format"/> is invalid.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_AppendFormatStringV(StringBuilder *sb, const struct String *format, VarArgsList args);
+        /// <summary>
+        /// Appends a string that is formatted according to the given format string, to a <see cref="StringBuilder"/>.
+        /// Each format specifier replaced with a string representation of the corresponding argument.
+        /// </summary>
+        /// <param name="format">Pointer to a format string.</param>
+        /// <param name="args">
+        ///     A variable argument list containing the objects to format according to the format specifiers in the format
+        ///     string.
+        /// </param>
+        /// <exception cref="::ArgumentNullException">
+        ///     <paramref name="sb"/> is <see cref="null"/> <b>-or-</b>
+        ///     <paramref name="format"/> is <see cref="null"/>.
+        /// </exception>
+        /// <exception cref="::FormatException"><paramref name="format"/> is invalid.</exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        void AppendFormatVA(const String &format, VarArgsList args);
 
-/// <summary>
-/// Appends a new line to a <see cref="StringBuilder"/>.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_AppendLine(StringBuilder *sb);
+        /// <summary>
+        /// Appends a new line to a <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        void AppendLine();
 
-/// <summary>
-/// Appends the given string followed by a new line to a <see cref="StringBuilder"/>.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="value">Pointer to the string to append.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_AppendLineCString(StringBuilder *sb, const char *value);
+        /// <summary>
+        /// Appends the given string followed by a new line to a <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <param name="value">Pointer to the string to append.</param>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        void AppendLine(const char *value);
 
-/// <summary>
-/// Appends the given string followed by a new line to a <see cref="StringBuilder"/>.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="value">Pointer to the string to append.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_AppendLineString(StringBuilder *sb, const struct String *value);
+        /// <summary>
+        /// Appends the given string followed by a new line to a <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <param name="value">Pointer to the string to append.</param>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        void AppendLine(const String &value);
 
-/// <summary>
-/// Removes all characters from the specified <see cref="StringBuilder"/>.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-void StringBuilder_Clear(StringBuilder *sb);
+        /// <summary>
+        /// Removes all characters from the specified <see cref="StringBuilder"/>.
+        /// </summary>
+        void Clear();
 
-/// <summary>
-/// Deletes a <see cref="StringBuilder"/> and returns its value as a <see cref="String"/>.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <returns>
-///     A pointer to a <see cref="String"/> with the same value as the <see cref="StringBuilder"/>.
-/// </returns>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::InvalidOperationException">There are still references to <paramref name="sb"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *StringBuilder_DeleteAndToString(StringBuilder *sb);
+        /// <summary>
+        /// Inserts the given character into a <see cref="StringBuilder"/> at the given index.
+        /// </summary>
+        /// <param name="index">The position in <paramref name="sb"/> where insertion begins.</param>
+        /// <param name="value">The character to insert.</param>
+        /// <exception cref="::ArgumentOutOfRangeException">
+        ///     <paramref name="index"/> is greater than the length of <paramref name="sb"/>.
+        /// </exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        void Insert(uintsize index, char value);
 
-/// <summary>
-/// Deletes a <see cref="StringBuilder"/> and returns its value as a null-terminated string.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <returns>
-///     A pointer to a null-terminated string with the same value as the <see cref="StringBuilder"/>.
-/// </returns>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::InvalidOperationException">There are still references to <paramref name="sb"/>.</exception>
-char *StringBuilder_DeleteAndToCString(StringBuilder *sb);
+        /// <summary>
+        /// Inserts the contents of the given buffer into a <see cref="StringBuilder"/> at the given index.
+        /// </summary>
+        /// <param name="index">The position in <paramref name="sb"/> where insertion begins.</param>
+        /// <param name="buffer">An array of characters.</param>
+        /// <param name="offset">The starting position in <paramref name="buffer"/>.</param>
+        /// <param name="count">The number of characters to insert.</param>
+        /// <exception cref="::ArgumentNullException">
+        ///     <paramref name="sb"/> is <see cref="null"/> <b>-or-</b>
+        ///     <paramref name="buffer"/> is <see cref="null"/>.
+        /// </exception>
+        /// <exception cref="::ArgumentOutOfRangeException">
+        ///     <paramref name="index"/> is greater than the length of <paramref name="sb"/>.
+        /// </exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        void Insert(uintsize index, const char *buffer, uintsize offset, uintsize count);
 
-/// <summary>
-/// Inserts the given character into a <see cref="StringBuilder"/> at the given index.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="index">The position in <paramref name="sb"/> where insertion begins.</param>
-/// <param name="value">The character to insert.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::ArgumentOutOfRangeException">
-///     <paramref name="index"/> is greater than the length of <paramref name="sb"/>.
-/// </exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_Insert(StringBuilder *sb, uintsize index, char value);
+        /// <summary>
+        /// Inserts the given string into a <see cref="StringBuilder"/> at the given index.
+        /// </summary>
+        /// <param name="index">The position in <paramref name="sb"/> where insertion begins.</param>
+        /// <param name="value">Pointer to the string to insert.</param>
+        /// <exception cref="::ArgumentOutOfRangeException">
+        ///     <paramref name="index"/> is greater than the length of <paramref name="sb"/>.
+        /// </exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        void Insert(uintsize index, const char *value);
 
-/// <summary>
-/// Inserts the contents of the given buffer into a <see cref="StringBuilder"/> at the given index.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="index">The position in <paramref name="sb"/> where insertion begins.</param>
-/// <param name="buffer">An array of characters.</param>
-/// <param name="offset">The starting position in <paramref name="buffer"/>.</param>
-/// <param name="count">The number of characters to insert.</param>
-/// <exception cref="::ArgumentNullException">
-///     <paramref name="sb"/> is <see cref="null"/> <b>-or-</b>
-///     <paramref name="buffer"/> is <see cref="null"/>.
-/// </exception>
-/// <exception cref="::ArgumentOutOfRangeException">
-///     <paramref name="index"/> is greater than the length of <paramref name="sb"/>.
-/// </exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_InsertBuffer(StringBuilder *sb, uintsize index, const char *buffer, uintsize offset, uintsize count);
+        /// <summary>
+        /// Inserts the given string into a <see cref="StringBuilder"/> at the given index.
+        /// </summary>
+        /// <param name="index">The position in <paramref name="sb"/> where insertion begins.</param>
+        /// <param name="value">Pointer to the string to insert.</param>
+        /// <exception cref="::ArgumentOutOfRangeException">
+        ///     <paramref name="index"/> is greater than the length of <paramref name="sb"/>.
+        /// </exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        void Insert(uintsize index, const String &value);
 
-/// <summary>
-/// Inserts the given string into a <see cref="StringBuilder"/> at the given index.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="index">The position in <paramref name="sb"/> where insertion begins.</param>
-/// <param name="value">Pointer to the string to insert.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::ArgumentOutOfRangeException">
-///     <paramref name="index"/> is greater than the length of <paramref name="sb"/>.
-/// </exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_InsertCString(StringBuilder *sb, uintsize index, const char *value);
+        /// <summary>
+        /// Removes the given range of characters from a <see cref="StringBuilder"/>.
+        /// </summary>
+        /// <param name="startIndex">The position where to start removing characters.</param>
+        /// <param name="count">The number of characters to remove.</param>
+        /// <exception cref="::ArgumentOutOfRangeException">
+        ///     <paramref name="startIndex"/> + <paramref name="count"/> is greater than the length of <paramref name="sb"/>.
+        /// </exception>
+        void Remove(uintsize startIndex, uintsize count);
 
-/// <summary>
-/// Inserts the given string into a <see cref="StringBuilder"/> at the given index.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="index">The position in <paramref name="sb"/> where insertion begins.</param>
-/// <param name="value">Pointer to the string to insert.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::ArgumentOutOfRangeException">
-///     <paramref name="index"/> is greater than the length of <paramref name="sb"/>.
-/// </exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_InsertString(StringBuilder *sb, uintsize index, const struct String *value);
+        /// <summary>
+        /// Replaces all occurrences of a specified character in a <see cref="StringBuilder"/> with another specified character.
+        /// </summary>
+        /// <param name="oldChar">The character to be replaced.</param>
+        /// <param name="newChar">The character to replace all occurrences of <paramref name="oldChar"/>.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
+        void Replace(char oldValue, char newValue);
 
-/// <summary>
-/// Removes the given range of characters from a <see cref="StringBuilder"/>.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="startIndex">The position where to start removing characters.</param>
-/// <param name="count">The number of characters to remove.</param>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::ArgumentOutOfRangeException">
-///     <paramref name="startIndex"/> + <paramref name="count"/> is greater than the length of <paramref name="sb"/>.
-/// </exception>
-void StringBuilder_Remove(StringBuilder *sb, uintsize startIndex, uintsize count);
+        /// <summary>
+        /// Replaces all occurrences of a specified string in a <see cref="StringBuilder"/> with another specified string.
+        /// </summary>
+        /// <param name="oldValue">The string to be replaced.</param>
+        /// <param name="newValue">The string to replace all occurrences of <paramref name="newValue"/>.</param>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="sb"/> is <see cref="null"/> <b>-or-</b>
+        ///     <paramref name="oldValue"/> is <see cref="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     <paramref name="oldValue"/> is the empty string ("").
+        /// </exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        void Replace(const char *oldValue, const char *newValue);
 
-/// <summary>
-/// Replaces all occurrences of a specified character in a <see cref="StringBuilder"/> with another specified character.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="oldChar">The character to be replaced.</param>
-/// <param name="newChar">The character to replace all occurrences of <paramref name="oldChar"/>.</param>
-/// <exception cref="ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-void StringBuilder_Replace(StringBuilder *sb, char oldValue, char newValue);
+        /// <summary>
+        /// Replaces all occurrences of a specified string in a <see cref="StringBuilder"/> with another specified string.
+        /// </summary>
+        /// <param name="oldValue">The string to be replaced.</param>
+        /// <param name="newValue">The string to replace all occurrences of <paramref name="newValue"/>.</param>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="sb"/> is <see cref="null"/> <b>-or-</b>
+        ///     <paramref name="oldValue"/> is <see cref="null"/>.
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        ///     <paramref name="oldValue"/> is the empty string ("").
+        /// </exception>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        void Replace(const String &oldValue, const String &newValue);
 
-/// <summary>
-/// Replaces all occurrences of a specified string in a <see cref="StringBuilder"/> with another specified string.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="oldValue">The string to be replaced.</param>
-/// <param name="newValue">The string to replace all occurrences of <paramref name="newValue"/>.</param>
-/// <exception cref="ArgumentNullException">
-///     <paramref name="sb"/> is <see cref="null"/> <b>-or-</b>
-///     <paramref name="oldValue"/> is <see cref="null"/>.
-/// </exception>
-/// <exception cref="ArgumentException">
-///     <paramref name="oldValue"/> is the empty string ("").
-/// </exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_ReplaceCString(StringBuilder *sb, const char *oldValue, const char *newValue);
+        /// <summary>
+        /// Converts the value of a <see cref="StringBuilder"/> to a <see cref="String"/>.
+        /// </summary>
+        /// <returns>
+        ///     A pointer to a <see cref="String"/> with the same value as the <see cref="StringBuilder"/>.
+        /// </returns>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        String ToString() const;
 
-/// <summary>
-/// Replaces all occurrences of a specified string in a <see cref="StringBuilder"/> with another specified string.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <param name="oldValue">The string to be replaced.</param>
-/// <param name="newValue">The string to replace all occurrences of <paramref name="newValue"/>.</param>
-/// <exception cref="ArgumentNullException">
-///     <paramref name="sb"/> is <see cref="null"/> <b>-or-</b>
-///     <paramref name="oldValue"/> is <see cref="null"/>.
-/// </exception>
-/// <exception cref="ArgumentException">
-///     <paramref name="oldValue"/> is the empty string ("").
-/// </exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-void StringBuilder_ReplaceString(StringBuilder *sb, const struct String *oldValue, const struct String *newValue);
-
-/// <summary>
-/// Converts the value of a <see cref="StringBuilder"/> to a <see cref="String"/>.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <returns>
-///     A pointer to a <see cref="String"/> with the same value as the <see cref="StringBuilder"/>.
-/// </returns>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-struct String *StringBuilder_ToString(const StringBuilder *sb);
-
-/// <summary>
-/// Converts the value of a <see cref="StringBuilder"/> to a null-terminated string.
-/// </summary>
-/// <param name="sb">Pointer to a <see cref="StringBuilder"/>.</param>
-/// <returns>
-///     A pointer to a null-terminated string with the same value as the <see cref="StringBuilder"/>.
-/// </returns>
-/// <exception cref="::ArgumentNullException"><paramref name="sb"/> is <see cref="null"/>.</exception>
-/// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
-char *StringBuilder_ToCString(const StringBuilder *sb);
-
-#ifdef CFLAT_CORE_INTERNAL
- #include "CFlat/StringBuilder.internal.h"
-#endif
+        /// <summary>
+        /// Converts the value of a <see cref="StringBuilder"/> to a null-terminated string.
+        /// </summary>
+        /// <returns>
+        ///     A pointer to a null-terminated string with the same value as the <see cref="StringBuilder"/>.
+        /// </returns>
+        /// <exception cref="::OutOfMemoryException">There is insufficient memory available.</exception>
+        unique_ptr<char[]> ToCString() const;
+    };
+}
 
 #endif
