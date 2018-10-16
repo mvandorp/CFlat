@@ -24,7 +24,7 @@
 
 #include "CFlat/String.h"
 
-#include <float.h>
+#include <cfloat>
 
 #define DOUBLE_DIGITS DBL_DIG
 

@@ -30,8 +30,6 @@
 #include "CFlat/IO/TextReader.h"
 #include "CFlat/IO/TextWriter.h"
 
-#include <cstdio>
-
 using namespace CFlat;
 
 /* Private variables */
@@ -87,17 +85,17 @@ void Console::SetError(shared_ptr<TextWriter> writer)
 
 unique_ptr<Stream> Console::OpenStandardInput()
 {
-    return unique_ptr<Stream>(new ConsoleStream(stdin, FileAccess::Read));
+    return unique_ptr<Stream>(new ConsoleStream(0, FileAccess::Read));
 }
 
 unique_ptr<Stream> Console::OpenStandardOutput()
 {
-    return unique_ptr<Stream>(new ConsoleStream(stdout, FileAccess::Write));
+    return unique_ptr<Stream>(new ConsoleStream(0, FileAccess::Write));
 }
 
 unique_ptr<Stream> Console::OpenStandardError()
 {
-    return unique_ptr<Stream>(new ConsoleStream(stderr, FileAccess::Write));
+    return unique_ptr<Stream>(new ConsoleStream(0, FileAccess::Write));
 }
 
 int Console::Read()

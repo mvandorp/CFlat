@@ -22,7 +22,7 @@
 #ifndef CFLAT_CORE_LANGUAGE_VARARGS_H
 #define CFLAT_CORE_LANGUAGE_VARARGS_H
 
-#include <stdarg.h>
+#include <cstdarg>
 
 /* Macros */
 /// <summary>

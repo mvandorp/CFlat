@@ -102,7 +102,7 @@ namespace CFlat {
 
             uintsize length = sb.GetLength();
 
-            this->Write(StringBuilder::ToCString(std::move(sb)).Get(), 0, length);
+            //this->Write(StringBuilder::ToCString(std::move(sb)).Get(), 0, length);
         }
         
         /// <summary>
@@ -199,7 +199,7 @@ namespace CFlat {
 
             uintsize length = sb.GetLength();
 
-            this->Write(StringBuilder::ToCString(std::move(sb)).Get(), 0, length);
+            //this->Write(StringBuilder::ToCString(std::move(sb)).Get(), 0, length);
         }
         
         /// <summary>

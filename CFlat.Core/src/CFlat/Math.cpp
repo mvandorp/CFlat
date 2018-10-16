@@ -19,7 +19,7 @@
 
 #include "CFlat/Math.h"
 
-#include <math.h>
+#include <cmath>
 
 using namespace CFlat;
 

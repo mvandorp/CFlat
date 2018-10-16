@@ -27,46 +27,6 @@
 #include "CFlat/IO/FileMode.h"
 #include "CFlat/IO/Stream.h"
 
-#include <cerrno>
-#include <cstdio>
-
-#if defined(__unix__) || (defined (__APPLE__) && defined (__MACH__))
-#include <unistd.h>
-#endif
-
-#if defined(_LARGEFILE_SOURCE) || \
-    defined(_XOPEN_SOURCE) && _XOPEN_SOURCE >= 500 || \
-    defined(_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200112L
-    // POSIX.1-2001
-
-#define POSIX_fileno
-#define POSIX_ftruncate
-#elif defined(_MSC_VER) && _MSC_VER >= 1400
-    // MSVC++ 8.0 or newer
-#include <io.h>
-
-#define fileno      _fileno
-#define fseeko      _fseeki64
-#define ftello      _ftelli64
-#define ftruncate   _chsize_s
-
-#define POSIX_fileno
-#define POSIX_ftruncate
-#elif defined(_MSC_VER)
-    // MSVC++
-#include <io.h>
-
-#define fileno      _fileno
-#define fseeko      fseek
-#define ftruncate   _chsize_s
-#define ftello      ftell
-
-#define POSIX_fileno
-#define POSIX_ftruncate
-#else
-#define ftello ftell
-#define fseeko fseek
-#endif
 
 using namespace CFlat;
 
@@ -74,10 +34,10 @@ using namespace CFlat;
 /* Private functions                  */
 /**************************************/
 
-static std::FILE *FileOpen(const char *path, FileMode::Enum mode, FileAccess::Enum fileAccess);
-static void FileSeek(std::FILE *file, intfsize offset, SeekOrigin::Enum origin);
-static intfsize FileTell(std::FILE *file);
-static void FileTruncate(std::FILE *file, intfsize length);
+static int *FileOpen(const char *path, FileMode::Enum mode, FileAccess::Enum fileAccess);
+static void FileSeek(int *file, intfsize offset, SeekOrigin::Enum origin);
+static intfsize FileTell(int *file);
+static void FileTruncate(int *file, intfsize length);
 
 static void ValidateFileDoesNotExist(const char *path);
 static void ValidateModeAccessCombination(FileMode::Enum mode, FileAccess::Enum fileAccess);
@@ -133,7 +93,7 @@ FileStream::~FileStream()
         }
     }
 
-    std::fclose(_file);
+    //std::fclose(_file);
 }
 
 bool FileStream::CanRead() const
@@ -199,9 +159,9 @@ void FileStream::SetPosition(intfsize position)
 void FileStream::Flush()
 {
     if (this->CanWrite()) {
-        std::fflush(_file);
+        //std::fflush(_file);
 
-        if (std::ferror(_file)) {
+        if (0) {//std::ferror(_file)) {
             throw IOException(String::Wrap("Failed to flush the stream."));
         }
     }
@@ -212,9 +172,9 @@ uintsize FileStream::Read(byte *buffer, uintsize offset, uintsize count)
     Validate_NotNull(buffer);
     this->ValidateReadSupported();
 
-    uintsize bytesRead = std::fread(&buffer[offset], 1, count, _file);
+    uintsize bytesRead = 0;//std::fread(&buffer[offset], 1, count, _file);
 
-    if (std::ferror(_file)) {
+    if (0) {//std::ferror(_file)) {
         throw IOException(String::Wrap("Failed to read from the stream."));
     }
 
@@ -237,9 +197,9 @@ void FileStream::Write(const byte *buffer, uintsize offset, uintsize count)
 
     if (count == 0) return;
 
-    std::fwrite(&buffer[offset], 1, count, _file);
+    //std::fwrite(&buffer[offset], 1, count, _file);
 
-    if (std::ferror(_file)) {
+    if (0) {//std::ferror(_file)) {
         throw IOException(String::Wrap("Failed to write to the stream."));
     }
 }
@@ -263,7 +223,7 @@ void FileStream::ValidateWriteSupported() const
 /* Private function definitions       */
 /**************************************/
 
-static std::FILE *FileOpen(const char *path, FileMode::Enum mode, FileAccess::Enum fileAccess)
+static int *FileOpen(const char *path, FileMode::Enum mode, FileAccess::Enum fileAccess)
 {
     assert(path != nullptr);
     assert(FileMode::IsValid(mode));
@@ -277,65 +237,65 @@ static std::FILE *FileOpen(const char *path, FileMode::Enum mode, FileAccess::En
 
     const char *fileMode = GetCFileModeString(mode, fileAccess);
 
-    errno = 0;
-    std::FILE *file = std::fopen(path, fileMode);
+    //errno = 0;
+    int *file = 0;//std::fopen(path, fileMode);
 
     if (file == nullptr) {
-        GenerateFileOpenException(errno, mode);
+        GenerateFileOpenException(0, mode);//errno, mode);
     }
 
     return file;
 }
 
-static void FileSeek(std::FILE *file, intfsize offset, SeekOrigin::Enum origin)
+static void FileSeek(int *file, intfsize offset, SeekOrigin::Enum origin)
 {
     assert(file != nullptr);
     assert(SeekOrigin::IsValid(origin));
 
-    fseeko(file, offset, GetCSeekOrigin(origin));
+    //fseeko(file, offset, GetCSeekOrigin(origin));
 
-    if (std::ferror(file)) {
+    if (0) {//std::ferror(file)) {
         throw IOException(String::Wrap("Failed to seek to the given offset."));
     }
 }
 
-static intfsize FileTell(std::FILE *file)
+static intfsize FileTell(int *file)
 {
     assert(file != nullptr);
 
-    intfsize pos = ftello(file);
+    intfsize pos = 0;//ftello(file);
 
     assert(pos >= 0);
 
-    if (std::ferror(file)) {
+    if (0) {//std::ferror(file)) {
         throw IOException(String::Wrap("Failed to get the current position within the stream."));
     }
 
     return pos;
 }
 
-static void FileTruncate(std::FILE *file, intfsize length)
+static void FileTruncate(int *file, intfsize length)
 {
     assert(file != nullptr);
     assert(length >= 0);
 
 #if defined(POSIX_ftruncate) && defined(POSIX_fileno)
-    ftruncate(fileno(file), length);
+    //ftruncate(fileno(file), length);
 
-    if (std::ferror(file)) {
+    if (0) {//std::ferror(file)) {
         throw IOException(String::Wrap("Failed to truncate the stream."));
     }
 #else
-    throw_new(NotSupportedException, null);
+    throw NotSupportedException();
 #endif
 }
 
 static void ValidateFileDoesNotExist(const char *path)
 {
-    std::FILE *file = std::fopen(path, "r");
+    int *file = 0;//std::fopen(path, "r");
 
     if (file != nullptr) {
-        std::fclose(file);
+        //std::fclose(file);
 
         throw IOException(String::Wrap("Failed to create new file: File already exists."));
     }

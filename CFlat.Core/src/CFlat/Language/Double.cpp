@@ -24,10 +24,10 @@
 #include "CFlat/Number.h"
 #include "CFlat/StringBuilder.h"
 
-#include <float.h>
+#include <cfloat>
 
 #if defined(__STDC_VERSION__) && __STDC_VERSION__ >= 199901L || defined(_MSC_VER) && _MSC_VER >= 1700
- #include <math.h>
+ #include <cmath>
  #define C99_math
 #endif
 

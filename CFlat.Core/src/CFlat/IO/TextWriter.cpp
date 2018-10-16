@@ -31,6 +31,8 @@
 using namespace CFlat;
 
 /* Macros */
+#define WriteWithStringBuilder(bufferName, write)
+/*
 #define WriteWithStringBuilder(bufferName, write)                                   \
 {                                                                                   \
     StringBuilder bufferName;                                                       \
@@ -40,6 +42,7 @@ using namespace CFlat;
                                                                                     \
     this->Write(StringBuilder::ToCString(std::move(bufferName)).Get(), 0, length);  \
 }
+*/
 
 /* Private constants */
 /// <summary>

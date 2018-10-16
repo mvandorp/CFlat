@@ -26,7 +26,7 @@
 #include "CFlat/IO/FileMode.h"
 #include "CFlat/IO/Stream.h"
 
-#include <cstdio>
+//#include <cstdio>
 
 namespace CFlat {
     /* Forward declarations */
@@ -38,7 +38,7 @@ namespace CFlat {
     /// </summary>
     class FileStream : public Stream {
     private:
-        std::FILE *_file;
+        int *_file;
         FileAccess::Enum _access;
         FileMode::Enum _mode;
 

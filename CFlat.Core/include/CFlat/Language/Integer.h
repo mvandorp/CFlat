@@ -22,8 +22,8 @@
 #ifndef CFLAT_CORE_LANGUAGE_INTEGER_H
 #define CFLAT_CORE_LANGUAGE_INTEGER_H
 
-#include <stddef.h>
-#include <limits.h>
+#include <cstddef>
+#include <climits>
 
 namespace CFlat {
     /* Forward declarations */

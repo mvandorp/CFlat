@@ -23,12 +23,12 @@
 #include "CFlat/IO/FileAccess.h"
 #include "CFlat/IO/Stream.h"
 
-#include <cstdio>
+//#include <cstdio>
 
 namespace CFlat {
     class ConsoleStream : public Stream {
     private:
-        std::FILE *_file;
+        int *_file;
         FileAccess::Enum _access;
 
         void ValidateReadSupported() const;
@@ -36,7 +36,7 @@ namespace CFlat {
         void ValidateWriteSupported() const;
 
     public:
-        ConsoleStream(std::FILE *file, FileAccess::Enum fileAccess);
+        ConsoleStream(int *file, FileAccess::Enum fileAccess);
         ~ConsoleStream();
 
         /* Properties */

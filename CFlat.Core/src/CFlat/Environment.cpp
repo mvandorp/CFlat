@@ -19,7 +19,7 @@
 
 #include "CFlat/Environment.h"
 
-#include <cstdlib>
+//#include <cstdlib>
 
 using namespace CFlat;
 
@@ -32,10 +32,10 @@ const String Environment::NewLine = String::Wrap("\r\n");
 
 void Environment::Exit(int exitCode)
 {
-    std::exit(exitCode);
+    //std::exit(exitCode);
 }
 
 void Environment::FailFast()
 {
-    std::abort();
+    //std::abort();
 }

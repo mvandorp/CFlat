@@ -23,15 +23,13 @@
 #include "CFlat/Memory.h"
 #include "CFlat/Validate.h"
 
-#include <cstdio>
-
 using namespace CFlat;
 
 /**************************************/
 /* Public function definitions        */
 /**************************************/
 
-ConsoleStream::ConsoleStream(std::FILE *file, FileAccess::Enum fileAccess)
+ConsoleStream::ConsoleStream(int *file, FileAccess::Enum fileAccess)
 {
     Validate_NotNull(file);
     FileAccess::Validate(fileAccess);
@@ -98,9 +96,9 @@ void ConsoleStream::SetPosition(intfsize position)
 void ConsoleStream::Flush()
 {
     if (this->CanWrite()) {
-        fflush(_file);
+        //fflush(_file);
 
-        if (std::ferror(_file)) {
+        if (0) {//std::ferror(_file)) {
             throw IOException(String::Wrap("Failed to flush the stream."));
         }
     }
@@ -117,16 +115,16 @@ uintsize ConsoleStream::Read(byte *buffer, uintsize offset, uintsize count)
     uintsize bytesRead = 0;
 
     while (bytesRead < count) {
-        int ch = std::fgetc(_file);
+        int ch = 0;//td::fgetc(_file);
 
-        if (ch == EOF) break;
+        if (ch == 0) break;//EOF) break;
 
         buffer[bytesRead++] = (byte)ch;
 
         if (ch == '\n') break;
     }
 
-    if (ferror(_file)) {
+    if (0) {//ferror(_file)) {
         throw IOException(String::Wrap("Failed to read from the stream."));
     }
 
@@ -150,9 +148,9 @@ void ConsoleStream::Write(const byte *buffer, uintsize offset, uintsize count)
 
     if (count == 0) return;
 
-    std::fwrite(&buffer[offset], 1, count, _file);
+    //std::fwrite(&buffer[offset], 1, count, _file);
 
-    if (ferror(_file)) {
+    if (0) {//ferror(_file)) {
         throw IOException(String::Wrap("Failed to write to the stream."));
     }
 }
